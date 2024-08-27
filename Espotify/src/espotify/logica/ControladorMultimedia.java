@@ -8,12 +8,21 @@ package Logica;
  *
  * @author tecnologo
  */
-public class ControladorMultimedia {
+public class ControladorMultimedia extends IControladorMultimedia{
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        // TODO code application logic here
+    // 1 de Singleton
+    private ControladorMultimedia() {
+        
+    }
+    
+    // 2 de Singleton
+    private static ControladorMultimedia miInstancia = null;
+    
+    // 3 de Singleton
+    public static ControladorMultimedia getInstance() {
+        if (ControladorMultimedia.miInstancia == null) {
+            ControladorMultimedia.miInstancia = new ControladorMultimedia();
+        }
+        return (ControladorMultimedia.getInstance());
     }
 }

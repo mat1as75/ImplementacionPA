@@ -9,11 +9,18 @@ package Logica;
  * @author tecnologo
  */
 public class Fabrica {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        // TODO code application logic here
+    
+    // Constructor
+    public Fabrica() {
+        
     }
+    
+    public IControladorUsuario getControladorUsuario() {
+        return (ControladorUsuario.getInstance());
+    }
+    
+    public IControladorMultimedia getControladorMultimedia() {
+        return (ControladorMultimedia.getInstance());
+    }
+   
 }

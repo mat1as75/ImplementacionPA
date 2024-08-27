@@ -8,12 +8,21 @@ package Logica;
  *
  * @author tecnologo
  */
-public class ControladorUsuario {
+public class ControladorUsuario extends IControladorUsuario{
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        // TODO code application logic here
+    // 1 de Singleton
+    private ControladorUsuario() {
+        
+    }
+    
+    // 2 de Singleton
+    private static ControladorUsuario miInstancia = null;
+    
+    // 3 de Singleton
+    public static ControladorUsuario getInstance() {
+        if (ControladorUsuario.miInstancia == null) {
+            ControladorUsuario.miInstancia = new ControladorUsuario();
+        }
+        return (ControladorUsuario.miInstancia);
     }
 }
