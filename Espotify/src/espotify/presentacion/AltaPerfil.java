@@ -37,13 +37,13 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         jTextFieldemail = new javax.swing.JTextField();
         openButton = new javax.swing.JButton();
         imageLabel = new javax.swing.JLabel();
+        jDateChooserfechaNacimiento = new com.toedter.calendar.JDateChooser();
         jLabelBiografia = new javax.swing.JLabel();
         jLabelwebpromocion = new javax.swing.JLabel();
         jTextFieldwebpromocion = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaBiografia = new javax.swing.JTextArea();
         jComboBoxusuario = new javax.swing.JComboBox<>();
-        jDateChooserFechaNacimiento = new com.toedter.calendar.JDateChooser();
 
         jComboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -116,13 +116,13 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(167, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jDateChooserFechaNacimiento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextFieldemail, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldapellido, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                            .addComponent(jTextFieldnombre, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldnickname, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(imageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldemail)
+                            .addComponent(jTextFieldapellido, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(jTextFieldnombre)
+                            .addComponent(jTextFieldnickname)
+                            .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooserfechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jComboBoxusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(92, 92, 92))))
@@ -147,10 +147,10 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelemail)
                     .addComponent(jTextFieldemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabelfechanacimiento)
-                    .addComponent(jDateChooserFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooserfechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,13 +201,10 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             File selectedFile = buscar.getSelectedFile();
             String ruta = selectedFile.getAbsolutePath();
             // Configura la carpeta de destino
-            File destinoCarpeta = new File("./src/imagenesPerfil");
-            if (!destinoCarpeta.exists()) {
-                destinoCarpeta.mkdirs(); // Crea la carpeta si no existe
-            }
+            File destinoCarpeta = new File("./Resource/ImagenesPerfil");
 
-            // Define el nuevo archivo en la carpeta de destino
-            //esto es lo que se guarda en la base de datos
+            /* Define el nuevo archivo en la carpeta de destino
+               esto es lo que se guarda en la base de datos */
             File destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
             
             try {
@@ -228,7 +225,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     private void jComboBoxusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxusuarioActionPerformed
         
         String opcion=(String)jComboBoxusuario.getSelectedItem();
-        if("cliente".equals(opcion)){
+        if(opcion=="cliente"){
             jLabelBiografia.setVisible(false);
             jTextAreaBiografia.setVisible(false);
             jScrollPane2.setVisible(false);
@@ -249,7 +246,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     private javax.swing.JLabel imageLabel;
     private javax.swing.JComboBox<String> jComboBoxUsuario;
     private javax.swing.JComboBox<String> jComboBoxusuario;
-    private com.toedter.calendar.JDateChooser jDateChooserFechaNacimiento;
+    private com.toedter.calendar.JDateChooser jDateChooserfechaNacimiento;
     private javax.swing.JLabel jLabelBiografia;
     private javax.swing.JLabel jLabelapellido;
     private javax.swing.JLabel jLabelemail;

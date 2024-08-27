@@ -58,7 +58,8 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Consulta Perfil Artista");
+        setResizable(true);
+        setTitle("Consulta de Perfil de Artista");
         setPreferredSize(new java.awt.Dimension(1150, 600));
 
         jLabelNickname.setText("Nickname:");

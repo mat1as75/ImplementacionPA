@@ -80,21 +80,21 @@
                   </Group>
                   <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jTextFieldwebpromocion" alignment="0" min="-2" pref="274" max="-2" attributes="0"/>
                               <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="167" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jDateChooserFechaNacimiento" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jTextFieldemail" alignment="0" max="32767" attributes="0"/>
                               <Component id="jTextFieldapellido" alignment="0" pref="176" max="32767" attributes="0"/>
                               <Component id="jTextFieldnombre" alignment="0" max="32767" attributes="0"/>
                               <Component id="jTextFieldnickname" alignment="0" max="32767" attributes="0"/>
-                              <Component id="imageLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="imageLabel" max="32767" attributes="0"/>
+                              <Component id="jDateChooserfechaNacimiento" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jComboBoxusuario" min="-2" max="-2" attributes="0"/>
@@ -128,10 +128,10 @@
                       <Component id="jLabelemail" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTextFieldemail" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="jLabelfechanacimiento" min="-2" max="-2" attributes="0"/>
-                      <Component id="jDateChooserFechaNacimiento" min="-2" max="-2" attributes="0"/>
+                      <Component id="jDateChooserfechaNacimiento" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
@@ -210,6 +210,8 @@
             </Property>
           </Properties>
         </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserfechaNacimiento">
+        </Component>
         <Component class="javax.swing.JLabel" name="jLabelBiografia">
           <Properties>
             <Property name="text" type="java.lang.String" value="Biografia"/>
@@ -252,8 +254,6 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
-        </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserFechaNacimiento">
         </Component>
       </SubComponents>
     </Container>

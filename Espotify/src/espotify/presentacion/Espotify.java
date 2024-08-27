@@ -28,21 +28,17 @@ public class Espotify extends javax.swing.JFrame {
         jMenuItemlDejarSeguirUsuario = new javax.swing.JMenuItem();
         jMenuItemConsultaPerfilCliente = new javax.swing.JMenuItem();
         jMenuItemConsultaPerfilArtista = new javax.swing.JMenuItem();
-        jMenuAltaAlbun = new javax.swing.JMenu();
+        jMenuMultimedia = new javax.swing.JMenu();
         jMenuItemAltaGenero = new javax.swing.JMenuItem();
-        jMenuCrearListaReproduccion = new javax.swing.JMenu();
-        jMenuItemAgrgarTemaLista = new javax.swing.JMenuItem();
+        jMenuItemAltaAlbum = new javax.swing.JMenuItem();
+        jMenuItemCrearListaReproducción = new javax.swing.JMenuItem();
+        jMenuItemAgregarTemaLista = new javax.swing.JMenuItem();
         jMenuItemQuitarTemaLista = new javax.swing.JMenuItem();
         jMenuItemPublicarLista = new javax.swing.JMenuItem();
-        AgregarTemaLista = new javax.swing.JMenu();
-        jMenuItemCrearListaReproducción = new javax.swing.JMenuItem();
+        jMenuItemGuardarTemaListaAlbum = new javax.swing.JMenuItem();
+        jMenuItemEliminarTemaListaAlbum = new javax.swing.JMenuItem();
+        jMenuItemConsultaAlbum = new javax.swing.JMenuItem();
         jMenuItemConsultaListaReproducción = new javax.swing.JMenuItem();
-        AgregarTemaLista1 = new javax.swing.JMenu();
-        jMenuItemAltaÁlbum = new javax.swing.JMenuItem();
-        jMenuItemConsultaÁlbum = new javax.swing.JMenuItem();
-        AgregarTemaLista2 = new javax.swing.JMenu();
-        jMenuItemCrearListaReproducción2 = new javax.swing.JMenuItem();
-        jMenuItemConsultaListaReproducción2 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -75,7 +71,7 @@ public class Espotify extends javax.swing.JFrame {
 
         jMenuUsuarios.setText("Usuario");
 
-        jMenuItemRegistrarUsuario.setText("Alta de Perfil");
+        jMenuItemRegistrarUsuario.setText("Alta Perfil");
         jMenuItemRegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRegistrarUsuarioActionPerformed(evt);
@@ -99,7 +95,7 @@ public class Espotify extends javax.swing.JFrame {
         });
         jMenuUsuarios.add(jMenuItemlDejarSeguirUsuario);
 
-        jMenuItemConsultaPerfilCliente.setText("Consulta de Perfil de Cliente");
+        jMenuItemConsultaPerfilCliente.setText("Consulta Perfil Cliente");
         jMenuItemConsultaPerfilCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConsultaPerfilClienteActionPerformed(evt);
@@ -107,7 +103,7 @@ public class Espotify extends javax.swing.JFrame {
         });
         jMenuUsuarios.add(jMenuItemConsultaPerfilCliente);
 
-        jMenuItemConsultaPerfilArtista.setText("Consulta de Perfil de Artista");
+        jMenuItemConsultaPerfilArtista.setText("Consulta Perfil Artista");
         jMenuItemConsultaPerfilArtista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemConsultaPerfilArtistaActionPerformed(evt);
@@ -117,17 +113,34 @@ public class Espotify extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuUsuarios);
 
-        jMenuAltaAlbun.setText("Genero");
+        jMenuMultimedia.setText("Multimedia");
 
         jMenuItemAltaGenero.setText("Alta Genero");
-        jMenuAltaAlbun.add(jMenuItemAltaGenero);
+        jMenuMultimedia.add(jMenuItemAltaGenero);
 
-        jMenuBar1.add(jMenuAltaAlbun);
+        jMenuItemAltaAlbum.setText("Alta Álbum");
+        jMenuItemAltaAlbum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAltaAlbumActionPerformed(evt);
+            }
+        });
+        jMenuMultimedia.add(jMenuItemAltaAlbum);
 
-        jMenuCrearListaReproduccion.setText("Lista");
+        jMenuItemCrearListaReproducción.setText("Crear Lista Reproducción");
+        jMenuItemCrearListaReproducción.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCrearListaReproducciónActionPerformed(evt);
+            }
+        });
+        jMenuMultimedia.add(jMenuItemCrearListaReproducción);
 
-        jMenuItemAgrgarTemaLista.setText("Agrgar Tema a Lista");
-        jMenuCrearListaReproduccion.add(jMenuItemAgrgarTemaLista);
+        jMenuItemAgregarTemaLista.setText("Agregar Tema a Lista");
+        jMenuItemAgregarTemaLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAgregarTemaListaActionPerformed(evt);
+            }
+        });
+        jMenuMultimedia.add(jMenuItemAgregarTemaLista);
 
         jMenuItemQuitarTemaLista.setText("Quitar Tema de Lista");
         jMenuItemQuitarTemaLista.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +148,7 @@ public class Espotify extends javax.swing.JFrame {
                 jMenuItemQuitarTemaListaActionPerformed(evt);
             }
         });
-        jMenuCrearListaReproduccion.add(jMenuItemQuitarTemaLista);
+        jMenuMultimedia.add(jMenuItemQuitarTemaLista);
 
         jMenuItemPublicarLista.setText("Publicar Lista");
         jMenuItemPublicarLista.addActionListener(new java.awt.event.ActionListener() {
@@ -143,54 +156,41 @@ public class Espotify extends javax.swing.JFrame {
                 jMenuItemPublicarListaActionPerformed(evt);
             }
         });
-        jMenuCrearListaReproduccion.add(jMenuItemPublicarLista);
+        jMenuMultimedia.add(jMenuItemPublicarLista);
 
-        jMenuBar1.add(jMenuCrearListaReproduccion);
-
-        AgregarTemaLista.setText("Lista de Reproducción");
-
-        jMenuItemCrearListaReproducción.setText("Crear Lista de Reproducción");
-        jMenuItemCrearListaReproducción.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemGuardarTemaListaAlbum.setText("Guardar Tema/Lista/Album");
+        jMenuItemGuardarTemaListaAlbum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemCrearListaReproducciónActionPerformed(evt);
+                jMenuItemGuardarTemaListaAlbumActionPerformed(evt);
             }
         });
-        AgregarTemaLista.add(jMenuItemCrearListaReproducción);
+        jMenuMultimedia.add(jMenuItemGuardarTemaListaAlbum);
 
-        jMenuItemConsultaListaReproducción.setText("Consulta de Lista de Reproducción");
-        AgregarTemaLista.add(jMenuItemConsultaListaReproducción);
-
-        jMenuBar1.add(AgregarTemaLista);
-
-        AgregarTemaLista1.setText("Albun");
-
-        jMenuItemAltaÁlbum.setText("Alta de Álbum");
-        jMenuItemAltaÁlbum.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemEliminarTemaListaAlbum.setText("Eliminar Tema/Lista/Album");
+        jMenuItemEliminarTemaListaAlbum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemAltaÁlbumActionPerformed(evt);
+                jMenuItemEliminarTemaListaAlbumActionPerformed(evt);
             }
         });
-        AgregarTemaLista1.add(jMenuItemAltaÁlbum);
+        jMenuMultimedia.add(jMenuItemEliminarTemaListaAlbum);
 
-        jMenuItemConsultaÁlbum.setText("Consulta de Álbum");
-        AgregarTemaLista1.add(jMenuItemConsultaÁlbum);
-
-        jMenuBar1.add(AgregarTemaLista1);
-
-        AgregarTemaLista2.setText("Tema/Lista/Álbum");
-
-        jMenuItemCrearListaReproducción2.setText("Crear Lista de Reproducción");
-        jMenuItemCrearListaReproducción2.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemConsultaAlbum.setText("Consulta Álbum");
+        jMenuItemConsultaAlbum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemCrearListaReproducción2ActionPerformed(evt);
+                jMenuItemConsultaAlbumActionPerformed(evt);
             }
         });
-        AgregarTemaLista2.add(jMenuItemCrearListaReproducción2);
+        jMenuMultimedia.add(jMenuItemConsultaAlbum);
 
-        jMenuItemConsultaListaReproducción2.setText("Consulta de Lista de Reproducción");
-        AgregarTemaLista2.add(jMenuItemConsultaListaReproducción2);
+        jMenuItemConsultaListaReproducción.setText("Consulta Lista Reproducción");
+        jMenuItemConsultaListaReproducción.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConsultaListaReproducciónActionPerformed(evt);
+            }
+        });
+        jMenuMultimedia.add(jMenuItemConsultaListaReproducción);
 
-        jMenuBar1.add(AgregarTemaLista2);
+        jMenuBar1.add(jMenuMultimedia);
 
         setJMenuBar(jMenuBar1);
 
@@ -215,7 +215,9 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemRegistrarUsuarioActionPerformed
 
     private void jMenuItemCrearListaReproducciónActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearListaReproducciónActionPerformed
-        // TODO add your handling code here:
+        CrearListaReproduccion clr = new CrearListaReproduccion();
+        escritorio.add(clr);
+        clr.show();
     }//GEN-LAST:event_jMenuItemCrearListaReproducciónActionPerformed
 
 
@@ -226,33 +228,39 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemConsultaPerfilArtistaActionPerformed
 
     private void jMenuItemlDejarSeguirUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemlDejarSeguirUsuarioActionPerformed
-
+        DejarSeguirAUsuario dsa = new DejarSeguirAUsuario();
+        escritorio.add(dsa);
+        dsa.show();
     }//GEN-LAST:event_jMenuItemlDejarSeguirUsuarioActionPerformed
 
     private void jMenuItemSeguirUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSeguirUsuarioActionPerformed
         SeguirUsuario su = new SeguirUsuario();
         escritorio.add(su);
         su.show();
-
     }//GEN-LAST:event_jMenuItemSeguirUsuarioActionPerformed
 
     private void jMenuItemQuitarTemaListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitarTemaListaActionPerformed
-        // TODO add your handling code here:
+        QuitarTemaDeLista qtl = new QuitarTemaDeLista();
+        escritorio.add(qtl);
+        qtl.show();
     }//GEN-LAST:event_jMenuItemQuitarTemaListaActionPerformed
 
-    private void jMenuItemAltaÁlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaÁlbumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemAltaÁlbumActionPerformed
+    private void jMenuItemAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaAlbumActionPerformed
+        AltaAlbum aa = new AltaAlbum();
+        escritorio.add(aa);
+        aa.show();
+    }//GEN-LAST:event_jMenuItemAltaAlbumActionPerformed
 
-    private void jMenuItemCrearListaReproducción2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearListaReproducción2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemCrearListaReproducción2ActionPerformed
+    private void jMenuItemGuardarTemaListaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGuardarTemaListaAlbumActionPerformed
+        GuardarTemaListaAlbum gtla = new GuardarTemaListaAlbum();
+        escritorio.add(gtla);
+        gtla.show();
+    }//GEN-LAST:event_jMenuItemGuardarTemaListaAlbumActionPerformed
 
     private void jMenuItemPublicarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPublicarListaActionPerformed
         PublicarLista pl = new PublicarLista();
         escritorio.add(pl);
         pl.show();
-
     }//GEN-LAST:event_jMenuItemPublicarListaActionPerformed
 
     private void jMenuItemConsultaPerfilClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultaPerfilClienteActionPerformed
@@ -260,6 +268,30 @@ public class Espotify extends javax.swing.JFrame {
         escritorio.add(cpc);
         cpc.show();
     }//GEN-LAST:event_jMenuItemConsultaPerfilClienteActionPerformed
+
+    private void jMenuItemEliminarTemaListaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminarTemaListaAlbumActionPerformed
+        /*EliminarTemaListaAlbum etla = new EliminarTemaListaAlbum();
+        escritorio.add(etla);
+        etla.show();*/
+    }//GEN-LAST:event_jMenuItemEliminarTemaListaAlbumActionPerformed
+
+    private void jMenuItemAgregarTemaListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarTemaListaActionPerformed
+        AgregarTemaALista atl = new AgregarTemaALista();
+        escritorio.add(atl);
+        atl.show();
+    }//GEN-LAST:event_jMenuItemAgregarTemaListaActionPerformed
+
+    private void jMenuItemConsultaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultaAlbumActionPerformed
+        /*ConsultaAlbum ca = new ConsultaAlbum();
+        escritorio.add(ca);
+        ca.show();*/
+    }//GEN-LAST:event_jMenuItemConsultaAlbumActionPerformed
+
+    private void jMenuItemConsultaListaReproducciónActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultaListaReproducciónActionPerformed
+        ConsultaListaReproduccion clr = new ConsultaListaReproduccion();
+        escritorio.add(clr);
+        clr.show();
+    }//GEN-LAST:event_jMenuItemConsultaListaReproducciónActionPerformed
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -269,35 +301,31 @@ public class Espotify extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu AgregarTemaLista;
-    private javax.swing.JMenu AgregarTemaLista1;
-    private javax.swing.JMenu AgregarTemaLista2;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenuAltaAlbun;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuBar jMenuBar3;
-    private javax.swing.JMenu jMenuCrearListaReproduccion;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItemAgrgarTemaLista;
+    private javax.swing.JMenuItem jMenuItemAgregarTemaLista;
+    private javax.swing.JMenuItem jMenuItemAltaAlbum;
     private javax.swing.JMenuItem jMenuItemAltaGenero;
-    private javax.swing.JMenuItem jMenuItemAltaÁlbum;
+    private javax.swing.JMenuItem jMenuItemConsultaAlbum;
     private javax.swing.JMenuItem jMenuItemConsultaListaReproducción;
-    private javax.swing.JMenuItem jMenuItemConsultaListaReproducción2;
     private javax.swing.JMenuItem jMenuItemConsultaPerfilArtista;
     private javax.swing.JMenuItem jMenuItemConsultaPerfilCliente;
-    private javax.swing.JMenuItem jMenuItemConsultaÁlbum;
     private javax.swing.JMenuItem jMenuItemCrearListaReproducción;
-    private javax.swing.JMenuItem jMenuItemCrearListaReproducción2;
+    private javax.swing.JMenuItem jMenuItemEliminarTemaListaAlbum;
+    private javax.swing.JMenuItem jMenuItemGuardarTemaListaAlbum;
     private javax.swing.JMenuItem jMenuItemPublicarLista;
     private javax.swing.JMenuItem jMenuItemQuitarTemaLista;
     private javax.swing.JMenuItem jMenuItemRegistrarUsuario;
     private javax.swing.JMenuItem jMenuItemSeguirUsuario;
     private javax.swing.JMenuItem jMenuItemlDejarSeguirUsuario;
+    private javax.swing.JMenu jMenuMultimedia;
     private javax.swing.JMenu jMenuUsuarios;
     // End of variables declaration//GEN-END:variables
 }

@@ -52,7 +52,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRegistrarUsuario">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Alta de Perfil"/>
+                <Property name="text" type="java.lang.String" value="Alta Perfil"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemRegistrarUsuarioActionPerformed"/>
@@ -76,7 +76,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultaPerfilCliente">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Consulta de Perfil de Cliente"/>
+                <Property name="text" type="java.lang.String" value="Consulta Perfil Cliente"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemConsultaPerfilClienteActionPerformed"/>
@@ -84,7 +84,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultaPerfilArtista">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Consulta de Perfil de Artista"/>
+                <Property name="text" type="java.lang.String" value="Consulta Perfil Artista"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemConsultaPerfilArtistaActionPerformed"/>
@@ -92,9 +92,9 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenuAltaAlbun">
+        <Menu class="javax.swing.JMenu" name="jMenuMultimedia">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Genero"/>
+            <Property name="text" type="java.lang.String" value="Multimedia"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAltaGenero">
@@ -102,17 +102,29 @@
                 <Property name="text" type="java.lang.String" value="Alta Genero"/>
               </Properties>
             </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenuCrearListaReproduccion">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Lista"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAgrgarTemaLista">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAltaAlbum">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Agrgar Tema a Lista"/>
+                <Property name="text" type="java.lang.String" value="Alta &#xc1;lbum"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAltaAlbumActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCrearListaReproducci&#xf3;n">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Crear Lista Reproducci&#xf3;n"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemCrearListaReproducci&#xf3;nActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAgregarTemaLista">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Agregar Tema a Lista"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAgregarTemaListaActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemQuitarTemaLista">
               <Properties>
@@ -130,65 +142,37 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemPublicarListaActionPerformed"/>
               </Events>
             </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="AgregarTemaLista">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Lista de Reproducci&#xf3;n"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCrearListaReproducci&#xf3;n">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemGuardarTemaListaAlbum">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Crear Lista de Reproducci&#xf3;n"/>
+                <Property name="text" type="java.lang.String" value="Guardar Tema/Lista/Album"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemCrearListaReproducci&#xf3;nActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemGuardarTemaListaAlbumActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemEliminarTemaListaAlbum">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Eliminar Tema/Lista/Album"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemEliminarTemaListaAlbumActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultaAlbum">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Consulta &#xc1;lbum"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemConsultaAlbumActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultaListaReproducci&#xf3;n">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Consulta de Lista de Reproducci&#xf3;n"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="AgregarTemaLista1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Albun"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAlta&#xc1;lbum">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Alta de &#xc1;lbum"/>
+                <Property name="text" type="java.lang.String" value="Consulta Lista Reproducci&#xf3;n"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAlta&#xc1;lbumActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemConsultaListaReproducci&#xf3;nActionPerformed"/>
               </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsulta&#xc1;lbum">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Consulta de &#xc1;lbum"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="AgregarTemaLista2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Tema/Lista/&#xc1;lbum"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCrearListaReproducci&#xf3;n2">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Crear Lista de Reproducci&#xf3;n"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemCrearListaReproducci&#xf3;n2ActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemConsultaListaReproducci&#xf3;n2">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Consulta de Lista de Reproducci&#xf3;n"/>
-              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

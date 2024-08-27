@@ -1,5 +1,4 @@
 package espotify.presentacion;
-
 import javax.swing.JScrollPane;
 public class PublicarLista extends javax.swing.JInternalFrame {
     public PublicarLista() {

@@ -59,7 +59,8 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Consulta Perfil Cliente");
+        setResizable(true);
+        setTitle("Consulta de Perfil de Cliente");
         setPreferredSize(new java.awt.Dimension(1150, 600));
 
         jLabelSeleccioneCliente.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
