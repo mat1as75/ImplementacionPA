@@ -8,12 +8,12 @@ package espotify.presentacion;
  *
  * @author tecnologo
  */
-public class GuardarTemaListaAlbum extends javax.swing.JInternalFrame {
+public class GuardarFavorito extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form GuardarTemaListaAlbum
      */
-    public GuardarTemaListaAlbum() {
+    public GuardarFavorito() {
         initComponents();
     }
 

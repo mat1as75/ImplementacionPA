@@ -116,6 +116,11 @@ public class Espotify extends javax.swing.JFrame {
         jMenuMultimedia.setText("Multimedia");
 
         jMenuItemAltaGenero.setText("Alta Genero");
+        jMenuItemAltaGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAltaGeneroActionPerformed(evt);
+            }
+        });
         jMenuMultimedia.add(jMenuItemAltaGenero);
 
         jMenuItemAltaAlbum.setText("Alta Álbum");
@@ -252,7 +257,7 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemAltaAlbumActionPerformed
 
     private void jMenuItemGuardarTemaListaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGuardarTemaListaAlbumActionPerformed
-        GuardarTemaListaAlbum gtla = new GuardarTemaListaAlbum();
+        GuardarFavorito gtla = new GuardarFavorito();
         escritorio.add(gtla);
         gtla.show();
     }//GEN-LAST:event_jMenuItemGuardarTemaListaAlbumActionPerformed
@@ -270,9 +275,9 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemConsultaPerfilClienteActionPerformed
 
     private void jMenuItemEliminarTemaListaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminarTemaListaAlbumActionPerformed
-        /*EliminarTemaListaAlbum etla = new EliminarTemaListaAlbum();
-        escritorio.add(etla);
-        etla.show();*/
+        EliminarFavorito ef = new EliminarFavorito();
+        escritorio.add(ef);
+        ef.show();
     }//GEN-LAST:event_jMenuItemEliminarTemaListaAlbumActionPerformed
 
     private void jMenuItemAgregarTemaListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarTemaListaActionPerformed
@@ -282,9 +287,9 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemAgregarTemaListaActionPerformed
 
     private void jMenuItemConsultaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultaAlbumActionPerformed
-        /*ConsultaAlbum ca = new ConsultaAlbum();
+        ConsultaAlbum ca = new ConsultaAlbum();
         escritorio.add(ca);
-        ca.show();*/
+        ca.show();
     }//GEN-LAST:event_jMenuItemConsultaAlbumActionPerformed
 
     private void jMenuItemConsultaListaReproducciónActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConsultaListaReproducciónActionPerformed
@@ -292,6 +297,12 @@ public class Espotify extends javax.swing.JFrame {
         escritorio.add(clr);
         clr.show();
     }//GEN-LAST:event_jMenuItemConsultaListaReproducciónActionPerformed
+
+    private void jMenuItemAltaGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaGeneroActionPerformed
+        AltaGenero ag = new AltaGenero();
+        escritorio.add(ag);
+        ag.show();
+    }//GEN-LAST:event_jMenuItemAltaGeneroActionPerformed
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
