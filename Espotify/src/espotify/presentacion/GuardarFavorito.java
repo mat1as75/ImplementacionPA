@@ -26,28 +26,206 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextFieldNicknameClienteInfo = new javax.swing.JTextField();
+        jLabelNicknameCliente = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanelTema = new javax.swing.JPanel();
+        jScrollPaneTemas = new javax.swing.JScrollPane();
+        jListTemas = new javax.swing.JList<>();
+        jButtonGuardarTemaFavorito = new javax.swing.JButton();
+        jPanelLista = new javax.swing.JPanel();
+        jScrollPaneLista = new javax.swing.JScrollPane();
+        jListLista = new javax.swing.JList<>();
+        jButtonGuardarListaFavorito = new javax.swing.JButton();
+        jPanelAlbum = new javax.swing.JPanel();
+        jScrollPaneAlbum = new javax.swing.JScrollPane();
+        jListAlbum = new javax.swing.JList<>();
+        jButtonGuardarAlbumFavorito = new javax.swing.JButton();
+
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Guardar Tema/Lista/Album");
-        setPreferredSize(new java.awt.Dimension(1150, 600));
+        setPreferredSize(new java.awt.Dimension(406, 410));
+
+        jTextFieldNicknameClienteInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNicknameClienteInfoActionPerformed(evt);
+            }
+        });
+
+        jLabelNicknameCliente.setText("Nickname cliente:");
+
+        jListTemas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneTemas.setViewportView(jListTemas);
+
+        jButtonGuardarTemaFavorito.setText("Guardar en favoritos");
+        jButtonGuardarTemaFavorito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarTemaFavoritoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTemaLayout = new javax.swing.GroupLayout(jPanelTema);
+        jPanelTema.setLayout(jPanelTemaLayout);
+        jPanelTemaLayout.setHorizontalGroup(
+            jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTemaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jButtonGuardarTemaFavorito)
+                .addContainerGap(71, Short.MAX_VALUE))
+        );
+        jPanelTemaLayout.setVerticalGroup(
+            jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTemaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonGuardarTemaFavorito)
+                    .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Temas", jPanelTema);
+
+        jListLista.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneLista.setViewportView(jListLista);
+
+        jButtonGuardarListaFavorito.setText("Guardar en favoritos");
+        jButtonGuardarListaFavorito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarListaFavoritoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelListaLayout = new javax.swing.GroupLayout(jPanelLista);
+        jPanelLista.setLayout(jPanelListaLayout);
+        jPanelListaLayout.setHorizontalGroup(
+            jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelListaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jButtonGuardarListaFavorito)
+                .addContainerGap(71, Short.MAX_VALUE))
+        );
+        jPanelListaLayout.setVerticalGroup(
+            jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelListaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonGuardarListaFavorito)
+                    .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Listas", jPanelLista);
+
+        jListAlbum.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneAlbum.setViewportView(jListAlbum);
+
+        jButtonGuardarAlbumFavorito.setText("Guardar en favoritos");
+        jButtonGuardarAlbumFavorito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarAlbumFavoritoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelAlbumLayout = new javax.swing.GroupLayout(jPanelAlbum);
+        jPanelAlbum.setLayout(jPanelAlbumLayout);
+        jPanelAlbumLayout.setHorizontalGroup(
+            jPanelAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAlbumLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jButtonGuardarAlbumFavorito)
+                .addContainerGap(71, Short.MAX_VALUE))
+        );
+        jPanelAlbumLayout.setVerticalGroup(
+            jPanelAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelAlbumLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonGuardarAlbumFavorito)
+                    .addComponent(jScrollPaneAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Albumes", jPanelAlbum);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1016, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabelNicknameCliente)
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldNicknameClienteInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 480, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelNicknameCliente)
+                    .addComponent(jTextFieldNicknameClienteInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextFieldNicknameClienteInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNicknameClienteInfoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldNicknameClienteInfoActionPerformed
+
+    private void jButtonGuardarAlbumFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarAlbumFavoritoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonGuardarAlbumFavoritoActionPerformed
+
+    private void jButtonGuardarListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarListaFavoritoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonGuardarListaFavoritoActionPerformed
+
+    private void jButtonGuardarTemaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarTemaFavoritoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonGuardarTemaFavoritoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonGuardarAlbumFavorito;
+    private javax.swing.JButton jButtonGuardarListaFavorito;
+    private javax.swing.JButton jButtonGuardarTemaFavorito;
+    private javax.swing.JLabel jLabelNicknameCliente;
+    private javax.swing.JList<String> jListAlbum;
+    private javax.swing.JList<String> jListLista;
+    private javax.swing.JList<String> jListTemas;
+    private javax.swing.JPanel jPanelAlbum;
+    private javax.swing.JPanel jPanelLista;
+    private javax.swing.JPanel jPanelTema;
+    private javax.swing.JScrollPane jScrollPaneAlbum;
+    private javax.swing.JScrollPane jScrollPaneLista;
+    private javax.swing.JScrollPane jScrollPaneTemas;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextFieldNicknameClienteInfo;
     // End of variables declaration//GEN-END:variables
 }
