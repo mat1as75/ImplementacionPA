@@ -15,12 +15,8 @@ public class Fabrica {
         
     }
     
-    public IControladorUsuario getControladorUsuario() {
-        return (ControladorUsuario.getInstance());
-    }
-    
-    public IControladorMultimedia getControladorMultimedia() {
-        return (ControladorMultimedia.getInstance());
+    public IControlador getControlador() {
+        return (Controlador.getInstance());
     }
    
 }

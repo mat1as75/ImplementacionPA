@@ -8,10 +8,10 @@ package espotify.logica;
  *
  * @author tecnologo
  */
-public class IControladorMultimedia {
+public class IControlador {
 
-    // Contructor
-    public IControladorMultimedia() {
+    // Constructor
+    public IControlador() {
         
     }
 }
