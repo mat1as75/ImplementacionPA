@@ -1,12 +1,18 @@
 package logica;
 
-class Genero {
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Genero implements Serializable  {
     //atributos
+    @Id
     private String nombreGenero;
     private Genero generoPadre;
     
     //constructor
-    public Genero(String nombreGenero, Genero generoPadre) {
+    Genero(String nombreGenero, Genero generoPadre) {
         this.nombreGenero = nombreGenero;
         this.generoPadre = generoPadre;
     }

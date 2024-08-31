@@ -8,14 +8,14 @@ public class TemaConRuta extends Tema {
     private Path rutaTema;
     
     //constructor
-    public TemaConRuta(Path rutaTema, String nombreTema, Duration duracion, int posicionEnAlbum, FormaDeAccesoTema formaDeAcceso, Genero generoTema) {
+    TemaConRuta(Path rutaTema, String nombreTema, Duration duracion, int posicionEnAlbum, FormaDeAccesoTema formaDeAcceso, Genero generoTema) {
         super(nombreTema, duracion, posicionEnAlbum, formaDeAcceso, generoTema);
         this.rutaTema = rutaTema;
     }
    
     
     //getters y setters
-     public Path getRutaTema() {
+    public Path getRutaTema() {
         return rutaTema;
     }
 

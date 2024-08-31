@@ -12,7 +12,7 @@ public abstract class Tema {
     protected Genero generoTema;
     
     //constructor
-    public Tema(String nombreTema, Duration duracion, int posicionEnAlbum, FormaDeAccesoTema formaDeAcceso, Genero generoTema) {
+    Tema(String nombreTema, Duration duracion, int posicionEnAlbum, FormaDeAccesoTema formaDeAcceso, Genero generoTema) {
         this.nombreTema = nombreTema;
         this.duracion = duracion;
         this.posicionEnAlbum = posicionEnAlbum;
