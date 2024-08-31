@@ -43,53 +43,54 @@ public abstract class Usuario implements Serializable{
     }
     
     // Getters & Setters
+
     public String getNickname() {
-        return this.nickname;
+        return nickname;
     }
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-    
-    public String getNombreUsuarioo() {
-        return this.nombreUsuario;
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
-    
+
     public String getApellidoUsuario() {
-        return this.apellidoUsuario;
+        return apellidoUsuario;
     }
     public void setApellidoUsuario(String apellidoUsuario) {
         this.apellidoUsuario = apellidoUsuario;
     }
-    
+
     public String getEmail() {
-        return this.email;
+        return email;
     }
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public Date getFecNac() {
-        return this.fecNac;
+        return fecNac;
     }
     public void setFecNac(Date fecNac) {
         this.fecNac = fecNac;
     }
-    
-    public String getFotoPefil() {
-        return this.fotoPerfil;
+
+    public String getFotoPerfil() {
+        return fotoPerfil;
     }
     public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
-    
+
     public List<Usuario> getMisSeguidores() {
-        return this.misSeguidores;
+        return misSeguidores;
     }
-    public void setMisSeguidores(Usuario u) {
-        this.misSeguidores.addFirst(u);
+    public void setMisSeguidores(List<Usuario> misSeguidores) {
+        this.misSeguidores = misSeguidores;
     }
     
 }
