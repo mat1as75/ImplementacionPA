@@ -4,9 +4,9 @@
  */
 package espotify.logica;
 
-import java.awt.Image;
 import java.util.List;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 
 
@@ -20,11 +20,10 @@ public abstract class Usuario implements Serializable{
     protected String nombreUsuario;
     protected String apellidoUsuario;
     protected String email;
-    /*@Temporal(TemporalType.DATE)*/
-    @OneToOne
+    @Temporal(TemporalType.DATE)
     protected Date fecNac;
-    @OneToOne
-    protected Image fotoPerfil;
+    
+    protected String fotoPerfil;
     
     // Referencias
     @OneToMany
@@ -34,7 +33,7 @@ public abstract class Usuario implements Serializable{
     public Usuario() {
         
     }
-    public Usuario(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, Image fotoPerfil) {
+    public Usuario(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil) {
         this.nickname = nickname;
         this.nombreUsuario = nombreUsuario;
         this.apellidoUsuario = apellidoUsuario;
@@ -79,10 +78,10 @@ public abstract class Usuario implements Serializable{
         this.fecNac = fecNac;
     }
     
-    public Image getFotoPefil() {
+    public String getFotoPefil() {
         return this.fotoPerfil;
     }
-    public void setFotoPerfil(Image fotoPerfil) {
+    public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
     

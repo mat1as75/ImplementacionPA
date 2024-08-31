@@ -4,7 +4,7 @@
  */
 package espotify.logica;
 
-import java.awt.Image;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -22,7 +22,7 @@ public class Artista extends Usuario{
     public Artista() {
         
     }
-    public Artista(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, Image fotoPerfil, String biografia, String dirSitioWeb) {
+    public Artista(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil, String biografia, String dirSitioWeb) {
         super( nickname, nombreUsuario, apellidoUsuario, email, fecNac, fotoPerfil );
         this.biografia = biografia;
         this.dirSitioWeb = dirSitioWeb;
