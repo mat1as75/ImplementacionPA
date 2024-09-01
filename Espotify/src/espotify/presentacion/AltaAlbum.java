@@ -1,11 +1,14 @@
 package espotify.presentacion;
 
+import espotify.DataTypes.DTTemaGenerico;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -19,7 +22,7 @@ import javax.swing.tree.TreeSelectionModel;
 public class AltaAlbum extends javax.swing.JInternalFrame {
 
     private DefaultListModel listaTemasAgregadosModel;
-
+    private List<DTTemaGenerico> dataTemas = new ArrayList<DTTemaGenerico>();
     /**
      * Creates new form AltaAlbum
      */
@@ -68,11 +71,14 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         btnCancelarAltaAlbum = new javax.swing.JButton();
         btnConfirmarAltaAlbum = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
         jYearChooser1 = new com.toedter.calendar.JYearChooser();
         labelImagenAlbum = new javax.swing.JLabel();
         btnSeleccionarImagenAlbum = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        checkboxAccesoURL = new javax.swing.JCheckBox();
+        jLabel13 = new javax.swing.JLabel();
+        urlTema = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -180,7 +186,13 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         });
 
         btnConfirmarAltaAlbum.setText("Confirmar");
+        btnConfirmarAltaAlbum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarAltaAlbumActionPerformed(evt);
+            }
+        });
 
+        errorLabel.setForeground(new java.awt.Color(255, 0, 0));
         errorLabel.setToolTipText("");
 
         labelImagenAlbum.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -194,50 +206,33 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Portada del álbum:");
 
+        jLabel12.setText("Tipo de acceso:");
+
+        checkboxAccesoURL.setText("URL");
+        checkboxAccesoURL.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                checkboxAccesoURLStateChanged(evt);
+            }
+        });
+        checkboxAccesoURL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkboxAccesoURLActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setText("URL:");
+
+        urlTema.setEnabled(false);
+        urlTema.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                urlTemaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(btnCancelarAltaAlbum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(duracionTema, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                                            .addComponent(posicionTema)))
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAgregarTema, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane4)
-                                    .addComponent(btnConfirmarAltaAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnRemoverTema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)))
-                            .addComponent(jSeparator2))
-                        .addGap(205, 205, 205))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(nombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                                .addComponent(btnAgregarGeneroAAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnRemoverGeneroDeAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))
-                        .addGap(0, 203, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -256,11 +251,66 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                             .addComponent(comboBoxArtistasRegistrados, javax.swing.GroupLayout.Alignment.LEADING, 0, 184, Short.MAX_VALUE))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnSeleccionarImagenAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
+                            .addComponent(btnSeleccionarImagenAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(labelImagenAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnAgregarTema, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRemoverTema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(duracionTema, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                                            .addComponent(posicionTema)))
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)))
+                            .addComponent(errorLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(205, 205, 205))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(nombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                                        .addComponent(btnAgregarGeneroAAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnRemoverGeneroDeAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane2)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(68, 68, 68)
+                                .addComponent(btnCancelarAltaAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(btnConfirmarAltaAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(urlTema))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(85, 85, 85)
+                                    .addComponent(checkboxAccesoURL, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,7 +333,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSeleccionarImagenAlbum)))
+                        .addComponent(btnSeleccionarImagenAlbum)
+                        .addGap(12, 12, 12)))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -313,21 +364,27 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(posicionTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(posicionTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(checkboxAccesoURL))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(urlTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarTema)
                     .addComponent(btnRemoverTema))
-                .addGap(18, 28, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(errorLabel)
-                .addGap(11, 11, 11)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelarAltaAlbum)
-                    .addComponent(btnConfirmarAltaAlbum))
-                .addGap(22, 22, 22))
+                    .addComponent(btnConfirmarAltaAlbum)
+                    .addComponent(btnCancelarAltaAlbum))
+                .addGap(12, 12, 12))
         );
 
         jScrollPane3.setViewportView(jPanel1);
@@ -337,11 +394,11 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,8 +406,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 .addGap(11, 11, 11)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -361,6 +418,15 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         String nombre = nombreTema.getText().trim();
         String duracion = duracionTema.getText().trim();
         String stringPosicion = posicionTema.getText().trim();
+        int intPosicionTema = 0;
+        int duracionMinutos;
+        int duracionSegundos;
+        int duracionTotalSegundos;
+        
+        //tomo el url ingresado solo si el checkbox esta marcado
+        String url = (checkboxAccesoURL.isSelected() ? urlTema.getText().trim() : "");
+        
+        // label para mostrar errores de ingreso de datos
         errorLabel.setText("");
         int errores = 0;
         
@@ -369,20 +435,51 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         if (!duracion.matches(regex)) {
             errorLabel.setText("Error: La duración ingresada no es válida.");
             errores++;
-        }
-        
-        //convierto el valor ingresado a int, puede capturar un error si intenta convertir un caracter no numerico
-        try {
-            int intPosicion = Integer.valueOf(stringPosicion);
-        } catch (NumberFormatException e){
-           errorLabel.setText("Error: La posición ingresada no es un número.");
-           errores++;
-        }
-        //si no hay errores en los datos del tema lo muevo a la lista de temas agregados y habilito el boton de remover
-        if (errores == 0) {
-            String datosTema = "Posición: " + stringPosicion + ", Nombre: " + nombre + ", Duración: " + duracion;
-            listaTemasAgregadosModel.addElement(datosTema);
-            btnRemoverTema.setEnabled(true);
+        } else {
+            //extraigo los minutos y segundos por separados
+            duracionMinutos = Integer.valueOf(
+                duracion.substring(0,duracion.indexOf(":"))
+            );
+            duracionSegundos = Integer.valueOf(
+                duracion.substring(duracion.indexOf(":")+1)
+            );
+            
+            duracionTotalSegundos = duracionMinutos * 60 + duracionSegundos;
+            
+            //convierto el valor ingresado a int, puede capturar un error si intenta convertir un caracter no numerico
+            try {
+                intPosicionTema = Integer.valueOf(stringPosicion);
+                if (intPosicionTema < 1) {
+                    errorLabel.setText("Error: La posición ingresada no es válida.\n");
+                } else {
+                    //verifico que no se agreguen nombres ni posiciones repetidas
+                    for (DTTemaGenerico dt : this.dataTemas) {
+                        if (dt.getPosicionEnAlbum() == intPosicionTema) {
+                            errorLabel.setText("Error: Al menos una posición ingresada está repetida.");
+                            break;
+                        }
+                        if (dt.getNombreTema() == nombre) {
+                            errorLabel.setText("Error: No se pueden repetir los nombres de los temas.");
+                            break;
+                        }
+                    }
+                
+                }
+            } catch (NumberFormatException e){
+               errorLabel.setText("Error: La posición ingresada no es un número.");
+               errores++;
+            }
+            
+            //si no hay errores en los datos del tema lo muevo a la lista de temas agregados y habilito el boton de remover
+            if (errores == 0) {
+
+                DTTemaGenerico nuevoDataTema = new DTTemaGenerico(
+                        nombre, duracionTotalSegundos, intPosicionTema, url, "");
+                dataTemas.add(nuevoDataTema);
+                String datos = nuevoDataTema.toString();
+                listaTemasAgregadosModel.addElement(datos);
+                btnRemoverTema.setEnabled(true);
+            }
         }
     }//GEN-LAST:event_btnAgregarTemaActionPerformed
 
@@ -451,6 +548,41 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarAltaAlbumActionPerformed
 
+    private void urlTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_urlTemaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_urlTemaActionPerformed
+
+    private void checkboxAccesoURLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkboxAccesoURLActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkboxAccesoURLActionPerformed
+
+    private void checkboxAccesoURLStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkboxAccesoURLStateChanged
+        if (this.isSelected()) {
+            urlTema.setEnabled(true);
+        } else {
+            urlTema.setEnabled(false);
+        }
+    }//GEN-LAST:event_checkboxAccesoURLStateChanged
+
+    private void btnConfirmarAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAltaAlbumActionPerformed
+        
+        int numeroTemas = this.dataTemas.size();
+        int errores = 0;
+        
+        for (DTTemaGenerico dt : this.dataTemas) {
+            if (dt.getPosicionEnAlbum() > numeroTemas) {
+                errorLabel.setText("Error: Existe al menos una posición de tema invalida.");
+                errores++;
+                break;
+            }
+        }
+        
+        if (errores == 0) {
+            //confirmo
+            //llamo al controlador y le paso el DTAlbum con los temas adentro
+        }
+    }//GEN-LAST:event_btnConfirmarAltaAlbumActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarGeneroAAlbum;
@@ -460,12 +592,15 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnRemoverGeneroDeAlbum;
     private javax.swing.JButton btnRemoverTema;
     private javax.swing.JButton btnSeleccionarImagenAlbum;
+    private javax.swing.JCheckBox checkboxAccesoURL;
     private javax.swing.JComboBox<String> comboBoxArtistasRegistrados;
     private javax.swing.JTextField duracionTema;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -479,7 +614,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSeparator jSeparator2;
     private com.toedter.calendar.JYearChooser jYearChooser1;
     private javax.swing.JTree jtreeGenerosRegistrados;
     private javax.swing.JLabel labelArtista;
@@ -489,5 +623,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private javax.swing.JTextField nombreAlbum;
     private javax.swing.JTextField nombreTema;
     private javax.swing.JTextField posicionTema;
+    private javax.swing.JTextField urlTema;
     // End of variables declaration//GEN-END:variables
 }
