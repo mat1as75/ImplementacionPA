@@ -472,7 +472,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             
             //si no hay errores en los datos del tema lo muevo a la lista de temas agregados y habilito el boton de remover
             if (errores == 0) {
-
+                //creo datatype
                 DTTemaGenerico nuevoDataTema = new DTTemaGenerico(
                         nombre, duracionTotalSegundos, intPosicionTema, url, "");
                 dataTemas.add(nuevoDataTema);
