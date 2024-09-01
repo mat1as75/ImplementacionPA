@@ -22,7 +22,6 @@ public abstract class Usuario implements Serializable{
     protected String email;
     @Temporal(TemporalType.DATE)
     protected Date fecNac;
-    
     protected String fotoPerfil;
     
     // Referencias

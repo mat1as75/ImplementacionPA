@@ -1,5 +1,6 @@
 package espotify.presentacion;
 
+import espotify.persistencia.ControladoraPersistencia;
 import espotify.presentacion.AltaPerfil;
 import espotify.presentacion.ConsultaPerfilCliente;
 
@@ -307,6 +308,8 @@ public class Espotify extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Espotify().setVisible(true);
+                
+                ControladoraPersistencia controlPersis = new ControladoraPersistencia();
             }
         });
     }
