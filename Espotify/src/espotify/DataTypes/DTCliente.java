@@ -9,10 +9,10 @@ public class DTCliente extends DTUsuario{
 // Referencias
    
     private List<DTUsuario> misSeguidos;
-    //private List<Album> misAlbumesFav;
+    private List<DTAlbum> misAlbumesFav;
     private List<DTTema> misTemasFav;
-    //private List<ListaReproduccion> misListasReproduccionFav;
-    //private List<ListaReproduccion> misListasReproduccionCreadas;
+    private List<DTListaReproduccion> misListasReproduccionFav;
+    private List<DTListaReproduccion> misListasReproduccionCreadas;
     
     // Constructores
     public DTCliente() {
@@ -37,25 +37,25 @@ public class DTCliente extends DTUsuario{
     public void setMisTemasFav(DTTema t) {
         this.misTemasFav.addFirst(t);
     }
-    /*
-    public List<Album> getMisAlbumesFav() {
+    
+    public List<DTAlbum> getMisAlbumesFav() {
         return this.misAlbumesFav;
     }
-    public void setMisAlbumesFav(Album a) {
+    public void setMisAlbumesFav(DTAlbum a) {
         this.misAlbumesFav.addFirst(a);
     }
     
-    public List<ListaReproduccion> getMisListasReproduccionFav() {
+    public List<DTListaReproduccion> getMisListasReproduccionFav() {
         return this.misListasReproduccionFav;
     }
-    public void setMisListasReproduccionFav(ListaReproduccion lrf) {
+    public void setMisListasReproduccionFav(DTListaReproduccion lrf) {
         this.misListasReproduccionFav.addFirst(lrf);
     }
     
-    public List<ListaReproduccion> getMisListasReproduccionCreadas() {
+    public List<DTListaReproduccion> getMisListasReproduccionCreadas() {
         return this.misListasReproduccionCreadas;
     }
-    public void setMisListasReproduccionCreadas(ListaReproduccion lrc) {
+    public void setMisListasReproduccionCreadas(DTListaReproduccion lrc) {
         this.misListasReproduccionCreadas.addFirst(lrc);
-    }*/
+    }
 }
