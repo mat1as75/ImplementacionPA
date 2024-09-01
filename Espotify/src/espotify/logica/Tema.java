@@ -1,7 +1,6 @@
 package espotify.logica;
 
 import java.io.Serializable;
-import java.time.Duration;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -13,20 +12,22 @@ public abstract class Tema implements Serializable {
 
     //atributos
     @Id
+    //temporal para que no tire error o advertencia, 
+    //el identificador debe ser una clave compuesta por el nombre del tema y el nombre del album
     protected Long idTema;
     protected String nombreTema;
-    protected Duration duracion;
+    protected int duracionSegundos;
     protected int posicionEnAlbum;
 
     //constructor
     Tema(
             Long idTema,
             String nombreTema, 
-            Duration duracion, 
+            int duracionSegundos,
             int posicionEnAlbum) {
         this.idTema = idTema;
         this.nombreTema = nombreTema;
-        this.duracion = duracion;
+        this.duracionSegundos = duracionSegundos;
         this.posicionEnAlbum = posicionEnAlbum;
     }    
 
@@ -46,13 +47,13 @@ public abstract class Tema implements Serializable {
     public void setNombreTema(String nombreTema) {
         this.nombreTema = nombreTema;
     }
-
-    public  Duration getDuracion() {
-        return duracion;
+    
+    public int getDuracionSegundos() {
+        return this.duracionSegundos;
     }
-
-    public void setDuracion(Duration duracion) {
-        this.duracion = duracion;
+    
+    public void setDuracionSegundos(int duracionSegundos) {
+        this.duracionSegundos = duracionSegundos;
     }
     
     public int getPosicionEnAlbum() {
