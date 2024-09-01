@@ -456,10 +456,14 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                     for (DTTemaGenerico dt : this.dataTemas) {
                         if (dt.getPosicionEnAlbum() == intPosicionTema) {
                             errorLabel.setText("Error: Al menos una posición ingresada está repetida.");
+                            errores++;
                             break;
                         }
-                        if (dt.getNombreTema() == nombre) {
+                        
+                        if (dt.getNombreTema().equals(nombre)) {
+                            System.out.println("nombre igual");
                             errorLabel.setText("Error: No se pueden repetir los nombres de los temas.");
+                            errores++;
                             break;
                         }
                     }
