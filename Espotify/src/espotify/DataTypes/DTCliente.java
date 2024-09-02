@@ -10,7 +10,7 @@ public class DTCliente extends DTUsuario{
    
     private List<DTUsuario> misSeguidos;
     private List<DTAlbum> misAlbumesFav;
-    private List<DTTema> misTemasFav;
+    private List<DTTemaGenerico> misTemasFav;
     private List<DTListaReproduccion> misListasReproduccionFav;
     private List<DTListaReproduccion> misListasReproduccionCreadas;
     
@@ -31,10 +31,10 @@ public class DTCliente extends DTUsuario{
     }
     
     
-    public List<DTTema> getMisTemasFav() {
+    public List<DTTemaGenerico> getMisTemasFav() {
         return this.misTemasFav;
     }
-    public void setMisTemasFav(DTTema t) {
+    public void setMisTemasFav(DTTemaGenerico t) {
         this.misTemasFav.addFirst(t);
     }
     

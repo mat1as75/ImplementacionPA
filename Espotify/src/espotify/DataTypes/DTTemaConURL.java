@@ -5,24 +5,16 @@ import java.net.URL;
 
 import java.net.URL;
 
-public class DTTemaConURL extends DTTema {
+public class DTTemaConURL extends DTTemaGenerico {
     //atributos
-    private URL urlTema;
-
+    private String urlTema;
     //constructor
-    public DTTemaConURL(Long idTema,URL urlTema,String nombreTema,int duracion,int posicionEnAlbum) {
-        super(idTema, nombreTema, duracion, posicionEnAlbum);
-        this.urlTema = urlTema;
-    }
 
-    //getters y setters
-    public URL getUrlTema() {
-        return urlTema;
-    }
+    public DTTemaConURL(String nombreTema, int duracionSegundos, int posicionEnAlbum, String urlTema) {
+        super(nombreTema, duracionSegundos, posicionEnAlbum);
+        this.urlTema=urlTema;
+    }  
+  
 
-    public void setUrlTema(URL urlTema) {
-        this.urlTema = urlTema;
-    }
-    
     //metodos
 }

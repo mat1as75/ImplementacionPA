@@ -1,5 +1,6 @@
 package espotify.presentacion;
 
+import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -477,8 +478,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             //si no hay errores en los datos del tema lo muevo a la lista de temas agregados y habilito el boton de remover
             if (errores == 0) {
                 //creo datatype
-                DTTemaGenerico nuevoDataTema = new DTTemaGenerico(
-                        nombre, duracionTotalSegundos, intPosicionTema, url, "");
+                DTTemaGenerico nuevoDataTema = new DTTemaConURL(nombre,duracionTotalSegundos,intPosicionTema,url);
                 dataTemas.add(nuevoDataTema);
                 String datos = nuevoDataTema.toString();
                 listaTemasAgregadosModel.addElement(datos);

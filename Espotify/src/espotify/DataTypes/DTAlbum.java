@@ -6,7 +6,7 @@ public class DTAlbum {
 private String nombreAlbum;
 private int anioCreacion;
 private String fotoAlbum;
-private List<DTTema> misTemas;
+private List<DTTemaGenerico> misTemas;
 private List<DTGenero>misgeneros;
 private DTArtista miArtista;
 
@@ -31,7 +31,7 @@ private DTArtista miArtista;
         return fotoAlbum;
     }
 
-    public List<DTTema> getMisTemas() {
+    public List<DTTemaGenerico> getMisTemas() {
         return misTemas;
     }
 
@@ -55,7 +55,7 @@ private DTArtista miArtista;
         this.fotoAlbum = fotoAlbum;
     }
 
-    public void setMisTemas(List<DTTema> misTemas) {
+    public void setMisTemas(List<DTTemaGenerico> misTemas) {
         this.misTemas = misTemas;
     }
 
