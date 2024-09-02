@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package espotify.logica;
 
 import java.util.Date;
@@ -9,7 +5,8 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-public class Cliente extends Usuario{
+@Table(name = "Clientes")
+public class Cliente extends Usuario {
     
     // Referencias
     @OneToMany

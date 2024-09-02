@@ -1,8 +1,6 @@
 package espotify.presentacion;
 
 import espotify.persistencia.ControladoraPersistencia;
-import espotify.presentacion.AltaPerfil;
-import espotify.presentacion.ConsultaPerfilCliente;
 
 public class Espotify extends javax.swing.JFrame {
 

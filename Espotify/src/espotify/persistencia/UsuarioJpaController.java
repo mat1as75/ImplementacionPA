@@ -16,16 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
-/**
- *
- * @author tecnologo
- */
 public class UsuarioJpaController implements Serializable {
 
     public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
+    public UsuarioJpaController() {
+        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+    }
+            
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

@@ -461,7 +461,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                         }
                         
                         if (dt.getNombreTema().equals(nombre)) {
-                            System.out.println("nombre igual");
                             errorLabel.setText("Error: No se pueden repetir los nombres de los temas.");
                             errores++;
                             break;

@@ -17,10 +17,6 @@ import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-/**
- *
- * @author tecnologo
- */
 public class GeneroJpaController implements Serializable {
 
     public GeneroJpaController(EntityManagerFactory emf) {
@@ -28,7 +24,7 @@ public class GeneroJpaController implements Serializable {
     }
     
     public GeneroJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotityPU");
+        emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
     
     private EntityManagerFactory emf = null;

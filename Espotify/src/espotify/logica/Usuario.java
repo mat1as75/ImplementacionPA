@@ -11,14 +11,18 @@ import javax.persistence.*;
 
 
 @Entity
+@Table(name = "Usuarios")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Usuario implements Serializable{
     
     // Atributos
     @Id
     protected String nickname;
+    @Basic(optional = false)
     protected String nombreUsuario;
+    @Basic(optional = false)
     protected String apellidoUsuario;
+    @Basic(optional = false)
     protected String email;
     @Temporal(TemporalType.DATE)
     protected Date fecNac;

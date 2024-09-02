@@ -4,9 +4,11 @@
  */
 package espotify.persistencia;
 
-
 public class ControladoraPersistencia {
     
     GeneroJpaController genJpa = new GeneroJpaController();
+    UsuarioJpaController usrJpa = new UsuarioJpaController();
+    ArtistaJpaController artJpa = new ArtistaJpaController();
+    ClienteJpaController cliJpa = new ClienteJpaController();
     
 }
