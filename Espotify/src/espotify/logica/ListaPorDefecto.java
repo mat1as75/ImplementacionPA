@@ -1,7 +1,6 @@
 
 package espotify.logica;
 
-import java.awt.Image;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -16,7 +15,7 @@ public class ListaPorDefecto extends ListaReproduccion{
     public ListaPorDefecto(){
         
     }
-    public ListaPorDefecto(String nombreLista, Image fotoLista, Genero miGenero){
+    public ListaPorDefecto(String nombreLista, String fotoLista, Genero miGenero){
         super(nombreLista, fotoLista);
         this.miGenero = miGenero;
     }

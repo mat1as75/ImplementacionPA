@@ -1,7 +1,6 @@
 
 package espotify.logica;
 
-import java.awt.Image;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -18,7 +17,7 @@ public abstract class ListaReproduccion implements Serializable {
       // Atributos
     @Id
     protected String nombreLista;
-    protected Image fotoLista;
+    protected String fotoLista;
     
     // Referencias
     @ManyToMany
@@ -28,7 +27,7 @@ public abstract class ListaReproduccion implements Serializable {
     public ListaReproduccion() {
         
     }
-    public ListaReproduccion(String nombreLista, Image fotoLista) {
+    public ListaReproduccion(String nombreLista, String fotoLista) {
         this.nombreLista = nombreLista;
         this.fotoLista = fotoLista;
     }
@@ -41,10 +40,10 @@ public abstract class ListaReproduccion implements Serializable {
         this.nombreLista = nombreLista;
     }
     
-    public Image getFotoLista() {
+    public String getFotoLista() {
         return fotoLista;
     }
-    public void setFotoLista(Image fotoLista) {
+    public void setFotoLista(String fotoLista) {
         this.fotoLista = fotoLista;
     }
     

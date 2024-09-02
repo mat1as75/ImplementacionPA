@@ -1,7 +1,6 @@
 
 package espotify.logica;
 
-import java.awt.Image;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -17,7 +16,7 @@ public class ListaParticular extends ListaReproduccion{
     public ListaParticular(){
         
     }
-    public ListaParticular(String nombreLista, Image fotoLista, Cliente miCliente, boolean soyPrivada){
+    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente, boolean soyPrivada){
          super(nombreLista, fotoLista);
          this.miCliente = miCliente;
          this.soyPrivada = soyPrivada;
