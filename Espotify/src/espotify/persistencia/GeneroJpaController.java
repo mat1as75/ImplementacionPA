@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -25,10 +26,21 @@ public class GeneroJpaController implements Serializable {
     public GeneroJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
+    public GeneroJpaController() {
+        emf = Persistence.createEntityManagerFactory("EspotityPU");
+    }
+    
     private EntityManagerFactory emf = null;
-
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
+    }
+    
+    private static GeneroJpaController instancia = null;
+    public static GeneroJpaController getInstance() {
+        if (instancia == null)
+            instancia = new GeneroJpaController();
+        return instancia;
     }
 
     public void create(Genero genero) throws PreexistingEntityException, Exception {

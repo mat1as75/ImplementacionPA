@@ -7,25 +7,25 @@ import javax.persistence.Entity;
 @Entity
 public class TemaConURL extends Tema {
     //atributos
-    private URL urlTema;
+    private String urlTema;
 
     //constructor
     public TemaConURL(
             Long idTema,
-            URL urlTema, 
+            String urlTema, 
             String nombreTema, 
-            Duration duracion, 
+            int duracionSegundos,
             int posicionEnAlbum) {
-        super(idTema, nombreTema, duracion, posicionEnAlbum);
+        super(idTema, nombreTema, duracionSegundos, posicionEnAlbum);
         this.urlTema = urlTema;
     }
 
     //getters y setters
-    public URL getUrlTema() {
+    public String getUrlTema() {
         return urlTema;
     }
 
-    public void setUrlTema(URL urlTema) {
+    public void setUrlTema(String urlTema) {
         this.urlTema = urlTema;
     }
     

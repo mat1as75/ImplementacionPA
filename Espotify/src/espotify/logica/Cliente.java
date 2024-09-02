@@ -14,9 +14,17 @@ public class Cliente extends Usuario{
     // Referencias
     @OneToMany
     private List<Usuario> misSeguidos;
+    
+    //@ManyToMany /* ??? @ManyToMany(mappedBy="misAlbumesFav") -> En referencia set<Cliente> misClientesFav en Clase Album ??? */
     //private List<Album> misAlbumesFav;
+    
+    //@ManyToMany /* @ManyToMany(mappedBy="misTemasFav") -> En referencia set<Cliente> misClientesFav en Clase Tema */
     //private List<Tema> misTemasFav;
+    
+    //@ManyToMany /* @ManyToMany(mappedBy="misListasReproduccionFav") -> En referencia set<Cliente> misClientesFav en Clase ListaReproduccion */
     //private List<ListaReproduccion> misListasReproduccionFav;
+    
+    //@OneToMany /* @ManyToOne(mappedBy="misListasReproduccionCreadas") -> En referencia Cliente miClienteCrea en Clase ListaReproduccion->Particulares */
     //private List<ListaReproduccion> misListasReproduccionCreadas;
     
     // Constructores

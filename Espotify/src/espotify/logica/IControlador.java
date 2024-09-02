@@ -8,10 +8,7 @@ package espotify.logica;
  *
  * @author tecnologo
  */
-public class IControlador {
+public interface IControlador {
 
-    // Constructor
-    public IControlador() {
-        
-    }
+    public abstract void AltaGenero(String nombreGenero);
 }
