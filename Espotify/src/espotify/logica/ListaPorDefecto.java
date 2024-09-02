@@ -15,6 +15,7 @@ public class ListaPorDefecto extends ListaReproduccion{
     public ListaPorDefecto(){
         
     }
+    
     public ListaPorDefecto(String nombreLista, String fotoLista, Genero miGenero){
         super(nombreLista, fotoLista);
         this.miGenero = miGenero;

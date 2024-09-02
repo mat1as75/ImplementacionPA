@@ -7,7 +7,8 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class ListaParticular extends ListaReproduccion{
-     // Atributos
+    
+    // Atributos
     @ManyToOne
     private Cliente miCliente;
     private boolean soyPrivada;
@@ -16,6 +17,7 @@ public class ListaParticular extends ListaReproduccion{
     public ListaParticular(){
         
     }
+    
     public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente, boolean soyPrivada){
          super(nombreLista, fotoLista);
          this.miCliente = miCliente;
@@ -26,6 +28,7 @@ public class ListaParticular extends ListaReproduccion{
     public Cliente getCliente(){
         return miCliente;
     }
+    
     public void setMiCliente(Cliente miCliente){
         this.miCliente = miCliente;
     }

@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class ListaReproduccion implements Serializable {
     
-      // Atributos
+    // Atributos
     @Id
     protected String nombreLista;
     protected String fotoLista;
@@ -27,6 +27,7 @@ public abstract class ListaReproduccion implements Serializable {
     public ListaReproduccion() {
         
     }
+    
     public ListaReproduccion(String nombreLista, String fotoLista) {
         this.nombreLista = nombreLista;
         this.fotoLista = fotoLista;
@@ -36,6 +37,7 @@ public abstract class ListaReproduccion implements Serializable {
     public String getNombreLista() {
         return nombreLista;
     } 
+    
     public void setNombreLista(String nombreLista) {
         this.nombreLista = nombreLista;
     }
@@ -43,6 +45,7 @@ public abstract class ListaReproduccion implements Serializable {
     public String getFotoLista() {
         return fotoLista;
     }
+    
     public void setFotoLista(String fotoLista) {
         this.fotoLista = fotoLista;
     }
