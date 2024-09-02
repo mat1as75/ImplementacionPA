@@ -12,7 +12,7 @@ public class ListaPorDefecto extends ListaReproduccion{
     @ManyToOne
     private Genero miGenero;
     
-    // Cosntructores
+    // Constructores
     public ListaPorDefecto(){
         
     }
@@ -23,7 +23,7 @@ public class ListaPorDefecto extends ListaReproduccion{
     
     // Getters & Setters
     public Genero getGenero(){
-        return this.miGenero;
+        return miGenero;
     }
     
     public void setGenero(Genero miGenero){

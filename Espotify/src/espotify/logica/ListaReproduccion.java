@@ -35,14 +35,14 @@ public abstract class ListaReproduccion implements Serializable {
     
     // Getters & Setters
     public String getNombreLista() {
-        return this.nombreLista;
+        return nombreLista;
     } 
     public void setNombreLista(String nombreLista) {
         this.nombreLista = nombreLista;
     }
     
     public Image getFotoLista() {
-        return this.fotoLista;
+        return fotoLista;
     }
     public void setFotoLista(Image fotoLista) {
         this.fotoLista = fotoLista;

@@ -13,7 +13,7 @@ public class ListaParticular extends ListaReproduccion{
     private Cliente miCliente;
     private boolean soyPrivada;
     
-    // Cosntructores
+    // Constructores
     public ListaParticular(){
         
     }
@@ -25,14 +25,14 @@ public class ListaParticular extends ListaReproduccion{
 
     // Getters & Setters
     public Cliente getCliente(){
-        return this.miCliente;
+        return miCliente;
     }
     public void setMiCliente(Cliente miCliente){
         this.miCliente = miCliente;
     }
     
     public boolean soyPrivada() {
-        return this.soyPrivada;
+        return soyPrivada;
     }
 
     public void setsoyPrivada(boolean soyPrivada) {
