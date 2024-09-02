@@ -37,11 +37,7 @@ public class DTTemaGenerico {
         this.posicionEnAlbum = posicionEnAlbum;
     }
 
-   
     public String duracionToString() {
         return String.format("%02d:%02d", this.getDuracionSegundos() / 60,this.getDuracionSegundos() % 60);   
     }
-
-    
-    
 }

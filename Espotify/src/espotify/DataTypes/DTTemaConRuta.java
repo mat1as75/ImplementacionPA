@@ -1,6 +1,4 @@
 package espotify.DataTypes;
-import java.nio.file.Path;
-
 
 public class DTTemaConRuta extends DTTemaGenerico {
     //atributos
@@ -22,6 +20,16 @@ public class DTTemaConRuta extends DTTemaGenerico {
     public void setRutaTema(String rutaTema) {
         this.rutaTema = rutaTema;
     }
+
+    @Override
+    public String toString() {
+        return (
+            "Nombre: " + this.getNombreTema() + 
+                ", Duración: " + this.duracionToString() + 
+                ", Posición: " + this.getPosicionEnAlbum() + 
+                ", Ruta: " + this.getRutaTema());
+    }
     
-    //metodos
+    
+    
 }

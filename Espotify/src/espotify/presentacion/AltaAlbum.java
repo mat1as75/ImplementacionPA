@@ -1,5 +1,6 @@
 package espotify.presentacion;
 
+import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
 import java.awt.Image;
@@ -16,10 +17,6 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeSelectionModel;
 
-/**
- *
- * @author mat
- */
 public class AltaAlbum extends javax.swing.JInternalFrame {
 
     private DefaultListModel listaTemasAgregadosModel;
@@ -462,7 +459,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                         }
                         
                         if (dt.getNombreTema().equals(nombre)) {
-                            System.out.println("nombre igual");
                             errorLabel.setText("Error: No se pueden repetir los nombres de los temas.");
                             errores++;
                             break;
@@ -478,7 +474,12 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             //si no hay errores en los datos del tema lo muevo a la lista de temas agregados y habilito el boton de remover
             if (errores == 0) {
                 //creo datatype
-                DTTemaGenerico nuevoDataTema = new DTTemaConURL(nombre,duracionTotalSegundos,intPosicionTema,url);
+                DTTemaGenerico nuevoDataTema;
+                if (checkboxAccesoURL.isSelected()) {
+                    nuevoDataTema = new DTTemaConURL(nombre,duracionTotalSegundos,intPosicionTema,url);
+                } else {
+                    nuevoDataTema = new DTTemaConRuta("", nombre, duracionTotalSegundos, intPosicionTema);
+                }
                 dataTemas.add(nuevoDataTema);
                 String datos = nuevoDataTema.toString();
                 listaTemasAgregadosModel.addElement(datos);
