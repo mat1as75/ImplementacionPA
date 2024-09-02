@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-//@Table(name = "Generos")
+@Table(name = "Generos")
 public class Genero implements Serializable{
     
     // Atributos

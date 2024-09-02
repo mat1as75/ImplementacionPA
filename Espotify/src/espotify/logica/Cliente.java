@@ -5,11 +5,26 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-//@Table(name = "Clientes")
+@Table(name = "Clientes")
 public class Cliente extends Usuario {
     
     // Referencias
     @OneToMany
+    @JoinTable(
+        name = "Seguidos",
+        joinColumns = {
+            @JoinColumn(
+                name = "nicknameCliente", 
+                referencedColumnName = "nickname"
+            )
+        },
+        inverseJoinColumns = {
+            @JoinColumn(
+                name = "nicknameUsuarioSeguido",
+                referencedColumnName = "nickname"
+            )
+        }
+    )
     private List<Usuario> misSeguidos;
     
     //@ManyToMany /* ??? @ManyToMany(mappedBy="misAlbumesFav") -> En referencia set<Cliente> misClientesFav en Clase Album ??? */

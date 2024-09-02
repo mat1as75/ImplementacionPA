@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package espotify.logica;
 
 import java.util.List;
@@ -10,8 +6,9 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-//@Table(name = "Usuarios")
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Table(name = "Usuarios")
+//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Usuario implements Serializable{
     
     // Atributos
@@ -29,6 +26,21 @@ public abstract class Usuario implements Serializable{
     
     // Referencias
     @OneToMany
+    @JoinTable(
+        name = "Seguidores",
+        joinColumns = {
+            @JoinColumn(
+                name = "nicknameUsuarioSeguido", 
+                referencedColumnName = "nickname"
+            )
+        },
+        inverseJoinColumns = {
+            @JoinColumn(
+                name = "nicknameUsuarioSeguidor",
+                referencedColumnName = "nickname"
+            )
+        }
+    )
     protected List<Usuario> misSeguidores;
     
     // Contructores
