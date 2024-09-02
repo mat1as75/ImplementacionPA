@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Artistas")
+//@Table(name = "Artistas")
 public class Artista extends Usuario{
     
     // Atributos

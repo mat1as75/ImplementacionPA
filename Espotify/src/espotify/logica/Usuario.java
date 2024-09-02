@@ -9,20 +9,19 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-
 @Entity
-@Table(name = "Usuarios")
+//@Table(name = "Usuarios")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Usuario implements Serializable{
     
     // Atributos
     @Id
     protected String nickname;
-    @Basic(optional = false)
+    //@Basic(optional = false) //para que no acepte campo nulo
     protected String nombreUsuario;
-    @Basic(optional = false)
+    //@Basic(optional = false)
     protected String apellidoUsuario;
-    @Basic(optional = false)
+    //@Basic(optional = false)
     protected String email;
     @Temporal(TemporalType.DATE)
     protected Date fecNac;

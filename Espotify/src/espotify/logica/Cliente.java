@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Clientes")
+//@Table(name = "Clientes")
 public class Cliente extends Usuario {
     
     // Referencias
