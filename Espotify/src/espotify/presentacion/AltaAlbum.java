@@ -17,10 +17,6 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeSelectionModel;
 
-/**
- *
- * @author mat
- */
 public class AltaAlbum extends javax.swing.JInternalFrame {
 
     private DefaultListModel listaTemasAgregadosModel;
