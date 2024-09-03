@@ -12,20 +12,35 @@ import javax.persistence.*;
 public class Cliente extends Usuario{
     
     // Referencias
-    @OneToMany
+    @OneToMany /* Hace referencia a una relacion Unidireccional de 1 a N ( 1 -> N ) */
     private List<Usuario> misSeguidos;
     
-    //@ManyToMany /* ??? @ManyToMany(mappedBy="misAlbumesFav") -> En referencia set<Cliente> misClientesFav en Clase Album ??? */
-    //private List<Album> misAlbumesFav;
+    @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
+    @JoinTable(
+            name = "cliente_albumes_fav",
+            joinColumns = @JoinColumn(name = "nickname_Cliente"),
+            inverseJoinColumns = @JoinColumn(name = "nombre_Album")
+    )
+    private List<Album> misAlbumesFav;
     
-    //@ManyToMany /* @ManyToMany(mappedBy="misTemasFav") -> En referencia set<Cliente> misClientesFav en Clase Tema */
-    //private List<Tema> misTemasFav;
+    @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
+    @JoinTable(
+            name = "cliente_temas_fav",
+            joinColumns = @JoinColumn(name = "nickname_Cliente"),
+            inverseJoinColumns = @JoinColumn(name = "id_Tema")
+    )
+    private List<Tema> misTemasFav;
     
-    //@ManyToMany /* @ManyToMany(mappedBy="misListasReproduccionFav") -> En referencia set<Cliente> misClientesFav en Clase ListaReproduccion */
-    //private List<ListaReproduccion> misListasReproduccionFav;
+    @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
+    @JoinTable(
+            name = "cliente_listasReproduccion_fav",
+            joinColumns = @JoinColumn(name = "nickname_Cliente"),
+            inverseJoinColumns = @JoinColumn(name = "nombre_ListaReproduccion")
+    )
+    private List<ListaReproduccion> misListasReproduccionFav;
     
-    //@OneToMany /* @ManyToOne(mappedBy="misListasReproduccionCreadas") -> En referencia Cliente miClienteCrea en Clase ListaReproduccion->Particulares */
-    //private List<ListaReproduccion> misListasReproduccionCreadas;
+    @OneToMany(mappedBy="miCliente") /* Hace referencia a una relacion Bidireccional de 1 a N ( 1 <-> * ) */
+    private List<ListaReproduccion> misListasReproduccionCreadas;
     
     // Constructores
     public Cliente() {

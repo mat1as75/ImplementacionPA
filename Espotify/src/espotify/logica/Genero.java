@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Genero implements Serializable{
@@ -19,10 +20,10 @@ public class Genero implements Serializable{
     private String nombreGenero;
     @ManyToOne
     private Genero miPadre;
-    @ManyToMany(mappedBy="misGeneros") /* @ManyToMany En referencia set<Genero> misGeneros de Clase Album*/
+    @ManyToMany(mappedBy="misGeneros")
     private List<Album> misAlbumes;
-    /* @ManyToOne En referencia Genero miGenero de Clase ListaReproduccion->PorDefecto */
-    //private List<ListaReproduccion> misListasParticulares;
+    @OneToMany(mappedBy="miGenero")
+    private List<ListaReproduccion> misListasParticulares;
     
     // Constructores
     public Genero() {

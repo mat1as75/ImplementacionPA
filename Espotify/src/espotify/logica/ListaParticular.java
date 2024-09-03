@@ -9,9 +9,9 @@ import javax.persistence.ManyToOne;
 public class ListaParticular extends ListaReproduccion{
     
     // Atributos
+    private boolean soyPrivada;
     @ManyToOne
     private Cliente miCliente;
-    private boolean soyPrivada;
     
     // Constructores
     public ListaParticular(){

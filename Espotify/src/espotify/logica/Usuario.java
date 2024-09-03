@@ -25,7 +25,7 @@ public abstract class Usuario implements Serializable{
     protected String fotoPerfil;
     
     // Referencias
-    @OneToMany
+    @OneToMany /* Hace referencia a una relacion Unidireccional de 1 a N ( 1 -> N ) */
     protected List<Usuario> misSeguidores;
     
     // Contructores
