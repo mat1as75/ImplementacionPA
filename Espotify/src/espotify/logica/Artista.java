@@ -16,7 +16,7 @@ public class Artista extends Usuario{
     private String dirSitioWeb;
     
     // Referencias
-    @OneToMany(mappedBy="miArtista")
+    @OneToMany (mappedBy="miArtista")
     private List<Album> misAlbumesPublicados;
     
     // Cosntructores

@@ -4,7 +4,7 @@
  */
 package espotify.persistencia;
 
-import espotify.logica.Tema;
+import espotify.logica.Album;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -20,9 +20,9 @@ import javax.persistence.criteria.Root;
  *
  * @author brisa
  */
-public class TemaJpaController implements Serializable {
+public class AlbumJpaController implements Serializable {
 
-    public TemaJpaController(EntityManagerFactory emf) {
+    public AlbumJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -31,16 +31,16 @@ public class TemaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Tema tema) throws PreexistingEntityException, Exception {
+    public void create(Album album) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(tema);
+            em.persist(album);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findTema(tema.getIdTema()) != null) {
-                throw new PreexistingEntityException("Tema " + tema + " already exists.", ex);
+            if (findAlbum(album.getNombreAlbum()) != null) {
+                throw new PreexistingEntityException("Album " + album + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -50,19 +50,19 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public void edit(Tema tema) throws NonexistentEntityException, Exception {
+    public void edit(Album album) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            tema = em.merge(tema);
+            album = em.merge(album);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = tema.getIdTema();
-                if (findTema(id) == null) {
-                    throw new NonexistentEntityException("The tema with id " + id + " no longer exists.");
+                String id = album.getNombreAlbum();
+                if (findAlbum(id) == null) {
+                    throw new NonexistentEntityException("The album with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -73,19 +73,19 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) throws NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Tema tema;
+            Album album;
             try {
-                tema = em.getReference(Tema.class, id);
-                tema.getIdTema();
+                album = em.getReference(Album.class, id);
+                album.getNombreAlbum();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The tema with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The album with id " + id + " no longer exists.", enfe);
             }
-            em.remove(tema);
+            em.remove(album);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -94,19 +94,19 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public List<Tema> findTemaEntities() {
-        return findTemaEntities(true, -1, -1);
+    public List<Album> findAlbumEntities() {
+        return findAlbumEntities(true, -1, -1);
     }
 
-    public List<Tema> findTemaEntities(int maxResults, int firstResult) {
-        return findTemaEntities(false, maxResults, firstResult);
+    public List<Album> findAlbumEntities(int maxResults, int firstResult) {
+        return findAlbumEntities(false, maxResults, firstResult);
     }
 
-    private List<Tema> findTemaEntities(boolean all, int maxResults, int firstResult) {
+    private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Tema.class));
+            cq.select(cq.from(Album.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -118,20 +118,20 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public Tema findTema(Long id) {
+    public Album findAlbum(String id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Tema.class, id);
+            return em.find(Album.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getTemaCount() {
+    public int getAlbumCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Tema> rt = cq.from(Tema.class);
+            Root<Album> rt = cq.from(Album.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

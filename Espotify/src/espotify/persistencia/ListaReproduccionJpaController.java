@@ -4,7 +4,7 @@
  */
 package espotify.persistencia;
 
-import espotify.logica.Tema;
+import espotify.logica.ListaReproduccion;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -18,11 +18,11 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author brisa
+ * @author ms
  */
-public class TemaJpaController implements Serializable {
+public class ListaReproduccionJpaController implements Serializable {
 
-    public TemaJpaController(EntityManagerFactory emf) {
+    public ListaReproduccionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -31,16 +31,16 @@ public class TemaJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Tema tema) throws PreexistingEntityException, Exception {
+    public void create(ListaReproduccion listaReproduccion) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(tema);
+            em.persist(listaReproduccion);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findTema(tema.getIdTema()) != null) {
-                throw new PreexistingEntityException("Tema " + tema + " already exists.", ex);
+            if (findListaReproduccion(listaReproduccion.getNombreLista()) != null) {
+                throw new PreexistingEntityException("ListaReproduccion " + listaReproduccion + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -50,19 +50,19 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public void edit(Tema tema) throws NonexistentEntityException, Exception {
+    public void edit(ListaReproduccion listaReproduccion) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            tema = em.merge(tema);
+            listaReproduccion = em.merge(listaReproduccion);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = tema.getIdTema();
-                if (findTema(id) == null) {
-                    throw new NonexistentEntityException("The tema with id " + id + " no longer exists.");
+                String id = listaReproduccion.getNombreLista();
+                if (findListaReproduccion(id) == null) {
+                    throw new NonexistentEntityException("The listaReproduccion with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -73,19 +73,19 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) throws NonexistentEntityException {
+    public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Tema tema;
+            ListaReproduccion listaReproduccion;
             try {
-                tema = em.getReference(Tema.class, id);
-                tema.getIdTema();
+                listaReproduccion = em.getReference(ListaReproduccion.class, id);
+                listaReproduccion.getNombreLista();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The tema with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The listaReproduccion with id " + id + " no longer exists.", enfe);
             }
-            em.remove(tema);
+            em.remove(listaReproduccion);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -94,19 +94,19 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public List<Tema> findTemaEntities() {
-        return findTemaEntities(true, -1, -1);
+    public List<ListaReproduccion> findListaReproduccionEntities() {
+        return findListaReproduccionEntities(true, -1, -1);
     }
 
-    public List<Tema> findTemaEntities(int maxResults, int firstResult) {
-        return findTemaEntities(false, maxResults, firstResult);
+    public List<ListaReproduccion> findListaReproduccionEntities(int maxResults, int firstResult) {
+        return findListaReproduccionEntities(false, maxResults, firstResult);
     }
 
-    private List<Tema> findTemaEntities(boolean all, int maxResults, int firstResult) {
+    private List<ListaReproduccion> findListaReproduccionEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Tema.class));
+            cq.select(cq.from(ListaReproduccion.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -118,20 +118,20 @@ public class TemaJpaController implements Serializable {
         }
     }
 
-    public Tema findTema(Long id) {
+    public ListaReproduccion findListaReproduccion(String id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Tema.class, id);
+            return em.find(ListaReproduccion.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getTemaCount() {
+    public int getListaReproduccionCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Tema> rt = cq.from(Tema.class);
+            Root<ListaReproduccion> rt = cq.from(ListaReproduccion.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

@@ -20,7 +20,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author tecnologo
+ * @author brisa
  */
 public class ArtistaJpaController implements Serializable {
 
@@ -35,13 +35,13 @@ public class ArtistaJpaController implements Serializable {
 
     public void create(Artista artista) throws PreexistingEntityException, Exception {
         if (artista.getMisSeguidores() == null) {
-            artista.setMisSeguidores(new ArrayList<>());
+            artista.setMisSeguidores(new ArrayList<Usuario>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Usuario> attachedMisSeguidores = new ArrayList<>();
+            List<Usuario> attachedMisSeguidores = new ArrayList<Usuario>();
             for (Usuario misSeguidoresUsuarioToAttach : artista.getMisSeguidores()) {
                 misSeguidoresUsuarioToAttach = em.getReference(misSeguidoresUsuarioToAttach.getClass(), misSeguidoresUsuarioToAttach.getNickname());
                 attachedMisSeguidores.add(misSeguidoresUsuarioToAttach);
@@ -73,7 +73,7 @@ public class ArtistaJpaController implements Serializable {
             Artista persistentArtista = em.find(Artista.class, artista.getNickname());
             List<Usuario> misSeguidoresOld = persistentArtista.getMisSeguidores();
             List<Usuario> misSeguidoresNew = artista.getMisSeguidores();
-            List<Usuario> attachedMisSeguidoresNew = new ArrayList<>();
+            List<Usuario> attachedMisSeguidoresNew = new ArrayList<Usuario>();
             for (Usuario misSeguidoresNewUsuarioToAttach : misSeguidoresNew) {
                 misSeguidoresNewUsuarioToAttach = em.getReference(misSeguidoresNewUsuarioToAttach.getClass(), misSeguidoresNewUsuarioToAttach.getNickname());
                 attachedMisSeguidoresNew.add(misSeguidoresNewUsuarioToAttach);
