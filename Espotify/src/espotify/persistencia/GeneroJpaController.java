@@ -4,22 +4,22 @@
  */
 package espotify.persistencia;
 
+import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import espotify.logica.Genero;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
-import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Persistence;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  *
- * @author tecnologo
+ * @author brisa
  */
 public class GeneroJpaController implements Serializable {
 
@@ -27,28 +27,47 @@ public class GeneroJpaController implements Serializable {
         this.emf = emf;
     }
     
-    public GeneroJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotityPU");
+    public GeneroJpaController(){
+        emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
     
     private EntityManagerFactory emf = null;
+
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
     
     private static GeneroJpaController instancia = null;
-    public static GeneroJpaController getInstance() {
-        if (instancia == null)
+    
+    public static GeneroJpaController getInstance(){
+        if(instancia == null)
             instancia = new GeneroJpaController();
+        
         return instancia;
     }
+    
+    
 
     public void create(Genero genero) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Genero miPadre = genero.getMiPadre();
+            if (miPadre != null) {
+                miPadre = em.getReference(miPadre.getClass(), miPadre.getNombreGenero());
+                genero.setMiPadre(miPadre);
+            }
             em.persist(genero);
+            if (miPadre != null) {
+                Genero oldMiPadreOfMiPadre = miPadre.getMiPadre();
+                if (oldMiPadreOfMiPadre != null) {
+                    oldMiPadreOfMiPadre.setMiPadre(null);
+                    oldMiPadreOfMiPadre = em.merge(oldMiPadreOfMiPadre);
+                }
+                miPadre.setMiPadre(genero);
+                miPadre = em.merge(miPadre);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findGenero(genero.getNombreGenero()) != null) {
@@ -67,7 +86,27 @@ public class GeneroJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Genero persistentGenero = em.find(Genero.class, genero.getNombreGenero());
+            Genero miPadreOld = persistentGenero.getMiPadre();
+            Genero miPadreNew = genero.getMiPadre();
+            if (miPadreNew != null) {
+                miPadreNew = em.getReference(miPadreNew.getClass(), miPadreNew.getNombreGenero());
+                genero.setMiPadre(miPadreNew);
+            }
             genero = em.merge(genero);
+            if (miPadreOld != null && !miPadreOld.equals(miPadreNew)) {
+                miPadreOld.setMiPadre(null);
+                miPadreOld = em.merge(miPadreOld);
+            }
+            if (miPadreNew != null && !miPadreNew.equals(miPadreOld)) {
+                Genero oldMiPadreOfMiPadre = miPadreNew.getMiPadre();
+                if (oldMiPadreOfMiPadre != null) {
+                    oldMiPadreOfMiPadre.setMiPadre(null);
+                    oldMiPadreOfMiPadre = em.merge(oldMiPadreOfMiPadre);
+                }
+                miPadreNew.setMiPadre(genero);
+                miPadreNew = em.merge(miPadreNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -96,6 +135,11 @@ public class GeneroJpaController implements Serializable {
                 genero.getNombreGenero();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The genero with id " + id + " no longer exists.", enfe);
+            }
+            Genero miPadre = genero.getMiPadre();
+            if (miPadre != null) {
+                miPadre.setMiPadre(null);
+                miPadre = em.merge(miPadre);
             }
             em.remove(genero);
             em.getTransaction().commit();

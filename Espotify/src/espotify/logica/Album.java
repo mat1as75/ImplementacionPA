@@ -6,9 +6,9 @@ package espotify.logica;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
+import javax.persistence.*;
 
 /**
  *
@@ -17,42 +17,90 @@ import javax.persistence.Id;
 @Entity
 public class Album implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    //Atributos
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String nombreAlbum;
+    private int anioCreacion;
+    private String fotoAlbum;
+    
+    //Relaciones
+    
+    @OneToMany(mappedBy="miAlbum")
+    private List<Tema> misTemas;
+    
+    @ManyToMany
+    private List<Genero> misGeneros;
+    
+    @ManyToOne
+    private Artista miArtista;
+    
 
-    public Long getId() {
-        return id;
+     // Constructores
+    public Album() {
+        
+    }
+    public Album(String nomAlbum, int anioCreado, String foto, Artista artista, List<Tema> temas, List<Genero> generos) {
+        this.nombreAlbum = nomAlbum;
+        this.anioCreacion = anioCreado;
+        this.fotoAlbum = foto;
+        this.misTemas = temas;
+        this.misGeneros = generos;
+        this.miArtista = artista;
+        
+    }
+    
+    //Setters y Getters
+
+    public String getNombreAlbum() {
+        return nombreAlbum;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public int getAnioCreacion() {
+        return anioCreacion;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public String getFotoAlbum() {
+        return fotoAlbum;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Album)) {
-            return false;
-        }
-        Album other = (Album) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public List<Tema> getMisTemas() {
+        return misTemas;
     }
 
-    @Override
-    public String toString() {
-        return "espotify.logica.Album[ id=" + id + " ]";
+    public List<Genero> getMisGeneros() {
+        return misGeneros;
     }
+
+    public Usuario getMiArtista() {
+        return miArtista;
+    }
+
+    public void setNombreAlbum(String nombreAlbum) {
+        this.nombreAlbum = nombreAlbum;
+    }
+
+    public void setAnioCreacion(int anioCreacion) {
+        this.anioCreacion = anioCreacion;
+    }
+
+    public void setFotoAlbum(String fotoAlbum) {
+        this.fotoAlbum = fotoAlbum;
+    }
+
+    public void setNuevoTema(Tema tema) {
+        this.misTemas.addFirst(tema);
+    }
+    public void setMisTemas(List<Tema> misTemas) {
+        this.misTemas = misTemas;
+    }
+
+    public void setMisGeneros(List<Genero> misGeneros) {
+        this.misGeneros = misGeneros;
+    }
+    
+    public void setNuevoGenero(Genero genero) {
+        this.misGeneros.addFirst(genero);
+    }
+    
     
 }
