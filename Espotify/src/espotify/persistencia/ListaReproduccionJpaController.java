@@ -4,7 +4,7 @@
  */
 package espotify.persistencia;
 
-import espotify.logica.Genero;
+import espotify.logica.ListaReproduccion;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -13,46 +13,34 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
  *
- * @author tecnologo
+ * @author ms
  */
-public class GeneroJpaController implements Serializable {
+public class ListaReproduccionJpaController implements Serializable {
 
-    public GeneroJpaController(EntityManagerFactory emf) {
+    public ListaReproduccionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    public GeneroJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotityPU");
-    }
-    
     private EntityManagerFactory emf = null;
+
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
-    private static GeneroJpaController instancia = null;
-    public static GeneroJpaController getInstance() {
-        if (instancia == null)
-            instancia = new GeneroJpaController();
-        return instancia;
-    }
 
-    public void create(Genero genero) throws PreexistingEntityException, Exception {
+    public void create(ListaReproduccion listaReproduccion) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(genero);
+            em.persist(listaReproduccion);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findGenero(genero.getNombreGenero()) != null) {
-                throw new PreexistingEntityException("Genero " + genero + " already exists.", ex);
+            if (findListaReproduccion(listaReproduccion.getNombreLista()) != null) {
+                throw new PreexistingEntityException("ListaReproduccion " + listaReproduccion + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -62,19 +50,19 @@ public class GeneroJpaController implements Serializable {
         }
     }
 
-    public void edit(Genero genero) throws NonexistentEntityException, Exception {
+    public void edit(ListaReproduccion listaReproduccion) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            genero = em.merge(genero);
+            listaReproduccion = em.merge(listaReproduccion);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = genero.getNombreGenero();
-                if (findGenero(id) == null) {
-                    throw new NonexistentEntityException("The genero with id " + id + " no longer exists.");
+                String id = listaReproduccion.getNombreLista();
+                if (findListaReproduccion(id) == null) {
+                    throw new NonexistentEntityException("The listaReproduccion with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -90,14 +78,14 @@ public class GeneroJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Genero genero;
+            ListaReproduccion listaReproduccion;
             try {
-                genero = em.getReference(Genero.class, id);
-                genero.getNombreGenero();
+                listaReproduccion = em.getReference(ListaReproduccion.class, id);
+                listaReproduccion.getNombreLista();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The genero with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The listaReproduccion with id " + id + " no longer exists.", enfe);
             }
-            em.remove(genero);
+            em.remove(listaReproduccion);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -106,19 +94,19 @@ public class GeneroJpaController implements Serializable {
         }
     }
 
-    public List<Genero> findGeneroEntities() {
-        return findGeneroEntities(true, -1, -1);
+    public List<ListaReproduccion> findListaReproduccionEntities() {
+        return findListaReproduccionEntities(true, -1, -1);
     }
 
-    public List<Genero> findGeneroEntities(int maxResults, int firstResult) {
-        return findGeneroEntities(false, maxResults, firstResult);
+    public List<ListaReproduccion> findListaReproduccionEntities(int maxResults, int firstResult) {
+        return findListaReproduccionEntities(false, maxResults, firstResult);
     }
 
-    private List<Genero> findGeneroEntities(boolean all, int maxResults, int firstResult) {
+    private List<ListaReproduccion> findListaReproduccionEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Genero.class));
+            cq.select(cq.from(ListaReproduccion.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -130,20 +118,20 @@ public class GeneroJpaController implements Serializable {
         }
     }
 
-    public Genero findGenero(String id) {
+    public ListaReproduccion findListaReproduccion(String id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Genero.class, id);
+            return em.find(ListaReproduccion.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getGeneroCount() {
+    public int getListaReproduccionCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Genero> rt = cq.from(Genero.class);
+            Root<ListaReproduccion> rt = cq.from(ListaReproduccion.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

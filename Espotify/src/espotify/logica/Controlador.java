@@ -4,11 +4,18 @@
  */
 package espotify.logica;
 
+import espotify.persistencia.GeneroJpaController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author tecnologo
  */
-public class Controlador extends IControlador{
+public class Controlador implements IControlador{
 
     // 1 de Singleton
     private Controlador() {
@@ -24,5 +31,17 @@ public class Controlador extends IControlador{
             Controlador.miInstancia = new Controlador();
         }
         return (Controlador.miInstancia);
+    }
+
+    @Override
+    public void AltaGenero(String nombreGenero) {
+        GeneroJpaController GJP = GeneroJpaController.getInstance();
+        Genero g = new Genero(nombreGenero);
+        
+        try {
+            GJP.create(g);
+        } catch (Exception ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
