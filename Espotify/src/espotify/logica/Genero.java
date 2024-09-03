@@ -19,8 +19,8 @@ public class Genero implements Serializable{
     private String nombreGenero;
     @ManyToOne
     private Genero miPadre;
-    //@ManyToMany(mappedBy="misGeneros") /* @ManyToMany En referencia set<Genero> misGeneros de Clase Album*/
-    //private List<Album> misAlbumes;
+    @ManyToMany(mappedBy="misGeneros") /* @ManyToMany En referencia set<Genero> misGeneros de Clase Album*/
+    private List<Album> misAlbumes;
     /* @ManyToOne En referencia Genero miGenero de Clase ListaReproduccion->PorDefecto */
     //private List<ListaReproduccion> misListasParticulares;
     

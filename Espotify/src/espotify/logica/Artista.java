@@ -16,8 +16,8 @@ public class Artista extends Usuario{
     private String dirSitioWeb;
     
     // Referencias
-    //@OneToMany /* @ManyToOne(mappedBy="misAlbumesPublicados") -> En referencia Artista miArtista en Clase Album */
-    //private List<Album> misAlbumesPublicados;
+    @OneToMany(mappedBy="miArtista")
+    private List<Album> misAlbumesPublicados;
     
     // Cosntructores
     public Artista() {
