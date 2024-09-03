@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -25,6 +26,10 @@ public class TemaConURLJpaController implements Serializable {
     public TemaConURLJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    public TemaConURLJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
+    }
+
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
