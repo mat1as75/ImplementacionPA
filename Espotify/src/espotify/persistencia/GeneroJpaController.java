@@ -27,6 +27,7 @@ public class GeneroJpaController implements Serializable {
         this.emf = emf;
     }
     
+    // 1 de Singleton
     public GeneroJpaController(){
         emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
@@ -37,13 +38,15 @@ public class GeneroJpaController implements Serializable {
         return emf.createEntityManager();
     }
     
+    // 2 de Singleton
     private static GeneroJpaController instancia = null;
     
-    public static GeneroJpaController getInstance(){
-        if(instancia == null)
-            instancia = new GeneroJpaController();
+    // 3 de Singleton
+    public static GeneroJpaController getInstance() {
+        if (GeneroJpaController.instancia == null)
+            GeneroJpaController.instancia = new GeneroJpaController();
         
-        return instancia;
+        return (GeneroJpaController.instancia);
     }
     
     
