@@ -39,7 +39,7 @@ private DTArtista miArtista;
         return misgeneros;
     }
 
-    public DTUsuario getMiArtista() {
+    public DTArtista getMiArtista() {
         return miArtista;
     }
 
@@ -58,14 +58,18 @@ private DTArtista miArtista;
     public void setMisTemas(List<DTTemaGenerico> misTemas) {
         this.misTemas = misTemas;
     }
+    public void setMiTema(DTTemaGenerico misTemas) {
+        this.misTemas.addFirst(misTemas);
+    }
 
     public void setMisgeneros(List<DTGenero> misgeneros) {
         this.misgeneros = misgeneros;
     }
-
+    public void setMigenero(DTGenero misgeneros) {
+        this.misgeneros.addLast(misgeneros);
+    }
     public void setMiArtista(DTArtista miArtista) {
         this.miArtista = miArtista;
     }
-    
     
 }

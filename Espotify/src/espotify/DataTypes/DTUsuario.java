@@ -82,5 +82,8 @@ public abstract class DTUsuario{
     public void setMisSeguidores(List<DTUsuario> misSeguidores) {
         this.misSeguidores = misSeguidores;
     }
-    
+    public void setMiSeguidore(DTUsuario misSeguidores) {
+        this.misSeguidores.addFirst(misSeguidores);
+    }
+
 }

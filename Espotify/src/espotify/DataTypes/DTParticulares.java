@@ -2,7 +2,7 @@ package espotify.DataTypes;
 
 public class DTParticulares extends DTListaReproduccion{
     private boolean soyrivada;
-
+    private DTCliente micliente;
     public DTParticulares() {
     }
     public DTParticulares(boolean soyrivada, String nombreLista, String fotoLista) {
@@ -16,6 +16,14 @@ public class DTParticulares extends DTListaReproduccion{
 
     public void setSoyrivada(boolean soyrivada) {
         this.soyrivada = soyrivada;
+    }
+
+    public DTCliente getMicliente() {
+        return micliente;
+    }
+
+    public void setMicliente(DTCliente micliente) {
+        this.micliente = micliente;
     }
     
 }

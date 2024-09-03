@@ -9,7 +9,7 @@ public class DTArtista extends DTUsuario{
     private String dirSitioWeb;
     
     // Referencias
-    //private List<Album> misAlbumesPublicados;
+    private List<DTAlbum> misAlbumesPublicados;
     
     // Cosntructores
     public DTArtista() {
@@ -21,18 +21,6 @@ public class DTArtista extends DTUsuario{
         this.dirSitioWeb = dirSitioWeb;
     }
 
-    public String getBiografia() {
-        return biografia;
-    }
-
-    public String getDirSitioWeb() {
-        return dirSitioWeb;
-    }
-
-    public List<DTUsuario> getMisSeguidores() {
-        return misSeguidores;
-    }
-
     public void setBiografia(String biografia) {
         this.biografia = biografia;
     }
@@ -41,8 +29,23 @@ public class DTArtista extends DTUsuario{
         this.dirSitioWeb = dirSitioWeb;
     }
 
-    public void setMisSeguidores(List<DTUsuario> misSeguidores) {
-        this.misSeguidores = misSeguidores;
+    public void setMisAlbumesPublicados(List<DTAlbum> misAlbumesPublicados) {
+        this.misAlbumesPublicados = misAlbumesPublicados;
     }
-    
+    public void setMiAlbumePublicado(DTAlbum misAlbumesPublicados) {
+        this.misAlbumesPublicados.addFirst(misAlbumesPublicados);
+    }
+
+    public String getBiografia() {
+        return biografia;
+    }
+
+    public String getDirSitioWeb() {
+        return dirSitioWeb;
+    }
+
+    public List<DTAlbum> getMisAlbumesPublicados() {
+        return misAlbumesPublicados;
+    }
+
 }
