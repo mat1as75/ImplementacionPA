@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -27,10 +28,27 @@ public class ArtistaJpaController implements Serializable {
     public ArtistaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
+    // 1 de Singleton
+    public ArtistaJpaController() {
+        emf = Persistence.createEntityManagerFactory("EspotityPU");
+    }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
+    }
+    
+    // 2 de Singleton
+    private static ArtistaJpaController instancia = null;
+    
+    // 3 de Singleton
+    public static ArtistaJpaController getInstance() {
+        if (ArtistaJpaController.instancia == null)
+            ArtistaJpaController.instancia = new ArtistaJpaController();
+        
+        return (ArtistaJpaController.instancia);
     }
 
     public void create(Artista artista) throws PreexistingEntityException, Exception {
