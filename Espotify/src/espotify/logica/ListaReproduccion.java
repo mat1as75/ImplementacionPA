@@ -25,7 +25,7 @@ public abstract class ListaReproduccion implements Serializable {
     
     // Constructores
     public ListaReproduccion() {
-        
+       super(); 
     }
     
     public ListaReproduccion(String nombreLista, String fotoLista) {

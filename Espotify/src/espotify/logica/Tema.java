@@ -20,7 +20,8 @@ public abstract class Tema implements Serializable {
     protected int posicionEnAlbum;
 
     //constructor
-    Tema(
+    public Tema(){};
+    public Tema(
             Long idTema,
             String nombreTema, 
             int duracionSegundos,
