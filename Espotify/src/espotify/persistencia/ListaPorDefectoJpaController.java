@@ -26,11 +26,9 @@ public class ListaPorDefectoJpaController implements Serializable {
     public ListaPorDefectoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public ListaPorDefectoJpaController() {
+     public ListaPorDefectoJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

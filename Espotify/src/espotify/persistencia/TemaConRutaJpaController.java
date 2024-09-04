@@ -26,10 +26,9 @@ public class TemaConRutaJpaController implements Serializable {
     public TemaConRutaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public TemaConRutaJpaController() {
+     public TemaConRutaJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

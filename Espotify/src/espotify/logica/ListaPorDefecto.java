@@ -13,7 +13,7 @@ public class ListaPorDefecto extends ListaReproduccion{
     
     // Constructores
     public ListaPorDefecto(){
-        
+        super();
     }
     
     public ListaPorDefecto(String nombreLista, String fotoLista, Genero miGenero){

@@ -8,6 +8,9 @@ public class TemaConRuta extends Tema {
     private String rutaTema;
     
     //constructor
+    public TemaConRuta(){
+        super();
+    };
     public TemaConRuta(
             Long idTema,
             String rutaTema, 

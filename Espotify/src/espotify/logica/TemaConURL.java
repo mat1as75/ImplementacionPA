@@ -10,6 +10,9 @@ public class TemaConURL extends Tema {
     private String urlTema;
 
     //constructor
+    public TemaConURL(){
+        super();
+    }
     public TemaConURL(
             Long idTema,
             String urlTema, 

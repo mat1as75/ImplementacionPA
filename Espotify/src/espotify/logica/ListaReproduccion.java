@@ -22,10 +22,10 @@ public abstract class ListaReproduccion implements Serializable {
     // Referencias
     @ManyToMany
     protected List<ListaReproduccion> misTemas;
-    protected Cliente miCliente;
+    
     // Constructores
     public ListaReproduccion() {
-        
+       super(); 
     }
     
     public ListaReproduccion(String nombreLista, String fotoLista) {

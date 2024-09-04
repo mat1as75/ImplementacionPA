@@ -4,14 +4,14 @@
  */
 package espotify.persistencia;
 
-import espotify.DataTypes.exceptions.NonexistentEntityException;
-import espotify.DataTypes.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import espotify.logica.Usuario;
+import espotify.persistencia.exceptions.NonexistentEntityException;
+import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,19 +20,34 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author usuario
+ * @author brisa
  */
 public class UsuarioJpaController implements Serializable {
-     // 1 de Singleton
-    public UsuarioJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
+
+    public UsuarioJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
     }
-
-
+    
+    // 1 de Singleton
+    public UsuarioJpaController() {
+        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+    }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
+    }
+    
+    // 2 de Singleton
+    private static UsuarioJpaController instancia = null;
+    
+    // 3 de Singleton
+    public static UsuarioJpaController getInstance() {
+        if (UsuarioJpaController.instancia == null)
+            UsuarioJpaController.instancia = new UsuarioJpaController();
+        
+        return (UsuarioJpaController.instancia);
     }
 
     public void create(Usuario usuario) throws PreexistingEntityException, Exception {

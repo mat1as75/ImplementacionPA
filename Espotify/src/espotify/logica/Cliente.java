@@ -4,7 +4,6 @@
  */
 package espotify.logica;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -49,7 +48,6 @@ public class Cliente extends Usuario{
     }
     public Cliente(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil) {
         super( nickname, nombreUsuario, apellidoUsuario, email, fecNac, fotoPerfil );
-        misListasReproduccionCreadas=new ArrayList<ListaReproduccion>();
     }
     
     // Getters & Setters

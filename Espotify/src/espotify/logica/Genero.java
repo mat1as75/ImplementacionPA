@@ -23,7 +23,7 @@ public class Genero implements Serializable{
     @ManyToMany(mappedBy="misGeneros")
     private List<Album> misAlbumes;
     @OneToMany(mappedBy="miGenero")
-    private List<ListaReproduccion> misListasParticulares;
+    private List<ListaPorDefecto> misListasParticulares;
     
     // Constructores
     public Genero() {

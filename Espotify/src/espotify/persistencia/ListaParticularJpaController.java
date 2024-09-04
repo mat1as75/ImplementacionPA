@@ -29,7 +29,6 @@ public class ListaParticularJpaController implements Serializable {
     public ListaParticularJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
