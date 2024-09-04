@@ -40,7 +40,7 @@ public class Cliente extends Usuario{
     private List<ListaReproduccion> misListasReproduccionFav;
     
     @OneToMany(mappedBy="miCliente") /* Hace referencia a una relacion Bidireccional de 1 a N ( 1 <-> * ) */
-    private List<ListaReproduccion> misListasReproduccionCreadas;
+    private List<ListaParticular> misListasReproduccionCreadas;
     
     // Constructores
     public Cliente() {

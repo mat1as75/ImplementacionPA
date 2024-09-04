@@ -19,16 +19,17 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author brisa
+ * @author usuario
  */
 public class TemaJpaController implements Serializable {
 
     public TemaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-     public TemaJpaController() {
+    public TemaJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
+
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
