@@ -31,7 +31,7 @@ public class ArtistaJpaController implements Serializable {
     
     // 1 de Singleton
     public ArtistaJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf = Persistence.createEntityManagerFactory("EspotityPU");
     }
     
     private EntityManagerFactory emf = null;

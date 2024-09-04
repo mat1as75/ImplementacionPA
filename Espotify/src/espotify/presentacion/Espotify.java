@@ -306,11 +306,10 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemAltaGeneroActionPerformed
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-            ControladoraPersistencia controlPersis = new ControladoraPersistencia();
             public void run() {
                 new Espotify().setVisible(true);
                 
-                
+                ControladoraPersistencia controlPersis = new ControladoraPersistencia();
             }
         });
     }
