@@ -21,45 +21,33 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author tecnologo
+ * @author usuario
  */
 public class ClienteJpaController implements Serializable {
 
     public ClienteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    // 1 de Singleton
-    public ClienteJpaController() {
+        public ClienteJpaController(){
         emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
+
     
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
-    // 2 de Singleton
-    private static ClienteJpaController instancia = null;
-    
-    // 3 de Singleton
-    public static ClienteJpaController getInstance() {
-        if (ClienteJpaController.instancia == null)
-            ClienteJpaController.instancia = new ClienteJpaController();
-        
-        return (ClienteJpaController.instancia);
-    }
 
     public void create(Cliente cliente) throws PreexistingEntityException, Exception {
         if (cliente.getMisSeguidores() == null) {
-            cliente.setMisSeguidores(new ArrayList<>());
+            cliente.setMisSeguidores(new ArrayList<Usuario>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Usuario> attachedMisSeguidores = new ArrayList<>();
+            List<Usuario> attachedMisSeguidores = new ArrayList<Usuario>();
             for (Usuario misSeguidoresUsuarioToAttach : cliente.getMisSeguidores()) {
                 misSeguidoresUsuarioToAttach = em.getReference(misSeguidoresUsuarioToAttach.getClass(), misSeguidoresUsuarioToAttach.getNickname());
                 attachedMisSeguidores.add(misSeguidoresUsuarioToAttach);
@@ -91,7 +79,7 @@ public class ClienteJpaController implements Serializable {
             Cliente persistentCliente = em.find(Cliente.class, cliente.getNickname());
             List<Usuario> misSeguidoresOld = persistentCliente.getMisSeguidores();
             List<Usuario> misSeguidoresNew = cliente.getMisSeguidores();
-            List<Usuario> attachedMisSeguidoresNew = new ArrayList<>();
+            List<Usuario> attachedMisSeguidoresNew = new ArrayList<Usuario>();
             for (Usuario misSeguidoresNewUsuarioToAttach : misSeguidoresNew) {
                 misSeguidoresNewUsuarioToAttach = em.getReference(misSeguidoresNewUsuarioToAttach.getClass(), misSeguidoresNewUsuarioToAttach.getNickname());
                 attachedMisSeguidoresNew.add(misSeguidoresNewUsuarioToAttach);
