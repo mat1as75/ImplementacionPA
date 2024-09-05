@@ -11,7 +11,7 @@ import javax.persistence.ManyToMany;
 
 
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class ListaReproduccion implements Serializable {
     
     // Atributos
