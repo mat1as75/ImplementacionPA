@@ -21,7 +21,7 @@ public abstract class ListaReproduccion implements Serializable {
     
     // Referencias
     @ManyToMany
-    protected List<ListaReproduccion> misTemas;
+    protected List<Tema> misTemas;
     
     // Constructores
     public ListaReproduccion() {
