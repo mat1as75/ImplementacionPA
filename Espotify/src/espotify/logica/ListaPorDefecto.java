@@ -22,11 +22,11 @@ public class ListaPorDefecto extends ListaReproduccion{
     }
     
     // Getters & Setters
-    public Genero getGenero(){
+    public Genero getMiGenero(){
         return miGenero;
     }
     
-    public void setGenero(Genero miGenero){
+    public void setMiGenero(Genero miGenero){
         this.miGenero = miGenero;
     }
 }
