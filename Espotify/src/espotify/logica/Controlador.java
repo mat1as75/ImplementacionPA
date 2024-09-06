@@ -1,22 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
 package espotify.logica;
 
+import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author tecnologo
- */
 public class Controlador implements IControlador{
 
+    ControladoraPersistencia ctrlPersistencia = new ControladoraPersistencia();
+    
     // 1 de Singleton
     private Controlador() {
         
@@ -44,4 +40,15 @@ public class Controlador implements IControlador{
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     public ArrayList<String> getNicknamesArtistas() {
+         ArrayList<Artista> artistas = ctrlPersistencia.getArtistas();
+         ArrayList<String> nicknames = new ArrayList<String>();
+         
+         for (Artista a : artistas) {
+             nicknames.add(a.getNickname());
+         }
+         
+         return nicknames;
+     }
 }

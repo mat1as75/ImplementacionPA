@@ -4,6 +4,8 @@
  */
 package espotify.logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author tecnologo
@@ -11,4 +13,6 @@ package espotify.logica;
 public interface IControlador {
 
     public abstract void AltaGenero(String nombreGenero);
+    
+    public abstract ArrayList<String> getNicknamesArtistas();
 }

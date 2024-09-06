@@ -4,6 +4,12 @@
  */
 package espotify.persistencia;
 
+import espotify.logica.Artista;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class ControladoraPersistencia {
     
@@ -19,4 +25,11 @@ public class ControladoraPersistencia {
     TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
 
+    public ArrayList<Artista> getArtistas() {
+        
+        List<Artista> artistasL = artJpa.findArtistaEntities();
+        ArrayList<Artista> artistasAL = new ArrayList<Artista>(artistasL);
+        
+        return artistasAL;
+    }
 }

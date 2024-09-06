@@ -4,17 +4,20 @@
  */
 package espotify.logica;
 
-/**
- *
- * @author tecnologo
- */
 public class Fabrica {
     
-    // Constructor
-    public Fabrica() {
-        
+    private static Fabrica instancia;
+
+    private Fabrica() {
+    };
+
+    public static Fabrica getInstance() {
+        if (instancia == null) {
+            instancia = new Fabrica();
+        }
+        return instancia;
     }
-    
+
     public IControlador getControlador() {
         return (Controlador.getInstance());
     }
