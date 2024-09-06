@@ -4,17 +4,26 @@
  */
 package espotify.presentacion;
 
+import espotify.logica.Artista;
+import espotify.logica.IControlador;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author tecnologo
  */
 public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form ConsultaPerfilArtista
-     */
+    IControlador controlador;
+    
     public ConsultaPerfilArtista() {
         initComponents();
+        
+        // Cargo en jListArtistas todos los artistas del sistema
+        jListArtistas.setListData(controlador.ObtenerListaArtistas().toArray(String[]::new));
+        
+        
     }
 
     /**

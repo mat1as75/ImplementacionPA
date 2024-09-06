@@ -28,15 +28,27 @@ public class ClienteJpaController implements Serializable {
     public ClienteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-        public ClienteJpaController(){
+    
+    // 1 de Singleton
+    public ClienteJpaController(){
         emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
 
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
+    }
+    
+    // 2 de Singleton
+    private static ClienteJpaController instancia = null;
+    
+    // 3 de Singleton
+    public static ClienteJpaController getInstance() {
+        if (ClienteJpaController.instancia == null)
+            ClienteJpaController.instancia = new ClienteJpaController();
+        
+        return (ClienteJpaController.instancia);
     }
 
     public void create(Cliente cliente) throws PreexistingEntityException, Exception {
