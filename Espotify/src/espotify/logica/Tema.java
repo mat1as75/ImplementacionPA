@@ -1,26 +1,32 @@
 package espotify.logica;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Tema implements Serializable {
 
     //atributos
-    @Id
+    
     //temporal para que no tire error o advertencia, 
     //el identificador debe ser una clave compuesta por el nombre del tema y el nombre del album
+    @Id
     protected Long idTema;
     protected String nombreTema;
     protected int duracionSegundos;
     protected int posicionEnAlbum;
     @ManyToOne
     protected Album miAlbum;
+    @ManyToMany
+    protected List<ListaReproduccion>misReproducciones;
+    
     //constructor
     public Tema(){};
     public Tema(

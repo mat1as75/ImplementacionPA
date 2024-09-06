@@ -1,13 +1,20 @@
 package espotify.presentacion;
 
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.presentacion.AltaPerfil;
 import espotify.presentacion.ConsultaPerfilCliente;
 
 public class Espotify extends javax.swing.JFrame {
 
+    private IControlador ICtrl;
+    
     public Espotify() {
         initComponents();
+        
+        Fabrica fabrica = Fabrica.getInstance();
+        ICtrl = fabrica.getControlador();
     }
 
     @SuppressWarnings("unchecked")
@@ -252,7 +259,7 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemQuitarTemaListaActionPerformed
 
     private void jMenuItemAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaAlbumActionPerformed
-        AltaAlbum aa = new AltaAlbum();
+        AltaAlbum aa = new AltaAlbum(ICtrl);
         escritorio.add(aa);
         aa.show();
     }//GEN-LAST:event_jMenuItemAltaAlbumActionPerformed

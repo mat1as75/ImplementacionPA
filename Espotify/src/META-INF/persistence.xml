@@ -8,11 +8,11 @@
     <class>espotify.logica.Genero</class>
     <class>espotify.logica.ListaParticular</class>
     <class>espotify.logica.ListaPorDefecto</class>
-    <class>espotify.logica.ListaReproduccion</class>
-    <class>espotify.logica.Tema</class>
     <class>espotify.logica.TemaConRuta</class>
     <class>espotify.logica.TemaConURL</class>
     <class>espotify.logica.Usuario</class>
+    <class>espotify.logica.ListaReproduccion</class>
+    <class>espotify.logica.Tema</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/Espotify?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

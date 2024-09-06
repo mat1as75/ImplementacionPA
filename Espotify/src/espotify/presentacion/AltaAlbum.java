@@ -3,6 +3,7 @@ package espotify.presentacion;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
+import espotify.logica.IControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
@@ -19,12 +20,16 @@ import javax.swing.tree.TreeSelectionModel;
 
 public class AltaAlbum extends javax.swing.JInternalFrame {
 
+    private IControlador controlador;
+    private List<String> nicknamesArtistasRegistrados;
     private DefaultListModel listaTemasAgregadosModel;
     private List<DTTemaGenerico> dataTemas = new ArrayList<DTTemaGenerico>();
     /**
      * Creates new form AltaAlbum
      */
-    public AltaAlbum() {
+    public AltaAlbum(IControlador ICtrl) {
+        controlador = ICtrl;
+        nicknamesArtistasRegistrados = controlador.getNicknamesArtistas();
         initComponents();
     }
 
@@ -106,9 +111,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             }
         });
 
-        //String[] listaArtistasRegistrados = controladorUsuarios.getArtistasRegistrados();
-        //comboBoxArtistasRegistrados.setModel(new javax.swing.DefaultComboBoxModel<>(listaArtistasRegistrados));
-        comboBoxArtistasRegistrados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        String[] arrayNicknamesArtistas = nicknamesArtistasRegistrados.toArray(new String[nicknamesArtistasRegistrados.size()]);
+        comboBoxArtistasRegistrados.setModel(new javax.swing.DefaultComboBoxModel<>(arrayNicknamesArtistas));
         comboBoxArtistasRegistrados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxArtistasRegistradosActionPerformed(evt);
@@ -251,8 +255,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnSeleccionarImagenAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelImagenAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelImagenAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
@@ -315,25 +319,25 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelImagenAlbum, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelArtista)
-                            .addComponent(comboBoxArtistasRegistrados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(nombreAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSeleccionarImagenAlbum)
-                        .addGap(12, 12, 12)))
-                .addGap(36, 36, 36)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(labelArtista)
+                                .addComponent(comboBoxArtistasRegistrados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2)
+                                .addComponent(nombreAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel3)
+                                .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnSeleccionarImagenAlbum)))
+                    .addComponent(labelImagenAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel5))
@@ -570,6 +574,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_checkboxAccesoURLStateChanged
 
     private void btnConfirmarAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAltaAlbumActionPerformed
+        
+        System.out.println(comboBoxArtistasRegistrados.getSelectedItem());
         
         int numeroTemas = this.dataTemas.size();
         int errores = 0;

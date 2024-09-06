@@ -20,34 +20,21 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author brisa
+ * @author usuario
  */
 public class UsuarioJpaController implements Serializable {
 
     public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    // 1 de Singleton
     public UsuarioJpaController() {
         emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-    
+
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
-    }
-    
-    // 2 de Singleton
-    private static UsuarioJpaController instancia = null;
-    
-    // 3 de Singleton
-    public static UsuarioJpaController getInstance() {
-        if (UsuarioJpaController.instancia == null)
-            UsuarioJpaController.instancia = new UsuarioJpaController();
-        
-        return (UsuarioJpaController.instancia);
     }
 
     public void create(Usuario usuario) throws PreexistingEntityException, Exception {

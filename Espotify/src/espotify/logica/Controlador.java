@@ -6,6 +6,7 @@ package espotify.logica;
 
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ClienteJpaController;
+import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
 import espotify.persistencia.UsuarioJpaController;
 import espotify.persistencia.exceptions.UsuarioRepetidoException;
@@ -25,7 +26,7 @@ import javax.persistence.TypedQuery;
  * @author tecnologo
  */
 public class Controlador implements IControlador{
-
+    ControladoraPersistencia contpersis=new ControladoraPersistencia();
     // 1 de Singleton
     private Controlador() {
         
@@ -81,7 +82,7 @@ public class Controlador implements IControlador{
 
     @Override
     public void AltaGenero(String nombreGenero) {
-        GeneroJpaController GJP = GeneroJpaController.getInstance();
+       /* GeneroJpaController GJP = GeneroJpaController.getInstance();
         Genero g = new Genero(nombreGenero);
         
         try {
@@ -89,6 +90,7 @@ public class Controlador implements IControlador{
         } catch (Exception ex) {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
     
     @Override 
@@ -105,4 +107,7 @@ public class Controlador implements IControlador{
         
         
     }
+
+        */
+       this.contpersis.AltaGenero(nombreGenero);
 }

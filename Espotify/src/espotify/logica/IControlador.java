@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  *
  * @author tecnologo
@@ -18,9 +19,13 @@ public interface IControlador {
 
     public abstract void AltaGenero(String nombreGenero);
     
+
     
     public abstract List<Artista> ObtenerListaArtistas();
     public abstract void ConsultarPerfilArtista();
     
     
+
+    public abstract ArrayList<String> getNicknamesArtistas();
+
 }
