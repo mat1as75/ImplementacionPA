@@ -4,6 +4,10 @@
  */
 package espotify.persistencia;
 
+import espotify.logica.Genero;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class ControladoraPersistencia {
     
@@ -18,5 +22,14 @@ public class ControladoraPersistencia {
     TemaJpaController temaJpa = new TemaJpaController();
     TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
+
+    public void AltaGenero(String nombreGenero) {
+        Genero genero=new Genero(nombreGenero);
+        try {
+            genJpa.create(genero);//para que lo guarde en la BD
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 }
