@@ -120,7 +120,6 @@
                       <Component id="jTextFieldnickname" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboBoxusuario" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -276,6 +275,9 @@
           <Properties>
             <Property name="label" type="java.lang.String" value="Aceptar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAceptarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="java.awt.Button" name="buttonCancelar">
           <Properties>

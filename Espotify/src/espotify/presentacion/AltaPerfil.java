@@ -1,17 +1,24 @@
 package espotify.presentacion;
 
+import espotify.logica.Artista;
+import espotify.logica.Cliente;
+import espotify.logica.Controlador;
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class AltaPerfil extends javax.swing.JInternalFrame {
+    private File destinoArchivo;
     public AltaPerfil() {
         initComponents();
         jLabelBiografia.setVisible(false);
@@ -96,6 +103,11 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         });
 
         buttonAceptar.setLabel("Aceptar");
+        buttonAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAceptarActionPerformed(evt);
+            }
+        });
 
         buttonCancelar.setLabel("Cancelar");
 
@@ -146,7 +158,6 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                     .addComponent(jLabelnickname)
                     .addComponent(jTextFieldnickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -223,7 +234,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
 
             /* Define el nuevo archivo en la carpeta de destino
                esto es lo que se guarda en la base de datos */
-            File destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
+            this.destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
             
             try {
                 // Copia el archivo a la carpeta de destino
@@ -258,6 +269,32 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         }    
        
     }//GEN-LAST:event_jComboBoxusuarioActionPerformed
+
+    private void buttonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAceptarActionPerformed
+        String nickname=jTextFieldnickname.getText();
+        String nombre=jTextFieldnombre.getText();
+        String apellido=jTextFieldapellido.getText();
+        String email=jTextFieldemail.getText();
+        Date fecNac=jDateChooserfechaNacimiento.getDate();
+        String fotoPerfil=destinoArchivo.getPath();
+        System.out.println("esta es la ruta="+fotoPerfil);
+        String opcion=(String)jComboBoxusuario.getSelectedItem();
+        String biografia="";
+        String webPromocion="";
+        Fabrica f=Fabrica.getInstance();
+        IControlador i=f.getIController();
+        if(opcion=="artista"){
+            biografia=jTextAreaBiografia.getText();
+            webPromocion=jTextFieldwebpromocion.getText();
+            Artista a=new Artista(nickname,nombre,apellido,email,fecNac,fotoPerfil,biografia,email);
+            i.AltaArtista(a);
+        }
+        if(opcion=="cliente"){
+            Cliente c=new Cliente(nickname,nombre, apellido,email,fecNac, fotoPerfil );
+            i.AltaCliente(c);
+        }    
+        
+    }//GEN-LAST:event_buttonAceptarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -6,6 +6,7 @@ package espotify.logica;
 
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -46,5 +47,11 @@ public class Controlador implements IControlador{
         }
         */
        this.contpersis.AltaGenero(nombreGenero);
-}
+    }
+    public void AltaArtista(Artista a){
+        this.contpersis.AltaArtista(a);
+    };
+    public void AltaCliente(Cliente c){
+        this.contpersis.AltaCliente(c);
+    }
 }
