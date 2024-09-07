@@ -21,6 +21,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         initComponents();
         
         // Cargo en jListArtistas todos los artistas del sistema
+
        // jListArtistas.setListData(controlador.ObtenerListaArtistas().toArray(String[]::new));
         
         
