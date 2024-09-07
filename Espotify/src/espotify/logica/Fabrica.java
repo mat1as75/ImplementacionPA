@@ -18,7 +18,7 @@ public class Fabrica {
     public IControlador getControlador() {
         if(ICtrl==null)
         {
-            return Controlador.getInstance();
+             ICtrl=Controlador.getInstance();
         }
         return ICtrl;
 }   
