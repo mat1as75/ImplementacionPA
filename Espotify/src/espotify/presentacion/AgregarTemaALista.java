@@ -1,5 +1,7 @@
 package espotify.presentacion;
 
+import espotify.logica.IControlador;
+import java.util.List;
 import javax.swing.DefaultListModel;
 
 /**
@@ -8,14 +10,19 @@ import javax.swing.DefaultListModel;
  */
 public class AgregarTemaALista extends javax.swing.JInternalFrame {
 
+    private IControlador controlador;
     private DefaultListModel listaDeListasModel;
     private DefaultListModel listaDeUsuariosModel;
     private DefaultListModel listaDeListasOAlbumsModel;
     private DefaultListModel listaDeTemasModel;
+    
+    private List<String> nicknamesClientes;
     /**
      * Creates new form AgregarTemaALista
      */
-    public AgregarTemaALista() {
+    public AgregarTemaALista(IControlador ICtrl) {
+        controlador = ICtrl;
+        nicknamesClientes = controlador.getNicknamesClientes();
         initComponents();
     }
 
@@ -49,8 +56,7 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
         listaDeListasModel = new DefaultListModel();
         listaDeListasDeReproduccion = new javax.swing.JList(listaDeListasModel);
         jScrollPane4 = new javax.swing.JScrollPane();
-        listaDeUsuariosModel = new DefaultListModel();
-        listaDeUsuarios = new javax.swing.JList(listaDeUsuariosModel);
+        listaDeUsuarios = new javax.swing.JList(nicknamesClientes.toArray());
         jLabel4 = new javax.swing.JLabel();
         labelError = new javax.swing.JLabel();
 
@@ -98,6 +104,11 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
         jLabel7.setText("Elija de donde seleccionar tema que desea agregar:");
 
         comboBoxTipoDeOrigenTema.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Lista por defecto", "Lista particular", "Album" }));
+        comboBoxTipoDeOrigenTema.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboBoxTipoDeOrigenTemaItemStateChanged(evt);
+            }
+        });
         comboBoxTipoDeOrigenTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxTipoDeOrigenTemaActionPerformed(evt);
@@ -107,6 +118,7 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
         jLabel9.setText("Origen:");
 
         listaDeAlbumsOListas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaDeAlbumsOListas.setEnabled(false);
         jScrollPane1.setViewportView(listaDeAlbumsOListas);
 
         listaDeTemas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -121,6 +133,11 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
 
         listaDeUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listaDeUsuarios.setEnabled(false);
+        listaDeUsuarios.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listaDeUsuariosValueChanged(evt);
+            }
+        });
         jScrollPane4.setViewportView(listaDeUsuarios);
 
         jLabel4.setText("Usuarios:");
@@ -250,6 +267,35 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
     private void btnConfirmarAgregarTemaAListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAgregarTemaAListaActionPerformed
         
     }//GEN-LAST:event_btnConfirmarAgregarTemaAListaActionPerformed
+
+    private void listaDeUsuariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listaDeUsuariosValueChanged
+        if (!evt.getValueIsAdjusting()) {
+            //obtengo las listas del usuario seleccionado
+            //cargo en listaDeListasDeReproduccion las listas obtenidas de la base de datos
+            System.out.println(listaDeUsuarios.getSelectedValue());;
+        }
+    }//GEN-LAST:event_listaDeUsuariosValueChanged
+
+    private void comboBoxTipoDeOrigenTemaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxTipoDeOrigenTemaItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            if (comboBoxTipoLista.getSelectedItem().toString().equals("Lista particular")) {
+                listaDeAlbumsOListas.setEnabled(true);
+                //obtengo todas las listas particulares publicas
+                //cargo las listas obtenidas en la listaDeAlbumsOListas
+            } else if (comboBoxTipoLista.getSelectedItem().toString().equals("Lista por defecto")) {
+                listaDeAlbumsOListas.setEnabled(true);
+                //obtendo las listas por defecto
+                //cargo las listas obtenidas en listaDeAlbumsOListas
+            } else if (comboBoxTipoLista.getSelectedItem().toString().equals("Album")) {
+                listaDeAlbumsOListas.setEnabled(true);
+                //obtengo todos los albums
+                //cargo los albums obtenidos en listaDeAlbumsOListas
+            } else {
+                listaDeAlbumsOListas.setEnabled(false);
+            }
+        }
+        
+    }//GEN-LAST:event_comboBoxTipoDeOrigenTemaItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

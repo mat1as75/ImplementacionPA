@@ -289,7 +289,7 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemEliminarTemaListaAlbumActionPerformed
 
     private void jMenuItemAgregarTemaListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarTemaListaActionPerformed
-        AgregarTemaALista atl = new AgregarTemaALista();
+        AgregarTemaALista atl = new AgregarTemaALista(ICtrl);
         escritorio.add(atl);
         atl.show();
     }//GEN-LAST:event_jMenuItemAgregarTemaListaActionPerformed

@@ -414,7 +414,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnAgregarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTemaActionPerformed
         // capturo los datos del tema ingresados y lo agrego a la lista
         String nombre = nombreTema.getText().trim();
