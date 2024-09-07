@@ -13,6 +13,7 @@ import java.util.List;
  */
 public interface IControlador {
     public abstract List<String>getNicknamesArtistas();
+    public abstract List<String>getNicknamesClientes();
     public abstract void AltaGenero(String nombreGenero);
     public abstract void AltaArtista(Artista a);
     public abstract void AltaCliente(Cliente c);

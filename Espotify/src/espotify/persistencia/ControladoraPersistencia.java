@@ -63,5 +63,13 @@ public class ControladoraPersistencia {
         
         return artistasAL;
     }
+    
+    public ArrayList<Cliente> getClientes() {
+        
+        List<Cliente> clientesL = cliJpa.findClienteEntities();
+        ArrayList<Cliente> clientesAL = new ArrayList<Cliente>(clientesL);
+        
+        return clientesAL;
+    }
 
 }

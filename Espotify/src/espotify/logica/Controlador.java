@@ -56,6 +56,7 @@ public class Controlador implements IControlador{
     public void AltaCliente(Cliente c){
         this.contpersis.AltaCliente(c);
     }
+    
     public List<String>getNicknamesArtistas(){
         ArrayList<Artista> artistas = contpersis.getArtistas();
         ArrayList<String> nicknames = new ArrayList<String>();
@@ -66,4 +67,15 @@ public class Controlador implements IControlador{
 
         return nicknames;
     };
+    
+    public List<String>getNicknamesClientes() {
+        ArrayList<Cliente> clientes = contpersis.getClientes();
+        ArrayList<String> nicknames = new ArrayList<String>();
+
+        for (Cliente c : clientes) {
+            nicknames.add(c.getNickname());
+        }
+
+        return nicknames;
+    }
 }
