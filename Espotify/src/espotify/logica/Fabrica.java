@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
 package espotify.logica;
 
 public class Fabrica {
-    
-    private static Fabrica instancia;
 
+    private static Fabrica instancia;
+    private static IControlador ICtrl=null;
+    
     private Fabrica() {
     };
 
@@ -19,7 +16,11 @@ public class Fabrica {
     }
 
     public IControlador getControlador() {
-        return (Controlador.getInstance());
-    }
-   
+        if(ICtrl==null)
+        {
+             ICtrl=Controlador.getInstance();
+        }
+        return ICtrl;
+}   
+    
 }
