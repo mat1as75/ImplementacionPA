@@ -282,7 +282,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         String biografia="";
         String webPromocion="";
         Fabrica f=Fabrica.getInstance();
-        IControlador i=f.getIController();
+        IControlador i=f.getControlador();
         if(opcion=="artista"){
             biografia=jTextAreaBiografia.getText();
             webPromocion=jTextFieldwebpromocion.getText();

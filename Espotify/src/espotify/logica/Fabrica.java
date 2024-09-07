@@ -15,7 +15,7 @@ public class Fabrica {
         return instancia;
     }
 
-    public IControlador getIController() {
+    public IControlador getControlador() {
         if(ICtrl==null)
         {
             return Controlador.getInstance();

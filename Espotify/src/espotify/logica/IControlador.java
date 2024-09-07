@@ -5,13 +5,14 @@
 package espotify.logica;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author tecnologo
  */
 public interface IControlador {
-
+    public abstract List<String>getNicknamesArtistas();
     public abstract void AltaGenero(String nombreGenero);
     public abstract void AltaArtista(Artista a);
     public abstract void AltaCliente(Cliente c);
