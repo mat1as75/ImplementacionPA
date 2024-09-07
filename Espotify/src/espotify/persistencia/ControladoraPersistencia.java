@@ -8,7 +8,9 @@ import espotify.logica.Artista;
 import espotify.logica.Cliente;
 import espotify.logica.Genero;
 import espotify.logica.Usuario;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +28,9 @@ public class ControladoraPersistencia {
     TemaJpaController temaJpa = new TemaJpaController();
     TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
-public ControladoraPersistencia(){};
+
+    public ControladoraPersistencia(){};
+    
     public void AltaGenero(String nombreGenero) {
         Genero genero=new Genero(nombreGenero);
         try {
@@ -50,6 +54,14 @@ public ControladoraPersistencia(){};
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ArrayList<Artista> getArtistas() {
+        
+        List<Artista> artistasL = artJpa.findArtistaEntities();
+        ArrayList<Artista> artistasAL = new ArrayList<Artista>(artistasL);
+        
+        return artistasAL;
     }
 
 }
