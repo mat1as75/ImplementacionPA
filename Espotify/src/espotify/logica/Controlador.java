@@ -4,22 +4,14 @@
  */
 package espotify.logica;
 
-import espotify.persistencia.ArtistaJpaController;
-import espotify.persistencia.ClienteJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
-import espotify.persistencia.UsuarioJpaController;
-import espotify.persistencia.exceptions.UsuarioRepetidoException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -42,43 +34,6 @@ public class Controlador implements IControlador{
         }
         return (Controlador.miInstancia);
     }
-    
-    @Override
-    public void AltaPerfil(String tipoUsuario, String nickname, String nombreU, String apellidoU, String email, Date fecNac, String fotoPerfil, String biografia, String dirSitioWeb) {
-        /*
-        UsuarioJpaController UJP = UsuarioJpaController.getInstance();
-        ArtistaJpaController AJP = ArtistaJpaController.getInstance();
-        ClienteJpaController CJP = ClienteJpaController.getInstance();
-        Usuario u = UJP.findUsuario(nickname);
-        
-        if (u != null) {
-            try {
-                throw new UsuarioRepetidoException("El usuario " + nickname + " ya está registrado");
-            } catch (UsuarioRepetidoException ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        if (tipoUsuario.equals("artista")) {
-            Artista a = new Artista(nickname, nombreU, apellidoU, email, fecNac, fotoPerfil, biografia, dirSitioWeb);
-            AJP.create(a);
-        } else { 
-            Cliente c = new Cliente(nickname, nombreU, apellidoU, email, fecNac, fotoPerfil);
-            CJP.create(c);
-        }
-        
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("Espotify");
-        //EntityManager em = emf.createEntityManager();
-        //EntityTransaction t = em.getTransaction();
-        //try {
-        //    t.begin();
-        //    em.persist(u);
-        //    t.commit();
-        //} catch (Exception e) {
-        //    t.rollback();
-        //}
-        */
-    }
 
     @Override
     public void AltaGenero(String nombreGenero) {
@@ -90,24 +45,13 @@ public class Controlador implements IControlador{
         } catch (Exception ex) {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-    }
-    
-    @Override 
-    public List<Artista> ObtenerListaArtistas() {
-        ArtistaJpaController AJP = ArtistaJpaController.getInstance();             
-        return AJP.findArtistaEntities();
-    }
-    
-    @Override
-    public void ConsultarPerfilArtista() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        
-        
-        
-    }
-
         */
        this.contpersis.AltaGenero(nombreGenero);
+    }
+    public void AltaArtista(Artista a){
+        this.contpersis.AltaArtista(a);
+    };
+    public void AltaCliente(Cliente c){
+        this.contpersis.AltaCliente(c);
+    }
 }
