@@ -1,10 +1,17 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package espotify.persistencia;
 
+import espotify.logica.Artista;
+import espotify.logica.Cliente;
 import espotify.logica.Genero;
+import espotify.logica.Usuario;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +30,8 @@ public class ControladoraPersistencia {
     TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
 
+    public ControladoraPersistencia(){};
+    
     public void AltaGenero(String nombreGenero) {
         Genero genero=new Genero(nombreGenero);
         try {
@@ -30,6 +39,38 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void AltaArtista(Artista u) {
+        try {
+            this.artJpa.create(u);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void AltaCliente(Cliente c) {
+        try {
+            this.cliJpa.create(c);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public ArrayList<Artista> getArtistas() {
+        
+        List<Artista> artistasL = artJpa.findArtistaEntities();
+        ArrayList<Artista> artistasAL = new ArrayList<Artista>(artistasL);
+        
+        return artistasAL;
+    }
+    
+    public ArrayList<Cliente> getClientes() {
+        
+        List<Cliente> clientesL = cliJpa.findClienteEntities();
+        ArrayList<Cliente> clientesAL = new ArrayList<Cliente>(clientesL);
+        
+        return clientesAL;
     }
 
 }
