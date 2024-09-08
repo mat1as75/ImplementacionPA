@@ -6,6 +6,7 @@ package espotify.logica;
 
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -55,9 +56,27 @@ public class Controlador implements IControlador{
     public void AltaCliente(Cliente c){
         this.contpersis.AltaCliente(c);
     }
+        
     public List<String>getNicknamesArtistas(){
-        return null;
+        ArrayList<Artista> artistas = contpersis.getArtistas();
+        ArrayList<String> nicknames = new ArrayList<String>();
+        for (Artista a : artistas) {
+            nicknames.add(a.getNickname());
+        }
+
+        return nicknames;
     };
+    
+     public List<String>getNicknamesClientes() {
+        ArrayList<Cliente> clientes = contpersis.getClientes();
+        ArrayList<String> nicknames = new ArrayList<String>();
+
+        for (Cliente c : clientes) {
+            nicknames.add(c.getNickname());
+        }
+
+        return nicknames;
+    }
     
     public boolean ExisteNickName(String nickname){
         return this.contpersis.ExisteNickName(nickname);
