@@ -11,7 +11,6 @@ import espotify.logica.Genero;
 import espotify.logica.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,31 +72,4 @@ public class ControladoraPersistencia {
         return clientesAL;
     }
 
-    public boolean ExisteNickName(String nickname) {
-        List<Usuario> usuarios=this.usuJpa.findUsuarioEntities();
-        boolean retorno=false;
-        for (Usuario u : usuarios) {
-            String usuario=u.getNickname();
-            if(usuario.equals(nickname)){
-                retorno=true;
-            }
-        }        
-        return retorno;
-                
-    }
-    public boolean ExisteEmail(String email) {
-        List<Usuario> usuarios=this.usuJpa.findUsuarioEntities();
-        boolean retorno=false;
-        for (Usuario u : usuarios) {
-            String mail=u.getEmail();
-            if(mail.equals(email)){
-                retorno=true;
-            }
-        }        
-        return retorno;
-                
-    }
-
 }
-
-

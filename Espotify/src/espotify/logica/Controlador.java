@@ -58,11 +58,4 @@ public class Controlador implements IControlador{
     public List<String>getNicknamesArtistas(){
         return null;
     };
-    
-    public boolean ExisteNickName(String nickname){
-        return this.contpersis.ExisteNickName(nickname);
-    }
-    public boolean ExisteEmail(String email){
-        return this.contpersis.ExisteEmail(email);
-    }
 }
