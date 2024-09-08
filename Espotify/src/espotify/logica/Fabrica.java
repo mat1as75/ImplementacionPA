@@ -1,6 +1,9 @@
+
 package espotify.logica;
 
-public class Fabrica {
+import espotify.logica.IControlador;
+
+public  class Fabrica {
 
     private static Fabrica instancia;
     private static IControlador ICtrl=null;
@@ -18,7 +21,7 @@ public class Fabrica {
     public IControlador getControlador() {
         if(ICtrl==null)
         {
-             ICtrl=Controlador.getInstance();
+            return Controlador.getInstance();
         }
         return ICtrl;
 }   
