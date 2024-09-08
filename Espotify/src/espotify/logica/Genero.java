@@ -49,6 +49,15 @@ public class Genero implements Serializable{
     public void setMiPadre(Genero miPadre) {
         this.miPadre = miPadre;
     }
+    
+    public List<Genero> getMisSubgeneros() {
+        return this.misGenerosHijos;
+    }
+    
+    public void setMisSubgeneros(List<Genero> misSubgeneros) {
+        this.misGenerosHijos = misSubgeneros;
+    }
+    
     /*
     public List<Genero> getMisAlbumes() {
         return this.misAlbumes;
