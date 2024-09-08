@@ -12,13 +12,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
+import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class AltaPerfil extends javax.swing.JInternalFrame {
-    private File destinoArchivo;
+    private String fotoPerfil;
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     public AltaPerfil() {
         initComponents();
         jLabelBiografia.setVisible(false);
@@ -110,6 +114,11 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         });
 
         buttonCancelar.setLabel("Cancelar");
+        buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -234,8 +243,9 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
 
             /* Define el nuevo archivo en la carpeta de destino
                esto es lo que se guarda en la base de datos */
-            this.destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
-            
+            File destinoArchivo;
+            destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
+            fotoPerfil=destinoArchivo.getPath();
             try {
                 // Copia el archivo a la carpeta de destino
                 Files.copy(selectedFile.toPath(), destinoArchivo.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -276,25 +286,78 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         String apellido=jTextFieldapellido.getText();
         String email=jTextFieldemail.getText();
         Date fecNac=jDateChooserfechaNacimiento.getDate();
-        String fotoPerfil=destinoArchivo.getPath();
-        System.out.println("esta es la ruta="+fotoPerfil);
         String opcion=(String)jComboBoxusuario.getSelectedItem();
         String biografia="";
         String webPromocion="";
         Fabrica f=Fabrica.getInstance();
         IControlador i=f.getControlador();
-        if(opcion=="artista"){
-            biografia=jTextAreaBiografia.getText();
-            webPromocion=jTextFieldwebpromocion.getText();
-            Artista a=new Artista(nickname,nombre,apellido,email,fecNac,fotoPerfil,biografia,email);
-            i.AltaArtista(a);
-        }
-        if(opcion=="cliente"){
-            Cliente c=new Cliente(nickname,nombre, apellido,email,fecNac, fotoPerfil );
-            i.AltaCliente(c);
-        }    
+        boolean existeNicName= i.ExisteNickName(nickname);
+        boolean existeEmail= i.ExisteEmail(email);
         
+        
+        if (nickname.isEmpty()){
+            JOptionPane.showMessageDialog(null, "El nickname esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else if(existeNicName){
+            JOptionPane.showMessageDialog(null, "El nickname ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            jTextFieldnickname.setText("");
+        }
+        if (email.isEmpty()){
+            JOptionPane.showMessageDialog(null, "El email esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else if(existeEmail){
+            JOptionPane.showMessageDialog(null, "El email ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            jTextFieldemail.setText("");
+        }else{
+            boolean escorrecto=EMAIL_PATTERN.matcher(email).matches();
+            if(!escorrecto){
+                JOptionPane.showMessageDialog(null, "El mail no es correcto.", "Error", JOptionPane.ERROR_MESSAGE);
+                jTextFieldemail.setText("");
+            }
+        }
+
+        if (nombre.isEmpty()){
+            JOptionPane.showMessageDialog(null, "El nombre esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (apellido.isEmpty()){
+            JOptionPane.showMessageDialog(null, "El apellido esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (fecNac == null) {
+            JOptionPane.showMessageDialog(null, "La fecha de nacimiento esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null));
+        if (borrar) {
+            if (opcion == "artista") {
+                biografia = jTextAreaBiografia.getText();
+                webPromocion = jTextFieldwebpromocion.getText();
+                Artista a = new Artista(nickname, nombre, apellido, email, fecNac, fotoPerfil, biografia, email);
+                i.AltaArtista(a);
+            }
+            if (opcion == "cliente") {
+                Cliente c = new Cliente(nickname, nombre, apellido, email, fecNac, fotoPerfil);
+                i.AltaCliente(c);
+            }
+            jTextFieldnickname.setText("");
+            jTextFieldnombre.setText("");
+            jTextFieldapellido.setText("");
+            jTextFieldemail.setText("");
+            jDateChooserfechaNacimiento.setDate(null);
+            imageLabel.setIcon(null);
+            jTextAreaBiografia.setText("");
+            jTextFieldwebpromocion.setText("");
+        }    
     }//GEN-LAST:event_buttonAceptarActionPerformed
+
+    private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
+             jTextFieldnickname.setText("");
+        jTextFieldnombre.setText("");
+        jTextFieldapellido.setText("");
+        jTextFieldemail.setText("");
+        jDateChooserfechaNacimiento.setDate(null);
+        this.imageLabel.setIcon(null);
+        jTextAreaBiografia.setText("");
+        jTextFieldwebpromocion.setText("");
+   
+    }//GEN-LAST:event_buttonCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
