@@ -5,6 +5,8 @@
  */
 package espotify.persistencia;
 
+import espotify.DataTypes.DTDatosArtista;
+import espotify.logica.Album;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
 import espotify.logica.Genero;
@@ -73,4 +75,35 @@ public class ControladoraPersistencia {
         return clientesAL;
     }
 
+    /* A partir del Nickname de un Artista, se retorna 
+    toda su informacion dentro de un DTDatosArtista 
+    CASO DE USO: CONSULTAR PERFIL ARTISTA */
+    public DTDatosArtista getDatosArtista(String nicknameArtista) {
+        
+        Artista a = artJpa.findArtista(nicknameArtista);
+        
+        // Nicknames de Seguidores del Artista
+        List<Usuario> listaSeguidores = a.getMisSeguidores();
+        ArrayList<String> nicknamesSeguidores = new ArrayList<>();
+        for (Usuario lSeg: listaSeguidores) {
+            nicknamesSeguidores.add(lSeg.getNickname());
+        }
+        // Cantidad de Seguidores
+        int cantSeguidores = listaSeguidores.size();
+        
+        // Nombre de AlbumesPublicados del Artista
+        List<Album> listaAlbumesPublicados = a.getMisAlbumesPublicados();
+        ArrayList<String> nombresAlbumesPublicados = new ArrayList<>();
+        for (Album nomAlbumesP: listaAlbumesPublicados) {
+            nombresAlbumesPublicados.add(nomAlbumesP.getNombreAlbum());
+        }
+        
+        DTDatosArtista DTDatosA = new DTDatosArtista(a.getNickname(), 
+                a.getNombreUsuario(), a.getApellidoUsuario(), 
+                a.getEmail(), a.getFecNac(), a.getFotoPerfil(), 
+                a.getBiografia(), a.getDirSitioWeb(), 
+                cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
+        
+        return DTDatosA;
+    }
 }

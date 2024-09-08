@@ -35,7 +35,7 @@
                   <Component id="jLabelSeleccioneArtista" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPaneListClientes" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
+                          <Component id="jScrollPaneListArtistas" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
                           <Component id="jButtonAceptar" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -78,7 +78,7 @@
                                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="LabelNicknameInfo" alignment="0" pref="236" max="32767" attributes="0"/>
+                                              <Component id="jLabelNicknameInfo" alignment="0" pref="236" max="32767" attributes="0"/>
                                               <Component id="jLabelNombreInfo" alignment="0" max="32767" attributes="0"/>
                                               <Component id="jLabelApellidoInfo" alignment="0" max="32767" attributes="0"/>
                                               <Component id="jLabelFecNacInfo" alignment="0" max="32767" attributes="0"/>
@@ -119,7 +119,7 @@
                               <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabelNickname" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="LabelNicknameInfo" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelNicknameInfo" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -171,7 +171,7 @@
                       <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPaneListClientes" min="-2" pref="308" max="-2" attributes="0"/>
+                      <Component id="jScrollPaneListArtistas" min="-2" pref="308" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonAceptar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
@@ -228,7 +228,7 @@
         <Property name="text" type="java.lang.String" value="Foto de Perfil"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="LabelNicknameInfo">
+    <Component class="javax.swing.JLabel" name="jLabelNicknameInfo">
       <Properties>
         <Property name="text" type="java.lang.String" value="wanda1"/>
       </Properties>
@@ -271,7 +271,7 @@
         <Property name="text" type="java.lang.String" value="Wanda"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPaneListClientes">
+    <Container class="javax.swing.JScrollPane" name="jScrollPaneListArtistas">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>

@@ -1,5 +1,6 @@
 package espotify.DataTypes;
 
+import espotify.logica.Album;
 import java.util.Date;
 import java.util.List;
 
@@ -15,10 +16,11 @@ public class DTArtista extends DTUsuario{
     public DTArtista() {
         
     }
-    public DTArtista(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil, List<DTUsuario> misSeguidores, String biografia, String dirSitioWeb) {
+    public DTArtista(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil, List<DTUsuario> misSeguidores, String biografia, String dirSitioWeb, List<DTAlbum> misAlbumesPublicados) {
         super(nickname,nombreUsuario,apellidoUsuario,email,fecNac,fotoPerfil);
         this.biografia = biografia;
         this.dirSitioWeb = dirSitioWeb;
+        this.misAlbumesPublicados = misAlbumesPublicados;
     }
 
     public void setBiografia(String biografia) {
@@ -37,15 +39,15 @@ public class DTArtista extends DTUsuario{
     }
 
     public String getBiografia() {
-        return biografia;
+        return this.biografia;
     }
 
     public String getDirSitioWeb() {
-        return dirSitioWeb;
+        return this.dirSitioWeb;
     }
 
     public List<DTAlbum> getMisAlbumesPublicados() {
-        return misAlbumesPublicados;
+        return this.misAlbumesPublicados;
     }
 
 }
