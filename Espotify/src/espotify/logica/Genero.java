@@ -24,6 +24,8 @@ public class Genero implements Serializable{
     private List<Album> misAlbumes;
     @OneToMany(mappedBy="miGenero")
     private List<ListaPorDefecto> misListasParticulares;
+    @OneToMany
+    private List<Genero> misGenerosHijos;
     
     // Constructores
     public Genero() {
