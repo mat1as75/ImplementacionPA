@@ -39,6 +39,14 @@ public class Cliente extends Usuario{
             inverseJoinColumns = @JoinColumn(name = "nombre_ListaReproduccion")
     )
     private List<ListaReproduccion> misListasReproduccionFav;
+    
+    @ManyToMany
+    @JoinTable(
+            name = "cliente_listasReproduccion_creadas",
+            joinColumns = @JoinColumn(name = "nickname_Cliente"),
+            inverseJoinColumns = @JoinColumn(name = "nombre_ListaReproduccion")
+    )
+    private List<ListaParticular> misListasReproduccionCreadas;
 
     // Constructores
     public Cliente() {

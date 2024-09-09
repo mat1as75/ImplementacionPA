@@ -107,7 +107,6 @@ public class ControladoraPersistencia {
                 
     }
 
-<<<<<<< HEAD
     /* A partir del Nickname de un Artista, se retorna 
     toda su informacion dentro de un DTDatosArtista 
     CASO DE USO: CONSULTAR PERFIL ARTISTA */
@@ -201,7 +200,8 @@ public class ControladoraPersistencia {
         nombresAlbumesFavoritos, nombresTemasFavoritos);
         
         return datosCliente;
-=======
+    }
+    
     public void setSeguidorSeguido(String Seguidor, String Seguido) {
         Cliente c=this.cliJpa.findCliente(Seguidor);
         Usuario u=this.usuJpa.findUsuario(Seguido);
@@ -211,7 +211,7 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
->>>>>>> henry
+
     }
 
 }
