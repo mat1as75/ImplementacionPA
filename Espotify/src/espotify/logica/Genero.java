@@ -58,6 +58,10 @@ public class Genero implements Serializable{
         this.misGenerosHijos = misSubgeneros;
     }
     
+    public void agregarGeneroHijo(Genero nuevoGeneroHijo) {
+        this.misGenerosHijos.add(nuevoGeneroHijo);
+    }
+    
     /*
     public List<Genero> getMisAlbumes() {
         return this.misAlbumes;
