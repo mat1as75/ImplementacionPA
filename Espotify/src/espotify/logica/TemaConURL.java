@@ -1,5 +1,7 @@
 package espotify.logica;
 
+import java.net.URL;
+import java.time.Duration;
 import javax.persistence.Entity;
 
 @Entity
@@ -11,15 +13,13 @@ public class TemaConURL extends Tema {
     public TemaConURL(){
         super();
     }
-    
     public TemaConURL(
-            String nombreTema,
-            int duracionSegundos,
-            int posicionEnAlbum,
+            Long idTema,
             String urlTema, 
-            Album album
-            ) {
-        super(nombreTema, duracionSegundos, posicionEnAlbum, album);
+            String nombreTema, 
+            int duracionSegundos,
+            int posicionEnAlbum) {
+        super(idTema, nombreTema, duracionSegundos, posicionEnAlbum);
         this.urlTema = urlTema;
     }
 

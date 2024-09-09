@@ -4,20 +4,18 @@
  */
 package espotify.persistencia;
 
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import espotify.logica.Album;
 import espotify.logica.TemaConURL;
-import espotify.logica.TemaID;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -25,12 +23,11 @@ import javax.persistence.Persistence;
  */
 public class TemaConURLJpaController implements Serializable {
 
-    public TemaConURLJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotifyPU");
-    }
-    
     public TemaConURLJpaController(EntityManagerFactory emf) {
         this.emf = emf;
+    }
+     public TemaConURLJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
     private EntityManagerFactory emf = null;
 
@@ -39,23 +36,11 @@ public class TemaConURLJpaController implements Serializable {
     }
 
     public void create(TemaConURL temaConURL) throws PreexistingEntityException, Exception {
-        if (temaConURL.getIdTema() == null) {
-            temaConURL.setIdTema(new TemaID());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Album miAlbum = temaConURL.getMiAlbum();
-            if (miAlbum != null) {
-                miAlbum = em.getReference(miAlbum.getClass(), miAlbum.getAlbumID());
-                temaConURL.setMiAlbum(miAlbum);
-            }
             em.persist(temaConURL);
-            if (miAlbum != null) {
-                miAlbum.getMisTemas().add(temaConURL);
-                miAlbum = em.merge(miAlbum);
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findTemaConURL(temaConURL.getIdTema()) != null) {
@@ -74,27 +59,12 @@ public class TemaConURLJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            TemaConURL persistentTemaConURL = em.find(TemaConURL.class, temaConURL.getIdTema());
-            Album miAlbumOld = persistentTemaConURL.getMiAlbum();
-            Album miAlbumNew = temaConURL.getMiAlbum();
-            if (miAlbumNew != null) {
-                miAlbumNew = em.getReference(miAlbumNew.getClass(), miAlbumNew.getAlbumID());
-                temaConURL.setMiAlbum(miAlbumNew);
-            }
             temaConURL = em.merge(temaConURL);
-            if (miAlbumOld != null && !miAlbumOld.equals(miAlbumNew)) {
-                miAlbumOld.getMisTemas().remove(temaConURL);
-                miAlbumOld = em.merge(miAlbumOld);
-            }
-            if (miAlbumNew != null && !miAlbumNew.equals(miAlbumOld)) {
-                miAlbumNew.getMisTemas().add(temaConURL);
-                miAlbumNew = em.merge(miAlbumNew);
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                TemaID id = temaConURL.getIdTema();
+                Long id = temaConURL.getIdTema();
                 if (findTemaConURL(id) == null) {
                     throw new NonexistentEntityException("The temaConURL with id " + id + " no longer exists.");
                 }
@@ -107,7 +77,7 @@ public class TemaConURLJpaController implements Serializable {
         }
     }
 
-    public void destroy(TemaID id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -118,11 +88,6 @@ public class TemaConURLJpaController implements Serializable {
                 temaConURL.getIdTema();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The temaConURL with id " + id + " no longer exists.", enfe);
-            }
-            Album miAlbum = temaConURL.getMiAlbum();
-            if (miAlbum != null) {
-                miAlbum.getMisTemas().remove(temaConURL);
-                miAlbum = em.merge(miAlbum);
             }
             em.remove(temaConURL);
             em.getTransaction().commit();
@@ -157,7 +122,7 @@ public class TemaConURLJpaController implements Serializable {
         }
     }
 
-    public TemaConURL findTemaConURL(TemaID id) {
+    public TemaConURL findTemaConURL(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(TemaConURL.class, id);

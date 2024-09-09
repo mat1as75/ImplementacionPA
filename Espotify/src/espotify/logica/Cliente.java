@@ -16,35 +16,18 @@ public class Cliente extends Usuario{
     private List<Usuario> misSeguidos;
     
     @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
-//    @JoinTable(
-//            name = "cliente_albumes_fav",
-//            joinColumns = @JoinColumn(name = "nickname_Cliente"),
-//            inverseJoinColumns = @JoinColumn(name = "nombre_Album")
-//    )
     @JoinTable(
             name = "cliente_albumes_fav",
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
-            inverseJoinColumns = {
-                @JoinColumn(name = "nombre_Album", referencedColumnName = "nombreAlbum", insertable=false, updatable=false),
-                @JoinColumn(name = "artista_de_album", referencedColumnName = "nicknameArtista", insertable=false, updatable=false)
-            }
+            inverseJoinColumns = @JoinColumn(name = "nombre_Album")
     )
     private List<Album> misAlbumesFav;
     
     @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
-//    @JoinTable(
-//            name = "cliente_temas_fav",
-//            joinColumns = @JoinColumn(name = "nickname_Cliente"),
-//            inverseJoinColumns = @JoinColumn(name = "idTema")
-//    )
-     @JoinTable(
+    @JoinTable(
             name = "cliente_temas_fav",
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
-            inverseJoinColumns = {
-                @JoinColumn(name = "album_de_tema", referencedColumnName = "nombreAlbum", insertable=false, updatable=false),
-                @JoinColumn(name = "nombre_tema", referencedColumnName = "nombreTema", insertable=false, updatable=false),
-                @JoinColumn(name = "artista_de_tema", referencedColumnName = "nicknameArtista", insertable=false, updatable=false)
-            }
+            inverseJoinColumns = @JoinColumn(name = "id_Tema")
     )
     private List<Tema> misTemasFav;
     

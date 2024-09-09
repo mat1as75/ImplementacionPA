@@ -5,6 +5,8 @@
 package espotify.logica;
 
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.List;
 import javax.persistence.*;
 
@@ -16,8 +18,8 @@ import javax.persistence.*;
 public class Album implements Serializable {
 
     //Atributos
-    @EmbeddedId
-    private AlbumID albumID;
+    @Id
+    private String nombreAlbum;
     private int anioCreacion;
     private String fotoAlbum;
     
@@ -30,7 +32,6 @@ public class Album implements Serializable {
     private List<Genero> misGeneros;
     
     @ManyToOne
-    @MappedById("nicknameArtista")
     private Artista miArtista;
     
 
@@ -38,9 +39,8 @@ public class Album implements Serializable {
     public Album() {
         
     }
-    
     public Album(String nomAlbum, int anioCreado, String foto, Artista artista, List<Tema> temas, List<Genero> generos) {
-        this.albumID = new AlbumID(artista.getNickname(), nomAlbum);
+        this.nombreAlbum = nomAlbum;
         this.anioCreacion = anioCreado;
         this.fotoAlbum = foto;
         this.misTemas = temas;
@@ -52,11 +52,7 @@ public class Album implements Serializable {
     //Setters y Getters
 
     public String getNombreAlbum() {
-        return this.albumID.getNombreAlbum();
-    }
-    
-    public AlbumID getAlbumID() {
-        return this.albumID;
+        return nombreAlbum;
     }
 
     public int getAnioCreacion() {
@@ -79,12 +75,8 @@ public class Album implements Serializable {
         return miArtista;
     }
 
-    public void setAlbumID(AlbumID albumID) {
-        this.albumID = albumID;
-    }
-    
     public void setNombreAlbum(String nombreAlbum) {
-        this.albumID.setNombreAlbum(nombreAlbum);
+        this.nombreAlbum = nombreAlbum;
     }
 
     public void setAnioCreacion(int anioCreacion) {
@@ -110,8 +102,5 @@ public class Album implements Serializable {
         this.misGeneros.addFirst(genero);
     }
     
-    public void setMiArtista(Artista artista) {
-        this.miArtista = artista;
-        this.albumID.setNicknameArtista(artista.getNickname());
-    }
+    
 }

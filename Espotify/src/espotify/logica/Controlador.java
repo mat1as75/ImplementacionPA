@@ -72,7 +72,7 @@ public class Controlador implements IControlador{
     }
     
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) {
-        //this.contpersis.AltaAlbum(dataAlbum);
+        this.contpersis.AltaAlbum(dataAlbum);
     }
     
     public void cargarDatosDePrueba() {
