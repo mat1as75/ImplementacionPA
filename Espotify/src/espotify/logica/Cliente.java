@@ -57,7 +57,7 @@ public class Cliente extends Usuario{
     public void setMisSeguidos(Usuario u) {
         this.misSeguidos.addFirst(u);
     }
-    /*
+    
     public List<Album> getMisAlbumesFav() {
         return this.misAlbumesFav;
     }
@@ -79,10 +79,10 @@ public class Cliente extends Usuario{
         this.misListasReproduccionFav.addFirst(lrf);
     }
     
-    public List<ListaReproduccion> getMisListasReproduccionCreadas() {
+    public List<ListaParticular> getMisListasReproduccionCreadas() {
         return this.misListasReproduccionCreadas;
     }
-    public void setMisListasReproduccionCreadas(ListaReproduccion lrc) {
+    public void setMisListasReproduccionCreadas(ListaParticular lrc) {
         this.misListasReproduccionCreadas.addFirst(lrc);
-    }*/
+    }
 }
