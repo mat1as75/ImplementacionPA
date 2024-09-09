@@ -16,13 +16,14 @@ import java.util.List;
 public interface IControlador {
     public abstract List<String>getNicknamesArtistas();
     public abstract List<String>getNicknamesClientes();
-    
     public abstract void AltaGenero(String nombreGenero);
     public abstract void AltaArtista(Artista a);
     public abstract void AltaCliente(Cliente c);
+
     public abstract DTDatosArtista ConsultarPerfilArtista(String nicknameArtista);
     public abstract DTDatosCliente ConsultarPerfilCliente(String nicknameCliente);
-    
+
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteEmail(String email);
+    public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
 }

@@ -99,7 +99,7 @@ public class Controlador implements IControlador{
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
-        
+
         return this.contpersis.getDatosArtista(nicknameArtista);
     }
     
@@ -108,5 +108,10 @@ public class Controlador implements IControlador{
         
         return this.contpersis.getDatosCliente(nicknameCliente);
     }
+
+
+    public  void setSeguidorSeguido(String Seguidor, String Seguido){
+        this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
+    };
 
 }
