@@ -15,6 +15,7 @@ public class Espotify extends javax.swing.JFrame {
         
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
+        ICtrl.cargarDatosDePrueba();
     }
 
     @SuppressWarnings("unchecked")

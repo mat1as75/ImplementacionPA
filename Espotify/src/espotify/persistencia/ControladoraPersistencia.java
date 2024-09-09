@@ -5,9 +5,13 @@
  */
 package espotify.persistencia;
 
+import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTTemaConRuta;
+import espotify.DataTypes.DTTemaGenerico;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
 import espotify.logica.Genero;
+import espotify.logica.Tema;
 import espotify.logica.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +59,23 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
+        Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
+        if (art == null) throw new Exception("No se encontro el artista: " +  dataAlbum.getMiArtista());
+        
+        List<Tema> temas;
+        for (DTTemaGenerico dataTema : dataAlbum.getMisTemas()) {
+            if (dataTema instanceof DTTemaConRuta) {
+                //tengo que solucionar lo de la clave compuesta de tema antes
+            }
+        }
+    }
+    
+    public Artista getArtista(String nickname) {
+        Artista art = this.artJpa.findArtista(nickname);
+        return art;
     }
     
     public ArrayList<Artista> getArtistas() {

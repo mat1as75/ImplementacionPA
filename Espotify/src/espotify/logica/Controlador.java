@@ -1,24 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.persistencia.ControladoraPersistencia;
-import espotify.persistencia.GeneroJpaController;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-/**
- *
- * @author tecnologo
- */
 public class Controlador implements IControlador{
     ControladoraPersistencia contpersis=new ControladoraPersistencia();
     // 1 de Singleton
@@ -85,7 +71,11 @@ public class Controlador implements IControlador{
         return this.contpersis.ExisteEmail(email);
     }
     
-    public void cargarDatosDePrueba() {
+    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) {
+        this.contpersis.AltaAlbum(dataAlbum);
+    }
     
+    public void cargarDatosDePrueba() {
+        
     }
 }

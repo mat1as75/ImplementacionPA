@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
 package espotify.logica;
 
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author tecnologo
- */
 public interface IControlador {
     public abstract List<String>getNicknamesArtistas();
     public abstract List<String>getNicknamesClientes();
@@ -23,4 +15,5 @@ public interface IControlador {
     public abstract boolean ExisteEmail(String email);
     
     public abstract void cargarDatosDePrueba();
+    
 }
