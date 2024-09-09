@@ -44,12 +44,12 @@ public class Artista extends Usuario{
         this.dirSitioWeb = dirSitioWeb;
     }
     
-    /*public List<Album> getMisAlbumesPublicados() {
+    public List<Album> getMisAlbumesPublicados() {
         return this.misAlbumesPublicados;
     }
     public void setMisAlbumesPublicados(Album a) {
         this.misAlbumesPublicados.addFirst(a);
-    }*/
+    }
     
     
 }

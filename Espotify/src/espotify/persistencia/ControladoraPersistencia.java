@@ -5,9 +5,16 @@
  */
 package espotify.persistencia;
 
+import espotify.DataTypes.DTDatosArtista;
+import espotify.DataTypes.DTDatosCliente;
+import espotify.logica.Album;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
 import espotify.logica.Genero;
+import espotify.logica.ListaParticular;
+import espotify.logica.ListaPorDefecto;
+import espotify.logica.ListaReproduccion;
+import espotify.logica.Tema;
 import espotify.logica.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,6 +92,7 @@ public class ControladoraPersistencia {
         return retorno;
                 
     }
+  
     public boolean ExisteEmail(String email) {
         List<Usuario> usuarios=this.usuJpa.findUsuarioEntities();
         boolean retorno=false;
@@ -96,6 +104,101 @@ public class ControladoraPersistencia {
         }        
         return retorno;
                 
+    }
+
+    /* A partir del Nickname de un Artista, se retorna 
+    toda su informacion dentro de un DTDatosArtista 
+    CASO DE USO: CONSULTAR PERFIL ARTISTA */
+    public DTDatosArtista getDatosArtista(String nicknameArtista) {
+        
+        Artista a = artJpa.findArtista(nicknameArtista);
+        
+        // Nicknames de Seguidores del Artista
+        List<Usuario> listaSeguidores = a.getMisSeguidores();
+        ArrayList<String> nicknamesSeguidores = new ArrayList<>();
+        for (Usuario lSeg: listaSeguidores) {
+            nicknamesSeguidores.add(lSeg.getNickname());
+        }
+        // Cantidad de Seguidores
+        int cantSeguidores = listaSeguidores.size();
+        
+        // Nombre de AlbumesPublicados del Artista
+        List<Album> listaAlbumesPublicados = a.getMisAlbumesPublicados();
+        ArrayList<String> nombresAlbumesPublicados = new ArrayList<>();
+        for (Album nomAlbumesP: listaAlbumesPublicados) {
+            nombresAlbumesPublicados.add(nomAlbumesP.getNombreAlbum());
+        }
+        
+        DTDatosArtista DTDatosA = new DTDatosArtista(a.getNickname(), 
+                a.getNombreUsuario(), a.getApellidoUsuario(), 
+                a.getEmail(), a.getFecNac(), a.getFotoPerfil(), 
+                a.getBiografia(), a.getDirSitioWeb(), 
+                cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
+        
+        return DTDatosA;
+    }
+    
+    public DTDatosCliente getDatosCliente(String nicknameCliente) {
+        
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        
+        // Nicknames de Seguidos del Cliente
+        List<Usuario> listaSeguidos = c.getMisSeguidos();
+        ArrayList<String> nicknamesSeguidos = new ArrayList<>();
+        for (Usuario lSeg: listaSeguidos) {
+            String nickname;
+            
+            // El seguido es Cliente ? | Sino es Artista
+            if (lSeg.getClass().equals(Cliente.class))
+                nickname = lSeg.getNickname() + ", Cliente";
+            else
+                nickname = lSeg.getNickname() + ", Artista";
+            
+            nicknamesSeguidos.add(nickname);
+        }
+        
+        // Nicknames de Seguidores del Cliente
+        List<Usuario> listaSeguidores = c.getMisSeguidores();
+        ArrayList<String> nicknamesSeguidores = new ArrayList<>();
+        for (Usuario lSeg: listaSeguidores) {
+            nicknamesSeguidores.add(lSeg.getNickname());
+        }
+        
+        // Nombres de ListasR Creadas del Cliente
+        List<ListaParticular> listaListasRCreadas = c.getMisListasReproduccionCreadas();
+        ArrayList<String> nombresListasRCreadas = new ArrayList<>();
+        for (ListaParticular lPCreada: listaListasRCreadas) {
+            nombresListasRCreadas.add(lPCreada.getNombreLista());
+        }
+        
+        // Nombres de ListasR Favoritas del Cliente
+        List<ListaReproduccion> listaListasRFavoritas = c.getMisListasReproduccionFav();
+        ArrayList<String> nombresListasRFavoritas = new ArrayList<>();
+        for (ListaReproduccion lRFavoritas: listaListasRFavoritas) {
+            nombresListasRFavoritas.add(lRFavoritas.getNombreLista());
+        }
+        
+        // Nombres de Albumes Favoritos del Cliente
+        List<Album> listaAlbumesFavoritos = c.getMisAlbumesFav();
+        ArrayList<String> nombresAlbumesFavoritos = new ArrayList<>();
+        for (Album alb: listaAlbumesFavoritos) {
+            nombresAlbumesFavoritos.add(alb.getNombreAlbum());
+        }
+        
+        // Nombres de Temas Favoritos del Cliente
+        List<Tema> listaTemasFavoritos = c.getMisTemasFav();
+        ArrayList<String> nombresTemasFavoritos = new ArrayList<>();
+        for (Tema tema: listaTemasFavoritos) {
+            nombresTemasFavoritos.add(tema.getNombreTema());
+        }
+        
+        DTDatosCliente datosCliente = new DTDatosCliente(c.getNickname(), 
+        c.getNombreUsuario(), c.getApellidoUsuario(), c.getEmail(), 
+        c.getFecNac(), c.getFotoPerfil(), nicknamesSeguidos, 
+        nicknamesSeguidores, nombresListasRCreadas, nombresListasRFavoritas, 
+        nombresAlbumesFavoritos, nombresTemasFavoritos);
+        
+        return datosCliente;
     }
 
 }

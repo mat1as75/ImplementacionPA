@@ -4,6 +4,8 @@
  */
 package espotify.logica;
 
+import espotify.DataTypes.DTDatosArtista;
+import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import javax.persistence.Persistence;
  * @author tecnologo
  */
 public class Controlador implements IControlador{
-    ControladoraPersistencia contpersis=new ControladoraPersistencia();
+    ControladoraPersistencia contpersis = new ControladoraPersistencia();
     // 1 de Singleton
     private Controlador() {
         
@@ -50,13 +52,18 @@ public class Controlador implements IControlador{
         */
        this.contpersis.AltaGenero(nombreGenero);
     }
+    
+    @Override
     public void AltaArtista(Artista a){
         this.contpersis.AltaArtista(a);
-    };
+    }
+  
+    @Override
     public void AltaCliente(Cliente c){
         this.contpersis.AltaCliente(c);
     }
-        
+    
+    @Override
     public List<String>getNicknamesArtistas(){
         ArrayList<Artista> artistas = contpersis.getArtistas();
         ArrayList<String> nicknames = new ArrayList<String>();
@@ -67,7 +74,8 @@ public class Controlador implements IControlador{
         return nicknames;
     };
     
-     public List<String>getNicknamesClientes() {
+    @Override
+    public List<String>getNicknamesClientes() {
         ArrayList<Cliente> clientes = contpersis.getClientes();
         ArrayList<String> nicknames = new ArrayList<String>();
 
@@ -81,7 +89,16 @@ public class Controlador implements IControlador{
     public boolean ExisteNickName(String nickname){
         return this.contpersis.ExisteNickName(nickname);
     }
+  
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
+
+    @Override
+    public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
+        
+        return this.contpersis.getDatosArtista(nicknamesArtista);
+    }
+    
+
 }
