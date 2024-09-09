@@ -77,11 +77,15 @@ public class Controlador implements IControlador{
 
         return nicknames;
     }
-    
     public boolean ExisteNickName(String nickname){
         return this.contpersis.ExisteNickName(nickname);
     }
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
+    
+    public  void setSeguidorSeguido(String Seguidor, String Seguido){
+        this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
+    };
+    
 }

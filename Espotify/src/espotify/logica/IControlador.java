@@ -21,4 +21,6 @@ public interface IControlador {
 
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteEmail(String email);
+
+    public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
 }
