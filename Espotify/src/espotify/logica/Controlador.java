@@ -94,11 +94,13 @@ public class Controlador implements IControlador{
         return this.contpersis.ExisteEmail(email);
     }
 
-    @Override
-    public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
+   public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
         
         return this.contpersis.getDatosArtista(nicknamesArtista);
     }
     
 
+    public  void setSeguidorSeguido(String Seguidor, String Seguido){
+        this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
+    };
 }
