@@ -86,17 +86,22 @@ public class Controlador implements IControlador{
         return nicknames;
     }
     
+    @Override
     public boolean ExisteNickName(String nickname){
         return this.contpersis.ExisteNickName(nickname);
     }
   
+    @Override
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
+        Fabrica fb = Fabrica.getInstance();
+        IControlador control = fb.getControlador();
         
+        System.out.println("===========ACA===============");
         return this.contpersis.getDatosArtista(nicknamesArtista);
     }
     

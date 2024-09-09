@@ -29,14 +29,12 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         
         /* Cargo el jList con los Nicknames de Artistas del Sistema */
         DefaultListModel<String> listaNicknamesArtistas = new DefaultListModel<>();
-        
         ArrayList<String> nicknamesArtistas = new ArrayList<>(Control.getNicknamesArtistas());
-        
+
         for (String nickname: nicknamesArtistas) {
             listaNicknamesArtistas.addElement(nickname);
         }
         jListArtistas.setModel(listaNicknamesArtistas);
-          
     }
 
     /**
