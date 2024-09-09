@@ -52,12 +52,12 @@ public class Controlador implements IControlador{
         */
        this.contpersis.AltaGenero(nombreGenero);
     }
-
+    
     @Override
     public void AltaArtista(Artista a){
         this.contpersis.AltaArtista(a);
     }
-    
+  
     @Override
     public void AltaCliente(Cliente c){
         this.contpersis.AltaCliente(c);
@@ -67,7 +67,6 @@ public class Controlador implements IControlador{
     public List<String>getNicknamesArtistas(){
         ArrayList<Artista> artistas = contpersis.getArtistas();
         ArrayList<String> nicknames = new ArrayList<String>();
-
         for (Artista a : artistas) {
             nicknames.add(a.getNickname());
         }
@@ -86,6 +85,14 @@ public class Controlador implements IControlador{
 
         return nicknames;
     }
+    
+    public boolean ExisteNickName(String nickname){
+        return this.contpersis.ExisteNickName(nickname);
+    }
+  
+    public boolean ExisteEmail(String email){
+        return this.contpersis.ExisteEmail(email);
+    }
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
@@ -93,5 +100,5 @@ public class Controlador implements IControlador{
         return this.contpersis.getDatosArtista(nicknamesArtista);
     }
     
-}
 
+}

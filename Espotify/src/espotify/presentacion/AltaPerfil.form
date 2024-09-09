@@ -283,6 +283,9 @@
           <Properties>
             <Property name="label" type="java.lang.String" value="Cancelar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCancelarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

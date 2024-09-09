@@ -1,3 +1,4 @@
+
 package espotify.logica;
 
 public class Fabrica {
@@ -18,7 +19,7 @@ public class Fabrica {
     public IControlador getControlador() {
         if(ICtrl==null)
         {
-             ICtrl=Controlador.getInstance();
+            ICtrl= Controlador.getInstance();
         }
         return ICtrl;
 }   

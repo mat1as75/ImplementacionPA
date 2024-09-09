@@ -80,6 +80,32 @@ public class ControladoraPersistencia {
         return clientesAL;
     }
 
+    public boolean ExisteNickName(String nickname) {
+        List<Usuario> usuarios=this.usuJpa.findUsuarioEntities();
+        boolean retorno=false;
+        for (Usuario u : usuarios) {
+            String usuario=u.getNickname();
+            if(usuario.equals(nickname)){
+                retorno=true;
+            }
+        }        
+        return retorno;
+                
+    }
+  
+    public boolean ExisteEmail(String email) {
+        List<Usuario> usuarios=this.usuJpa.findUsuarioEntities();
+        boolean retorno=false;
+        for (Usuario u : usuarios) {
+            String mail=u.getEmail();
+            if(mail.equals(email)){
+                retorno=true;
+            }
+        }        
+        return retorno;
+                
+    }
+
     /* A partir del Nickname de un Artista, se retorna 
     toda su informacion dentro de un DTDatosArtista 
     CASO DE USO: CONSULTAR PERFIL ARTISTA */
@@ -174,4 +200,7 @@ public class ControladoraPersistencia {
         
         return datosCliente;
     }
+
 }
+
+
