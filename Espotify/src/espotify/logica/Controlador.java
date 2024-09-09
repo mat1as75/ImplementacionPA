@@ -4,6 +4,8 @@ import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controlador implements IControlador{
     ControladoraPersistencia contpersis=new ControladoraPersistencia();
@@ -71,8 +73,12 @@ public class Controlador implements IControlador{
         return this.contpersis.ExisteEmail(email);
     }
     
-    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) {
-        this.contpersis.AltaAlbum(dataAlbum);
+    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
+        try {
+            this.contpersis.AltaAlbum(dataAlbum);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
     public void cargarDatosDePrueba() {

@@ -19,11 +19,10 @@ public  class Fabrica {
     }
 
     public IControlador getControlador() {
-        if(ICtrl==null)
-        {
-            return Controlador.getInstance();
+        if(ICtrl==null) {
+            ICtrl = Controlador.getInstance();
         }
         return ICtrl;
-}   
+    }   
     
 }

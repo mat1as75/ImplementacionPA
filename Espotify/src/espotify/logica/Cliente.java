@@ -19,7 +19,7 @@ public class Cliente extends Usuario{
     @JoinTable(
             name = "cliente_albumes_fav",
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
-            inverseJoinColumns = @JoinColumn(name = "nombre_Album")
+            inverseJoinColumns = @JoinColumn(name = "id_Album")
     )
     private List<Album> misAlbumesFav;
     
