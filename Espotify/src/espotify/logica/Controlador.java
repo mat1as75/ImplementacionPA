@@ -85,7 +85,6 @@ public class Controlador implements IControlador{
 
         return nicknames;
     }
-    
     public boolean ExisteNickName(String nickname){
         return this.contpersis.ExisteNickName(nickname);
     }
@@ -93,13 +92,11 @@ public class Controlador implements IControlador{
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
-
    public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
         
         return this.contpersis.getDatosArtista(nicknamesArtista);
     }
     
-
     public  void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
