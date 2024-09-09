@@ -4,17 +4,35 @@
  */
 package espotify.presentacion;
 
+import espotify.DataTypes.DTDatosCliente;
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author tecnologo
  */
 public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form ConsultaPerfilCliente
-     */
+    IControlador controlador;
+    
     public ConsultaPerfilCliente() {
         initComponents();
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        /* Cargo el jList con los Nicknames de Clientes del Sistema */
+        DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
+        ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
+        
+        for (String nickname: nicknamesClientes) {
+            listaNicknamesClientes.addElement(nickname);
+        }
+        jListClientes.setModel(listaNicknamesClientes);
     }
 
     /**
@@ -34,7 +52,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         jPanel = new javax.swing.JPanel();
         jLabelCorreo = new javax.swing.JLabel();
         jLabelFecNacInfo = new javax.swing.JLabel();
-        LabelNicknameInfo = new javax.swing.JLabel();
+        jLabelNicknameInfo = new javax.swing.JLabel();
         ImageClienteLabel = new javax.swing.JLabel();
         jLabelCorreoInfo = new javax.swing.JLabel();
         jLabelTituloSeguidos = new javax.swing.JLabel();
@@ -93,13 +111,13 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
 
         jLabelCorreo.setText("Correo electronico:");
 
-        jLabelFecNacInfo.setText("11/12/1978");
+        jLabelFecNacInfo.setText("...");
 
-        LabelNicknameInfo.setText("alex1");
+        jLabelNicknameInfo.setText("...");
 
         ImageClienteLabel.setText("Foto de Perfil");
 
-        jLabelCorreoInfo.setText("alex.smith@gmail.com");
+        jLabelCorreoInfo.setText("...");
 
         jLabelTituloSeguidos.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
         jLabelTituloSeguidos.setText("SEGUIDOS");
@@ -123,14 +141,14 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         });
         jScrollPaneListasRFavoritas.setViewportView(jListListasRFavoritas);
 
-        jLabelNombreInfo.setText("Alex");
+        jLabelNombreInfo.setText("...");
 
         jLabelNombre.setText("Nombre:");
 
         jLabelTituloSeguidores.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
         jLabelTituloSeguidores.setText("SEGUIDORES");
 
-        jLabelApellidoInfo.setText("Smith");
+        jLabelApellidoInfo.setText("...");
 
         jLabelApellido.setText("Apellido:");
 
@@ -235,7 +253,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                             .addComponent(jLabelCorreo))
                         .addGap(45, 45, 45)
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(LabelNicknameInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelNicknameInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelNombreInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelApellidoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelFecNacInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -251,7 +269,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                         .addGap(49, 49, 49)
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelNickname, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(LabelNicknameInfo, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jLabelNicknameInfo, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelNombre)
@@ -312,14 +330,10 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelSeleccioneCliente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPaneListClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonAceptar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabelSeleccioneCliente)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPaneListClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonAceptar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -352,13 +366,104 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-        // TODO add your handling code here:
+        
+        // Obtengo el Nickname seleccionado
+        String nicknameClienteSeleccionado = jListClientes.getSelectedValue();
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        // Obtengo sus datos
+        DTDatosCliente datosCliente = controlador.ConsultarPerfilCliente(nicknameClienteSeleccionado);
+        
+        // Verificar si hay una selección
+        if (nicknameClienteSeleccionado != null) {
+            
+            jLabelNicknameInfo.setText(datosCliente.getNickname());
+            jLabelNombreInfo.setText(datosCliente.getNombreUsuario());
+            jLabelApellidoInfo.setText(datosCliente.getApellidoUsuario());
+            
+            // Convertir Date a formato String
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String fecNacString = dateFormat.format(datosCliente.getFecNac());
+            jLabelFecNacInfo.setText(fecNacString);
+            
+            jLabelCorreoInfo.setText(datosCliente.getEmail());
+            
+            /* Recorro lista Nicknames de Seguidores del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nicknames a la JList */
+            DefaultListModel<String> listaSeguidores = new DefaultListModel<>();
+            ArrayList<String> nicknamesSeguidores = datosCliente.getNicknamesSeguidores();
+            
+            for (String nickname: nicknamesSeguidores) {
+                listaSeguidores.addElement(nickname);
+            }
+            jListSeguidores.setModel(listaSeguidores);
+            
+            /* Recorro lista Nicknames de Seguidos del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nicknames a la JList */
+            DefaultListModel<String> listaSeguidos = new DefaultListModel<>();
+            ArrayList<String> nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
+            
+            for (String nickname: nicknamesSeguidos) {
+                listaSeguidos.addElement(nickname);
+            }
+            jListSeguidos.setModel(listaSeguidos);
+            
+            /* Recorro lista ListasR Creadas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaListasRCreadas = new DefaultListModel<>();
+            ArrayList<String> nombresListasRCreadas = datosCliente.getNombresListasRCreadas();
+            
+            for (String nombreListaC: nombresListasRCreadas) {
+                listaListasRCreadas.addElement(nombreListaC);
+            }
+            jListListasRCreadas.setModel(listaListasRCreadas);
+            
+            /* Recorro lista ListasR Favoritas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaListasRFavoritas = new DefaultListModel<>();
+            ArrayList<String> nombresListasRFavoritas = datosCliente.getNombresListasRFavoritas();
+            
+            for (String nombreListaF: nombresListasRFavoritas) {
+                listaListasRFavoritas.addElement(nombreListaF);
+            }
+            jListListasRFavoritas.setModel(listaListasRFavoritas);
+            
+            /* Recorro lista Albumes Favoritas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaAlbumesFavoritos = new DefaultListModel<>();
+            ArrayList<String> nombresAlbumesFavoritos = datosCliente.getNombresAlbumesFavoritos();
+        
+            for (String nombreAlbumF: nombresAlbumesFavoritos) {
+                listaAlbumesFavoritos.addElement(nombreAlbumF);
+            }
+            jListAlbumesFavoritos.setModel(listaAlbumesFavoritos);
+        
+            /* Recorro lista Temas Favoritas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaTemasFavoritos = new DefaultListModel<>();
+            ArrayList<String> nombresTemasFavoritos = datosCliente.getNombresTemasFavoritos();
+            
+            for (String nombreTemaF: nombresTemasFavoritos) {
+                listaTemasFavoritos.addElement(nombreTemaF);
+            }
+            jListTemasFavoritos.setModel(listaTemasFavoritos);
+            
+            // Quito la podibilidad de volver a Consultar
+            jButtonAceptar.setVisible(false);
+        }
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageClienteLabel;
-    private javax.swing.JLabel LabelNicknameInfo;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JLabel jLabel;
     private javax.swing.JLabel jLabelApellido;
@@ -368,6 +473,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelFecNac;
     private javax.swing.JLabel jLabelFecNacInfo;
     private javax.swing.JLabel jLabelNickname;
+    private javax.swing.JLabel jLabelNicknameInfo;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelNombreInfo;
     private javax.swing.JLabel jLabelSeleccioneCliente;
@@ -392,8 +498,6 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPaneListasRCreadas;
     private javax.swing.JScrollPane jScrollPaneListasRFavoritas;
     private javax.swing.JScrollPane jScrollPaneSeguidores;
-    private javax.swing.JScrollPane jScrollPaneSeguidores2;
-    private javax.swing.JScrollPane jScrollPaneSeguidores3;
     private javax.swing.JScrollPane jScrollPaneSeguidos;
     private javax.swing.JScrollPane jScrollPaneTemasFavoritos;
     private javax.swing.JSeparator jSeparator;

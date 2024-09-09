@@ -5,6 +5,7 @@
 package espotify.logica;
 
 import espotify.DataTypes.DTDatosArtista;
+import espotify.DataTypes.DTDatosCliente;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
@@ -97,10 +98,15 @@ public class Controlador implements IControlador{
     }
 
     @Override
-    public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
+    public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
         
-        return this.contpersis.getDatosArtista(nicknamesArtista);
+        return this.contpersis.getDatosArtista(nicknameArtista);
     }
     
+    @Override
+    public DTDatosCliente ConsultarPerfilCliente(String nicknameCliente) {
+        
+        return this.contpersis.getDatosCliente(nicknameCliente);
+    }
 
 }

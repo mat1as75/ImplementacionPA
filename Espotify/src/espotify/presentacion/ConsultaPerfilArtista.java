@@ -26,11 +26,11 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         initComponents();
         
         Fabrica fb = Fabrica.getInstance();
-        IControlador Control = fb.getControlador();
+        controlador = fb.getControlador();
         
         /* Cargo el jList con los Nicknames de Artistas del Sistema */
         DefaultListModel<String> listaNicknamesArtistas = new DefaultListModel<>();
-        ArrayList<String> nicknamesArtistas = new ArrayList<>(Control.getNicknamesArtistas());
+        ArrayList<String> nicknamesArtistas = new ArrayList<>(controlador.getNicknamesArtistas());
 
         for (String nickname: nicknamesArtistas) {
             listaNicknamesArtistas.addElement(nickname);

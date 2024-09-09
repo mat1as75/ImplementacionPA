@@ -35,16 +35,10 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabelSeleccioneCliente" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPaneListClientes" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
-                          <Component id="jButtonAceptar" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="28" max="32767" attributes="0"/>
+                  <Component id="jLabelSeleccioneCliente" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="jScrollPaneListClientes" alignment="1" min="-2" pref="184" max="-2" attributes="0"/>
+                      <Component id="jButtonAceptar" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="66" max="32767" attributes="0"/>
@@ -209,7 +203,7 @@
                               </Group>
                               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="LabelNicknameInfo" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabelNicknameInfo" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabelNombreInfo" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabelApellidoInfo" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabelFecNacInfo" alignment="0" max="32767" attributes="0"/>
@@ -230,7 +224,7 @@
                               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabelNickname" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="LabelNicknameInfo" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelNicknameInfo" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -302,12 +296,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelFecNacInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="11/12/1978"/>
+                <Property name="text" type="java.lang.String" value="..."/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="LabelNicknameInfo">
+            <Component class="javax.swing.JLabel" name="jLabelNicknameInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="alex1"/>
+                <Property name="text" type="java.lang.String" value="..."/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="ImageClienteLabel">
@@ -317,7 +311,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelCorreoInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="alex.smith@gmail.com"/>
+                <Property name="text" type="java.lang.String" value="..."/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelTituloSeguidos">
@@ -393,7 +387,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabelNombreInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Alex"/>
+                <Property name="text" type="java.lang.String" value="..."/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelNombre">
@@ -411,7 +405,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelApellidoInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Smith"/>
+                <Property name="text" type="java.lang.String" value="..."/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelApellido">
