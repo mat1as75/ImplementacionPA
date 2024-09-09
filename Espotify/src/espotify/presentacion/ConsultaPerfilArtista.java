@@ -8,6 +8,7 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.logica.Artista;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -100,7 +101,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
 
         ImageArtistaLabel.setText("Foto de Perfil");
 
-        jLabelNicknameInfo.setText("wanda1");
+        jLabelNicknameInfo.setText("...");
 
         jListSeguidores.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -112,7 +113,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         jLabelSeleccioneArtista.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
         jLabelSeleccioneArtista.setText("SELECCIONE UN ARTISTA");
 
-        jLabelNombreInfo.setText("Wanda");
+        jLabelNombreInfo.setText("...");
 
         jListArtistas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -121,9 +122,9 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         });
         jScrollPaneListArtistas.setViewportView(jListArtistas);
 
-        jLabelApellidoInfo.setText("Russell");
+        jLabelApellidoInfo.setText("...");
 
-        jLabelFecNacInfo.setText("04/09/1996");
+        jLabelFecNacInfo.setText("...");
 
         jButtonAceptar.setText("Aceptar");
         jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +133,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelCorreoInfo.setText("wanda.russell");
+        jLabelCorreoInfo.setText("...");
 
         jListAlbumesPublicados.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -143,14 +144,15 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
 
         jLabelDirSitioWeb.setText("Dirección Sitio Web:");
 
-        jLabelDirSitioWebInfo.setText("www.wandarussel.com");
+        jLabelDirSitioWebInfo.setText("...");
 
         jLabelBiografia.setText("Biografia:");
 
+        jTextAreaBiografiaInfo.setEditable(false);
         jTextAreaBiografiaInfo.setColumns(20);
         jTextAreaBiografiaInfo.setLineWrap(true);
         jTextAreaBiografiaInfo.setRows(5);
-        jTextAreaBiografiaInfo.setText("Wanda Russell, la voz que da vida a cada nota. Cantante dedicada a compartir su arte y emociones a través de la música.");
+        jTextAreaBiografiaInfo.setText("...");
         jTextAreaBiografiaInfo.setWrapStyleWord(true);
         jScrollPaneBiografiaInfo.setViewportView(jTextAreaBiografiaInfo);
 
@@ -286,6 +288,9 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         // Obtengo el Nickname seleccionado
         String nicknameArtistaSeleccionado = jListArtistas.getSelectedValue();
         
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
         // Obtengo sus datos
         DTDatosArtista datosArtista = controlador.ConsultarPerfilArtista(nicknameArtistaSeleccionado);
         
@@ -295,8 +300,13 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             jLabelNicknameInfo.setText(datosArtista.getNickname());
             jLabelNombreInfo.setText(datosArtista.getNombreUsuario());
             jLabelApellidoInfo.setText(datosArtista.getApellidoUsuario());
-            jLabelFecNac.setText(datosArtista.getFecNac().toString());
-            jLabelCorreo.setText(datosArtista.getEmail());
+            
+            // Convertir Date a formato String
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String fecNacString = dateFormat.format(datosArtista.getFecNac());
+            jLabelFecNacInfo.setText(fecNacString);
+            
+            jLabelCorreoInfo.setText(datosArtista.getEmail());
             jLabelDirSitioWebInfo.setText(datosArtista.getDirSitioWeb());
             jTextAreaBiografiaInfo.setText(datosArtista.getBiografia());
             jLabelCantSeguidores.setText(String.valueOf(datosArtista.getCantidadSeguidores()));
@@ -323,15 +333,13 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             }
             jListAlbumesPublicados.setModel(listaAlbumesPublicados);
             
-            // Quito la posibilidad de volver a seleccionar
-            jLabelSeleccioneArtista.setVisible(false);
-            jScrollPaneListArtistas.setVisible(false);
-            jListArtistas.setVisible(false);
+            // Quito la posibilidad de volver a Consultar
             jButtonAceptar.setVisible(false);
         }
         
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageArtistaLabel;

@@ -230,7 +230,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelNicknameInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="wanda1"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPaneSeguidores">
@@ -268,7 +268,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelNombreInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Wanda"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPaneListArtistas">
@@ -298,12 +298,12 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabelApellidoInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Russell"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelFecNacInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="04/09/1996"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonAceptar">
@@ -316,7 +316,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelCorreoInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="wanda.russell"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPaneListasRCreadas">
@@ -351,7 +351,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDirSitioWebInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="www.wandarussel.com"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelBiografia">
@@ -368,10 +368,11 @@
       <SubComponents>
         <Component class="javax.swing.JTextArea" name="jTextAreaBiografiaInfo">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="Wanda Russell, la voz que da vida a cada nota. Cantante dedicada a compartir su arte y emociones a trav&#xe9;s de la m&#xfa;sica."/>
+            <Property name="text" type="java.lang.String" value="..."/>
             <Property name="wrapStyleWord" type="boolean" value="true"/>
           </Properties>
         </Component>

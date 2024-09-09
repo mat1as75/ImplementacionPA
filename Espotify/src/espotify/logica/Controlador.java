@@ -98,10 +98,7 @@ public class Controlador implements IControlador{
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknamesArtista) {
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
         
-        System.out.println("===========ACA===============");
         return this.contpersis.getDatosArtista(nicknamesArtista);
     }
     
