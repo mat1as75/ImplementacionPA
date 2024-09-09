@@ -26,7 +26,7 @@ public class ControladoraPersistencia {
     ArtistaJpaController artJpa = new ArtistaJpaController();
     ClienteJpaController cliJpa = new ClienteJpaController();
     GeneroJpaController genJpa = new GeneroJpaController();
-    AlbumJpaController albJpa = new AlbumJpaController();
+    //AlbumJpaController albJpa = new AlbumJpaController();
     ListaParticularJpaController lpartJpa = new ListaParticularJpaController();
     ListaPorDefectoJpaController lxdefcJpa = new ListaPorDefectoJpaController();
     ListaReproduccionJpaController lreprodccJpa = new ListaReproduccionJpaController();

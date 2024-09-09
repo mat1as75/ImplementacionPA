@@ -2,6 +2,7 @@ package espotify.logica;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -13,12 +14,8 @@ import javax.persistence.ManyToOne;
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Tema implements Serializable {
 
-    //atributos
-    
-    //temporal para que no tire error o advertencia, 
-    //el identificador debe ser una clave compuesta por el nombre del tema y el nombre del album
-    @Id
-    protected Long idTema;
+    @EmbeddedId
+    protected TemaID idTema;
     protected String nombreTema;
     protected int duracionSegundos;
     protected int posicionEnAlbum;
@@ -30,31 +27,32 @@ public abstract class Tema implements Serializable {
     //constructor
     public Tema(){};
     public Tema(
-            Long idTema,
             String nombreTema, 
             int duracionSegundos,
-            int posicionEnAlbum) {
-        this.idTema = idTema;
-        this.nombreTema = nombreTema;
+            int posicionEnAlbum,
+            Album album) {
+        
+        this.idTema = new TemaID(album.getAlbumID(), nombreTema);
         this.duracionSegundos = duracionSegundos;
         this.posicionEnAlbum = posicionEnAlbum;
+        this.miAlbum = album;
     }    
 
     //getters y setters
-    public Long getIdTema() {
+    public TemaID getIdTema() {
         return idTema;
     }
     
-    public void setIdTema(Long id) {
-        this.idTema = id;
+    public void setIdTema(TemaID idTema) {
+        this.idTema = idTema;
     }
     
     public String getNombreTema() {
-        return nombreTema;
+        return this.getIdTema().getNombreTema();
     }
 
     public void setNombreTema(String nombreTema) {
-        this.nombreTema = nombreTema;
+        this.idTema.setNombreTema(nombreTema);
     }
     
     public int getDuracionSegundos() {
@@ -72,5 +70,13 @@ public abstract class Tema implements Serializable {
     public void setPosicionEnAlbum(int posicionEnAlbum) {
         this.posicionEnAlbum = posicionEnAlbum;
     }
-    //metodos
+    
+    public Album getMiAlbum() {
+        return this.miAlbum;
+    }
+    
+    public void setMiAlbum(Album album) {
+        this.miAlbum = album;
+        this.idTema.setAlbumID(album.getAlbumID());
+    }
 }

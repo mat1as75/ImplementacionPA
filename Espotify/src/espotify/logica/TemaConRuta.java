@@ -12,12 +12,12 @@ public class TemaConRuta extends Tema {
         super();
     };
     public TemaConRuta(
-            Long idTema,
-            String rutaTema, 
-            String nombreTema,
+            String nombreTema, 
             int duracionSegundos,
-            int posicionEnAlbum) {
-        super(idTema, nombreTema, duracionSegundos, posicionEnAlbum);
+            int posicionEnAlbum,
+            Album album,
+            String rutaTema) {
+        super(nombreTema, duracionSegundos, posicionEnAlbum, album);
         this.rutaTema = rutaTema;
     }
    
