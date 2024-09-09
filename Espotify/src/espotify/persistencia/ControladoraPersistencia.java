@@ -19,9 +19,15 @@ import espotify.logica.Usuario;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 
 public class ControladoraPersistencia {
@@ -81,6 +87,18 @@ public class ControladoraPersistencia {
         return clientesAL;
     }
 
+    public boolean ExisteCliente(String nicknameCliente) {
+        List<Cliente> clientes = this.cliJpa.findClienteEntities();
+        boolean retorno = false;
+        for (Cliente c: clientes) {
+            String cliente = c.getNickname();
+            if (cliente.equals(nicknameCliente)) {
+                retorno = true;
+            }
+        }
+        return retorno;
+    }
+    
     public boolean ExisteNickName(String nickname) {
         List<Usuario> usuarios=this.usuJpa.findUsuarioEntities();
         boolean retorno=false;
@@ -213,7 +231,140 @@ public class ControladoraPersistencia {
         }
 
     }
+    
+    /* Selecciona los Nombres de los Temas de los cuales no 
+    pertenecen a ninguna ListaParticular privada disponibles
+    para seleccionar en GuardarFavoritos
+    
+    CONSULTAR: Si dicho Tema al menos se encuentra en una 
+    ListaParticular pública, se podrá seleccionar el Tema o 
+    para que se pueda seleccionar todas las ListasParticulares
+    deben ser Privadas ??*/
+    public Map<Long, String> getTemasDisponibles() {
+        
+        List<Tema> listaTemas = temaJpa.findTemaEntities();
+        //ArrayList<String> nombresTemas = new ArrayList<>();
+        Map<Long, String> nombresTemas = new HashMap<>();
+        // Recorro todos los Temas del Sistema
+        for (Tema t: listaTemas) {
+            List<ListaParticular> listasReproduccionP = (List<ListaParticular>)(ListaParticular)t.getMisReproducciones();
+            /* Recorro ListasParticulares en las que se encuentra dicho Tema */
+            for (ListaParticular lr: listasReproduccionP) {
+                // Si dicha ListaParticulaar no es Privada
+                if (!(lr.soyPrivada())) {
+                    nombresTemas.put(t.getIdTema(), t.getNombreTema());
+                }
+            }
+        }
+        
+        return nombresTemas;
+    }
+    
+    /* Selecciona los Nombres de las ListasParticulares que sean
+    Publicas y todos los Nombres de las ListasPorDefecto disponibles
+    para seleccionar en GuardarFavoritos */
+    public ArrayList<String> getListasReproduccionDisponibles() {
+        
+        List<ListaReproduccion> listaListasReproduccion = lreprodccJpa.findListaReproduccionEntities();
+        ArrayList<String> nombresListasReproduccion = new ArrayList<>();
+        for (ListaReproduccion listaR: listaListasReproduccion) {
+            // Si es de tipo ListaParticular
+            if (listaR.getClass() == ListaParticular.class) {
+                ListaParticular listaRP = (ListaParticular)listaR;
+                // Si no es Privada
+                if (!(listaRP.soyPrivada())) {
+                    nombresListasReproduccion.add(listaRP.getNombreLista());
+                }
+            } else { // Si es tipo ListaPorDefecto
+                nombresListasReproduccion.add(listaR.getNombreLista());
+            }
+        }
+        
+        return nombresListasReproduccion;
+    }
+    
+    /* Selecciona los Nombres de los Albumes que esten 
+    disponibles para seleccionar en GuardarFavoritos */
+    public ArrayList<String> getAlbumesDisponibles() {
+        
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+        ArrayList<String> nombresAlbumes = new ArrayList<>();
+        for (Album album: listaAlbumes) {
+            nombresAlbumes.add(album.getNombreAlbum());
+        }
+        
+        return nombresAlbumes;
+    }
+    
+    public void GuardarTemaFavorito(String nicknameCliente, long idTema) {
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction t = em.getTransaction();
 
+        t.begin();
+        try {
+            Cliente c = cliJpa.findCliente(nicknameCliente);
+            Tema tema = temaJpa.findTema(idTema);
+
+            c.setMisTemasFav(tema); // Agrego preferencia
+            em.persist(c);
+
+            t.commit();
+        } catch (Exception e) {
+            t.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+    }
+    
+    public void GuardarListaFavorito(String nicknameCliente, String nombreListaR) {
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction t = em.getTransaction();
+
+        t.begin();
+        try {
+            Cliente c = cliJpa.findCliente(nicknameCliente);
+            ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
+
+            c.setMisListasReproduccionFav(listaR);
+            em.persist(c);
+
+            t.commit();
+        } catch (Exception e) {
+            t.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+    }
+    
+    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction t = em.getTransaction();
+
+        t.begin();
+        try {
+            Cliente c = cliJpa.findCliente(nicknameCliente);
+            Album album = albJpa.findAlbum(nombreAlbum);
+
+            c.setMisAlbumesFav(album);
+            em.persist(c);
+
+            t.commit();
+        } catch (Exception e) {
+            t.rollback();
+        } finally {
+            em.close();
+            emf.close();
+        }
+    }
+    
 }
 
 

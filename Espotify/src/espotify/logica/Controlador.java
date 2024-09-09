@@ -12,6 +12,7 @@ import espotify.persistencia.GeneroJpaController;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -91,6 +92,11 @@ public class Controlador implements IControlador{
     public boolean ExisteNickName(String nickname){
         return this.contpersis.ExisteNickName(nickname);
     }
+    
+    @Override
+    public boolean ExisteCliente(String nicknameCliente) {
+        return this.contpersis.ExisteCliente(nicknameCliente);
+    }
   
     @Override
     public boolean ExisteEmail(String email){
@@ -113,5 +119,34 @@ public class Controlador implements IControlador{
     public  void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
+    
+    @Override
+    public Map<Long, String> getTemasDisponibles() {
+        return this.contpersis.getTemasDisponibles();
+    }
+    
+    @Override
+    public ArrayList<String> getListasReproduccionDisponibles() {
+        return this.contpersis.getListasReproduccionDisponibles();
+    }
+    
+    @Override
+    public ArrayList<String> getAlbumesDisponibles() {
+        return this.contpersis.getAlbumesDisponibles();
+    }
 
+    @Override
+    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) {
+        this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
+    }
+    
+    @Override
+    public void GuardarListaFavorito(String nicknameCliente, String nombreLista) {
+        this.contpersis.GuardarListaFavorito(nicknameCliente, nombreLista);
+    }
+    
+    @Override
+    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
+        this.contpersis.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+    }
 }

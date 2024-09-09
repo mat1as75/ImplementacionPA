@@ -72,5 +72,21 @@ public abstract class Tema implements Serializable {
     public void setPosicionEnAlbum(int posicionEnAlbum) {
         this.posicionEnAlbum = posicionEnAlbum;
     }
+    
+    public Album getMiAlbum() {
+        return miAlbum;
+    }
+    
+    public void setMiAlbum(Album a) {
+        this.miAlbum = a;
+    }
+    
+    public List<ListaReproduccion> getMisReproducciones() {
+        return misReproducciones;
+    }
+    
+    public void setMisReproducciones(ListaReproduccion lr) {
+        this.misReproducciones.add(lr);
+    }
     //metodos
 }
