@@ -324,7 +324,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "La fecha de nacimiento esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null));
+        boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null)&&(!existeNicName)&&(!existeEmail) );
         if (borrar) {
             if (opcion == "artista") {
                 biografia = jTextAreaBiografia.getText();
