@@ -40,5 +40,4 @@ public interface IControlador {
     public abstract List<String> listasCreadasEstadoPrivadoTrue(String cliente);
 
     public abstract void setPrivadafalse(String cliente, String lista);
-
 }
