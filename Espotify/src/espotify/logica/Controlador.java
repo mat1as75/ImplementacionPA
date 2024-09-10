@@ -129,7 +129,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public ArrayList<String> getAlbumesDisponibles() {
+    public Map<Long, String> getAlbumesDisponibles() {
         return this.contpersis.getAlbumesDisponibles();
     }
 
@@ -144,7 +144,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
-        this.contpersis.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) {
+        this.contpersis.GuardarAlbumFavorito(nicknameCliente, idAlbum);
     }
 }

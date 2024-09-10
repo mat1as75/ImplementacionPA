@@ -231,19 +231,31 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             // Verificar si nicknameCliente existe en el Sistema
             if (this.validarNicknameCliente(nicknameCliente)) {
 
-                // Obtengo el Nombre del Album
-                String nombreAlbum = jListAlbumes.getSelectedValue();
-
-                // Verifica si se seleccionó Album
-                if (nombreAlbum != null) {
-                    Fabrica fb = Fabrica.getInstance();
-                    controlador = fb.getControlador();
-
-                    controlador.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
-                } else { // Album no se seleccionó
-
-                    JOptionPane.showMessageDialog(this, "Seleccione un album.");
+                // Obtengo el idAlbum del Album seleccionado
+                Map<Long, String> mapAlbumes = controlador.getAlbumesDisponibles();
+                
+                // mapAlbumes Invertido
+                Map<String, Long> mapAlbumesInvertido = new HashMap<>();
+                for (Map.Entry<Long, String> entry : mapAlbumes.entrySet()) {
+                    mapAlbumesInvertido.put(entry.getValue(), entry.getKey());
                 }
+                
+                jListAlbumes.addListSelectionListener(e -> {
+                    if (!e.getValueIsAdjusting()) {
+                        // Obtener el Nombre del Album seleccionado
+                        String nombreAlbumSeleccionado = jListAlbumes.getSelectedValue();
+                        
+                        if (nombreAlbumSeleccionado != null) {
+                            // Busca la clave correspondiente en el Map invertido
+                            Long idAlbum = mapAlbumesInvertido.get(nombreAlbumSeleccionado);
+                            controlador.GuardarAlbumFavorito(nicknameCliente, idAlbum);
+                        } else { // Album no se seleccionó
+                            
+                            JOptionPane.showMessageDialog(this, "Seleccione un Album.");
+                        }
+                    }
+                
+                });
             } else { // nicknameCliente no existe en el Sistema
 
                 JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
@@ -297,6 +309,9 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         if (!(nicknameCliente.equals(""))) {
             // Verificar si nicknameCliente existe en el Sistema
             if (this.validarNicknameCliente(nicknameCliente)) {
+                
+                Fabrica fb = Fabrica.getInstance();
+                controlador = fb.getControlador();
         
                 // Obtengo el idTema del Tema seleccionado
                 Map<Long, String> mapTemas = controlador.getTemasDisponibles();
@@ -306,9 +321,6 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                 for (Map.Entry<Long, String> entry : mapTemas.entrySet()) {
                     mapTemasInvertido.put(entry.getValue(), entry.getKey());
                 }
-
-                Fabrica fb = Fabrica.getInstance();
-                controlador = fb.getControlador();
 
                 jListTemas.addListSelectionListener(e -> {
                     if (!e.getValueIsAdjusting()) {
@@ -367,8 +379,8 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             case "Albumes" -> {
                 
                 DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
-                ArrayList<String> nombresAlbumes = new ArrayList<>(controlador.getAlbumesDisponibles());
-                for (String nombreAlbum : nombresAlbumes) {
+                Map<Long, String> mapAlbumes = controlador.getAlbumesDisponibles();
+                for (String nombreAlbum : mapAlbumes.values()) {
                     listaNombresAlbumes.addElement(nombreAlbum);
                 }
                 jListAlbumes.setModel(listaNombresAlbumes);
