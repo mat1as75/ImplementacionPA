@@ -174,18 +174,15 @@ public class Controlador implements IControlador{
         }
     }
 
+    @Override
     public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
         return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
     
     }
-    public void setPrivadafalse(String cliente, String lista){
-        this.contpersis.setPrivadafalse(cliente,lista);
-    }
-    public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
-        return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
     
-    }
+    @Override
     public void setPrivadafalse(String cliente, String lista){
         this.contpersis.setPrivadafalse(cliente,lista);
     }
+    
 }
