@@ -9,6 +9,20 @@ package espotify.presentacion;
  * @author ms
  */
 
+import espotify.logica.ListaReproduccion;
+import espotify.logica.ListaPorDefecto;
+import espotify.logica.ListaParticular;
+import espotify.DataTypes.DTCliente;
+import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTParticulares;
+import espotify.DataTypes.DTPorDefecto;
+import espotify.logica.Cliente;
+import espotify.logica.Controlador;
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
@@ -17,20 +31,37 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-public class CrearListaReproduccion extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form NewJInternalFrame
-     */
+public class CrearListaReproduccion extends javax.swing.JInternalFrame {
+    
+    private IControlador controlador;
+    private String imgLista;
+
     public CrearListaReproduccion() {
         initComponents();
-        jLabelGenero.setVisible(true);
-        jTextFieldGenero.setVisible(true);
-        jLabelClientePropietario.setVisible(false);
-        jTextFieldClientePropietario.setVisible(false);
-    }
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+         
+        /* Cargo el jList con los Nicknames de los Clientes del Sistema */
+        DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
+        ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
 
+        for (String nickname: nicknamesClientes) {
+            listaNicknamesClientes.addElement(nickname);
+        }
+        jListClientes.setModel(listaNicknamesClientes);
+        
+        jLabelGenero.setVisible(true);
+        jTreeGeneros.setVisible(true);
+        jScrollPaneGeneros.setVisible(true);
+        jLabelClientePropietario.setVisible(false);
+        jListClientes.setVisible(false);
+        jScrollPaneClientes.setVisible(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,17 +72,19 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextFieldGenero = new javax.swing.JTextField();
         jLabelClientePropietario = new javax.swing.JLabel();
-        jTextFieldClientePropietario = new javax.swing.JTextField();
         jComboBoxTipodeLista = new javax.swing.JComboBox<>();
         jLabelNombre = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
         jLabelGenero = new javax.swing.JLabel();
-        openButton = new javax.swing.JButton();
+        openButtonImagen = new javax.swing.JButton();
         imageLabel = new javax.swing.JLabel();
         jButtonCrear = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPaneGeneros = new javax.swing.JScrollPane();
+        jTreeGeneros = new javax.swing.JTree();
+        jScrollPaneClientes = new javax.swing.JScrollPane();
+        jListClientes = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -59,19 +92,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Crear Lista de Reproduccion");
 
-        jTextFieldGenero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldGeneroActionPerformed(evt);
-            }
-        });
-
-        jLabelClientePropietario.setText("Cliente Propietario:");
-
-        jTextFieldClientePropietario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldClientePropietarioActionPerformed(evt);
-            }
-        });
+        jLabelClientePropietario.setText("Seleccione Cliente Propietario:");
 
         jComboBoxTipodeLista.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Por defecto", "Particular" }));
         jComboBoxTipodeLista.addActionListener(new java.awt.event.ActionListener() {
@@ -88,12 +109,12 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelGenero.setText("Género:");
+        jLabelGenero.setText("Seleccione el Género:");
 
-        openButton.setText("Agregar IMG");
-        openButton.addActionListener(new java.awt.event.ActionListener() {
+        openButtonImagen.setText("Agregar IMG");
+        openButtonImagen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openButtonActionPerformed(evt);
+                openButtonImagenActionPerformed(evt);
             }
         });
 
@@ -110,6 +131,15 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Tipo de Lista:");
 
+        jScrollPaneGeneros.setViewportView(jTreeGeneros);
+
+        jListClientes.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneClientes.setViewportView(jListClientes);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -117,32 +147,29 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(openButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(openButtonImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelGenero)
-                            .addComponent(jLabelNombre))
+                            .addComponent(jLabelClientePropietario)
+                            .addComponent(jButtonCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                            .addComponent(jScrollPaneGeneros, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPaneClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabelNombre)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBoxTipodeLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabelClientePropietario)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldClientePropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(32, 32, 32))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,28 +177,29 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(openButton))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelNombre, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1)
-                                .addComponent(jComboBoxTipodeLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabelNombre)
+                                .addComponent(jComboBoxTipodeLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelGenero))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldClientePropietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelClientePropietario))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonCrear)))
-                .addContainerGap(310, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabelGenero)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelClientePropietario)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonCrear))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPaneGeneros, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPaneClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(openButtonImagen)))
+                .addContainerGap(386, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,28 +218,25 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextFieldGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGeneroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldGeneroActionPerformed
-
-    private void jTextFieldClientePropietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldClientePropietarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldClientePropietarioActionPerformed
+    
 
     private void jComboBoxTipodeListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipodeListaActionPerformed
         String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
         if(opcion=="Por defecto"){
             jLabelGenero.setVisible(true);
-            jTextFieldGenero.setVisible(true);
+            jTreeGeneros.setVisible(true);
+            jScrollPaneGeneros.setVisible(true);
             jLabelClientePropietario.setVisible(false);
-            jTextFieldClientePropietario.setVisible(false);
+            jListClientes.setVisible(false);
+            jScrollPaneClientes.setVisible(false);
         }
         else{
             jLabelGenero.setVisible(false);
-            jTextFieldGenero.setVisible(false);
+            jTreeGeneros.setVisible(false);
+            jScrollPaneGeneros.setVisible(false);
             jLabelClientePropietario.setVisible(true);
-            jTextFieldClientePropietario.setVisible(true);
+            jListClientes.setVisible(true);
+            jScrollPaneClientes.setVisible(true);
         }            // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxTipodeListaActionPerformed
 
@@ -219,7 +244,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNombreActionPerformed
 
-    private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
+    private void openButtonImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonImagenActionPerformed
         JFileChooser buscar = new JFileChooser();
         FileNameExtensionFilter extension = new FileNameExtensionFilter("Seleccionar imagen", "jpg", "png");
         buscar.setFileFilter(extension);
@@ -236,6 +261,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             // Define el nuevo archivo en la carpeta de destino
             //esto es lo que se guarda en la base de datos
             File destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
+            imgLista = destinoArchivo.getPath();
 
             try {
                 // Copia el archivo a la carpeta de destino
@@ -250,10 +276,37 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
                 e.printStackTrace(); // Manejo de excepciones en caso de error al copiar
             };
         };
-    }//GEN-LAST:event_openButtonActionPerformed
+    }//GEN-LAST:event_openButtonImagenActionPerformed
 
     private void jButtonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearActionPerformed
-        // TODO add your handling code here:
+        
+        String nombreLista = jTextFieldNombre.getText();
+        String nicknameClienteSeleccionado = jListClientes.getSelectedValue();
+        String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
+        Fabrica fb = Fabrica.getInstance();
+        IControlador i = fb.getControlador();
+        boolean existeNombreLista= i.existeNombreLista(nombreLista);
+        
+        if (nombreLista.isEmpty()){
+            JOptionPane.showMessageDialog(null, "El nombre de la lista esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else if(existeNombreLista){
+            JOptionPane.showMessageDialog(null, "El nombre de la lista ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            jTextFieldNombre.setText("");
+        }
+        
+        if(!nombreLista.isEmpty()){
+            if(opcion=="Por defecto"){
+                
+            }
+            else if(opcion=="Particular"){
+                 if (nicknameClienteSeleccionado != null){
+                     // Obtener DTCliente utilizando el nickname
+                        Cliente c = i.obtenerClientePorNickname(nicknameClienteSeleccionado);
+                        boolean soyPrivada = true;
+                        i.CrearListaParticular(nombreLista, imgLista, c,soyPrivada );
+                 }
+            }
+        }
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
 
@@ -265,10 +318,12 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelClientePropietario;
     private javax.swing.JLabel jLabelGenero;
     private javax.swing.JLabel jLabelNombre;
+    private javax.swing.JList<String> jListClientes;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextFieldClientePropietario;
-    private javax.swing.JTextField jTextFieldGenero;
+    private javax.swing.JScrollPane jScrollPaneClientes;
+    private javax.swing.JScrollPane jScrollPaneGeneros;
     private javax.swing.JTextField jTextFieldNombre;
-    private javax.swing.JButton openButton;
+    private javax.swing.JTree jTreeGeneros;
+    private javax.swing.JButton openButtonImagen;
     // End of variables declaration//GEN-END:variables
 }

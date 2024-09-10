@@ -4,6 +4,7 @@
  */
 package espotify.logica;
 
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.persistencia.ArtistaJpaController;
@@ -96,7 +97,12 @@ public class Controlador implements IControlador{
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
-
+    
+    @Override
+    public boolean existeNombreLista(String nombreLista){
+        return this.contpersis.ExisteNombreLista(nombreLista);
+    }
+    
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
 
@@ -109,9 +115,23 @@ public class Controlador implements IControlador{
         return this.contpersis.getDatosCliente(nicknameCliente);
     }
 
-
+    
     public  void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
+    
+    @Override
+    public void CrearListaPorDefecto(String nombreLista, String fotoLista, Genero genero) {
+        this.contpersis.CrearListaPorDefecto(nombreLista, fotoLista, genero);
+    }
 
+    @Override
+    public void CrearListaParticular(String nombreLista, String fotoLista, Cliente cliente, boolean esPrivada) {
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, cliente, esPrivada);
+    }
+    
+    @Override
+    public Cliente obtenerClientePorNickname(String nickname) {
+        return this.contpersis.getClientePorNickname(nickname);
+    }
 }

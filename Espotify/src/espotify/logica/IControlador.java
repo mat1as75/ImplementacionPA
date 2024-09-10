@@ -4,6 +4,7 @@
  */
 package espotify.logica;
 
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import java.util.Date;
@@ -25,5 +26,11 @@ public interface IControlador {
 
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteEmail(String email);
+    public abstract boolean existeNombreLista(String nombreLista);
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
+    public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, Genero genero);
+    public abstract void CrearListaParticular(String nombreLista, String fotoLista, Cliente cliente, boolean esPrivada);
+    public abstract Cliente obtenerClientePorNickname(String nickname);
+
+    
 }

@@ -5,6 +5,7 @@
  */
 package espotify.persistencia;
 
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.logica.Album;
@@ -100,6 +101,19 @@ public class ControladoraPersistencia {
         for (Usuario u : usuarios) {
             String mail=u.getEmail();
             if(mail.equals(email)){
+                retorno=true;
+            }
+        }        
+        return retorno;
+                
+    }
+    
+    public boolean ExisteNombreLista(String nombreLista) {
+        List<ListaReproduccion> listaReproducciones = this.lreprodccJpa.findListaReproduccionEntities();
+        boolean retorno=false;
+        for (ListaReproduccion l : listaReproducciones) {
+            String nombreList = l.getNombreLista();
+            if(nombreList.equals(nombreLista)){
                 retorno=true;
             }
         }        
@@ -213,7 +227,38 @@ public class ControladoraPersistencia {
         }
 
     }
+    
+    public void CrearListaPorDefecto(String nombreLista, String fotoLista, Genero genero) {
+        ListaPorDefecto lista = new ListaPorDefecto(nombreLista, fotoLista, genero);
+        try {
+            lxdefcJpa.create(lista);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista por defecto", ex);
+        }
+    }
 
+    public void CrearListaParticular(String nombreLista, String fotoLista, Cliente cliente, boolean esPrivada) {
+        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cliente, esPrivada);
+        try {
+            lpartJpa.create(lista);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista particular", ex);
+        }
+    }
+    
+    public Cliente getClientePorNickname(String nickname) {
+        // Busca el cliente en la base de datos
+        Cliente c = cliJpa.findCliente(nickname);
+        
+        if (c == null){
+            return null;
+        }
+        else{
+        return c;
+        } 
+    }
+    
+    
 }
 
 
