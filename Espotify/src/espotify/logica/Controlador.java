@@ -1,28 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
-import espotify.persistencia.GeneroJpaController;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-/**
- *
- * @author tecnologo
- */
 public class Controlador implements IControlador{
     ControladoraPersistencia contpersis = new ControladoraPersistencia();
     // 1 de Singleton
@@ -102,6 +92,16 @@ public class Controlador implements IControlador{
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
+    
+    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
+        try {
+            this.contpersis.AltaAlbum(dataAlbum);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public void cargarDatosDePrueba() {}
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
@@ -115,8 +115,7 @@ public class Controlador implements IControlador{
         return this.contpersis.getDatosCliente(nicknameCliente);
     }
 
-
-    public  void setSeguidorSeguido(String Seguidor, String Seguido){
+    public void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
     
@@ -126,29 +125,52 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public Map<Long, DTTemaSimple> getDTTemasDisponibles() {
+        return this.contpersis.getDTTemasDisponibles();
+    }
+    
+    @Override
     public ArrayList<String> getListasReproduccionDisponibles() {
         return this.contpersis.getListasReproduccionDisponibles();
     }
     
     @Override
-    public ArrayList<String> getAlbumesDisponibles() {
+    public Map<Long, String> getAlbumesDisponibles() {
         return this.contpersis.getAlbumesDisponibles();
     }
 
     @Override
-    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) {
-        this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
+    public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
+        return this.contpersis.getDTAlbumesDisponibles();
     }
     
     @Override
-    public void GuardarListaFavorito(String nicknameCliente, String nombreLista) {
-        this.contpersis.GuardarListaFavorito(nicknameCliente, nombreLista);
+    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
+        try {
+            this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
     @Override
-    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
-        this.contpersis.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+    public void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception {
+        try {
+            this.contpersis.GuardarListaFavorito(nicknameCliente, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
+    
+    @Override
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        try {
+            this.contpersis.GuardarAlbumFavorito(nicknameCliente, idAlbum);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
     public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
         return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
     
