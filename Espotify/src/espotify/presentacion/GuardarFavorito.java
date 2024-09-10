@@ -289,23 +289,6 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
 
                     JOptionPane.showMessageDialog(this, "Seleccione un album.");
                 }
-                
-                jListAlbumes.addListSelectionListener(e -> {
-                    if (!e.getValueIsAdjusting()) {
-                        // Obtener el Nombre del Album seleccionado
-                        String nombreAlbumSeleccionado = jListAlbumes.getSelectedValue();
-                        
-                        if (nombreAlbumSeleccionado != null) {
-                            // Busca la clave correspondiente en el Map invertido
-                            Long idAlbum = mapAlbumesInvertido.get(nombreAlbumSeleccionado);
-                            controlador.GuardarAlbumFavorito(nicknameCliente, idAlbum);
-                        } else { // Album no se seleccionó
-                            
-                            JOptionPane.showMessageDialog(this, "Seleccione un Album.");
-                        }
-                    }
-                
-                });
             } else { // nicknameCliente no existe en el Sistema
 
                 JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");

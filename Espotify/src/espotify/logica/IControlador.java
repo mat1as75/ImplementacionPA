@@ -33,7 +33,7 @@ public interface IControlador {
     public abstract Map<Long, DTTemaSimple> getDTTemasDisponibles();
     public abstract ArrayList<String> getListasReproduccionDisponibles();
 
-    public abstract ArrayList<String> getAlbumesDisponibles();
+    public abstract Map<Long, String> getAlbumesDisponibles();
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
