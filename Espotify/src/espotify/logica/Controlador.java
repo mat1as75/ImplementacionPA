@@ -1,8 +1,10 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
@@ -113,7 +115,6 @@ public class Controlador implements IControlador{
         return this.contpersis.getDatosCliente(nicknameCliente);
     }
 
-
     public void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
@@ -121,6 +122,11 @@ public class Controlador implements IControlador{
     @Override
     public Map<Long, String> getTemasDisponibles() {
         return this.contpersis.getTemasDisponibles();
+    }
+    
+    @Override
+    public Map<Long, DTTemaSimple> getDTTemasDisponibles() {
+        return this.contpersis.getDTTemasDisponibles();
     }
     
     @Override
@@ -134,17 +140,36 @@ public class Controlador implements IControlador{
     }
 
     @Override
-    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) {
-        this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
+    public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
+        return this.contpersis.getDTAlbumesDisponibles();
     }
     
     @Override
-    public void GuardarListaFavorito(String nicknameCliente, String nombreLista) {
-        this.contpersis.GuardarListaFavorito(nicknameCliente, nombreLista);
+    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
+        try {
+            this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
     @Override
-    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
-        this.contpersis.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+    public void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception {
+        try {
+            this.contpersis.GuardarListaFavorito(nicknameCliente, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
+    
+    @Override
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        try {
+            this.contpersis.GuardarAlbumFavorito(nicknameCliente, idAlbum);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    
 }

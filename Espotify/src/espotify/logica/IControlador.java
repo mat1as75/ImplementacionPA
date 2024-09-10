@@ -1,8 +1,10 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,9 +30,12 @@ public interface IControlador {
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
 
     public abstract Map<Long, String> getTemasDisponibles();
+    public abstract Map<Long, DTTemaSimple> getDTTemasDisponibles();
     public abstract ArrayList<String> getListasReproduccionDisponibles();
     public abstract ArrayList<String> getAlbumesDisponibles();
-    public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema);
-    public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista);
-    public abstract void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum);
+    public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
+    public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
+    public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
+    public abstract void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception;
+    
 }
