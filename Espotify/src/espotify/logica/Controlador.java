@@ -149,4 +149,11 @@ public class Controlador implements IControlador{
     public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
         this.contpersis.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
     }
+    public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
+        return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
+    
+    }
+    public void setPrivadafalse(String cliente, String lista){
+        this.contpersis.setPrivadafalse(cliente,lista);
+    }
 }

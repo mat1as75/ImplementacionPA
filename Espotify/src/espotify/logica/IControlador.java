@@ -36,4 +36,8 @@ public interface IControlador {
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema);
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista);
     public abstract void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum);
+
+    public abstract List<String> listasCreadasEstadoPrivadoTrue(String cliente);
+
+    public abstract void setPrivadafalse(String cliente, String lista);
 }
