@@ -55,6 +55,7 @@ public class Cliente extends Usuario{
     public Cliente(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil) {
         super( nickname, nombreUsuario, apellidoUsuario, email, fecNac, fotoPerfil );
         misSeguidos=new ArrayList<Usuario>();
+        misListasReproduccionCreadas=new ArrayList<ListaParticular>();
     }
     
     // Getters & Setters
@@ -91,5 +92,13 @@ public class Cliente extends Usuario{
     }
     public void setMisListasReproduccionCreadas(ListaParticular lrc) {
         this.misListasReproduccionCreadas.addFirst(lrc);
+    }
+    public void setPrivadafalse(String lista){ 
+       for(ListaParticular lp:misListasReproduccionCreadas){
+           if(lp.getNombreLista()==lista){
+               lp.setsoyPrivada(false);
+           }
+       
+       }
     }
 }

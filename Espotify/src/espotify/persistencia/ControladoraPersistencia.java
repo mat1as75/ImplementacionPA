@@ -464,7 +464,40 @@ public class ControladoraPersistencia {
             throw ex;
         }
     }
-    
+
+    public List<String> listasCreadasEstadoPrivadoTrue(String cliente) {
+        List<String>retorno=new ArrayList<String>();
+        Cliente c =cliJpa.findCliente(cliente);
+        if(c!=null){
+            List<ListaParticular> creadas =c.getMisListasReproduccionCreadas();
+            for(ListaParticular lp:creadas){
+                if(lp.soyPrivada()){
+                    retorno.add(lp.getNombreLista());
+                }
+            }
+            
+        };
+        return retorno;
+    }
+
+    public void setPrivadafalse(String cliente, String lista) {
+        Cliente c = cliJpa.findCliente(cliente);
+        c.setPrivadafalse(lista);
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ListaParticular lp=this.lpartJpa.findListaParticular(lista);
+        lp.setsoyPrivada(false);
+        try {
+            this.lpartJpa.edit(lp);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+    }
+
 }
 
 
