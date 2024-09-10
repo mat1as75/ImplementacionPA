@@ -4,7 +4,6 @@ import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,11 +25,12 @@ public interface IControlador {
     public abstract boolean ExisteCliente(String nicknameCliente);
     public abstract boolean ExisteEmail(String email);
     
+    public abstract void cargarDatosDePrueba();
+   
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
 
     public abstract Map<Long, String> getTemasDisponibles();
     public abstract Map<Long, DTTemaSimple> getDTTemasDisponibles();
-    public abstract ArrayList<DTGenero_Simple> getListaDTGeneroSimple();
     public abstract ArrayList<String> getListasReproduccionDisponibles();
 
     public abstract ArrayList<String> getAlbumesDisponibles();

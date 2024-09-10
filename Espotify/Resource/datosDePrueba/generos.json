@@ -1,0 +1,54 @@
+{
+    "Generos": [
+        {
+            "nombre": "Rock",
+            "padre": "Genero",
+            "subgeneros": [
+                {
+                    "nombre": "Rock Clasico"
+                },
+                {
+                    "nombre": "Rock Latino"
+                },
+                {
+                    "nombre": "Rock & Roll"
+                }
+            ]
+        },
+        {
+            "nombre": "Pop",
+            "padre": "Genero",
+            "subgeneros": [
+                {
+                    "nombre": "Electropop"
+                },
+                {
+                    "nombre": "Dance-pop"
+                },
+                {
+                    "nombre": "Pop Clasico"
+                }
+            ]
+        },
+        {
+            "nombre": "Clasica",
+            "padre": "Genero",
+            "subgeneros": []
+        },
+        {
+            "nombre": "Disco",
+            "padre": "Genero",
+            "subgeneros": []
+        },
+        {
+            "nombre": "Balada",
+            "padre": "Genero",
+            "subgeneros": []
+        },
+        {
+            "nombre": "Cumbia",
+            "padre": "Genero",
+            "subgeneros": []
+        }
+    ]
+}

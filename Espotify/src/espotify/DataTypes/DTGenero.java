@@ -14,10 +14,6 @@ private List<DTParticulares> misListasParticulares;
 
     public DTGenero(String nombreGenero) {
         this.nombreGenero = nombreGenero;
-        this.miPadre = null;
-        this.misGenerosHijos = null;
-        this.misListasParticulares = null;
-        this.misAlbumes = null;
     }
 
     public String getNombreGenero() {
