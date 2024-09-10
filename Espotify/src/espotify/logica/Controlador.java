@@ -1,5 +1,6 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
@@ -134,6 +135,11 @@ public class Controlador implements IControlador{
     }
 
     @Override
+    public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
+        return this.contpersis.getDTAlbumesDisponibles();
+    }
+    
+    @Override
     public void GuardarTemaFavorito(String nicknameCliente, Long idTema) {
         this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
     }
@@ -144,7 +150,9 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
-        this.contpersis.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) {
+        this.contpersis.GuardarAlbumFavorito(nicknameCliente, idAlbum);
     }
+    
+    
 }

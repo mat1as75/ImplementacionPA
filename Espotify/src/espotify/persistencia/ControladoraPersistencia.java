@@ -6,6 +6,7 @@
 package espotify.persistencia;
 
 
+import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
@@ -375,6 +376,16 @@ public class ControladoraPersistencia {
         return nombresAlbumes;
     }
     
+    public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+        ArrayList<DTAlbum> dataAlbums = new ArrayList<>();
+        
+        for (Album album: listaAlbumes) {
+            dataAlbums.add(album.getDataAlbum());
+        }
+        return dataAlbums;
+    }
+    
     public void GuardarTemaFavorito(String nicknameCliente, long idTema) {
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
@@ -421,9 +432,8 @@ public class ControladoraPersistencia {
         }
     }
     
-    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) {
 
-        /*
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction t = em.getTransaction();
@@ -431,7 +441,7 @@ public class ControladoraPersistencia {
         t.begin();
         try {
             Cliente c = cliJpa.findCliente(nicknameCliente);
-            Album album = albJpa.findAlbum(nombreAlbum);
+            Album album = albJpa.findAlbum(idAlbum);
 
             c.setMisAlbumesFav(album);
             em.persist(c);
@@ -443,7 +453,6 @@ public class ControladoraPersistencia {
             em.close();
             emf.close();
         }
-        */
     }
     
 }

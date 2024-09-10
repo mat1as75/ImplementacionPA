@@ -1,5 +1,6 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
@@ -30,7 +31,9 @@ public interface IControlador {
     public abstract Map<Long, String> getTemasDisponibles();
     public abstract ArrayList<String> getListasReproduccionDisponibles();
     public abstract ArrayList<String> getAlbumesDisponibles();
+    public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema);
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista);
-    public abstract void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum);
+    public abstract void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum);
+    
 }

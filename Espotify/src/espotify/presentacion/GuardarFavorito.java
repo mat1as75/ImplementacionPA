@@ -4,6 +4,7 @@
  */
 package espotify.presentacion;
 
+import espotify.DataTypes.DTAlbum;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -24,23 +26,25 @@ import javax.swing.event.ChangeListener;
  */
 public class GuardarFavorito extends javax.swing.JInternalFrame {
 
-    IControlador controlador;
+    private IControlador controlador;
+    private Map<Long, String> mapaAlbums;
     
     public GuardarFavorito() {
         initComponents();
         
         Fabrica fb = Fabrica.getInstance();
-        controlador = fb.getControlador();
+        this.controlador = fb.getControlador();
               
-/*        // De predeterminado se inicializa el Panel de Temas
+        /*
+        // De predeterminado se inicializa el Panel de Temas
         DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
         Map<Long, String> mapTemas = controlador.getTemasDisponibles();
         for (String nombreTema : mapTemas.values()) {
             listaNombresTemas.addElement(nombreTema);
         }
         jListTemas.setModel(listaNombresTemas);
- */       
-        /*jTabbedPane.addChangeListener(new ChangeListener() {
+        */
+        jTabbedPane.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int selectedIndex = jTabbedPane.getSelectedIndex();
@@ -58,12 +62,27 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                     
                     if (selectedTabTitle.equals("Albumes")) {
                         
-                        DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
-                        ArrayList<String> nombresAlbumes = new ArrayList<>(controlador.getAlbumesDisponibles());
-                        for (String nombreAlbum : nombresAlbumes) {
-                            listaNombresAlbumes.addElement(nombreAlbum);
+                        //
+                        //DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
+                        //ArrayList<String> nombresAlbumes = new ArrayList<>(controlador.getAlbumesDisponibles());
+                        //for (String nombreAlbum : nombresAlbumes) {
+                        //    listaNombresAlbumes.addElement(nombreAlbum);
+                        //}
+                        //jListAlbumes.setModel(listaNombresAlbumes);
+
+                        //creo el model para cargar en la JList
+                        DefaultListModel<String> listaDataAlbumStringsModel = new DefaultListModel<>();
+                        //obtengo los data album
+                        ArrayList<DTAlbum> dataAlbumes = controlador.getDTAlbumesDisponibles();
+                        //mapeo el id del album con el string que va en la JList
+                        mapaAlbums = new HashMap<Long,String>(dataAlbumes.size());
+
+                        for (DTAlbum dataAlb : dataAlbumes) {
+                            listaDataAlbumStringsModel.addElement(dataAlb.toStringSimple());
+                            mapaAlbums.put(dataAlb.getIdAlbum(), dataAlb.toStringSimple());
                         }
-                        jListAlbumes.setModel(listaNombresAlbumes);
+                        jListAlbumes.setModel(listaDataAlbumStringsModel);
+
                     } else {
                         
                         DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
@@ -109,7 +128,7 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                 }
             }
             
-        });*/
+        });
         
     }
     
@@ -314,14 +333,24 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             if (this.validarNicknameCliente(nicknameCliente)) {
 
                 // Obtengo el Nombre del Album
-                String nombreAlbum = jListAlbumes.getSelectedValue();
+                String datosAlbum = jListAlbumes.getSelectedValue();
+                Long idAlbumSeleccionado = null;
+                
+                for (Entry<Long, String> entry : this.mapaAlbums.entrySet()) {
+                    if (entry.getValue().equals(datosAlbum)) {
+                        idAlbumSeleccionado = entry.getKey();
+                        System.out.println(datosAlbum);
+                        System.out.println("id seleccionado: " + idAlbumSeleccionado);
+                        break;
+                    }
+                }
 
                 // Verifica si se seleccionó Album
-                if (nombreAlbum != null) {
+                if (datosAlbum != null && idAlbumSeleccionado != null) {
                     Fabrica fb = Fabrica.getInstance();
                     controlador = fb.getControlador();
 
-                    controlador.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+                    controlador.GuardarAlbumFavorito(nicknameCliente, idAlbumSeleccionado);
                 } else { // Album no se seleccionó
 
                     JOptionPane.showMessageDialog(this, "Seleccione un album.");
