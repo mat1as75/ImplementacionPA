@@ -381,12 +381,12 @@ public class ControladoraPersistencia {
     
     /* Selecciona los Nombres de los Albumes que esten 
     disponibles para seleccionar en GuardarFavoritos */
-    public ArrayList<String> getAlbumesDisponibles() {
+    public Map<Long, String> getAlbumesDisponibles() {
         
         List<Album> listaAlbumes = albJpa.findAlbumEntities();
-        ArrayList<String> nombresAlbumes = new ArrayList<>();
+        Map<Long, String> nombresAlbumes = new HashMap<>();
         for (Album album: listaAlbumes) {
-            nombresAlbumes.add(album.getNombreAlbum());
+            nombresAlbumes.put(album.getIdAlbum(), album.getNombreAlbum());
         }
         
         return nombresAlbumes;

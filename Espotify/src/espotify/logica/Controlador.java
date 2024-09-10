@@ -135,7 +135,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public ArrayList<String> getAlbumesDisponibles() {
+    public Map<Long, String> getAlbumesDisponibles() {
         return this.contpersis.getAlbumesDisponibles();
     }
 
