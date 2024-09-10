@@ -4,6 +4,7 @@
  */
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -110,5 +111,13 @@ public class Album implements Serializable {
     public void setMiArtista(Artista artista) {
         this.miArtista = artista;
     }
-    
+
+    public DTAlbum getDataAlbum() {
+        return new DTAlbum(
+                this.getIdAlbum(),
+                this.getNombreAlbum(),
+                this.getAnioCreacion(),
+                this.getFotoAlbum()
+        );
+    }
 }

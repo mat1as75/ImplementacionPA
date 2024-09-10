@@ -4,6 +4,8 @@
  */
 package espotify.presentacion;
 
+import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -24,14 +27,52 @@ import javax.swing.event.ChangeListener;
  */
 public class GuardarFavorito extends javax.swing.JInternalFrame {
 
-    IControlador controlador;
+    private IControlador controlador;
+    private Map<Long, String> mapaAlbums;
+    private Map<Long, DTTemaSimple> mapaDTTemas;
     
     public GuardarFavorito() {
-        initComponents();
         
+        Fabrica fb = Fabrica.getInstance();
+        this.controlador = fb.getControlador();
+        
+        initComponents();
+         //De predeterminado se inicializa el Panel de Temas
+        cargarTemas();
     }
     
+    private void cargarTemas() {
+        DefaultListModel<String> listaDatosTemas = new DefaultListModel<>();
+        mapaDTTemas = controlador.getDTTemasDisponibles();
+        for (DTTemaSimple dataTema : mapaDTTemas.values()) {
+            listaDatosTemas.addElement(dataTema.getDatosTemaToString());
+        }
+        jListTemas.setModel(listaDatosTemas);
+    }
     
+    private void cargarListas() {
+        DefaultListModel<String> listaNombresListas = new DefaultListModel<>();
+        ArrayList<String> nombresListas = new ArrayList<>(controlador.getListasReproduccionDisponibles());
+        for (String nombreListaR : nombresListas) {
+            listaNombresListas.addElement(nombreListaR);
+        }
+        jListListas.setModel(listaNombresListas);
+    }
+    
+    private void cargarAlbums() {
+        //creo el model para cargar en la JList
+        DefaultListModel<String> listaDataAlbumStringsModel = new DefaultListModel<>();
+        //obtengo los data album
+        ArrayList<DTAlbum> dataAlbumes = controlador.getDTAlbumesDisponibles();
+        //mapeo el id del album con el string que va en la JList
+        mapaAlbums = new HashMap<Long,String>(dataAlbumes.size());
+
+        for (DTAlbum dataAlb : dataAlbumes) {
+            listaDataAlbumStringsModel.addElement(dataAlb.toStringSimple());
+            mapaAlbums.put(dataAlb.getIdAlbum(), dataAlb.toStringSimple());
+        }
+        jListAlbumes.setModel(listaDataAlbumStringsModel);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,7 +104,8 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Guardar Tema/Lista/Album");
-        setPreferredSize(new java.awt.Dimension(406, 410));
+        setMinimumSize(new java.awt.Dimension(520, 410));
+        setPreferredSize(new java.awt.Dimension(620, 410));
 
         jTextFieldNicknameClienteInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,11 +122,6 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             }
         });
 
-        jListTemas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPaneTemas.setViewportView(jListTemas);
 
         jButtonGuardarTemaFavorito.setText("Guardar en favoritos");
@@ -100,10 +137,10 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTemaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jButtonGuardarTemaFavorito)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
         jPanelTemaLayout.setVerticalGroup(
             jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,11 +154,6 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
 
         jTabbedPane.addTab("Temas", jPanelTema);
 
-        jListListas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPaneLista.setViewportView(jListListas);
 
         jButtonGuardarListaFavorito.setText("Guardar en favoritos");
@@ -136,29 +168,23 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         jPanelListaLayout.setHorizontalGroup(
             jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(jButtonGuardarListaFavorito)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
         jPanelListaLayout.setVerticalGroup(
             jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButtonGuardarListaFavorito)
                     .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGap(0, 44, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Listas", jPanelLista);
 
-        jListAlbumes.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPaneAlbum.setViewportView(jListAlbumes);
 
         jButtonGuardarAlbumFavorito.setText("Guardar en favoritos");
@@ -174,10 +200,10 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             jPanelAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAlbumLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPaneAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addComponent(jScrollPaneAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jButtonGuardarAlbumFavorito)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
         );
         jPanelAlbumLayout.setVerticalGroup(
             jPanelAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,7 +236,7 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelNicknameCliente)
                     .addComponent(jTextFieldNicknameClienteInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -230,14 +256,38 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         if (!(nicknameCliente.equals(""))) {
             // Verificar si nicknameCliente existe en el Sistema
             if (this.validarNicknameCliente(nicknameCliente)) {
-
-                // Obtengo el idAlbum del Album seleccionado
-                Map<Long, String> mapAlbumes = controlador.getAlbumesDisponibles();
+              
+                // Obtengo el Nombre del Album
+                String datosAlbum = jListAlbumes.getSelectedValue();
+                Long idAlbumSeleccionado = null;
                 
-                // mapAlbumes Invertido
-                Map<String, Long> mapAlbumesInvertido = new HashMap<>();
-                for (Map.Entry<Long, String> entry : mapAlbumes.entrySet()) {
-                    mapAlbumesInvertido.put(entry.getValue(), entry.getKey());
+                for (Entry<Long, String> entry : this.mapaAlbums.entrySet()) {
+                    if (entry.getValue().equals(datosAlbum)) {
+                        idAlbumSeleccionado = entry.getKey();
+                        break;
+                    }
+                }
+
+                // Verifica si se seleccionó Album
+                if (datosAlbum != null && idAlbumSeleccionado != null) {
+                    
+                    try {
+                        this.controlador.GuardarAlbumFavorito(nicknameCliente, idAlbumSeleccionado);
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        "Album agregado exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    }
+                } else { // Album no se seleccionó
+
+                    JOptionPane.showMessageDialog(this, "Seleccione un album.");
                 }
                 
                 jListAlbumes.addListSelectionListener(e -> {
@@ -282,10 +332,22 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
 
                 // Verifica si se seleccionó Lista
                 if (nombreListaReproduccion != null) {
-                    Fabrica fb = Fabrica.getInstance();
-                    controlador = fb.getControlador();
-
-                    controlador.GuardarListaFavorito(nicknameCliente, nombreListaReproduccion);
+                    
+                    try {
+                        this.controlador.GuardarListaFavorito(nicknameCliente, nombreListaReproduccion);
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        "Lista agregada exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    }
+                    
                 } else { // Lista no se seleccionó
                     
                     JOptionPane.showMessageDialog(this, "Seleccione una lista de reproduccion.");
@@ -313,30 +375,36 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                 Fabrica fb = Fabrica.getInstance();
                 controlador = fb.getControlador();
         
-                // Obtengo el idTema del Tema seleccionado
-                Map<Long, String> mapTemas = controlador.getTemasDisponibles();
-
-                // mapTemas Invertido
-                Map<String, Long> mapTemasInvertido = new HashMap<>();
-                for (Map.Entry<Long, String> entry : mapTemas.entrySet()) {
-                    mapTemasInvertido.put(entry.getValue(), entry.getKey());
+                // Obtengo el tema seleccionado
+                String datosTema = jListTemas.getSelectedValue();
+                Long idTemaSeleccionado = null;
+                
+                for (Entry<Long, DTTemaSimple> entry : this.mapaDTTemas.entrySet()) {
+                    if (entry.getValue().getDatosTemaToString().equals(datosTema)) {
+                        idTemaSeleccionado = entry.getKey();
+                        break;
+                    }
                 }
 
-                jListTemas.addListSelectionListener(e -> {
-                    if (!e.getValueIsAdjusting()) {
-                        // Obtener el Nombre del Tema seleccionado
-                        String nombreTemaSeleccionado = jListTemas.getSelectedValue();
-
-                        if (nombreTemaSeleccionado != null) {
-                            // Buscar la clave correspondiente en el Map invertido
-                            Long idTema = mapTemasInvertido.get(nombreTemaSeleccionado);
-                            controlador.GuardarTemaFavorito(nicknameCliente, idTema);
-                        } else { // Tema no se selecccionó
-                            
-                            JOptionPane.showMessageDialog(this, "Seleccione un Tema.");
-                        }
+                if (datosTema != null && idTemaSeleccionado != null) {
+                    try {
+                        controlador.GuardarTemaFavorito(nicknameCliente, idTemaSeleccionado);
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        "Tema agregado exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
                     }
-                });
+                } else {
+                    JOptionPane.showMessageDialog(this, "Seleccione un Tema.");
+                }
+                
             } else { // nicknameCliente no existe en el Sistema
                 
                 JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
@@ -349,51 +417,28 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
 
     private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
         
-        Fabrica fb = Fabrica.getInstance();
-        controlador = fb.getControlador();
-        
         int indiceSeleccionado = jTabbedPane.getSelectedIndex();
         String tituloPanelSeleccionado = jTabbedPane.getTitleAt(indiceSeleccionado);
         
         switch(tituloPanelSeleccionado) {
             case "Temas" -> {
-                
-                DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
-                Map<Long, String> mapTemas = controlador.getTemasDisponibles();
-                for (String nombreTema : mapTemas.values()) {
-                    listaNombresTemas.addElement(nombreTema);
-                }
-                jListTemas.setModel(listaNombresTemas);
+                this.cargarTemas();
                 break;
             }
             case "Listas" -> {
-                
-                DefaultListModel<String> listaNombresListas = new DefaultListModel<>();
-                ArrayList<String> nombresListas = new ArrayList<>(controlador.getListasReproduccionDisponibles());
-                for (String nombreListaR : nombresListas) {
-                    listaNombresListas.addElement(nombreListaR);
-                }
-                jListListas.setModel(listaNombresListas);
+                this.cargarListas();
                 break;
             }
             case "Albumes" -> {
-                
-                DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
-                Map<Long, String> mapAlbumes = controlador.getAlbumesDisponibles();
-                for (String nombreAlbum : mapAlbumes.values()) {
-                    listaNombresAlbumes.addElement(nombreAlbum);
-                }
-                jListAlbumes.setModel(listaNombresAlbumes);
+                this.cargarAlbums();
                 break;
             }
         }
     }//GEN-LAST:event_jTabbedPaneStateChanged
 
     private boolean validarNicknameCliente(String nickname) {
-        Fabrica fb = Fabrica.getInstance();
-        controlador = fb.getControlador();
         
-        return controlador.ExisteCliente(nickname);
+        return this.controlador.ExisteCliente(nickname);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

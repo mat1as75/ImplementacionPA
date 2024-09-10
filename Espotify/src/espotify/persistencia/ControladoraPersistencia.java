@@ -6,6 +6,7 @@
 package espotify.persistencia;
 
 
+import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
@@ -13,6 +14,7 @@ import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Album;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
@@ -325,17 +327,33 @@ public class ControladoraPersistencia {
         Map<Long, String> nombresTemas = new HashMap<>();
         // Recorro todos los Temas del Sistema
         for (Tema t: listaTemas) {
-            List<ListaParticular> listasReproduccionP = (List<ListaParticular>)(ListaParticular)t.getMisReproducciones();
-            /* Recorro ListasParticulares en las que se encuentra dicho Tema */
-            for (ListaParticular lr: listasReproduccionP) {
-                // Si dicha ListaParticulaar no es Privada
-                if (!(lr.soyPrivada())) {
-                    nombresTemas.put(t.getIdTema(), t.getNombreTema());
-                }
-            }
+            nombresTemas.put(t.getIdTema(), t.getNombreTema());
         }
         
         return nombresTemas;
+    }
+    
+    public Map<Long, DTTemaSimple> getDTTemasDisponibles() {
+        
+        List<Tema> listaTemas = temaJpa.findTemaEntities();
+        Map<Long, DTTemaSimple> mapDtTemas = new HashMap<>();
+        // Recorro todos los Temas del Sistema
+        for (Tema t: listaTemas) {
+            
+            mapDtTemas.put(
+                    t.getIdTema(), 
+                    new DTTemaSimple(
+                            t.getIdTema(),
+                            t.getNombreTema(),
+                            t.getDuracionSegundos(),
+                            t.getPosicionEnAlbum(),
+                            t.getMiAlbum().getNombreAlbum(),
+                            t.getMiAlbum().getMiArtista().getNombreCompletoToString()
+                    )
+            );
+        }
+        
+        return mapDtTemas;
     }
     
     /* Selecciona los Nombres de las ListasParticulares que sean
@@ -374,75 +392,77 @@ public class ControladoraPersistencia {
         return nombresAlbumes;
     }
     
-    public void GuardarTemaFavorito(String nicknameCliente, long idTema) {
+    public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+        ArrayList<DTAlbum> dataAlbums = new ArrayList<>();
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+        for (Album album: listaAlbumes) {
+            dataAlbums.add(album.getDataAlbum());
+        }
+        return dataAlbums;
+    }
+    
+    public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
+        
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        Tema tema = temaJpa.findTema(idTema);
+        
+        List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
+        for (Tema t : temasFavoritosDelCliente) {
+            if (tema.getIdTema() == t.getIdTema()) {
+                throw new Exception("El cliente ya tiene este tema en su lista de favoritos.");
+            }
+        }
+        
+        c.setMisTemasFav(tema);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            Tema tema = temaJpa.findTema(idTema);
-
-            c.setMisTemasFav(tema); // Agrego preferencia
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
     
-    public void GuardarListaFavorito(String nicknameCliente, String nombreListaR) {
+    public void GuardarListaFavorito(String nicknameCliente, String nombreListaR) throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+        List<ListaReproduccion> listasFavoritasDelCliente = c.getMisListasReproduccionFav();
+        
+        for (ListaReproduccion lr : listasFavoritasDelCliente) {
+            if (lr.getNombreLista().equals(listaR.getNombreLista())) {
+                throw new Exception("Este cliente ya tiene esta lista en sus favoritos.");
+            }
+        }
+       
+        c.setMisListasReproduccionFav(listaR);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
-
-            c.setMisListasReproduccionFav(listaR);
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
     
-    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) {
-
-        /*
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
-        try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            Album album = albJpa.findAlbum(nombreAlbum);
-
-            c.setMisAlbumesFav(album);
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        Album album = albJpa.findAlbum(idAlbum);
+        
+        List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
+        
+        for (Album a : albumsFavoritosDelCliente) {
+            if (a.getIdAlbum() == album.getIdAlbum()) {
+                throw new Exception("Este cliente ya tiene a este album en sus favoritos.");
+            }
         }
-        */
+        
+        c.setMisAlbumesFav(album);
+        
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
 }
