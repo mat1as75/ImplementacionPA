@@ -4,6 +4,7 @@ import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
@@ -114,7 +115,6 @@ public class Controlador implements IControlador{
         return this.contpersis.getDatosCliente(nicknameCliente);
     }
 
-
     public void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
@@ -122,6 +122,11 @@ public class Controlador implements IControlador{
     @Override
     public Map<Long, String> getTemasDisponibles() {
         return this.contpersis.getTemasDisponibles();
+    }
+    
+    @Override
+    public Map<Long, DTTemaSimple> getDTTemasDisponibles() {
+        return this.contpersis.getDTTemasDisponibles();
     }
     
     @Override

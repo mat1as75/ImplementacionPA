@@ -14,6 +14,7 @@ import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Album;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
@@ -323,21 +324,36 @@ public class ControladoraPersistencia {
     public Map<Long, String> getTemasDisponibles() {
         
         List<Tema> listaTemas = temaJpa.findTemaEntities();
-        //ArrayList<String> nombresTemas = new ArrayList<>();
         Map<Long, String> nombresTemas = new HashMap<>();
         // Recorro todos los Temas del Sistema
         for (Tema t: listaTemas) {
-            List<ListaParticular> listasReproduccionP = (List<ListaParticular>)(ListaParticular)t.getMisReproducciones();
-            /* Recorro ListasParticulares en las que se encuentra dicho Tema */
-            for (ListaParticular lr: listasReproduccionP) {
-                // Si dicha ListaParticulaar no es Privada
-                if (!(lr.soyPrivada())) {
-                    nombresTemas.put(t.getIdTema(), t.getNombreTema());
-                }
-            }
+            nombresTemas.put(t.getIdTema(), t.getNombreTema());
         }
         
         return nombresTemas;
+    }
+    
+    public Map<Long, DTTemaSimple> getDTTemasDisponibles() {
+        
+        List<Tema> listaTemas = temaJpa.findTemaEntities();
+        Map<Long, DTTemaSimple> mapDtTemas = new HashMap<>();
+        // Recorro todos los Temas del Sistema
+        for (Tema t: listaTemas) {
+            
+            mapDtTemas.put(
+                    t.getIdTema(), 
+                    new DTTemaSimple(
+                            t.getIdTema(),
+                            t.getNombreTema(),
+                            t.getDuracionSegundos(),
+                            t.getPosicionEnAlbum(),
+                            t.getMiAlbum().getNombreAlbum(),
+                            t.getMiAlbum().getMiArtista().getNombreCompletoToString()
+                    )
+            );
+        }
+        
+        return mapDtTemas;
     }
     
     /* Selecciona los Nombres de las ListasParticulares que sean
