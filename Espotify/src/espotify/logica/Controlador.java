@@ -145,18 +145,30 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) {
-        this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
+    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
+        try {
+            this.contpersis.GuardarTemaFavorito(nicknameCliente, idTema);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
     @Override
-    public void GuardarListaFavorito(String nicknameCliente, String nombreLista) {
-        this.contpersis.GuardarListaFavorito(nicknameCliente, nombreLista);
+    public void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception {
+        try {
+            this.contpersis.GuardarListaFavorito(nicknameCliente, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
     @Override
-    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) {
-        this.contpersis.GuardarAlbumFavorito(nicknameCliente, idAlbum);
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        try {
+            this.contpersis.GuardarAlbumFavorito(nicknameCliente, idAlbum);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
     

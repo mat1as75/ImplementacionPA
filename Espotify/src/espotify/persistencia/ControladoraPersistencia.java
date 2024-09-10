@@ -402,72 +402,66 @@ public class ControladoraPersistencia {
         return dataAlbums;
     }
     
-    public void GuardarTemaFavorito(String nicknameCliente, long idTema) {
+    public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        Tema tema = temaJpa.findTema(idTema);
+        
+        List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
+        for (Tema t : temasFavoritosDelCliente) {
+            if (tema.getIdTema() == t.getIdTema()) {
+                throw new Exception("El cliente ya tiene este tema en su lista de favoritos.");
+            }
+        }
+        
+        c.setMisTemasFav(tema);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            Tema tema = temaJpa.findTema(idTema);
-
-            c.setMisTemasFav(tema); // Agrego preferencia
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
     
-    public void GuardarListaFavorito(String nicknameCliente, String nombreListaR) {
+    public void GuardarListaFavorito(String nicknameCliente, String nombreListaR) throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+        List<ListaReproduccion> listasFavoritasDelCliente = c.getMisListasReproduccionFav();
+        
+        for (ListaReproduccion lr : listasFavoritasDelCliente) {
+            if (lr.getNombreLista().equals(listaR.getNombreLista())) {
+                throw new Exception("Este cliente ya tiene esta lista en sus favoritos.");
+            }
+        }
+       
+        c.setMisListasReproduccionFav(listaR);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
-
-            c.setMisListasReproduccionFav(listaR);
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
     
-    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) {
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        Album album = albJpa.findAlbum(idAlbum);
+        
+        List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
+        
+        for (Album a : albumsFavoritosDelCliente) {
+            if (a.getIdAlbum() == album.getIdAlbum()) {
+                throw new Exception("Este cliente ya tiene a este album en sus favoritos.");
+            }
+        }
+        
+        c.setMisAlbumesFav(album);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            Album album = albJpa.findAlbum(idAlbum);
-
-            c.setMisAlbumesFav(album);
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
     

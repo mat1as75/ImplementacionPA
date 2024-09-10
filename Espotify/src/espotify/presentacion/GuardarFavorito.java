@@ -272,7 +272,21 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
 
                 // Verifica si se seleccionó Album
                 if (datosAlbum != null && idAlbumSeleccionado != null) {
-                    this.controlador.GuardarAlbumFavorito(nicknameCliente, idAlbumSeleccionado);
+                    
+                    try {
+                        this.controlador.GuardarAlbumFavorito(nicknameCliente, idAlbumSeleccionado);
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        "Album agregado exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    }
                 } else { // Album no se seleccionó
 
                     JOptionPane.showMessageDialog(this, "Seleccione un album.");
@@ -303,7 +317,22 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
 
                 // Verifica si se seleccionó Lista
                 if (nombreListaReproduccion != null) {
-                    this.controlador.GuardarListaFavorito(nicknameCliente, nombreListaReproduccion);
+                    
+                    try {
+                        this.controlador.GuardarListaFavorito(nicknameCliente, nombreListaReproduccion);
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        "Lista agregada exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    }
+                    
                 } else { // Lista no se seleccionó
                     
                     JOptionPane.showMessageDialog(this, "Seleccione una lista de reproduccion.");
@@ -340,7 +369,20 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                 }
 
                 if (datosTema != null && idTemaSeleccionado != null) {
-                    controlador.GuardarTemaFavorito(nicknameCliente, idTemaSeleccionado);
+                    try {
+                        controlador.GuardarTemaFavorito(nicknameCliente, idTemaSeleccionado);
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        "Tema agregado exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "Seleccione un Tema.");
                 }
