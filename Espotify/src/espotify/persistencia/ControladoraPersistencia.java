@@ -5,16 +5,26 @@
  */
 package espotify.persistencia;
 
+
+import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaConRuta;
+import espotify.DataTypes.DTTemaConURL;
+import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Album;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
 import espotify.logica.Genero;
+import espotify.logica.Tema;
+import espotify.logica.TemaConRuta;
+import espotify.logica.TemaConURL;
 import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
-import espotify.logica.Tema;
 import espotify.logica.Usuario;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +38,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-
 
 public class ControladoraPersistencia {
     
@@ -69,6 +78,78 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
+         //creo el album vacio
+        Album nuevoAlbum = new Album();
+        this.albJpa.create(nuevoAlbum);
+        
+        //busco el artista para agregarle el album
+        Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
+        if (art == null) throw new Exception("No se encontro el artista: " +  dataAlbum.getMiArtista());
+        List<Album> albumsDelArtista = art.getMisAlbumesPublicados();
+        for (Album al : albumsDelArtista) {
+            if (al.getNombreAlbum().equals(dataAlbum.getNombreAlbum())) {
+                this.albJpa.destroy(nuevoAlbum.getIdAlbum());
+                throw new Exception("Este artista ya tiene un album con el nombre: " + dataAlbum.getNombreAlbum());
+            }
+        }
+        art.setMisAlbumesPublicados(nuevoAlbum);
+        
+        //busco los generos para agregarlos al album y agregar el album a la lista de albums que tiene genero
+        List<Genero> generosDeAlbum = new ArrayList();
+        for (DTGenero dataG : dataAlbum.getMisgeneros()) {
+            Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
+            if (gen == null) throw new Exception("No se encontro el genero: " + dataG.getNombreGenero());
+            
+            generosDeAlbum.add(gen);
+            //agrego el nuevo album en la lista de albums del genero
+            gen.setMisAlbumes(nuevoAlbum);
+        }
+        
+        //creo los temas y los agrego a una lista
+        List<Tema> temas = new ArrayList();
+        for (DTTemaGenerico dataTema : dataAlbum.getMisTemas()) {
+            if (dataTema instanceof DTTemaConRuta) {
+                TemaConRuta nuevoTemaConRuta = new TemaConRuta(
+                        ((DTTemaConRuta) dataTema).getRutaTema(),
+                        dataTema.getNombreTema(),
+                        dataTema.getDuracionSegundos(),
+                        dataTema.getPosicionEnAlbum(),
+                        nuevoAlbum
+                        );
+                this.temaJpa.create(nuevoTemaConRuta);
+                temas.add(nuevoTemaConRuta);
+            } else {
+                
+                TemaConURL nuevoTemaConURL = new TemaConURL(
+                        ((DTTemaConURL) dataTema).getUrlTema(),
+                        dataTema.getNombreTema(),
+                        dataTema.getDuracionSegundos(),
+                        dataTema.getPosicionEnAlbum(),
+                        nuevoAlbum
+                    );
+                this.temaJpa.create(nuevoTemaConURL);
+                temas.add(nuevoTemaConURL);
+            }
+        }
+        
+        //set atributos
+        nuevoAlbum.setAnioCreacion(dataAlbum.getAnioCreacion());
+        nuevoAlbum.setFotoAlbum(dataAlbum.getFotoAlbum());
+        nuevoAlbum.setNombreAlbum(dataAlbum.getNombreAlbum());
+        //set pseudoatributos
+        nuevoAlbum.setMiArtista(art);
+        nuevoAlbum.setMisGeneros(generosDeAlbum);
+        nuevoAlbum.setMisTemas(temas);
+        //guardar cambios
+        this.albJpa.edit(nuevoAlbum);
+    }
+    
+    public Artista getArtista(String nickname) {
+        Artista art = this.artJpa.findArtista(nickname);
+        return art;
     }
     
     public ArrayList<Artista> getArtistas() {
@@ -243,21 +324,36 @@ public class ControladoraPersistencia {
     public Map<Long, String> getTemasDisponibles() {
         
         List<Tema> listaTemas = temaJpa.findTemaEntities();
-        //ArrayList<String> nombresTemas = new ArrayList<>();
         Map<Long, String> nombresTemas = new HashMap<>();
         // Recorro todos los Temas del Sistema
         for (Tema t: listaTemas) {
-            List<ListaParticular> listasReproduccionP = (List<ListaParticular>)(ListaParticular)t.getMisReproducciones();
-            /* Recorro ListasParticulares en las que se encuentra dicho Tema */
-            for (ListaParticular lr: listasReproduccionP) {
-                // Si dicha ListaParticulaar no es Privada
-                if (!(lr.soyPrivada())) {
-                    nombresTemas.put(t.getIdTema(), t.getNombreTema());
-                }
-            }
+            nombresTemas.put(t.getIdTema(), t.getNombreTema());
         }
         
         return nombresTemas;
+    }
+    
+    public Map<Long, DTTemaSimple> getDTTemasDisponibles() {
+        
+        List<Tema> listaTemas = temaJpa.findTemaEntities();
+        Map<Long, DTTemaSimple> mapDtTemas = new HashMap<>();
+        // Recorro todos los Temas del Sistema
+        for (Tema t: listaTemas) {
+            
+            mapDtTemas.put(
+                    t.getIdTema(), 
+                    new DTTemaSimple(
+                            t.getIdTema(),
+                            t.getNombreTema(),
+                            t.getDuracionSegundos(),
+                            t.getPosicionEnAlbum(),
+                            t.getMiAlbum().getNombreAlbum(),
+                            t.getMiAlbum().getMiArtista().getNombreCompletoToString()
+                    )
+            );
+        }
+        
+        return mapDtTemas;
     }
     
     /* Selecciona los Nombres de las ListasParticulares que sean
@@ -285,83 +381,87 @@ public class ControladoraPersistencia {
     
     /* Selecciona los Nombres de los Albumes que esten 
     disponibles para seleccionar en GuardarFavoritos */
-    public ArrayList<String> getAlbumesDisponibles() {
+    public Map<Long, String> getAlbumesDisponibles() {
         
         List<Album> listaAlbumes = albJpa.findAlbumEntities();
-        ArrayList<String> nombresAlbumes = new ArrayList<>();
+        Map<Long, String> nombresAlbumes = new HashMap<>();
         for (Album album: listaAlbumes) {
-            nombresAlbumes.add(album.getNombreAlbum());
+            nombresAlbumes.put(album.getIdAlbum(), album.getNombreAlbum());
         }
         
         return nombresAlbumes;
     }
     
-    public void GuardarTemaFavorito(String nicknameCliente, long idTema) {
+    public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+        ArrayList<DTAlbum> dataAlbums = new ArrayList<>();
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+        for (Album album: listaAlbumes) {
+            dataAlbums.add(album.getDataAlbum());
+        }
+        return dataAlbums;
+    }
+    
+    public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
+        
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        Tema tema = temaJpa.findTema(idTema);
+        
+        List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
+        for (Tema t : temasFavoritosDelCliente) {
+            if (tema.getIdTema() == t.getIdTema()) {
+                throw new Exception("El cliente ya tiene este tema en su lista de favoritos.");
+            }
+        }
+        
+        c.setMisTemasFav(tema);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            Tema tema = temaJpa.findTema(idTema);
-
-            c.setMisTemasFav(tema); // Agrego preferencia
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
     
-    public void GuardarListaFavorito(String nicknameCliente, String nombreListaR) {
+    public void GuardarListaFavorito(String nicknameCliente, String nombreListaR) throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+        List<ListaReproduccion> listasFavoritasDelCliente = c.getMisListasReproduccionFav();
+        
+        for (ListaReproduccion lr : listasFavoritasDelCliente) {
+            if (lr.getNombreLista().equals(listaR.getNombreLista())) {
+                throw new Exception("Este cliente ya tiene esta lista en sus favoritos.");
+            }
+        }
+       
+        c.setMisListasReproduccionFav(listaR);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
-
-            c.setMisListasReproduccionFav(listaR);
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
     
-    public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
+    public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        Album album = albJpa.findAlbum(idAlbum);
+        
+        List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
+        
+        for (Album a : albumsFavoritosDelCliente) {
+            if (a.getIdAlbum() == album.getIdAlbum()) {
+                throw new Exception("Este cliente ya tiene a este album en sus favoritos.");
+            }
+        }
+        
+        c.setMisAlbumesFav(album);
+        
         try {
-            Cliente c = cliJpa.findCliente(nicknameCliente);
-            Album album = albJpa.findAlbum(nombreAlbum);
-
-            c.setMisAlbumesFav(album);
-            em.persist(c);
-
-            t.commit();
-        } catch (Exception e) {
-            t.rollback();
-        } finally {
-            em.close();
-            emf.close();
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
         }
     }
 
@@ -398,6 +498,39 @@ public class ControladoraPersistencia {
                 
     }
 
+
+    public List<String> listasCreadasEstadoPrivadoTrue(String cliente) {
+        List<String>retorno=new ArrayList<String>();
+        Cliente c =cliJpa.findCliente(cliente);
+        if(c!=null){
+            List<ListaParticular> creadas =c.getMisListasReproduccionCreadas();
+            for(ListaParticular lp:creadas){
+                if(lp.soyPrivada()){
+                    retorno.add(lp.getNombreLista());
+                }
+            }
+            
+        };
+        return retorno;
+    }
+
+    public void setPrivadafalse(String cliente, String lista) {
+        Cliente c = cliJpa.findCliente(cliente);
+        c.setPrivadafalse(lista);
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ListaParticular lp=this.lpartJpa.findListaParticular(lista);
+        lp.setsoyPrivada(false);
+        try {
+            this.lpartJpa.edit(lp);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+    }
 }
 
 

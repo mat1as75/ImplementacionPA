@@ -3,6 +3,8 @@ package espotify.DataTypes;
 import java.util.List;
 
 public class DTAlbum {
+    
+private Long idAlbum;
 private String nombreAlbum;
 private int anioCreacion;
 private String fotoAlbum;
@@ -13,12 +15,17 @@ private DTArtista miArtista;
     public DTAlbum() {
     }
 
-    public DTAlbum(String nombreAlbum, int anioCreacion, String fotoAlbum) {
+    public DTAlbum(Long idAlbum, String nombreAlbum, int anioCreacion, String fotoAlbum) {
+        this.idAlbum = idAlbum;
         this.nombreAlbum = nombreAlbum;
         this.anioCreacion = anioCreacion;
         this.fotoAlbum = fotoAlbum;
     }
 
+    public Long getIdAlbum() {
+        return this.idAlbum;
+    }
+    
     public String getNombreAlbum() {
         return nombreAlbum;
     }
@@ -43,6 +50,10 @@ private DTArtista miArtista;
         return miArtista;
     }
 
+    public void setIdAlbum(Long idAlbum) {
+        this.idAlbum = idAlbum;
+    }
+    
     public void setNombreAlbum(String nombreAlbum) {
         this.nombreAlbum = nombreAlbum;
     }
@@ -72,4 +83,9 @@ private DTArtista miArtista;
         this.miArtista = miArtista;
     }
     
+    public String toStringSimple() {
+        return ("Id: " + this.getIdAlbum() + 
+                ", Nombre: " + this.getNombreAlbum() +
+                ", Año: " + this.getAnioCreacion());
+    }
 }

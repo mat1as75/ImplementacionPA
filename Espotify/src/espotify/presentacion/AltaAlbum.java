@@ -1,8 +1,11 @@
 package espotify.presentacion;
 
+import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
+import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -12,23 +15,29 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeSelectionModel;
 
 public class AltaAlbum extends javax.swing.JInternalFrame {
 
     private IControlador controlador;
+    private String rutaImagenAlbum;
     private List<String> nicknamesArtistasRegistrados;
+    private List<DTGenero> generosDeAlbum;
     private DefaultListModel listaTemasAgregadosModel;
     private List<DTTemaGenerico> dataTemas = new ArrayList<DTTemaGenerico>();
     /**
      * Creates new form AltaAlbum
      */
-    public AltaAlbum(IControlador ICtrl) {
-        controlador = ICtrl;
+    public AltaAlbum() {
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
         nicknamesArtistasRegistrados = controlador.getNicknamesArtistas();
         initComponents();
     }
@@ -74,7 +83,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         btnCancelarAltaAlbum = new javax.swing.JButton();
         btnConfirmarAltaAlbum = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
-        jYearChooser1 = new com.toedter.calendar.JYearChooser();
+        anioAlbum = new com.toedter.calendar.JYearChooser();
         labelImagenAlbum = new javax.swing.JLabel();
         btnSeleccionarImagenAlbum = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -248,7 +257,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jYearChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(anioAlbum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(nombreAlbum, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comboBoxArtistasRegistrados, javax.swing.GroupLayout.Alignment.LEADING, 0, 184, Short.MAX_VALUE))
                         .addGap(32, 32, 32)
@@ -331,7 +340,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel3)
-                                .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(anioAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -415,6 +424,76 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    private Boolean tieneNombreVacio(String nombre) {
+        Boolean nombreVacio = nombre.equals("");
+        
+        if (nombreVacio) {
+            errorLabel.setText("El nombre del album no puede estar vacio.");
+        }
+        
+        return nombreVacio;
+    }
+    
+     private Boolean validarPosicionesDeTemas() {
+        Boolean posicionesSonValidas = true;
+        int numeroTemas = this.dataTemas.size();
+        
+        for (DTTemaGenerico dt : this.dataTemas) {
+            if (dt.getPosicionEnAlbum() > numeroTemas) {
+                errorLabel.setText("Error: Existe al menos una posición de tema invalida.");
+                posicionesSonValidas = false;
+                break;
+            }
+        }
+        return posicionesSonValidas;
+    }
+    
+    private Boolean validarDuracion(String duracion) {
+        //verifico que la duracion ingresada tenga el formato correcto 00:00 a 59:59
+        String regex = "\\b([0-5]?[0-9]):(([0-5])([0-9]))\\b";
+        if (!duracion.matches(regex)) {
+            errorLabel.setText("Error: La duración ingresada no es válida.");
+            return false;
+        }
+        return true;
+    } 
+    
+    private Boolean validarNombreTemaRepetido(String nombre) {
+        //verifico que no se agreguen nombres repetidos
+        for (DTTemaGenerico dt : this.dataTemas) {
+            if (dt.getNombreTema().equals(nombre)) {
+                errorLabel.setText("Error: No se pueden repetir los nombres de los temas.");
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private Boolean validarPosicionTema(String posicion) {
+        int intPosicionTema = 0;
+        
+        //convierto el valor ingresado a int, puede capturar un error si intenta convertir un caracter no numerico
+        try {
+            intPosicionTema = Integer.valueOf(posicion);
+            if (intPosicionTema < 1) {
+                errorLabel.setText("Error: La posición ingresada no es válida.\n");
+                return false;
+            } else {
+                //verifico que no se agreguen posiciones repetidas
+                for (DTTemaGenerico dt : this.dataTemas) {
+                    if (dt.getPosicionEnAlbum() == intPosicionTema) {
+                        errorLabel.setText("Error: Al menos una posición ingresada está repetida.");
+                        return false;
+                    }
+                }
+            }
+        } catch (NumberFormatException e){
+           errorLabel.setText("Error: La posición ingresada no es un número.");
+           return false;
+        }
+        return true;
+    }
+     
     private void btnAgregarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTemaActionPerformed
         // capturo los datos del tema ingresados y lo agrego a la lista
         String nombre = nombreTema.getText().trim();
@@ -430,65 +509,36 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         
         // label para mostrar errores de ingreso de datos
         errorLabel.setText("");
-        int errores = 0;
-        
-        //verifico que la duracion ingresada tenga el formato correcto 00:00 a 59:59
-        String regex = "\\b([0-5]?[0-9]):(([0-5])([0-9]))\\b";
-        if (!duracion.matches(regex)) {
-            errorLabel.setText("Error: La duración ingresada no es válida.");
-            errores++;
-        } else {
-            //extraigo los minutos y segundos por separados
+       
+        //si no hay errores en los datos del tema lo muevo a la lista de temas agregados y habilito el boton de remover
+        if (validarPosicionTema(stringPosicion) 
+                && validarNombreTemaRepetido(nombre) 
+                && validarDuracion(duracion)) {
+            
+            //convierto a int la posicion
+            intPosicionTema = Integer.valueOf(stringPosicion);
+
+            //extraigo los minutos y segundos por separados y convierto a int
             duracionMinutos = Integer.valueOf(
                 duracion.substring(0,duracion.indexOf(":"))
             );
             duracionSegundos = Integer.valueOf(
                 duracion.substring(duracion.indexOf(":")+1)
             );
-            
             duracionTotalSegundos = duracionMinutos * 60 + duracionSegundos;
-            
-            //convierto el valor ingresado a int, puede capturar un error si intenta convertir un caracter no numerico
-            try {
-                intPosicionTema = Integer.valueOf(stringPosicion);
-                if (intPosicionTema < 1) {
-                    errorLabel.setText("Error: La posición ingresada no es válida.\n");
-                } else {
-                    //verifico que no se agreguen nombres ni posiciones repetidas
-                    for (DTTemaGenerico dt : this.dataTemas) {
-                        if (dt.getPosicionEnAlbum() == intPosicionTema) {
-                            errorLabel.setText("Error: Al menos una posición ingresada está repetida.");
-                            errores++;
-                            break;
-                        }
-                        
-                        if (dt.getNombreTema().equals(nombre)) {
-                            errorLabel.setText("Error: No se pueden repetir los nombres de los temas.");
-                            errores++;
-                            break;
-                        }
-                    }
-                
-                }
-            } catch (NumberFormatException e){
-               errorLabel.setText("Error: La posición ingresada no es un número.");
-               errores++;
+
+
+            //creo datatype
+            DTTemaGenerico nuevoDataTema;
+            if (checkboxAccesoURL.isSelected()) {
+                nuevoDataTema = new DTTemaConURL(nombre,duracionTotalSegundos,intPosicionTema,url);
+            } else {
+                nuevoDataTema = new DTTemaConRuta("", nombre, duracionTotalSegundos, intPosicionTema);
             }
-            
-            //si no hay errores en los datos del tema lo muevo a la lista de temas agregados y habilito el boton de remover
-            if (errores == 0) {
-                //creo datatype
-                DTTemaGenerico nuevoDataTema;
-                if (checkboxAccesoURL.isSelected()) {
-                    nuevoDataTema = new DTTemaConURL(nombre,duracionTotalSegundos,intPosicionTema,url);
-                } else {
-                    nuevoDataTema = new DTTemaConRuta("", nombre, duracionTotalSegundos, intPosicionTema);
-                }
-                dataTemas.add(nuevoDataTema);
-                String datos = nuevoDataTema.toString();
-                listaTemasAgregadosModel.addElement(datos);
-                btnRemoverTema.setEnabled(true);
-            }
+            dataTemas.add(nuevoDataTema);
+            String datos = nuevoDataTema.toString();
+            listaTemasAgregadosModel.addElement(datos);
+            btnRemoverTema.setEnabled(true);
         }
     }//GEN-LAST:event_btnAgregarTemaActionPerformed
 
@@ -546,7 +596,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 Toolkit tool = Toolkit.getDefaultToolkit();
                 Image imagen = tool.createImage(ruta);
                 labelImagenAlbum.setIcon(new ImageIcon(imagen.getScaledInstance(labelImagenAlbum.getWidth(), labelImagenAlbum.getHeight(), Image.SCALE_AREA_AVERAGING)));
-
+                this.rutaImagenAlbum = ruta;
+                
             } catch (IOException e) {
                 e.printStackTrace();
             };
@@ -572,30 +623,47 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             urlTema.setEnabled(false);
         }
     }//GEN-LAST:event_checkboxAccesoURLStateChanged
-
+    
     private void btnConfirmarAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAltaAlbumActionPerformed
+        String nombre = nombreAlbum.getText().trim();
+        int anioAlb = anioAlbum.getValue();
+        String fotoAlb = this.rutaImagenAlbum;
+        String nombreArt = String.valueOf(comboBoxArtistasRegistrados.getSelectedItem());
+        this.generosDeAlbum = new ArrayList();
         
-        System.out.println(comboBoxArtistasRegistrados.getSelectedItem());
-        
-        int numeroTemas = this.dataTemas.size();
-        int errores = 0;
-        
-        for (DTTemaGenerico dt : this.dataTemas) {
-            if (dt.getPosicionEnAlbum() > numeroTemas) {
-                errorLabel.setText("Error: Existe al menos una posición de tema invalida.");
-                errores++;
-                break;
+        if (validarPosicionesDeTemas() && !tieneNombreVacio(nombre) && !nombreArt.equals("")) {
+            DTAlbum_SinDTArtista dataAlbum = new DTAlbum_SinDTArtista(
+                nombre, anioAlb, fotoAlb, 
+                this.dataTemas, this.generosDeAlbum, nombreArt
+            );
+            
+            try {
+                controlador.AltaAlbum(dataAlbum);
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Album creado exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
             }
+            this.dispose();
+            
         }
         
-        if (errores == 0) {
-            //confirmo
-            //llamo al controlador y le paso el DTAlbum con los temas adentro
-        }
+        
+        
+        
+        
     }//GEN-LAST:event_btnConfirmarAltaAlbumActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JYearChooser anioAlbum;
     private javax.swing.JButton btnAgregarGeneroAAlbum;
     private javax.swing.JButton btnAgregarTema;
     private javax.swing.JButton btnCancelarAltaAlbum;
@@ -625,7 +693,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private com.toedter.calendar.JYearChooser jYearChooser1;
     private javax.swing.JTree jtreeGenerosRegistrados;
     private javax.swing.JLabel labelArtista;
     private javax.swing.JLabel labelImagenAlbum;

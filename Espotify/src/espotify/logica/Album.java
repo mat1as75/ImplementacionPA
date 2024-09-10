@@ -4,6 +4,7 @@
  */
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,19 +20,21 @@ public class Album implements Serializable {
 
     //Atributos
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idAlbum;
     private String nombreAlbum;
     private int anioCreacion;
     private String fotoAlbum;
     
     //Relaciones
     
-    @OneToMany(mappedBy="miAlbum")
+    @OneToMany(mappedBy="miAlbum", cascade = {CascadeType.PERSIST})
     private List<Tema> misTemas;
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<Genero> misGeneros;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Artista miArtista;
     
 
@@ -50,7 +53,10 @@ public class Album implements Serializable {
     }
     
     //Setters y Getters
-
+    public Long getIdAlbum() {
+        return this.idAlbum;
+    }
+    
     public String getNombreAlbum() {
         return nombreAlbum;
     }
@@ -102,5 +108,16 @@ public class Album implements Serializable {
         this.misGeneros.addFirst(genero);
     }
     
-    
+    public void setMiArtista(Artista artista) {
+        this.miArtista = artista;
+    }
+
+    public DTAlbum getDataAlbum() {
+        return new DTAlbum(
+                this.getIdAlbum(),
+                this.getNombreAlbum(),
+                this.getAnioCreacion(),
+                this.getFotoAlbum()
+        );
+    }
 }

@@ -1,0 +1,122 @@
+[
+    {
+        "Nickname": "vpeople",
+        "E-mail": "vpeople@tuta.io",
+        "Nombre": "Village",
+        "Apellido": "People",
+        "Nacimiento": "1/1/1977",
+        "Imagen": "bit.ly/vpeople",
+        "Biografia": "Village People es una innovadora formación musical de estilo disco de finales de los años 70. Fue famosa tanto por sus peculiares disfraces, como por sus canciones pegadizas, con letras sugerentes y llenas de dobles sentidos.",
+        "Web": "www.officialvillagepeople.com"
+    },
+    {
+        "Nickname": "dmode",
+        "E-mail": "dmode@tuta.io",
+        "Nombre": "Depeche",
+        "Apellido": "Mode",
+        "Nacimiento": "14/6/1980",
+        "Imagen": "bit.ly/depecheMode",
+        "Biografia": "",
+        "Web": "www.depechemode.com"
+    },
+    {
+        "Nickname": "clauper",
+        "E-mail": "clauper@hotmail.com",
+        "Nombre": "Cyndi",
+        "Apellido": "Lauper",
+        "Nacimiento": "22/6/1953",
+        "Imagen": "bit.ly/cLauper",
+        "Biografia": "Cynthia Ann Stephanie Lauper, conocida simplemente como Cyndi Lauper, es una cantautora, actriz y empresaria estadounidense. Después de participar en el grupo musical, Blue Angel, en 1983 firmó con Portrait Records (filial de Epic Records) y lanzó su exitoso álbum debut She's So Unusual a finales de ese mismo año. Siguió lanzando una serie de álbumes en los que encontró una inmensa popularidad, superando los límites de contenido de las letras de sus canciones.",
+        "Web": "cyndilauper.com"
+    },
+    {
+        "Nickname": "bruceTheBoss",
+        "E-mail": "bruceTheBoss@gmail.com",
+        "Nombre": "Bruce",
+        "Apellido": "Springsteen",
+        "Nacimiento": "23/9/1949",
+        "Imagen": "bit.ly/bruceTheBoss",
+        "Biografia": "",
+        "Web": "brucespringsteen.net"
+    },
+    {
+        "Nickname": "tripleNelson",
+        "E-mail": "tripleNelson@tuta.io",
+        "Nombre": "La",
+        "Apellido": "Triple Nelson",
+        "Nacimiento": "1/1/1998",
+        "Imagen": "bit.ly/tripleNelson",
+        "Biografia": "La Triple Nelson es un grupo de rock uruguayo formado en enero de 1998 e integrado inicialmente por Christian Cary (guitarra y voz), Fernando 'Paco' Pintos (bajo y coros) y Rubén Otonello (actualmente su nuevo baterista es Rafael Ugo).",
+        "Web": ""
+    },
+    {
+        "Nickname": "la_ley",
+        "E-mail": "la_ley@tuta.io",
+        "Nombre": "La",
+        "Apellido": "Ley",
+        "Nacimiento": "14/2/1987",
+        "Imagen": "",
+        "Biografia": "",
+        "Web": ""
+    },
+    {
+        "Nickname": "tigerOfWales",
+        "E-mail": "tigerOfWales@tuta.io",
+        "Nombre": "Tom",
+        "Apellido": "Jones",
+        "Nacimiento": "7/6/1940",
+        "Imagen": "",
+        "Biografia": "Sir Thomas John, conocido por su nombre artístico de Tom Jones, es un cantante británico. Ha vendido más de 100 millones de discos en todo el mundo.",
+        "Web": "www.tomjones.com"
+    },
+    {
+        "Nickname": "chaiko",
+        "E-mail": "chaiko@tuta.io",
+        "Nombre": "Piotr",
+        "Apellido": "Tchaikovsky",
+        "Nacimiento": "25/4/1840",
+        "Imagen": "",
+        "Biografia": "Piotr Ilich Chaikovski fue un compositor ruso del período del Romanticismo",
+        "Web": ""
+    },
+    {
+        "Nickname": "nicoleneu",
+        "E-mail": "nicoleneu@hotmail.com",
+        "Nombre": "Nicole",
+        "Apellido": "Neumann",
+        "Nacimiento": "31/10/1980",
+        "Imagen": "bit.ly/nicoleneu",
+        "Biografia": "",
+        "Web": ""
+    },
+    {
+        "Nickname": "lospimpi",
+        "E-mail": "lospimpi@gmail.com",
+        "Nombre": "Pimpinela",
+        "Apellido": "",
+        "Nacimiento": "13/8/1981",
+        "Imagen": "bit.ly/losPimpinela",
+        "Biografia": "",
+        "Web": "www.pimpinela.net"
+    },
+    {
+        "Nickname": "dyangounchained",
+        "E-mail": "dyangounchained@gmail.com",
+        "Nombre": "Dyango",
+        "Apellido": "",
+        "Nacimiento": "5/3/1940",
+        "Imagen": "",
+        "Biografia": "José Gómez Romero, conocido artísticamente como Dyango es un cantante español de música romántica.",
+        "Web": ""
+    },
+    {
+        "Nickname": "alcides",
+        "E-mail": "alcides@tuta.io",
+        "Nombre": "Alcides",
+        "Apellido": "",
+        "Nacimiento": "17/7/1952",
+        "Imagen": "",
+        "Biografia": "Su carrera comienza en 1976 cuando forma la banda Los Playeros junto a su hermano Víctor. Al poco tiempo se mudan a San Luis donde comienzan a hacerse conocidos en la escena musical. Su éxito a nivel nacional llega a comienzos de los años 1990 cuando desembarca en Buenos Aires y graba el éxito 'Violeta', originalmente compuesta e interpretada en 1985 por el músico brasileño Luiz Caldas bajo el título «Fricote».",
+        "Web": ""
+    }
+]
