@@ -591,19 +591,39 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
 
     private void btnRemoverGeneroDeAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverGeneroDeAlbumActionPerformed
         int indiceGeneroSeleccionado = listaGenerosAgregados.getSelectedIndex();
-        listaGenerosAgregadosModel.remove(indiceGeneroSeleccionado);
+        String nombreGeneroSeleccionado = listaGenerosAgregados.getSelectedValue();
         
-        if (listaGenerosAgregadosModel.getSize() == 0) {
-            btnRemoverGeneroDeAlbum.setEnabled(false);
+        if (indiceGeneroSeleccionado != -1) {
+            listaGenerosAgregadosModel.remove(indiceGeneroSeleccionado);
+            for (DTGenero dataGenero : this.dataGeneros) {
+                if (dataGenero.getNombreGenero().equals(nombreGeneroSeleccionado)) {
+                    this.dataGeneros.remove(dataGenero);
+                    break;
+                }
+            }
+
+            if (listaGenerosAgregadosModel.getSize() == 0) {
+                btnRemoverGeneroDeAlbum.setEnabled(false);
+            }
         }
     }//GEN-LAST:event_btnRemoverGeneroDeAlbumActionPerformed
 
     private void btnRemoverTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverTemaActionPerformed
         int indiceTemaSeleccionado = listaTemasAgregados.getSelectedIndex();
-        listaTemasAgregadosModel.remove(indiceTemaSeleccionado);
+        String datosTemaSeleccionado = listaTemasAgregados.getSelectedValue();
         
-        if (listaTemasAgregadosModel.getSize() == 0) {
-            btnRemoverTema.setEnabled(false);
+        if (indiceTemaSeleccionado != -1) {
+            listaTemasAgregadosModel.remove(indiceTemaSeleccionado);
+            for (DTTemaGenerico dataTema : this.dataTemas) {
+                if (datosTemaSeleccionado.contains(dataTema.getNombreTema())) {
+                    this.dataTemas.remove(dataTema);
+                    break;
+                }
+            }
+
+            if (listaTemasAgregadosModel.getSize() == 0) {
+                btnRemoverTema.setEnabled(false);
+            }
         }
     }//GEN-LAST:event_btnRemoverTemaActionPerformed
 
