@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 /**
@@ -28,42 +31,85 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
-        
-        int indiceSeleccionado = jTabbedPane.getSelectedIndex();
-        String tituloSeleccionado = jTabbedPane.getTitleAt(indiceSeleccionado);
-
-        switch (tituloSeleccionado) {
-            case "Temas" -> {
-
-                DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
-                Map<Long, String> mapTemas = controlador.getTemasDisponibles();
-                for (String nombreTema: mapTemas.values()) {
-                    listaNombresTemas.addElement(nombreTema);
-                }
-                jListTemas.setModel(listaNombresTemas);
-
-            }
-            case "Listas" -> {
-
-                DefaultListModel<String> listaNombresListas = new DefaultListModel<>();
-                ArrayList<String> nombresListas = new ArrayList<>(controlador.getListasReproduccionDisponibles());
-                for (String nombreListaR : nombresListas) {
-                    listaNombresListas.addElement(nombreListaR);
-                }
-                jListListas.setModel(listaNombresListas);
-
-            }
-            case "Albumes" -> {
-
-                DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
-                ArrayList<String> nombresAlbumes = new ArrayList<>(controlador.getAlbumesDisponibles());
-                for (String nombreAlbum : nombresAlbumes) {
-                    listaNombresAlbumes.addElement(nombreAlbum);
-                }
-                jListAlbumes.setModel(listaNombresAlbumes);
-
-            }
+              
+/*        // De predeterminado se inicializa el Panel de Temas
+        DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
+        Map<Long, String> mapTemas = controlador.getTemasDisponibles();
+        for (String nombreTema : mapTemas.values()) {
+            listaNombresTemas.addElement(nombreTema);
         }
+        jListTemas.setModel(listaNombresTemas);
+ */       
+        /*jTabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int selectedIndex = jTabbedPane.getSelectedIndex();
+                String selectedTabTitle = jTabbedPane.getTitleAt(selectedIndex);
+                
+                if (selectedTabTitle.equals("Listas")) {
+                    
+                    DefaultListModel<String> listaNombresListas = new DefaultListModel<>();
+                    ArrayList<String> nombresListas = new ArrayList<>(controlador.getListasReproduccionDisponibles());
+                    for (String nombreListaR : nombresListas) {
+                        listaNombresListas.addElement(nombreListaR);
+                    }
+                    jListListas.setModel(listaNombresListas);
+                } else {
+                    
+                    if (selectedTabTitle.equals("Albumes")) {
+                        
+                        DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
+                        ArrayList<String> nombresAlbumes = new ArrayList<>(controlador.getAlbumesDisponibles());
+                        for (String nombreAlbum : nombresAlbumes) {
+                            listaNombresAlbumes.addElement(nombreAlbum);
+                        }
+                        jListAlbumes.setModel(listaNombresAlbumes);
+                    } else {
+                        
+                        DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
+                        Map<Long, String> mapTemas = controlador.getTemasDisponibles();
+                        for (String nombreTema : mapTemas.values()) {
+                            listaNombresTemas.addElement(nombreTema);
+                        }
+                        jListTemas.setModel(listaNombresTemas);
+                    }
+                }
+                
+                switch (selectedTabTitle) {
+                    case "Listas" -> {
+
+                        DefaultListModel<String> listaNombresListas = new DefaultListModel<>();
+                        ArrayList<String> nombresListas = new ArrayList<>(controlador.getListasReproduccionDisponibles());
+                        for (String nombreListaR : nombresListas) {
+                            listaNombresListas.addElement(nombreListaR);
+                        }
+                        jListListas.setModel(listaNombresListas);
+
+                    }
+                    case "Albumes" -> {
+
+                        DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
+                        ArrayList<String> nombresAlbumes = new ArrayList<>(controlador.getAlbumesDisponibles());
+                        for (String nombreAlbum : nombresAlbumes) {
+                            listaNombresAlbumes.addElement(nombreAlbum);
+                        }
+                        jListAlbumes.setModel(listaNombresAlbumes);
+
+                    }
+                    default -> {
+                        
+                        DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
+                        Map<Long, String> mapTemas = controlador.getTemasDisponibles();
+                        for (String nombreTema : mapTemas.values()) {
+                            listaNombresTemas.addElement(nombreTema);
+                        }
+                        jListTemas.setModel(listaNombresTemas);
+                        
+                    }
+                }
+            }
+            
+        });*/
         
     }
     
@@ -110,6 +156,11 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         jLabelNicknameCliente.setText("Nickname cliente:");
 
         jTabbedPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPaneStateChanged(evt);
+            }
+        });
 
         jListTemas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -249,7 +300,7 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextFieldNicknameClienteInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNicknameClienteInfoActionPerformed
-        // TODO add your handling code here:
+        //String nicknameCliente = evt.get
     }//GEN-LAST:event_jTextFieldNicknameClienteInfoActionPerformed
 
     private void jButtonGuardarAlbumFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarAlbumFavoritoActionPerformed
@@ -257,16 +308,33 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         // Obtengo el Nickname del Cliente
         String nicknameCliente = jTextFieldNicknameClienteInfo.getText();
         
-        // Obtengo el Nombre del Album
-        String nombreAlbum = jListAlbumes.getSelectedValue();
-        
-        Fabrica fb = Fabrica.getInstance();
-        controlador = fb.getControlador();
-        
-        // Verifica si ingresó Cliente y si seleccionó Album
-        if (nicknameCliente != null && nombreAlbum != null) {
-            controlador.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+        // Verificar si nicknameCliente no es vacío
+        if (!(nicknameCliente.equals(""))) {
+            // Verificar si nicknameCliente existe en el Sistema
+            if (this.validarNicknameCliente(nicknameCliente)) {
+
+                // Obtengo el Nombre del Album
+                String nombreAlbum = jListAlbumes.getSelectedValue();
+
+                // Verifica si se seleccionó Album
+                if (nombreAlbum != null) {
+                    Fabrica fb = Fabrica.getInstance();
+                    controlador = fb.getControlador();
+
+                    controlador.GuardarAlbumFavorito(nicknameCliente, nombreAlbum);
+                } else { // Album no se seleccionó
+
+                    JOptionPane.showMessageDialog(this, "Seleccione un album.");
+                }
+            } else { // nicknameCliente no existe en el Sistema
+
+                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
+            }
+        } else { // nicknameCliete es vacío
+            
+            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.");
         }
+        
     }//GEN-LAST:event_jButtonGuardarAlbumFavoritoActionPerformed
 
     private void jButtonGuardarListaFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarListaFavoritoActionPerformed
@@ -274,15 +342,31 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         // Obtengo el Nickname del Cliente
         String nicknameCliente = jTextFieldNicknameClienteInfo.getText();
         
-        // Obtengo el Nombre de la ListaReproduccion
-        String nombreListaReproduccion = jListAlbumes.getSelectedValue();
+        // Verificar si nicknameCliente no es vacío
+        if (!(nicknameCliente.equals(""))) {
+            // Verificar si nicknameCliente existe en el Sistema
+            if (this.validarNicknameCliente(nicknameCliente)) {
         
-        Fabrica fb = Fabrica.getInstance();
-        controlador = fb.getControlador();
-        
-        // Verifica si ingresó Cliente y si seleccionó Lista
-        if (nicknameCliente != null && nombreListaReproduccion != null) {
-            controlador.GuardarListaFavorito(nicknameCliente, nombreListaReproduccion);
+                // Obtengo el Nombre de la ListaReproduccion
+                String nombreListaReproduccion = jListListas.getSelectedValue();
+
+                // Verifica si se seleccionó Lista
+                if (nombreListaReproduccion != null) {
+                    Fabrica fb = Fabrica.getInstance();
+                    controlador = fb.getControlador();
+
+                    controlador.GuardarListaFavorito(nicknameCliente, nombreListaReproduccion);
+                } else { // Lista no se seleccionó
+                    
+                    JOptionPane.showMessageDialog(this, "Seleccione una lista de reproduccion.");
+                }
+            } else { // nicknameCliente no existe en el Sistema
+                
+                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
+            }
+        } else { // nicknameCliente es vacío
+            
+            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.");
         }
     }//GEN-LAST:event_jButtonGuardarListaFavoritoActionPerformed
 
@@ -291,37 +375,96 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         // Obtengo el Nickname del Cliente
         String nicknameCliente = jTextFieldNicknameClienteInfo.getText();
         
-        // Obtengo el idTema del Tema seleccionado
-        Map<Long, String> mapTemas = controlador.getTemasDisponibles();
+        // Verificar si nicknameCliente no es vacío
+        if (!(nicknameCliente.equals(""))) {
+            // Verificar si nicknameCliente existe en el Sistema
+            if (this.validarNicknameCliente(nicknameCliente)) {
         
-        // mapTemas Invertido
-        Map<String, Long> mapTemasInvertido = new HashMap<>();
-        for (Map.Entry<Long, String> entry : mapTemas.entrySet()) {
-            mapTemasInvertido.put(entry.getValue(), entry.getKey());
-        }
-        
-        // Verifica si ingresó Cliente
-        if (nicknameCliente != null) {
-     
-            Fabrica fb = Fabrica.getInstance();
-            controlador = fb.getControlador();
+                // Obtengo el idTema del Tema seleccionado
+                Map<Long, String> mapTemas = controlador.getTemasDisponibles();
 
-            jListTemas.addListSelectionListener(e -> {
-                if (!e.getValueIsAdjusting()) {
-                    // Obtener el Nombre del Tema seleccionado
-                    String nombreTemaSeleccionado = jListTemas.getSelectedValue();
-
-                    if (nombreTemaSeleccionado != null) {
-                        // Buscar la clave correspondiente en el Map invertido
-                        Long idTema = mapTemasInvertido.get(nombreTemaSeleccionado);
-                        controlador.GuardarTemaFavorito(nicknameCliente, idTema);
-                    }
+                // mapTemas Invertido
+                Map<String, Long> mapTemasInvertido = new HashMap<>();
+                for (Map.Entry<Long, String> entry : mapTemas.entrySet()) {
+                    mapTemasInvertido.put(entry.getValue(), entry.getKey());
                 }
-            });
+
+                Fabrica fb = Fabrica.getInstance();
+                controlador = fb.getControlador();
+
+                jListTemas.addListSelectionListener(e -> {
+                    if (!e.getValueIsAdjusting()) {
+                        // Obtener el Nombre del Tema seleccionado
+                        String nombreTemaSeleccionado = jListTemas.getSelectedValue();
+
+                        if (nombreTemaSeleccionado != null) {
+                            // Buscar la clave correspondiente en el Map invertido
+                            Long idTema = mapTemasInvertido.get(nombreTemaSeleccionado);
+                            controlador.GuardarTemaFavorito(nicknameCliente, idTema);
+                        } else { // Tema no se selecccionó
+                            
+                            JOptionPane.showMessageDialog(this, "Seleccione un Tema.");
+                        }
+                    }
+                });
+            } else { // nicknameCliente no existe en el Sistema
+                
+                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
+            }
+        } else { // nicknameCliente es vacío
+            
+            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.");
         }
-        
     }//GEN-LAST:event_jButtonGuardarTemaFavoritoActionPerformed
 
+    private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        int indiceSeleccionado = jTabbedPane.getSelectedIndex();
+        String tituloPanelSeleccionado = jTabbedPane.getTitleAt(indiceSeleccionado);
+        
+        switch(tituloPanelSeleccionado) {
+            case "Temas" -> {
+                
+                DefaultListModel<String> listaNombresTemas = new DefaultListModel<>();
+                Map<Long, String> mapTemas = controlador.getTemasDisponibles();
+                for (String nombreTema : mapTemas.values()) {
+                    listaNombresTemas.addElement(nombreTema);
+                }
+                jListTemas.setModel(listaNombresTemas);
+                break;
+            }
+            case "Listas" -> {
+                
+                DefaultListModel<String> listaNombresListas = new DefaultListModel<>();
+                ArrayList<String> nombresListas = new ArrayList<>(controlador.getListasReproduccionDisponibles());
+                for (String nombreListaR : nombresListas) {
+                    listaNombresListas.addElement(nombreListaR);
+                }
+                jListListas.setModel(listaNombresListas);
+                break;
+            }
+            case "Albumes" -> {
+                
+                DefaultListModel<String> listaNombresAlbumes = new DefaultListModel<>();
+                ArrayList<String> nombresAlbumes = new ArrayList<>(controlador.getAlbumesDisponibles());
+                for (String nombreAlbum : nombresAlbumes) {
+                    listaNombresAlbumes.addElement(nombreAlbum);
+                }
+                jListAlbumes.setModel(listaNombresAlbumes);
+                break;
+            }
+        }
+    }//GEN-LAST:event_jTabbedPaneStateChanged
+
+    private boolean validarNicknameCliente(String nickname) {
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        return controlador.ExisteCliente(nickname);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonGuardarAlbumFavorito;
