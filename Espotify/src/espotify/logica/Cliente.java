@@ -4,6 +4,7 @@
  */
 package espotify.logica;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -39,15 +40,21 @@ public class Cliente extends Usuario{
     )
     private List<ListaReproduccion> misListasReproduccionFav;
     
-    @OneToMany(mappedBy="miCliente") /* Hace referencia a una relacion Bidireccional de 1 a N ( 1 <-> * ) */
+    @ManyToMany
+    @JoinTable(
+            name = "cliente_listasReproduccion_creadas",
+            joinColumns = @JoinColumn(name = "nickname_Cliente"),
+            inverseJoinColumns = @JoinColumn(name = "nombre_ListaReproduccion")
+    )
     private List<ListaParticular> misListasReproduccionCreadas;
-    
+
     // Constructores
     public Cliente() {
         
     }
     public Cliente(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil) {
         super( nickname, nombreUsuario, apellidoUsuario, email, fecNac, fotoPerfil );
+        misSeguidos=new ArrayList<Usuario>();
     }
     
     // Getters & Setters
@@ -57,7 +64,7 @@ public class Cliente extends Usuario{
     public void setMisSeguidos(Usuario u) {
         this.misSeguidos.addFirst(u);
     }
-    /*
+    
     public List<Album> getMisAlbumesFav() {
         return this.misAlbumesFav;
     }
@@ -79,10 +86,10 @@ public class Cliente extends Usuario{
         this.misListasReproduccionFav.addFirst(lrf);
     }
     
-    public List<ListaReproduccion> getMisListasReproduccionCreadas() {
+    public List<ListaParticular> getMisListasReproduccionCreadas() {
         return this.misListasReproduccionCreadas;
     }
-    public void setMisListasReproduccionCreadas(ListaReproduccion lrc) {
+    public void setMisListasReproduccionCreadas(ListaParticular lrc) {
         this.misListasReproduccionCreadas.addFirst(lrc);
-    }*/
+    }
 }

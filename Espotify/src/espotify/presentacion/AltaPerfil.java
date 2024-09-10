@@ -329,7 +329,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             if (opcion == "artista") {
                 biografia = jTextAreaBiografia.getText();
                 webPromocion = jTextFieldwebpromocion.getText();
-                Artista a = new Artista(nickname, nombre, apellido, email, fecNac, fotoPerfil, biografia, email);
+                Artista a = new Artista(nickname, nombre, apellido, email, fecNac, fotoPerfil, biografia,webPromocion );
                 i.AltaArtista(a);
             }
             if (opcion == "cliente") {

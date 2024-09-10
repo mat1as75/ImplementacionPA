@@ -80,4 +80,11 @@ public abstract class Tema implements Serializable {
         return this.miAlbum;
     }
     
+    public List<ListaReproduccion> getMisReproducciones() {
+        return misReproducciones;
+    }
+    
+    public void setMisReproducciones(ListaReproduccion lr) {
+        this.misReproducciones.add(lr);
+    }
 }

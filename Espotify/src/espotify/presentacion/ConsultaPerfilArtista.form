@@ -35,7 +35,7 @@
                   <Component id="jLabelSeleccioneArtista" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPaneListClientes" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
+                          <Component id="jScrollPaneListArtistas" alignment="1" min="-2" pref="183" max="-2" attributes="0"/>
                           <Component id="jButtonAceptar" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -78,7 +78,7 @@
                                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="LabelNicknameInfo" alignment="0" pref="236" max="32767" attributes="0"/>
+                                              <Component id="jLabelNicknameInfo" alignment="0" pref="236" max="32767" attributes="0"/>
                                               <Component id="jLabelNombreInfo" alignment="0" max="32767" attributes="0"/>
                                               <Component id="jLabelApellidoInfo" alignment="0" max="32767" attributes="0"/>
                                               <Component id="jLabelFecNacInfo" alignment="0" max="32767" attributes="0"/>
@@ -119,7 +119,7 @@
                               <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabelNickname" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="LabelNicknameInfo" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelNicknameInfo" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -171,7 +171,7 @@
                       <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPaneListClientes" min="-2" pref="308" max="-2" attributes="0"/>
+                      <Component id="jScrollPaneListArtistas" min="-2" pref="308" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonAceptar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
@@ -228,9 +228,9 @@
         <Property name="text" type="java.lang.String" value="Foto de Perfil"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="LabelNicknameInfo">
+    <Component class="javax.swing.JLabel" name="jLabelNicknameInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="wanda1"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPaneSeguidores">
@@ -268,10 +268,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelNombreInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Wanda"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPaneListClientes">
+    <Container class="javax.swing.JScrollPane" name="jScrollPaneListArtistas">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
@@ -298,12 +298,12 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabelApellidoInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Russell"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelFecNacInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="04/09/1996"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonAceptar">
@@ -316,7 +316,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelCorreoInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="wanda.russell"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPaneListasRCreadas">
@@ -351,7 +351,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelDirSitioWebInfo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="www.wandarussel.com"/>
+        <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelBiografia">
@@ -368,10 +368,11 @@
       <SubComponents>
         <Component class="javax.swing.JTextArea" name="jTextAreaBiografiaInfo">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="Wanda Russell, la voz que da vida a cada nota. Cantante dedicada a compartir su arte y emociones a trav&#xe9;s de la m&#xfa;sica."/>
+            <Property name="text" type="java.lang.String" value="..."/>
             <Property name="wrapStyleWord" type="boolean" value="true"/>
           </Properties>
         </Component>

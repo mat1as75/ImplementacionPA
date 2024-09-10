@@ -4,10 +4,15 @@
  */
 package espotify.presentacion;
 
+import espotify.DataTypes.DTDatosArtista;
 import espotify.logica.Artista;
+import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,11 +25,17 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
     public ConsultaPerfilArtista() {
         initComponents();
         
-        // Cargo en jListArtistas todos los artistas del sistema
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        /* Cargo el jList con los Nicknames de Artistas del Sistema */
+        DefaultListModel<String> listaNicknamesArtistas = new DefaultListModel<>();
+        ArrayList<String> nicknamesArtistas = new ArrayList<>(controlador.getNicknamesArtistas());
 
-       // jListArtistas.setListData(controlador.ObtenerListaArtistas().toArray(String[]::new));
-        
-        
+        for (String nickname: nicknamesArtistas) {
+            listaNicknamesArtistas.addElement(nickname);
+        }
+        jListArtistas.setModel(listaNicknamesArtistas);
     }
 
     /**
@@ -44,12 +55,12 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         jLabelFecNac = new javax.swing.JLabel();
         jLabelCorreo = new javax.swing.JLabel();
         ImageArtistaLabel = new javax.swing.JLabel();
-        LabelNicknameInfo = new javax.swing.JLabel();
+        jLabelNicknameInfo = new javax.swing.JLabel();
         jScrollPaneSeguidores = new javax.swing.JScrollPane();
         jListSeguidores = new javax.swing.JList<>();
         jLabelSeleccioneArtista = new javax.swing.JLabel();
         jLabelNombreInfo = new javax.swing.JLabel();
-        jScrollPaneListClientes = new javax.swing.JScrollPane();
+        jScrollPaneListArtistas = new javax.swing.JScrollPane();
         jListArtistas = new javax.swing.JList<>();
         jLabelApellidoInfo = new javax.swing.JLabel();
         jLabelFecNacInfo = new javax.swing.JLabel();
@@ -90,7 +101,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
 
         ImageArtistaLabel.setText("Foto de Perfil");
 
-        LabelNicknameInfo.setText("wanda1");
+        jLabelNicknameInfo.setText("...");
 
         jListSeguidores.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -102,18 +113,18 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         jLabelSeleccioneArtista.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
         jLabelSeleccioneArtista.setText("SELECCIONE UN ARTISTA");
 
-        jLabelNombreInfo.setText("Wanda");
+        jLabelNombreInfo.setText("...");
 
         jListArtistas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPaneListClientes.setViewportView(jListArtistas);
+        jScrollPaneListArtistas.setViewportView(jListArtistas);
 
-        jLabelApellidoInfo.setText("Russell");
+        jLabelApellidoInfo.setText("...");
 
-        jLabelFecNacInfo.setText("04/09/1996");
+        jLabelFecNacInfo.setText("...");
 
         jButtonAceptar.setText("Aceptar");
         jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -122,7 +133,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelCorreoInfo.setText("wanda.russell");
+        jLabelCorreoInfo.setText("...");
 
         jListAlbumesPublicados.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -133,14 +144,15 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
 
         jLabelDirSitioWeb.setText("Dirección Sitio Web:");
 
-        jLabelDirSitioWebInfo.setText("www.wandarussel.com");
+        jLabelDirSitioWebInfo.setText("...");
 
         jLabelBiografia.setText("Biografia:");
 
+        jTextAreaBiografiaInfo.setEditable(false);
         jTextAreaBiografiaInfo.setColumns(20);
         jTextAreaBiografiaInfo.setLineWrap(true);
         jTextAreaBiografiaInfo.setRows(5);
-        jTextAreaBiografiaInfo.setText("Wanda Russell, la voz que da vida a cada nota. Cantante dedicada a compartir su arte y emociones a través de la música.");
+        jTextAreaBiografiaInfo.setText("...");
         jTextAreaBiografiaInfo.setWrapStyleWord(true);
         jScrollPaneBiografiaInfo.setViewportView(jTextAreaBiografiaInfo);
 
@@ -159,7 +171,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                     .addComponent(jLabelSeleccioneArtista)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPaneListClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPaneListArtistas, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonAceptar))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -194,7 +206,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                                         .addGap(45, 45, 45)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(LabelNicknameInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                                                .addComponent(jLabelNicknameInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
                                                 .addComponent(jLabelNombreInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jLabelApellidoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(jLabelFecNacInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -223,7 +235,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                                 .addGap(39, 39, 39)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabelNickname, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(LabelNicknameInfo, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(jLabelNicknameInfo, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabelNombre)
@@ -262,7 +274,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPaneSeguidores))
                         .addGap(98, 98, 98))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPaneListClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPaneListArtistas, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonAceptar)
                         .addGap(127, 127, 127))))
@@ -272,13 +284,65 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-        // TODO add your handling code here:
+        
+        // Obtengo el Nickname seleccionado
+        String nicknameArtistaSeleccionado = jListArtistas.getSelectedValue();
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        // Obtengo sus datos
+        DTDatosArtista datosArtista = controlador.ConsultarPerfilArtista(nicknameArtistaSeleccionado);
+        
+        // Verifica si hay una selección
+        if (nicknameArtistaSeleccionado != null) {
+            
+            jLabelNicknameInfo.setText(datosArtista.getNickname());
+            jLabelNombreInfo.setText(datosArtista.getNombreUsuario());
+            jLabelApellidoInfo.setText(datosArtista.getApellidoUsuario());
+            
+            // Convertir Date a formato String
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String fecNacString = dateFormat.format(datosArtista.getFecNac());
+            jLabelFecNacInfo.setText(fecNacString);
+            
+            jLabelCorreoInfo.setText(datosArtista.getEmail());
+            jLabelDirSitioWebInfo.setText(datosArtista.getDirSitioWeb());
+            jTextAreaBiografiaInfo.setText(datosArtista.getBiografia());
+            jLabelCantSeguidores.setText(String.valueOf(datosArtista.getCantidadSeguidores()));
+            
+            /* Recorro lista Nicknames de Seguidores del Artista, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nicknames a la JList*/
+            DefaultListModel<String> listaSeguidores = new DefaultListModel<>();
+            ArrayList<String> nicknamesSeguidores = datosArtista.getNicknamesSeguidores();
+            
+            for (String nickname: nicknamesSeguidores) {
+                listaSeguidores.addElement(nickname);
+            }
+            jListSeguidores.setModel(listaSeguidores);
+            
+            /* Recorro lista NombresAlbumesP del Artista, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los NombresAlbumesP a la JList*/
+            DefaultListModel<String> listaAlbumesPublicados = new DefaultListModel<>();
+            ArrayList<String> nombresAlbumesP = datosArtista.getNombresAlbumesPublicados();
+            
+            for (String nombreAlbum: nombresAlbumesP) {
+                listaAlbumesPublicados.addElement(nombreAlbum);
+            }
+            jListAlbumesPublicados.setModel(listaAlbumesPublicados);
+            
+            // Quito la posibilidad de volver a Consultar
+            jButtonAceptar.setVisible(false);
+        }
+        
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageArtistaLabel;
-    private javax.swing.JLabel LabelNicknameInfo;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JLabel jLabelApellido;
     private javax.swing.JLabel jLabelApellidoInfo;
@@ -291,6 +355,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelFecNac;
     private javax.swing.JLabel jLabelFecNacInfo;
     private javax.swing.JLabel jLabelNickname;
+    private javax.swing.JLabel jLabelNicknameInfo;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelNombreInfo;
     private javax.swing.JLabel jLabelSeleccioneArtista;
@@ -301,7 +366,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
     private javax.swing.JList<String> jListArtistas;
     private javax.swing.JList<String> jListSeguidores;
     private javax.swing.JScrollPane jScrollPaneBiografiaInfo;
-    private javax.swing.JScrollPane jScrollPaneListClientes;
+    private javax.swing.JScrollPane jScrollPaneListArtistas;
     private javax.swing.JScrollPane jScrollPaneListasRCreadas;
     private javax.swing.JScrollPane jScrollPaneSeguidores;
     private javax.swing.JTextArea jTextAreaBiografiaInfo;

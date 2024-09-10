@@ -4,17 +4,35 @@
  */
 package espotify.presentacion;
 
+import espotify.DataTypes.DTDatosCliente;
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author tecnologo
  */
 public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form ConsultaPerfilCliente
-     */
+    IControlador controlador;
+    
     public ConsultaPerfilCliente() {
         initComponents();
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        /* Cargo el jList con los Nicknames de Clientes del Sistema */
+        DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
+        ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
+        
+        for (String nickname: nicknamesClientes) {
+            listaNicknamesClientes.addElement(nickname);
+        }
+        jListClientes.setModel(listaNicknamesClientes);
     }
 
     /**
@@ -30,31 +48,40 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         jScrollPaneListClientes = new javax.swing.JScrollPane();
         jListClientes = new javax.swing.JList<>();
         jButtonAceptar = new javax.swing.JButton();
-        jLabelNickname = new javax.swing.JLabel();
-        jLabelNombre = new javax.swing.JLabel();
-        jLabelApellido = new javax.swing.JLabel();
-        jLabelFecNac = new javax.swing.JLabel();
+        jScrollPane = new javax.swing.JScrollPane();
+        jPanel = new javax.swing.JPanel();
         jLabelCorreo = new javax.swing.JLabel();
-        ImageClienteLabel = new javax.swing.JLabel();
-        LabelNicknameInfo = new javax.swing.JLabel();
-        jLabelNombreInfo = new javax.swing.JLabel();
-        jLabelApellidoInfo = new javax.swing.JLabel();
         jLabelFecNacInfo = new javax.swing.JLabel();
+        jLabelNicknameInfo = new javax.swing.JLabel();
+        ImageClienteLabel = new javax.swing.JLabel();
         jLabelCorreoInfo = new javax.swing.JLabel();
-        jLabelTituloDatos = new javax.swing.JLabel();
-        jLabelTituloSeguidores = new javax.swing.JLabel();
         jLabelTituloSeguidos = new javax.swing.JLabel();
-        jLabelTituloListasReproduccion = new javax.swing.JLabel();
-        jLabelTituloListasFavoritas = new javax.swing.JLabel();
+        jLabelFecNac = new javax.swing.JLabel();
         jLabelTituloListasCreadas = new javax.swing.JLabel();
-        jScrollPaneSeguidores = new javax.swing.JScrollPane();
-        jListSeguidores = new javax.swing.JList<>();
         jScrollPaneSeguidos = new javax.swing.JScrollPane();
         jListSeguidos = new javax.swing.JList<>();
-        jScrollPaneListasRCreadas = new javax.swing.JScrollPane();
-        jListListasRCreadas = new javax.swing.JList<>();
         jScrollPaneListasRFavoritas = new javax.swing.JScrollPane();
         jListListasRFavoritas = new javax.swing.JList<>();
+        jLabelNombreInfo = new javax.swing.JLabel();
+        jLabelNombre = new javax.swing.JLabel();
+        jLabelTituloSeguidores = new javax.swing.JLabel();
+        jLabelApellidoInfo = new javax.swing.JLabel();
+        jLabelApellido = new javax.swing.JLabel();
+        jScrollPaneSeguidores = new javax.swing.JScrollPane();
+        jListSeguidores = new javax.swing.JList<>();
+        jLabelNickname = new javax.swing.JLabel();
+        jScrollPaneListasRCreadas = new javax.swing.JScrollPane();
+        jListListasRCreadas = new javax.swing.JList<>();
+        jLabel = new javax.swing.JLabel();
+        jSeparator = new javax.swing.JSeparator();
+        jLabelTituloListasFavoritas = new javax.swing.JLabel();
+        jLabelTituloAlbumesFavoritos = new javax.swing.JLabel();
+        jLabelTituloTemasFavoritos = new javax.swing.JLabel();
+        jScrollPaneTemasFavoritos = new javax.swing.JScrollPane();
+        jListTemasFavoritos = new javax.swing.JList<>();
+        jScrollPaneAlbumesFavoritos = new javax.swing.JScrollPane();
+        jListAlbumesFavoritos = new javax.swing.JList<>();
+        jLabelTituloDatos = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -80,52 +107,25 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelNickname.setText("Nickname:");
-
-        jLabelNombre.setText("Nombre:");
-
-        jLabelApellido.setText("Apellido:");
-
-        jLabelFecNac.setText("Fecha de nacimiento:");
+        jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         jLabelCorreo.setText("Correo electronico:");
 
+        jLabelFecNacInfo.setText("...");
+
+        jLabelNicknameInfo.setText("...");
+
         ImageClienteLabel.setText("Foto de Perfil");
 
-        LabelNicknameInfo.setText("alex1");
-
-        jLabelNombreInfo.setText("Alex");
-
-        jLabelApellidoInfo.setText("Smith");
-
-        jLabelFecNacInfo.setText("11/12/1978");
-
-        jLabelCorreoInfo.setText("alex.smith@gmail.com");
-
-        jLabelTituloDatos.setFont(new java.awt.Font("Liberation Sans", 1, 21)); // NOI18N
-        jLabelTituloDatos.setText("DATOS DEL CLIENTE");
-
-        jLabelTituloSeguidores.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
-        jLabelTituloSeguidores.setText("SEGUIDORES");
+        jLabelCorreoInfo.setText("...");
 
         jLabelTituloSeguidos.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
         jLabelTituloSeguidos.setText("SEGUIDOS");
 
-        jLabelTituloListasReproduccion.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
-        jLabelTituloListasReproduccion.setText("LISTAS DE REPRODUCCION");
-
-        jLabelTituloListasFavoritas.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
-        jLabelTituloListasFavoritas.setText("FAVORITAS");
+        jLabelFecNac.setText("Fecha de nacimiento:");
 
         jLabelTituloListasCreadas.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
-        jLabelTituloListasCreadas.setText("CREADAS");
-
-        jListSeguidores.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPaneSeguidores.setViewportView(jListSeguidores);
+        jLabelTituloListasCreadas.setText("LISTAS CREADAS");
 
         jListSeguidos.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -134,6 +134,33 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         });
         jScrollPaneSeguidos.setViewportView(jListSeguidos);
 
+        jListListasRFavoritas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneListasRFavoritas.setViewportView(jListListasRFavoritas);
+
+        jLabelNombreInfo.setText("...");
+
+        jLabelNombre.setText("Nombre:");
+
+        jLabelTituloSeguidores.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
+        jLabelTituloSeguidores.setText("SEGUIDORES");
+
+        jLabelApellidoInfo.setText("...");
+
+        jLabelApellido.setText("Apellido:");
+
+        jListSeguidores.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneSeguidores.setViewportView(jListSeguidores);
+
+        jLabelNickname.setText("Nickname:");
+
         jListListasRCreadas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -141,12 +168,160 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         });
         jScrollPaneListasRCreadas.setViewportView(jListListasRCreadas);
 
-        jListListasRFavoritas.setModel(new javax.swing.AbstractListModel<String>() {
+        jLabel.setFont(new java.awt.Font("Liberation Sans", 3, 15)); // NOI18N
+        jLabel.setText("PREFERENCIAS");
+
+        jLabelTituloListasFavoritas.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
+        jLabelTituloListasFavoritas.setText("LISTAS FAVORITAS");
+
+        jLabelTituloAlbumesFavoritos.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
+        jLabelTituloAlbumesFavoritos.setText("ALBUMES FAVORITOS");
+
+        jLabelTituloTemasFavoritos.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
+        jLabelTituloTemasFavoritos.setText("TEMAS FAVORITOS");
+
+        jListTemasFavoritos.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPaneListasRFavoritas.setViewportView(jListListasRFavoritas);
+        jScrollPaneTemasFavoritos.setViewportView(jListTemasFavoritos);
+
+        jListAlbumesFavoritos.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneAlbumesFavoritos.setViewportView(jListAlbumesFavoritos);
+
+        javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
+        jPanel.setLayout(jPanelLayout);
+        jPanelLayout.setHorizontalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(31, 31, 31)
+                                        .addComponent(jLabelTituloSeguidores))
+                                    .addComponent(jScrollPaneSeguidores, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPaneListasRFavoritas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(jLabelTituloListasFavoritas)))
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(62, 62, 62)
+                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanelLayout.createSequentialGroup()
+                                                .addGap(41, 41, 41)
+                                                .addComponent(jLabelTituloSeguidos))
+                                            .addComponent(jScrollPaneSeguidos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanelLayout.createSequentialGroup()
+                                                .addGap(77, 77, 77)
+                                                .addComponent(jLabelTituloListasCreadas))
+                                            .addGroup(jPanelLayout.createSequentialGroup()
+                                                .addGap(63, 63, 63)
+                                                .addComponent(jScrollPaneListasRCreadas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(59, 59, 59)
+                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabelTituloAlbumesFavoritos)
+                                            .addComponent(jScrollPaneAlbumesFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPaneTemasFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanelLayout.createSequentialGroup()
+                                                .addGap(8, 8, 8)
+                                                .addComponent(jLabelTituloTemasFavoritos))))))
+                            .addComponent(jLabel)
+                            .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addComponent(ImageClienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelFecNac)
+                            .addComponent(jLabelNickname)
+                            .addComponent(jLabelNombre)
+                            .addComponent(jLabelApellido)
+                            .addComponent(jLabelCorreo))
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelNicknameInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelNombreInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelApellidoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelFecNacInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelCorreoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(207, Short.MAX_VALUE))
+        );
+        jPanelLayout.setVerticalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelNickname, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelNicknameInfo, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelNombre)
+                            .addComponent(jLabelNombreInfo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelApellido)
+                            .addComponent(jLabelApellidoInfo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelFecNac)
+                            .addComponent(jLabelFecNacInfo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelCorreo)
+                            .addComponent(jLabelCorreoInfo)))
+                    .addComponent(ImageClienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelTituloListasCreadas)
+                    .addComponent(jLabelTituloSeguidos)
+                    .addComponent(jLabelTituloSeguidores))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPaneSeguidores)
+                    .addComponent(jScrollPaneListasRCreadas)
+                    .addComponent(jScrollPaneSeguidos, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel)
+                .addGap(37, 37, 37)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addComponent(jLabelTituloListasFavoritas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPaneListasRFavoritas, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
+                        .addComponent(jLabelTituloAlbumesFavoritos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPaneAlbumesFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addComponent(jLabelTituloTemasFavoritos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPaneTemasFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(87, 87, 87))
+        );
+
+        jScrollPane.setViewportView(jPanel);
+
+        jLabelTituloDatos.setFont(new java.awt.Font("Liberation Sans", 1, 21)); // NOI18N
+        jLabelTituloDatos.setText("DATOS DEL CLIENTE");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,118 +330,34 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelSeleccioneCliente)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPaneListClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonAceptar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelSeleccioneCliente)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPaneListClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonAceptar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabelTituloListasCreadas)
-                                        .addGap(101, 101, 101)
-                                        .addComponent(jLabelTituloListasFavoritas)
-                                        .addGap(36, 36, 36))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jScrollPaneSeguidores, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jScrollPaneSeguidos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(107, 107, 107)
-                                        .addComponent(jScrollPaneListasRCreadas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jScrollPaneListasRFavoritas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(71, 71, 71))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabelTituloListasReproduccion)
-                                .addGap(137, 137, 137))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(293, 293, 293)
-                                        .addComponent(jLabelTituloDatos))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(31, 31, 31)
-                                        .addComponent(jLabelTituloSeguidores)
-                                        .addGap(87, 87, 87)
-                                        .addComponent(jLabelTituloSeguidos)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(ImageClienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(73, 73, 73)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelFecNac)
-                                    .addComponent(jLabelNickname)
-                                    .addComponent(jLabelNombre)
-                                    .addComponent(jLabelApellido)
-                                    .addComponent(jLabelCorreo))
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(LabelNicknameInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelNombreInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelApellidoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelFecNacInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabelCorreoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addContainerGap())))))))
+                        .addGap(258, 258, 258)
+                        .addComponent(jLabelTituloDatos)
+                        .addGap(259, 259, 259))
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(70, 70, 70))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabelSeleccioneCliente)
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelSeleccioneCliente)
+                    .addComponent(jLabelTituloDatos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPaneListClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonAceptar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelTituloDatos)
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelNickname, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(LabelNicknameInfo, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelNombre)
-                                    .addComponent(jLabelNombreInfo))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelApellido)
-                                    .addComponent(jLabelApellidoInfo))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelFecNac)
-                                    .addComponent(jLabelFecNacInfo))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelCorreo)
-                                    .addComponent(jLabelCorreoInfo)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(ImageClienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(34, 34, 34)
-                        .addComponent(jLabelTituloListasReproduccion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTituloListasFavoritas)
-                            .addComponent(jLabelTituloListasCreadas)
-                            .addComponent(jLabelTituloSeguidos)
-                            .addComponent(jLabelTituloSeguidores))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPaneSeguidores)
-                            .addComponent(jScrollPaneListasRCreadas)
-                            .addComponent(jScrollPaneSeguidos)
-                            .addComponent(jScrollPaneListasRFavoritas, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(122, 122, 122))
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(356, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -275,14 +366,106 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-        // TODO add your handling code here:
+        
+        // Obtengo el Nickname seleccionado
+        String nicknameClienteSeleccionado = jListClientes.getSelectedValue();
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        // Obtengo sus datos
+        DTDatosCliente datosCliente = controlador.ConsultarPerfilCliente(nicknameClienteSeleccionado);
+        
+        // Verificar si hay una selección
+        if (nicknameClienteSeleccionado != null) {
+            
+            jLabelNicknameInfo.setText(datosCliente.getNickname());
+            jLabelNombreInfo.setText(datosCliente.getNombreUsuario());
+            jLabelApellidoInfo.setText(datosCliente.getApellidoUsuario());
+            
+            // Convertir Date a formato String
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String fecNacString = dateFormat.format(datosCliente.getFecNac());
+            jLabelFecNacInfo.setText(fecNacString);
+            
+            jLabelCorreoInfo.setText(datosCliente.getEmail());
+            
+            /* Recorro lista Nicknames de Seguidores del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nicknames a la JList */
+            DefaultListModel<String> listaSeguidores = new DefaultListModel<>();
+            ArrayList<String> nicknamesSeguidores = datosCliente.getNicknamesSeguidores();
+            
+            for (String nickname: nicknamesSeguidores) {
+                listaSeguidores.addElement(nickname);
+            }
+            jListSeguidores.setModel(listaSeguidores);
+            
+            /* Recorro lista Nicknames de Seguidos del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nicknames a la JList */
+            DefaultListModel<String> listaSeguidos = new DefaultListModel<>();
+            ArrayList<String> nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
+            
+            for (String nickname: nicknamesSeguidos) {
+                listaSeguidos.addElement(nickname);
+            }
+            jListSeguidos.setModel(listaSeguidos);
+            
+            /* Recorro lista ListasR Creadas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaListasRCreadas = new DefaultListModel<>();
+            ArrayList<String> nombresListasRCreadas = datosCliente.getNombresListasRCreadas();
+            
+            for (String nombreListaC: nombresListasRCreadas) {
+                listaListasRCreadas.addElement(nombreListaC);
+            }
+            jListListasRCreadas.setModel(listaListasRCreadas);
+            
+            /* Recorro lista ListasR Favoritas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaListasRFavoritas = new DefaultListModel<>();
+            ArrayList<String> nombresListasRFavoritas = datosCliente.getNombresListasRFavoritas();
+            
+            for (String nombreListaF: nombresListasRFavoritas) {
+                listaListasRFavoritas.addElement(nombreListaF);
+            }
+            jListListasRFavoritas.setModel(listaListasRFavoritas);
+            
+            /* Recorro lista Albumes Favoritas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaAlbumesFavoritos = new DefaultListModel<>();
+            ArrayList<String> nombresAlbumesFavoritos = datosCliente.getNombresAlbumesFavoritos();
+        
+            for (String nombreAlbumF: nombresAlbumesFavoritos) {
+                listaAlbumesFavoritos.addElement(nombreAlbumF);
+            }
+            jListAlbumesFavoritos.setModel(listaAlbumesFavoritos);
+        
+            /* Recorro lista Temas Favoritas del Cliente, 
+            mientras que lo agrego como elemento al modelo. Luego 
+            setteo el modelo con todos los Nombres a la JList */
+            DefaultListModel<String> listaTemasFavoritos = new DefaultListModel<>();
+            ArrayList<String> nombresTemasFavoritos = datosCliente.getNombresTemasFavoritos();
+            
+            for (String nombreTemaF: nombresTemasFavoritos) {
+                listaTemasFavoritos.addElement(nombreTemaF);
+            }
+            jListTemasFavoritos.setModel(listaTemasFavoritos);
+            
+            // Quito la podibilidad de volver a Consultar
+            jButtonAceptar.setVisible(false);
+        }
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageClienteLabel;
-    private javax.swing.JLabel LabelNicknameInfo;
     private javax.swing.JButton jButtonAceptar;
+    private javax.swing.JLabel jLabel;
     private javax.swing.JLabel jLabelApellido;
     private javax.swing.JLabel jLabelApellidoInfo;
     private javax.swing.JLabel jLabelCorreo;
@@ -290,24 +473,33 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelFecNac;
     private javax.swing.JLabel jLabelFecNacInfo;
     private javax.swing.JLabel jLabelNickname;
+    private javax.swing.JLabel jLabelNicknameInfo;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelNombreInfo;
     private javax.swing.JLabel jLabelSeleccioneCliente;
+    private javax.swing.JLabel jLabelTituloAlbumesFavoritos;
     private javax.swing.JLabel jLabelTituloDatos;
     private javax.swing.JLabel jLabelTituloListasCreadas;
     private javax.swing.JLabel jLabelTituloListasFavoritas;
-    private javax.swing.JLabel jLabelTituloListasReproduccion;
     private javax.swing.JLabel jLabelTituloSeguidores;
     private javax.swing.JLabel jLabelTituloSeguidos;
+    private javax.swing.JLabel jLabelTituloTemasFavoritos;
+    private javax.swing.JList<String> jListAlbumesFavoritos;
     private javax.swing.JList<String> jListClientes;
     private javax.swing.JList<String> jListListasRCreadas;
     private javax.swing.JList<String> jListListasRFavoritas;
     private javax.swing.JList<String> jListSeguidores;
     private javax.swing.JList<String> jListSeguidos;
+    private javax.swing.JList<String> jListTemasFavoritos;
+    private javax.swing.JPanel jPanel;
+    private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JScrollPane jScrollPaneAlbumesFavoritos;
     private javax.swing.JScrollPane jScrollPaneListClientes;
     private javax.swing.JScrollPane jScrollPaneListasRCreadas;
     private javax.swing.JScrollPane jScrollPaneListasRFavoritas;
     private javax.swing.JScrollPane jScrollPaneSeguidores;
     private javax.swing.JScrollPane jScrollPaneSeguidos;
+    private javax.swing.JScrollPane jScrollPaneTemasFavoritos;
+    private javax.swing.JSeparator jSeparator;
     // End of variables declaration//GEN-END:variables
 }
