@@ -12,6 +12,7 @@ public class Espotify extends javax.swing.JFrame {
     
     public Espotify() {
         initComponents();
+        
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
     }

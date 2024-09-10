@@ -2,7 +2,6 @@ package espotify.presentacion;
 
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
-import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
@@ -29,11 +28,9 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
 
     private IControlador controlador;
     private String rutaImagenAlbum;
-    private List<DTGenero_Simple> generosRegistrados;
     private List<String> nicknamesArtistasRegistrados;
-    private List<DTGenero> dataGeneros = new ArrayList<DTGenero>();
+    private List<DTGenero> generosDeAlbum;
     private DefaultListModel listaTemasAgregadosModel;
-    private DefaultListModel listaGenerosAgregadosModel;
     private List<DTTemaGenerico> dataTemas = new ArrayList<DTTemaGenerico>();
     /**
      * Creates new form AltaAlbum
@@ -41,14 +38,10 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     public AltaAlbum() {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
-        this.cargarDatos();
+        nicknamesArtistasRegistrados = controlador.getNicknamesArtistas();
         initComponents();
     }
 
-    private void cargarDatos() {
-        this.nicknamesArtistasRegistrados = controlador.getNicknamesArtistas();
-        this.generosRegistrados = controlador.getListaDTGeneroSimple();
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,9 +60,10 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         nombreAlbum = new javax.swing.JTextField();
         comboBoxArtistasRegistrados = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtreeGenerosRegistrados = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listaGenerosAgregadosModel = new DefaultListModel();
-        listaGenerosAgregados = new javax.swing.JList<>(listaGenerosAgregadosModel);
+        listaGenerosDeAlbum = new javax.swing.JList<>();
         jLabel6 = new javax.swing.JLabel();
         btnAgregarGeneroAAlbum = new javax.swing.JButton();
         btnRemoverGeneroDeAlbum = new javax.swing.JButton();
@@ -97,8 +91,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         checkboxAccesoURL = new javax.swing.JCheckBox();
         jLabel13 = new javax.swing.JLabel();
         urlTema = new javax.swing.JTextField();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jlistGenerosRegistrados = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -136,8 +128,17 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             }
         });
 
-        listaGenerosAgregados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(listaGenerosAgregados);
+        //crear arbol de generos con datos extraidos de la base de datos
+        jtreeGenerosRegistrados.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        jtreeGenerosRegistrados.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                jtreeGenerosRegistradosValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtreeGenerosRegistrados);
+
+        listaGenerosDeAlbum.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(listaGenerosDeAlbum);
 
         jLabel6.setText("Generos añadidos:");
 
@@ -149,7 +150,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         });
 
         btnRemoverGeneroDeAlbum.setText("Remover");
-        btnRemoverGeneroDeAlbum.setEnabled(false);
         btnRemoverGeneroDeAlbum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoverGeneroDeAlbumActionPerformed(evt);
@@ -183,7 +183,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         jLabel11.setText("Temas añadidos:");
 
         btnRemoverTema.setText("Remover");
-        btnRemoverTema.setEnabled(false);
         btnRemoverTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoverTemaActionPerformed(evt);
@@ -240,13 +239,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 urlTemaActionPerformed(evt);
             }
         });
-
-        DefaultListModel<String> listaGenerosRegistradosModel = new DefaultListModel<>();
-        for (espotify.DataTypes.DTGenero_Simple dataG : this.generosRegistrados) {
-            listaGenerosRegistradosModel.addElement(dataG.getNombreGenero());
-        }
-        jlistGenerosRegistrados.setModel(listaGenerosRegistradosModel);
-        jScrollPane5.setViewportView(jlistGenerosRegistrados);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -305,13 +297,12 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(nombreTema, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAgregarGeneroAAlbum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(60, 60, 60))
-                                    .addComponent(jScrollPane5))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                                        .addComponent(btnAgregarGeneroAAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnRemoverGeneroDeAlbum, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
@@ -337,12 +328,6 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelImagenAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -359,11 +344,16 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnSeleccionarImagenAlbum))))
+                            .addComponent(btnSeleccionarImagenAlbum)))
+                    .addComponent(labelImagenAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregarGeneroAAlbum)
@@ -537,6 +527,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             );
             duracionTotalSegundos = duracionMinutos * 60 + duracionSegundos;
 
+
             //creo datatype
             DTTemaGenerico nuevoDataTema;
             if (checkboxAccesoURL.isSelected()) {
@@ -555,30 +546,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreTemaActionPerformed
 
-    private Boolean validarNombreGeneroRepetido(String nombre) {
-        //verifico que no haya sido agregado
-        for (DTGenero dataGen : this.dataGeneros) {
-            if (dataGen.getNombreGenero().equals(nombre)) {
-                errorLabel.setText("El genero seleccionado ya fue agregado.");
-                return false;
-            }
-        }
-        return true;
-    }
-    
     private void btnAgregarGeneroAAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGeneroAAlbumActionPerformed
-        String generoSeleccionado = jlistGenerosRegistrados.getSelectedValue();
-        errorLabel.setText("");
-        
-        if (generoSeleccionado.equals("")) {
-            errorLabel.setText("Debe seleccionar un genero antes de agregar.");
-        } else {
-            if (validarNombreGeneroRepetido(generoSeleccionado)) {
-                dataGeneros.add(new DTGenero(generoSeleccionado));
-                listaGenerosAgregadosModel.addElement(generoSeleccionado);
-                btnRemoverGeneroDeAlbum.setEnabled(true);
-            }
-        }        
+        //capturo el nodo seleccionado en el jtree y agrego el valor toString del mismo a la lista listaGenerosDeAlbum
     }//GEN-LAST:event_btnAgregarGeneroAAlbumActionPerformed
 
     private void nombreAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreAlbumActionPerformed
@@ -589,41 +558,20 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboBoxArtistasRegistradosActionPerformed
 
-    private void btnRemoverGeneroDeAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverGeneroDeAlbumActionPerformed
-        int indiceGeneroSeleccionado = listaGenerosAgregados.getSelectedIndex();
-        String nombreGeneroSeleccionado = listaGenerosAgregados.getSelectedValue();
-        
-        if (indiceGeneroSeleccionado != -1) {
-            listaGenerosAgregadosModel.remove(indiceGeneroSeleccionado);
-            for (DTGenero dataGenero : this.dataGeneros) {
-                if (dataGenero.getNombreGenero().equals(nombreGeneroSeleccionado)) {
-                    this.dataGeneros.remove(dataGenero);
-                    break;
-                }
-            }
+    private void jtreeGenerosRegistradosValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jtreeGenerosRegistradosValueChanged
+        //tengo que capturar la seleccion del genero en el jtree para extraer su valor toString y agregarlo en el evento actionPerformed del boton btnAgregarGeneroAAlbum
+    }//GEN-LAST:event_jtreeGenerosRegistradosValueChanged
 
-            if (listaGenerosAgregadosModel.getSize() == 0) {
-                btnRemoverGeneroDeAlbum.setEnabled(false);
-            }
-        }
+    private void btnRemoverGeneroDeAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverGeneroDeAlbumActionPerformed
+        //tengo que remover el genero seleccionado de la lista de generos agregados y todos los nodos hijos de dicho nodo del jtree
     }//GEN-LAST:event_btnRemoverGeneroDeAlbumActionPerformed
 
     private void btnRemoverTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverTemaActionPerformed
         int indiceTemaSeleccionado = listaTemasAgregados.getSelectedIndex();
-        String datosTemaSeleccionado = listaTemasAgregados.getSelectedValue();
+        listaTemasAgregadosModel.remove(indiceTemaSeleccionado);
         
-        if (indiceTemaSeleccionado != -1) {
-            listaTemasAgregadosModel.remove(indiceTemaSeleccionado);
-            for (DTTemaGenerico dataTema : this.dataTemas) {
-                if (datosTemaSeleccionado.contains(dataTema.getNombreTema())) {
-                    this.dataTemas.remove(dataTema);
-                    break;
-                }
-            }
-
-            if (listaTemasAgregadosModel.getSize() == 0) {
-                btnRemoverTema.setEnabled(false);
-            }
+        if (listaTemasAgregadosModel.getSize() == 0) {
+            btnRemoverTema.setEnabled(false);
         }
     }//GEN-LAST:event_btnRemoverTemaActionPerformed
 
@@ -650,12 +598,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 labelImagenAlbum.setIcon(new ImageIcon(imagen.getScaledInstance(labelImagenAlbum.getWidth(), labelImagenAlbum.getHeight(), Image.SCALE_AREA_AVERAGING)));
                 this.rutaImagenAlbum = ruta;
                 
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(
-                        null, 
-                        ex.getMessage(), 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                e.printStackTrace();
             };
         };
     }//GEN-LAST:event_btnSeleccionarImagenAlbumActionPerformed
@@ -673,7 +617,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_checkboxAccesoURLActionPerformed
 
     private void checkboxAccesoURLStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkboxAccesoURLStateChanged
-        if (checkboxAccesoURL.isSelected()) {
+        if (this.isSelected()) {
             urlTema.setEnabled(true);
         } else {
             urlTema.setEnabled(false);
@@ -685,11 +629,12 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         int anioAlb = anioAlbum.getValue();
         String fotoAlb = this.rutaImagenAlbum;
         String nombreArt = String.valueOf(comboBoxArtistasRegistrados.getSelectedItem());
+        this.generosDeAlbum = new ArrayList();
         
         if (validarPosicionesDeTemas() && !tieneNombreVacio(nombre) && !nombreArt.equals("")) {
             DTAlbum_SinDTArtista dataAlbum = new DTAlbum_SinDTArtista(
                 nombre, anioAlb, fotoAlb, 
-                this.dataTemas, this.dataGeneros, nombreArt
+                this.dataTemas, this.generosDeAlbum, nombreArt
             );
             
             try {
@@ -744,14 +689,14 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JList<String> jlistGenerosRegistrados;
+    private javax.swing.JTree jtreeGenerosRegistrados;
     private javax.swing.JLabel labelArtista;
     private javax.swing.JLabel labelImagenAlbum;
-    private javax.swing.JList<String> listaGenerosAgregados;
+    private javax.swing.JList<String> listaGenerosDeAlbum;
     private javax.swing.JList<String> listaTemasAgregados;
     private javax.swing.JTextField nombreAlbum;
     private javax.swing.JTextField nombreTema;

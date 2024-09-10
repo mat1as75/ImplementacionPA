@@ -4,7 +4,6 @@ import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
@@ -102,6 +101,8 @@ public class Controlador implements IControlador{
         }
     }
     
+    public void cargarDatosDePrueba() {}
+
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
 
@@ -117,11 +118,6 @@ public class Controlador implements IControlador{
     public void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
-    
-    @Override
-    public ArrayList<DTGenero_Simple> getListaDTGeneroSimple() {
-        return this.contpersis.getListaDTGeneroSimple();
-    }
     
     @Override
     public Map<Long, String> getTemasDisponibles() {

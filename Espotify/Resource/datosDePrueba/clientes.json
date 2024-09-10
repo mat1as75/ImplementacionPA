@@ -1,0 +1,66 @@
+[
+                {
+                    "Nickname": "el_padrino",
+                    "E-mail": "el_padrino@tuta.io",
+                    "Nombre": "Vito",
+                    "Apellido": "Corleone",
+                    "Nacimiento": "8/3/1972",
+                    "Imagen" : "bit.ly/vitoCorleone"
+                },
+                {
+                    "Nickname": "scarlettO",
+                    "E-mail": "scarlettO@tuta.io",
+                    "Nombre": "Scarlett",
+                    "Apellido": "O’Hara",
+                    "Nacimiento": "27/11/1984",
+                    "Imagen" : "bit.ly/scarlettO"
+                },
+                {
+                    "Nickname": "ppArgento",
+                    "E-mail": "ppArgento@hotmail.com",
+                    "Nombre": "Pepe",
+                    "Apellido": "Argento",
+                    "Nacimiento": "14/2/1955",
+                    "Imagen" : "bit.ly/ppArgento"
+                },
+                {
+                    "Nickname": "Heisenberg",
+                    "E-mail": "Heisenberg@tuta.io",
+                    "Nombre": "Walter",
+                    "Apellido": "White",
+                    "Nacimiento": "7/3/1956",
+                    "Imagen" : "bit.ly/heisenbergWW"
+                },
+                {
+                    "Nickname": "benKenobi",
+                    "E-mail": "benKenobi@gmail.com",
+                    "Nombre": "Obi-Wan",
+                    "Apellido": "Kenobi",
+                    "Nacimiento": "2/4/1914",
+                    "Imagen" : "bit.ly/benKenobi"
+                },
+                {
+                    "Nickname": "lachiqui",
+                    "E-mail": "lachiqui@hotmail.com.ar",
+                    "Nombre": "Mirtha",
+                    "Apellido": "Legrand",
+                    "Nacimiento": "23/2/1927",
+                    "Imagen" : "bit.ly/laChiqui"
+                },
+                {
+                    "Nickname": "cbochinche",
+                    "E-mail": "cbochinche@vera.com.uy",
+                    "Nombre": "Cacho",
+                    "Apellido": "Bochinche",
+                    "Nacimiento": "8/5/1937",
+                    "Imagen" : "bit.ly/cbochinche"
+                },
+                {
+                    "Nickname": "Eleven11",
+                    "E-mail": "Eleven11@gmail.com",
+                    "Nombre": "Eleven",
+                    "Apellido": "",
+                    "Nacimiento": "31/12/1971",
+                    "Imagen" : "bit.ly/11Eleven11"
+                }
+            ]
