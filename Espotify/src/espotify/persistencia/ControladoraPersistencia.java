@@ -423,6 +423,7 @@ public class ControladoraPersistencia {
     
     public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
 
+        /*
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction t = em.getTransaction();
@@ -442,6 +443,7 @@ public class ControladoraPersistencia {
             em.close();
             emf.close();
         }
+        */
     }
     
 }

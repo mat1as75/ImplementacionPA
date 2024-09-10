@@ -90,7 +90,7 @@ public class Controlador implements IControlador{
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
-<
+    
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
         try {
             this.contpersis.AltaAlbum(dataAlbum);
