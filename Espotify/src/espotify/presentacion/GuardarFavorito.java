@@ -37,10 +37,8 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         this.controlador = fb.getControlador();
         
         initComponents();
-       
          //De predeterminado se inicializa el Panel de Temas
         cargarTemas();
-        
     }
     
     private void cargarTemas() {
