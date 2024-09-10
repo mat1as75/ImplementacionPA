@@ -237,8 +237,8 @@ public class ControladoraPersistencia {
         }
     }
 
-    public void CrearListaParticular(String nombreLista, String fotoLista, Cliente cliente, boolean esPrivada) {
-        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cliente, esPrivada);
+    public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
+        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
         try {
             lpartJpa.create(lista);
         } catch (Exception ex) {
@@ -246,19 +246,7 @@ public class ControladoraPersistencia {
         }
     }
     
-    public Cliente getClientePorNickname(String nickname) {
-        // Busca el cliente en la base de datos
-        Cliente c = cliJpa.findCliente(nickname);
-        
-        if (c == null){
-            return null;
-        }
-        else{
-        return c;
-        } 
-    }
-    
-    
+  
 }
 
 

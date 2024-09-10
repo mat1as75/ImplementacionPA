@@ -301,10 +301,8 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             }
             else if("Particular".equals(opcion)){
                  if (nicknameClienteSeleccionado != null){
-                     // Obtener DTCliente utilizando el nickname
-                        Cliente c = i.obtenerClientePorNickname(nicknameClienteSeleccionado);
-                        boolean soyPrivada = true;
-                        i.CrearListaParticular(nombreLista, imgLista, c,soyPrivada );
+                     boolean soyPrivada = true;
+                        i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado,soyPrivada );
                         JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                  }
             }

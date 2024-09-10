@@ -7,6 +7,7 @@ package espotify.logica;
 import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTListaReproduccion;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.persistencia.GeneroJpaController;
@@ -126,12 +127,13 @@ public class Controlador implements IControlador{
     }
 
     @Override
-    public void CrearListaParticular(String nombreLista, String fotoLista, Cliente cliente, boolean esPrivada) {
-        this.contpersis.CrearListaParticular(nombreLista, fotoLista, cliente, esPrivada);
+    public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
     }
     
-    @Override
-    public Cliente obtenerClientePorNickname(String nickname) {
-        return this.contpersis.getClientePorNickname(nickname);
+   /* @Override
+    public DTListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op) {
+        return this.contpersis.getDatosListaReproduccion(tipoDeLista, op);
     }
+    */
 }

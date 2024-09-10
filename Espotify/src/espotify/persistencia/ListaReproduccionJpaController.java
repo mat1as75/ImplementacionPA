@@ -4,9 +4,9 @@
  */
 package espotify.persistencia;
 
+import espotify.DataTypes.exceptions.NonexistentEntityException;
+import espotify.DataTypes.exceptions.PreexistingEntityException;
 import espotify.logica.ListaReproduccion;
-import espotify.persistencia.exceptions.NonexistentEntityException;
-import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -19,17 +19,16 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author usuario
+ * @author ms
  */
 public class ListaReproduccionJpaController implements Serializable {
 
     public ListaReproduccionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public ListaReproduccionJpaController() {
+     public ListaReproduccionJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

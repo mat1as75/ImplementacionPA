@@ -4,9 +4,9 @@
  */
 package espotify.persistencia;
 
+import espotify.DataTypes.exceptions.NonexistentEntityException;
+import espotify.DataTypes.exceptions.PreexistingEntityException;
 import espotify.logica.ListaParticular;
-import espotify.persistencia.exceptions.NonexistentEntityException;
-import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
