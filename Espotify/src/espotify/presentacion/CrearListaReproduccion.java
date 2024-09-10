@@ -304,9 +304,12 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
                         Cliente c = i.obtenerClientePorNickname(nicknameClienteSeleccionado);
                         boolean soyPrivada = true;
                         i.CrearListaParticular(nombreLista, imgLista, c,soyPrivada );
+                        JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                  }
             }
         }
+        
+        jTextFieldNombre.setText("");
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
 
