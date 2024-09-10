@@ -5,16 +5,24 @@
  */
 package espotify.persistencia;
 
+
+import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaConRuta;
+import espotify.DataTypes.DTTemaConURL;
+import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.logica.Album;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
 import espotify.logica.Genero;
+import espotify.logica.Tema;
+import espotify.logica.TemaConRuta;
+import espotify.logica.TemaConURL;
 import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
-import espotify.logica.Tema;
 import espotify.logica.Usuario;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +36,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-
 
 public class ControladoraPersistencia {
     
@@ -69,6 +76,78 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
+         //creo el album vacio
+        Album nuevoAlbum = new Album();
+        this.albJpa.create(nuevoAlbum);
+        
+        //busco el artista para agregarle el album
+        Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
+        if (art == null) throw new Exception("No se encontro el artista: " +  dataAlbum.getMiArtista());
+        List<Album> albumsDelArtista = art.getMisAlbumesPublicados();
+        for (Album al : albumsDelArtista) {
+            if (al.getNombreAlbum().equals(dataAlbum.getNombreAlbum())) {
+                this.albJpa.destroy(nuevoAlbum.getIdAlbum());
+                throw new Exception("Este artista ya tiene un album con el nombre: " + dataAlbum.getNombreAlbum());
+            }
+        }
+        art.setMisAlbumesPublicados(nuevoAlbum);
+        
+        //busco los generos para agregarlos al album y agregar el album a la lista de albums que tiene genero
+        List<Genero> generosDeAlbum = new ArrayList();
+        for (DTGenero dataG : dataAlbum.getMisgeneros()) {
+            Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
+            if (gen == null) throw new Exception("No se encontro el genero: " + dataG.getNombreGenero());
+            
+            generosDeAlbum.add(gen);
+            //agrego el nuevo album en la lista de albums del genero
+            gen.setMisAlbumes(nuevoAlbum);
+        }
+        
+        //creo los temas y los agrego a una lista
+        List<Tema> temas = new ArrayList();
+        for (DTTemaGenerico dataTema : dataAlbum.getMisTemas()) {
+            if (dataTema instanceof DTTemaConRuta) {
+                TemaConRuta nuevoTemaConRuta = new TemaConRuta(
+                        ((DTTemaConRuta) dataTema).getRutaTema(),
+                        dataTema.getNombreTema(),
+                        dataTema.getDuracionSegundos(),
+                        dataTema.getPosicionEnAlbum(),
+                        nuevoAlbum
+                        );
+                this.temaJpa.create(nuevoTemaConRuta);
+                temas.add(nuevoTemaConRuta);
+            } else {
+                
+                TemaConURL nuevoTemaConURL = new TemaConURL(
+                        ((DTTemaConURL) dataTema).getUrlTema(),
+                        dataTema.getNombreTema(),
+                        dataTema.getDuracionSegundos(),
+                        dataTema.getPosicionEnAlbum(),
+                        nuevoAlbum
+                    );
+                this.temaJpa.create(nuevoTemaConURL);
+                temas.add(nuevoTemaConURL);
+            }
+        }
+        
+        //set atributos
+        nuevoAlbum.setAnioCreacion(dataAlbum.getAnioCreacion());
+        nuevoAlbum.setFotoAlbum(dataAlbum.getFotoAlbum());
+        nuevoAlbum.setNombreAlbum(dataAlbum.getNombreAlbum());
+        //set pseudoatributos
+        nuevoAlbum.setMiArtista(art);
+        nuevoAlbum.setMisGeneros(generosDeAlbum);
+        nuevoAlbum.setMisTemas(temas);
+        //guardar cambios
+        this.albJpa.edit(nuevoAlbum);
+    }
+    
+    public Artista getArtista(String nickname) {
+        Artista art = this.artJpa.findArtista(nickname);
+        return art;
     }
     
     public ArrayList<Artista> getArtistas() {
@@ -344,6 +423,7 @@ public class ControladoraPersistencia {
     
     public void GuardarAlbumFavorito(String nicknameCliente, String nombreAlbum) {
 
+        /*
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
         EntityManager em = emf.createEntityManager();
         EntityTransaction t = em.getTransaction();
@@ -363,6 +443,7 @@ public class ControladoraPersistencia {
             em.close();
             emf.close();
         }
+        */
     }
     
 }

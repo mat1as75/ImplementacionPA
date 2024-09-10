@@ -5,6 +5,7 @@ import java.util.List;
 public class DTGenero {
 private String nombreGenero;
 private DTGenero miPadre;
+private DTGenero misGenerosHijos;
 private List<DTAlbum>misAlbumes;
 private List<DTParticulares> misListasParticulares;
 
@@ -42,7 +43,7 @@ private List<DTParticulares> misListasParticulares;
     public void setMisAlbumes(List<DTAlbum> misAlbumes) {
         this.misAlbumes = misAlbumes;
     }
-    public void setMiAlbume(DTAlbum misAlbumes) {
+    public void setMisAlbumes(DTAlbum misAlbumes) {
         this.misAlbumes.addFirst(misAlbumes);
     }
 
@@ -51,6 +52,14 @@ private List<DTParticulares> misListasParticulares;
     }
     public void setMiListaParticulare(DTParticulares misListasParticulares) {
         this.misListasParticulares.addFirst(misListasParticulares);
+    }
+    
+    public DTGenero getMisGenerosHijos() {
+        return misGenerosHijos;
+    }
+
+    public void setMisGenerosHijos(DTGenero misGenerosHijos) {
+        this.misGenerosHijos = misGenerosHijos;
     }
     
 }

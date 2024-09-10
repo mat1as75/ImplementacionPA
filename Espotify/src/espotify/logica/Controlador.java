@@ -1,28 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
- */
 package espotify.logica;
 
+import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
-import espotify.persistencia.GeneroJpaController;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-/**
- *
- * @author tecnologo
- */
 public class Controlador implements IControlador{
     ControladoraPersistencia contpersis = new ControladoraPersistencia();
     // 1 de Singleton
@@ -102,6 +90,16 @@ public class Controlador implements IControlador{
     public boolean ExisteEmail(String email){
         return this.contpersis.ExisteEmail(email);
     }
+    
+    public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
+        try {
+            this.contpersis.AltaAlbum(dataAlbum);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public void cargarDatosDePrueba() {}
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
@@ -116,7 +114,7 @@ public class Controlador implements IControlador{
     }
 
 
-    public  void setSeguidorSeguido(String Seguidor, String Seguido){
+    public void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
     };
     
