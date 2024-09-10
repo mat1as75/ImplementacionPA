@@ -222,7 +222,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
 
     private void jComboBoxTipodeListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipodeListaActionPerformed
         String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
-        if(opcion=="Por defecto"){
+        if("Por defecto".equals(opcion)){
             jLabelGenero.setVisible(true);
             jTreeGeneros.setVisible(true);
             jScrollPaneGeneros.setVisible(true);
