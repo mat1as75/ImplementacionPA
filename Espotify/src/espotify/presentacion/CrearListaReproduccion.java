@@ -295,10 +295,11 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         }
         
         if(!nombreLista.isEmpty()){
-            if(opcion=="Por defecto"){
-                
+            if("Por defecto".equals(opcion)){
+                //i.CrearListaPorDefecto(nombreLista, imgLista, genero);
+                //JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
-            else if(opcion=="Particular"){
+            else if("Particular".equals(opcion)){
                  if (nicknameClienteSeleccionado != null){
                      // Obtener DTCliente utilizando el nickname
                         Cliente c = i.obtenerClientePorNickname(nicknameClienteSeleccionado);
