@@ -93,6 +93,7 @@ public class Controlador implements IControlador{
         return this.contpersis.ExisteEmail(email);
     }
     
+    @Override
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
         try {
             this.contpersis.AltaAlbum(dataAlbum);
@@ -101,6 +102,7 @@ public class Controlador implements IControlador{
         }
     }
     
+    @Override
     public void cargarDatosDePrueba() {}
 
     @Override
@@ -115,9 +117,10 @@ public class Controlador implements IControlador{
         return this.contpersis.getDatosCliente(nicknameCliente);
     }
 
+    @Override
     public void setSeguidorSeguido(String Seguidor, String Seguido){
         this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
-    };
+    }
     
     @Override
     public Map<Long, String> getTemasDisponibles() {
