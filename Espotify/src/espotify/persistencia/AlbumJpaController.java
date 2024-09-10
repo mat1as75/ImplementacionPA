@@ -44,7 +44,7 @@ public class AlbumJpaController implements Serializable {
             em.persist(album);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findAlbum(album.getNombreAlbum()) != null) {
+            if (findAlbum(album.getIdAlbum()) != null) {
                 throw new PreexistingEntityException("Album " + album + " already exists.", ex);
             }
             throw ex;
@@ -65,7 +65,7 @@ public class AlbumJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = album.getNombreAlbum();
+                Long id = album.getIdAlbum();
                 if (findAlbum(id) == null) {
                     throw new NonexistentEntityException("The album with id " + id + " no longer exists.");
                 }
@@ -78,7 +78,7 @@ public class AlbumJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -123,7 +123,7 @@ public class AlbumJpaController implements Serializable {
         }
     }
 
-    public Album findAlbum(String id) {
+    public Album findAlbum(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Album.class, id);

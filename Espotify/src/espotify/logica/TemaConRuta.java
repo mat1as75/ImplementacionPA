@@ -12,17 +12,15 @@ public class TemaConRuta extends Tema {
         super();
     };
     public TemaConRuta(
-            Long idTema,
             String rutaTema, 
             String nombreTema,
             int duracionSegundos,
-            int posicionEnAlbum) {
-        super(idTema, nombreTema, duracionSegundos, posicionEnAlbum);
+            int posicionEnAlbum,
+            Album album) {
+        super(nombreTema, duracionSegundos, posicionEnAlbum, album);
         this.rutaTema = rutaTema;
     }
    
-    
-    //getters y setters
     public String getRutaTema() {
         return rutaTema;
     }
@@ -30,6 +28,5 @@ public class TemaConRuta extends Tema {
     public void setRutaTema(String rutaTema) {
         this.rutaTema = rutaTema;
     }
-    
-    //metodos
+
 }
