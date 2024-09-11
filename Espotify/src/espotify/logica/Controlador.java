@@ -177,7 +177,6 @@ public class Controlador implements IControlador{
     @Override
     public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
         return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
-    
     }
     
     @Override
