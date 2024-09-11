@@ -8,10 +8,16 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.logica.Artista;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -99,7 +105,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
 
         jLabelCorreo.setText("Correo electronico:");
 
-        ImageArtistaLabel.setText("Foto de Perfil");
+        ImageArtistaLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabelNicknameInfo.setText("...");
 
@@ -180,9 +186,9 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(99, 99, 99)
+                                        .addGap(111, 111, 111)
                                         .addComponent(ImageArtistaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(73, 73, 73)
+                                        .addGap(61, 61, 61)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabelFecNac)
                                             .addComponent(jLabelNickname)
@@ -229,7 +235,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelTituloDatos)
                                 .addGap(39, 39, 39)
@@ -251,18 +257,19 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabelCorreo)
-                                    .addComponent(jLabelCorreoInfo)))
+                                    .addComponent(jLabelCorreoInfo))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabelDirSitioWeb)
+                                    .addComponent(jLabelDirSitioWebInfo))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelBiografia)
+                                    .addComponent(jScrollPaneBiografiaInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(ImageArtistaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelDirSitioWeb)
-                            .addComponent(jLabelDirSitioWebInfo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelBiografia)
-                            .addComponent(jScrollPaneBiografiaInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(ImageArtistaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(60, 60, 60)))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelTituloSeguidores)
@@ -310,6 +317,60 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             jLabelDirSitioWebInfo.setText(datosArtista.getDirSitioWeb());
             jTextAreaBiografiaInfo.setText(datosArtista.getBiografia());
             jLabelCantSeguidores.setText(String.valueOf(datosArtista.getCantidadSeguidores()));
+            
+            
+            try {
+                
+                BufferedImage archivoAlmacenado;
+                ImageIcon imagen;
+                
+                // Definir el tamaño deseado de la imagen
+                int sizeHorizontal = 156;
+                int sizeVertical = 163;
+                Image escalaImagen;
+                
+                // Verificar si tiene foto perfil
+                if (datosArtista.getFotoPerfil() != null) {
+                    
+                    // Lee la imagen desde el archivo(ruta)
+                    archivoAlmacenado = ImageIO.read(new File(datosArtista.getFotoPerfil()));
+                    
+                    // Verifica si la imagen se ha cargado correctamente
+                    if (archivoAlmacenado != null) {
+                        
+                        // Redimensionar la imagen
+                        escalaImagen = archivoAlmacenado.getScaledInstance(sizeHorizontal, sizeVertical, Image.SCALE_SMOOTH);
+
+                        // Convierte archivoAlmacenado a ImageIcon
+                        imagen = new ImageIcon(escalaImagen);
+
+                        ImageArtistaLabel.setIcon(imagen);
+                        ImageArtistaLabel.setVisible(true);
+                    }
+                } else { // Asignar foto de perfil predeterminada
+                    
+                    archivoAlmacenado = ImageIO.read(new File("./Resource/ImagenesPerfil/Default-Photo-Profile.jpg"));
+                    
+                    // Verifica si la imagen se ha cargado correctamente
+                    if (archivoAlmacenado != null) {
+                        
+                        // Redimensionar la imagen
+                        escalaImagen = archivoAlmacenado.getScaledInstance(sizeHorizontal, sizeVertical, Image.SCALE_SMOOTH);
+                        
+                        // Convierte archivoAlmacenado a ImageIcon
+                        imagen = new ImageIcon(escalaImagen);
+                        
+                        ImageArtistaLabel.setIcon(imagen);
+                        ImageArtistaLabel.setVisible(true);
+                    }
+                }
+                
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            
+            
+            
             
             /* Recorro lista Nicknames de Seguidores del Artista, 
             mientras que lo agrego como elemento al modelo. Luego 
