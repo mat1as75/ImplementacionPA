@@ -33,6 +33,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 public class CrearListaReproduccion extends javax.swing.JInternalFrame {
     
@@ -54,6 +56,8 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         }
         jListClientes.setModel(listaNicknamesClientes);
         
+       // cargarGenerosEnJTree(); // Cargar los géneros en el JTree
+        
         jLabelGenero.setVisible(true);
         jTreeGeneros.setVisible(true);
         jScrollPaneGeneros.setVisible(true);
@@ -61,6 +65,43 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         jListClientes.setVisible(false);
         jScrollPaneClientes.setVisible(false);
     }
+    
+      /* 
+    private void cargarGenerosEnJTree() {
+        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
+        ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener géneros
+
+        for (DTGenero genero : generos) {
+            DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombre());
+
+            if (genero.getGeneroPadre() != null) {
+                DefaultMutableTreeNode nodoPadre = buscarNodo(raiz, genero.getGeneroPadre());
+                if (nodoPadre != null) {
+                    nodoPadre.add(nodoGenero);
+                }
+            } else {
+                raiz.add(nodoGenero);
+            }
+        }
+        jTreeGeneros.setModel(new DefaultTreeModel(raiz));
+    }
+    
+     private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
+        for (int i = 0; i < nodo.getChildCount(); i++) {
+            DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
+            if (hijo.getUserObject().toString().equals(nombreGenero)) {
+                return hijo;
+            } else {
+                DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
+                if (resultado != null) {
+                    return resultado;
+                }
+            }
+        }
+        return null;
+    }
+    
+    */
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -283,6 +324,8 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         String nombreLista = jTextFieldNombre.getText();
         String nicknameClienteSeleccionado = jListClientes.getSelectedValue();
         String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
+        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
+        String generoSeleccionado = nodoSeleccionado != null ? nodoSeleccionado.getUserObject().toString() : null;
         Fabrica fb = Fabrica.getInstance();
         IControlador i = fb.getControlador();
         
@@ -294,9 +337,8 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         
         try {
             if ("Por defecto".equals(opcion)) {
-            // Implementar lógica para crear lista por defecto
-            // i.CrearListaPorDefecto(nombreLista, imgLista, genero);
-            // JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            i.CrearListaPorDefecto(nombreLista, imgLista, generoSeleccionado);
+            JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else if ("Particular".equals(opcion)) {
             if (nicknameClienteSeleccionado != null) {
                 boolean soyPrivada = true; // 
@@ -308,10 +350,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
           }
         } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-          }
-          catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ocurrió un error al crear la lista: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-          }
+          }   
         jTextFieldNombre.setText("");
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
