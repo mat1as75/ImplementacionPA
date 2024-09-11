@@ -34,7 +34,7 @@ public interface IControlador {
 
     public abstract boolean existeNombreLista(String nombreLista);
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
-    public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, Genero genero);
+    public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero);
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
     //public abstract DTListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
 

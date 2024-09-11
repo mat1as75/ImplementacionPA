@@ -6,7 +6,6 @@
 package espotify.persistencia;
 
 
-import espotify.DataTypes.DTCliente;
 
 
 import espotify.DataTypes.DTAlbum;
@@ -331,13 +330,33 @@ public class ControladoraPersistencia {
     }
     
 
-    public void CrearListaPorDefecto(String nombreLista, String fotoLista, Genero genero) {
-        ListaPorDefecto lista = new ListaPorDefecto(nombreLista, fotoLista, genero);
-        try {
-            lxdefcJpa.create(lista);
-        } catch (Exception ex) {
-            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista por defecto", ex);
+    public void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero) {
+    // Buscar el género por su nombre
+    Genero genero = this.genJpa.findGenero(nombreGenero);
+
+    // Verificar si el género existe
+    if (genero == null) {
+        throw new RuntimeException("No se encontró el género con nombre: " + nombreGenero);
+    }
+
+    // Verificar si ya existe una lista por defecto con el mismo nombre
+    List<ListaPorDefecto> listasPorDefecto = genero.getMisListasReproduccion();
+    for (ListaPorDefecto lista : listasPorDefecto) {
+        if (lista.getNombreLista().equals(nombreLista)) {
+            throw new RuntimeException("Ya existe una lista por defecto con el nombre: " + nombreLista);
         }
+    }
+
+    // Crear la nueva lista por defecto
+    ListaPorDefecto nuevaLista = new ListaPorDefecto(nombreLista, fotoLista, genero);
+    try {
+        lxdefcJpa.create(nuevaLista);
+        genero.getMisListasReproduccion().add(nuevaLista);
+        genJpa.edit(genero);
+    } catch (Exception ex) {
+        Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista por defecto", ex);
+        throw new RuntimeException("Error al crear la lista por defecto: " + ex.getMessage());
+    }
     }
 
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {

@@ -129,13 +129,9 @@ public class Controlador implements IControlador{
         return this.contpersis.getDatosCliente(nicknameCliente);
     }
 
-
-    
-    
-    
     @Override
-    public void CrearListaPorDefecto(String nombreLista, String fotoLista, Genero genero) {
-        this.contpersis.CrearListaPorDefecto(nombreLista, fotoLista, genero);
+    public void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero) {
+        this.contpersis.CrearListaPorDefecto(nombreLista, fotoLista, nombreGenero);
     }
 
     @Override
