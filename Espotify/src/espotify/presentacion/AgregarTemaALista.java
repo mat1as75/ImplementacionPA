@@ -1,5 +1,6 @@
 package espotify.presentacion;
 
+import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -20,8 +21,9 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
     /**
      * Creates new form AgregarTemaALista
      */
-    public AgregarTemaALista(IControlador ICtrl) {
-        controlador = ICtrl;
+    public AgregarTemaALista() {
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
         nicknamesClientes = controlador.getNicknamesClientes();
         initComponents();
     }

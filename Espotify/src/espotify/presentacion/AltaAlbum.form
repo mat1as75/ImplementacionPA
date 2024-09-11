@@ -96,7 +96,7 @@
                           <Group type="102" attributes="0">
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jYearChooser1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="anioAlbum" alignment="0" max="32767" attributes="0"/>
                                   <Component id="nombreAlbum" alignment="0" max="32767" attributes="0"/>
                                   <Component id="comboBoxArtistasRegistrados" alignment="0" pref="184" max="32767" attributes="0"/>
                               </Group>
@@ -208,7 +208,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jYearChooser1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="anioAlbum" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
@@ -481,7 +481,7 @@
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
-            <Component class="com.toedter.calendar.JYearChooser" name="jYearChooser1">
+            <Component class="com.toedter.calendar.JYearChooser" name="anioAlbum">
             </Component>
             <Component class="javax.swing.JLabel" name="labelImagenAlbum">
               <Properties>

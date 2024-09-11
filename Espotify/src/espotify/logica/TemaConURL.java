@@ -1,29 +1,25 @@
 package espotify.logica;
 
-import java.net.URL;
-import java.time.Duration;
 import javax.persistence.Entity;
 
 @Entity
 public class TemaConURL extends Tema {
-    //atributos
+    
     private String urlTema;
 
-    //constructor
     public TemaConURL(){
         super();
     }
     public TemaConURL(
-            Long idTema,
             String urlTema, 
             String nombreTema, 
             int duracionSegundos,
-            int posicionEnAlbum) {
-        super(idTema, nombreTema, duracionSegundos, posicionEnAlbum);
+            int posicionEnAlbum,
+            Album album) {
+        super(nombreTema, duracionSegundos, posicionEnAlbum, album);
         this.urlTema = urlTema;
     }
 
-    //getters y setters
     public String getUrlTema() {
         return urlTema;
     }
@@ -32,5 +28,4 @@ public class TemaConURL extends Tema {
         this.urlTema = urlTema;
     }
     
-    //metodos
 }

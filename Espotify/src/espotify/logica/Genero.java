@@ -58,19 +58,22 @@ public class Genero implements Serializable{
         this.misGenerosHijos = misSubgeneros;
     }
     
-    /*
-    public List<Genero> getMisAlbumes() {
+    public void agregarGeneroHijo(Genero nuevoGeneroHijo) {
+        this.misGenerosHijos.add(nuevoGeneroHijo);
+    }
+    
+    public List<Album> getMisAlbumes() {
         return this.misAlbumes;
     }
+    
     public void setMisAlbumes(Album a) {
         this.misAlbumes.addFirst(a);
     }
     
-    public List<ListaReproduccion> getMisListasReproduccion() {
-        return this.misListasReproduccion;
+    public List<ListaPorDefecto> getMisListasReproduccion() {
+        return this.misListasParticulares;
     }
-    public void setMisListasReproduccion(ListaReproduccion lr) {
-        this.misListasReproduccion.addFirst(lr);
+    public void setMisListasReproduccion(ListaPorDefecto lr) {
+        this.misListasParticulares.addFirst(lr);
     }
-    */
 }

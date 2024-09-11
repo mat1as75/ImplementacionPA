@@ -7,9 +7,15 @@ package espotify.presentacion;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -115,7 +121,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
 
         jLabelNicknameInfo.setText("...");
 
-        ImageClienteLabel.setText("Foto de Perfil");
+        ImageClienteLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabelCorreoInfo.setText("...");
 
@@ -199,52 +205,11 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         jPanelLayout.setHorizontalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(49, 49, 49)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanelLayout.createSequentialGroup()
-                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanelLayout.createSequentialGroup()
-                                        .addGap(31, 31, 31)
-                                        .addComponent(jLabelTituloSeguidores))
-                                    .addComponent(jScrollPaneSeguidores, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPaneListasRFavoritas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanelLayout.createSequentialGroup()
-                                        .addGap(8, 8, 8)
-                                        .addComponent(jLabelTituloListasFavoritas)))
-                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanelLayout.createSequentialGroup()
-                                        .addGap(62, 62, 62)
-                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanelLayout.createSequentialGroup()
-                                                .addGap(41, 41, 41)
-                                                .addComponent(jLabelTituloSeguidos))
-                                            .addComponent(jScrollPaneSeguidos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanelLayout.createSequentialGroup()
-                                                .addGap(77, 77, 77)
-                                                .addComponent(jLabelTituloListasCreadas))
-                                            .addGroup(jPanelLayout.createSequentialGroup()
-                                                .addGap(63, 63, 63)
-                                                .addComponent(jScrollPaneListasRCreadas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGroup(jPanelLayout.createSequentialGroup()
-                                        .addGap(59, 59, 59)
-                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabelTituloAlbumesFavoritos)
-                                            .addComponent(jScrollPaneAlbumesFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jScrollPaneTemasFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanelLayout.createSequentialGroup()
-                                                .addGap(8, 8, 8)
-                                                .addComponent(jLabelTituloTemasFavoritos))))))
-                            .addComponent(jLabel)
-                            .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanelLayout.createSequentialGroup()
                         .addComponent(ImageClienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(73, 73, 73)
+                        .addGap(49, 49, 49)
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelFecNac)
                             .addComponent(jLabelNickname)
@@ -257,16 +222,53 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                             .addComponent(jLabelNombreInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelApellidoInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabelFecNacInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelCorreoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabelCorreoInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabelTituloSeguidores))
+                            .addComponent(jScrollPaneSeguidores, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPaneListasRFavoritas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabelTituloListasFavoritas)))
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(41, 41, 41)
+                                        .addComponent(jLabelTituloSeguidos))
+                                    .addComponent(jScrollPaneSeguidos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(77, 77, 77)
+                                        .addComponent(jLabelTituloListasCreadas))
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(63, 63, 63)
+                                        .addComponent(jScrollPaneListasRCreadas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanelLayout.createSequentialGroup()
+                                .addGap(59, 59, 59)
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabelTituloAlbumesFavoritos)
+                                    .addComponent(jScrollPaneAlbumesFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPaneTemasFavoritos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(jLabelTituloTemasFavoritos))))))
+                    .addComponent(jLabel)
+                    .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(207, Short.MAX_VALUE))
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelLayout.createSequentialGroup()
-                        .addGap(49, 49, 49)
+                        .addGap(55, 55, 55)
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelNickname, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabelNicknameInfo, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -286,8 +288,10 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelCorreo)
                             .addComponent(jLabelCorreoInfo)))
-                    .addComponent(ImageClienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                    .addGroup(jPanelLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(ImageClienteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelTituloListasCreadas)
                     .addComponent(jLabelTituloSeguidos)
@@ -389,6 +393,62 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             jLabelFecNacInfo.setText(fecNacString);
             
             jLabelCorreoInfo.setText(datosCliente.getEmail());
+            
+            try {
+               
+                BufferedImage archivoAlmacenado;
+                ImageIcon imagen;
+                
+                // Definir el tamaño deseado de la imagen
+                int sizeHorizontal = 156;
+                int sizeVertical = 163;
+                Image escalaImagen;
+
+                // Verificar si tiene foto de perfil
+                if (datosCliente.getFotoPerfil() != null) {
+                    
+                    
+                    
+                    // Lee la imagen desde el archivo(ruta)
+                    archivoAlmacenado = ImageIO.read(new File(datosCliente.getFotoPerfil()));
+
+                    // Verifica si la imagen se ha cargado correctamante
+                    if (archivoAlmacenado != null) {
+   
+                        // Redimensionar la imagen
+                        escalaImagen = archivoAlmacenado.getScaledInstance(sizeHorizontal, sizeVertical, Image.SCALE_SMOOTH);
+
+                        // Convierte archivoAlmacenado a ImageIcon
+                        imagen = new ImageIcon(escalaImagen);
+
+                        ImageClienteLabel.setIcon(imagen);
+                        ImageClienteLabel.setVisible(true);
+                    }
+                } else { // Asignar foto de perfil predeterminada
+                    
+                    archivoAlmacenado = ImageIO.read(new File("./Resource/ImagenesPerfil/Default-Photo-Profile.jpg"));
+                    
+                    // Verifica si la imagen se ha cargado correctamente
+                    if (archivoAlmacenado != null) {
+                        
+                        // Redimensionar la imagen
+                        escalaImagen = archivoAlmacenado.getScaledInstance(sizeHorizontal, sizeVertical, Image.SCALE_SMOOTH);
+                        
+                        // Convierte archivoAlmacenado a ImageIcon
+                        imagen = new ImageIcon(escalaImagen);
+                        
+                        ImageClienteLabel.setIcon(imagen);
+                        ImageClienteLabel.setVisible(true);
+                    }
+                }
+                
+                
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+                
+            
+            
             
             /* Recorro lista Nicknames de Seguidores del Cliente, 
             mientras que lo agrego como elemento al modelo. Luego 

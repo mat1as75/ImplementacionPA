@@ -259,7 +259,7 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemQuitarTemaListaActionPerformed
 
     private void jMenuItemAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaAlbumActionPerformed
-        AltaAlbum aa = new AltaAlbum(ICtrl);
+        AltaAlbum aa = new AltaAlbum();
         escritorio.add(aa);
         aa.show();
     }//GEN-LAST:event_jMenuItemAltaAlbumActionPerformed
@@ -289,7 +289,7 @@ public class Espotify extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemEliminarTemaListaAlbumActionPerformed
 
     private void jMenuItemAgregarTemaListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarTemaListaActionPerformed
-        AgregarTemaALista atl = new AgregarTemaALista(ICtrl);
+        AgregarTemaALista atl = new AgregarTemaALista();
         escritorio.add(atl);
         atl.show();
     }//GEN-LAST:event_jMenuItemAgregarTemaListaActionPerformed
