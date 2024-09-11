@@ -285,29 +285,33 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
         Fabrica fb = Fabrica.getInstance();
         IControlador i = fb.getControlador();
-        boolean existeNombreLista= i.existeNombreLista(nombreLista);
+        
         
         if (nombreLista.isEmpty()){
             JOptionPane.showMessageDialog(null, "El nombre de la lista esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
-        }else if(existeNombreLista){
-            JOptionPane.showMessageDialog(null, "El nombre de la lista ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
-            jTextFieldNombre.setText("");
+            return;
         }
         
-        if(!nombreLista.isEmpty()){
-            if("Por defecto".equals(opcion)){
-                //i.CrearListaPorDefecto(nombreLista, imgLista, genero);
-                //JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            if ("Por defecto".equals(opcion)) {
+            // Implementar lógica para crear lista por defecto
+            // i.CrearListaPorDefecto(nombreLista, imgLista, genero);
+            // JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else if ("Particular".equals(opcion)) {
+            if (nicknameClienteSeleccionado != null) {
+                boolean soyPrivada = true; // 
+                i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado, soyPrivada);
+                JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }else {
+                JOptionPane.showMessageDialog(null, "Seleccione un cliente para la lista particular.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            else if("Particular".equals(opcion)){
-                 if (nicknameClienteSeleccionado != null){
-                     boolean soyPrivada = true;
-                        i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado,soyPrivada );
-                        JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                 }
-            }
-        }
-        
+          }
+        } catch (RuntimeException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          }
+          catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al crear la lista: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          }
         jTextFieldNombre.setText("");
     }//GEN-LAST:event_jButtonCrearActionPerformed
 

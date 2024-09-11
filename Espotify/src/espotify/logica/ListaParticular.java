@@ -2,7 +2,6 @@
 package espotify.logica;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 
 @Entity
