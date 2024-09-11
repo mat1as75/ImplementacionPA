@@ -340,13 +340,9 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             i.CrearListaPorDefecto(nombreLista, imgLista, generoSeleccionado);
             JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else if ("Particular".equals(opcion)) {
-            if (nicknameClienteSeleccionado != null) {
                 boolean soyPrivada = true; // 
                 i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado, soyPrivada);
                 JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            }else {
-                JOptionPane.showMessageDialog(null, "Seleccione un cliente para la lista particular.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
           }
         } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
