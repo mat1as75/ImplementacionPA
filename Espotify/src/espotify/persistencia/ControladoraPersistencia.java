@@ -259,6 +259,7 @@ public class ControladoraPersistencia {
         
         // Nicknames de Seguidores del Cliente
         List<Usuario> listaSeguidores = c.getMisSeguidores();
+        System.out.println("Seguidores: " + c.getMisSeguidores().size());
         ArrayList<String> nicknamesSeguidores = new ArrayList<>();
         for (Usuario lSeg: listaSeguidores) {
             String nickname;
@@ -310,6 +311,7 @@ public class ControladoraPersistencia {
         u.setMisSeguidores(c);
         try {
             usuJpa.edit(c);
+            usuJpa.edit(u);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
