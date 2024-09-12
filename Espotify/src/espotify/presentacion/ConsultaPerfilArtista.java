@@ -267,7 +267,6 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                                     .addComponent(jLabelBiografia)
                                     .addComponent(jScrollPaneBiografiaInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, 0)
                                 .addComponent(ImageArtistaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(60, 60, 60)))
                         .addGap(30, 30, 30)
@@ -278,13 +277,12 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPaneListasRCreadas)
-                            .addComponent(jScrollPaneSeguidores))
-                        .addGap(98, 98, 98))
+                            .addComponent(jScrollPaneSeguidores)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPaneListArtistas, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAceptar)
-                        .addGap(127, 127, 127))))
+                        .addComponent(jButtonAceptar)))
+                .addGap(98, 98, 98))
         );
 
         pack();
@@ -343,7 +341,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
 
                         // Convierte archivoAlmacenado a ImageIcon
                         imagen = new ImageIcon(escalaImagen);
-
+                        
                         ImageArtistaLabel.setIcon(imagen);
                         ImageArtistaLabel.setVisible(true);
                     }
