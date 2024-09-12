@@ -1,5 +1,6 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
@@ -182,7 +183,6 @@ public class Controlador implements IControlador{
     @Override
     public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
         return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
-    
     }
     
     @Override
@@ -190,4 +190,9 @@ public class Controlador implements IControlador{
         this.contpersis.setPrivadafalse(cliente,lista);
     }
     
+    @Override
+    public ArrayList<DTGenero_Simple> getListaDTGeneroSimple() {
+        return this.contpersis.getListaDTGeneroSimple();
+    }
+
 }

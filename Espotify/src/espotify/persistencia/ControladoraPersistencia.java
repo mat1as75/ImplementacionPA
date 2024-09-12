@@ -14,6 +14,7 @@ import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Album;
 import espotify.logica.Artista;
@@ -87,7 +88,12 @@ public class ControladoraPersistencia {
         
         //busco el artista para agregarle el album
         Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
-        if (art == null) throw new Exception("No se encontro el artista: " +  dataAlbum.getMiArtista());
+        if (art == null) {
+            this.albJpa.destroy(nuevoAlbum.getIdAlbum());
+            throw new Exception("No se encontro el artista: " +  dataAlbum.getMiArtista());
+        }
+        
+        //verifico que no tenga un album con el mismo nombre
         List<Album> albumsDelArtista = art.getMisAlbumesPublicados();
         for (Album al : albumsDelArtista) {
             if (al.getNombreAlbum().equals(dataAlbum.getNombreAlbum())) {
@@ -101,11 +107,21 @@ public class ControladoraPersistencia {
         List<Genero> generosDeAlbum = new ArrayList();
         for (DTGenero dataG : dataAlbum.getMisgeneros()) {
             Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
-            if (gen == null) throw new Exception("No se encontro el genero: " + dataG.getNombreGenero());
+            if (gen == null) {
+                this.albJpa.destroy(nuevoAlbum.getIdAlbum());
+                throw new Exception("No se encontro el genero: " + dataG.getNombreGenero());
+            }
             
             generosDeAlbum.add(gen);
             //agrego el nuevo album en la lista de albums del genero
             gen.setMisAlbumes(nuevoAlbum);
+            //guardo los cambios a cada genero modificado
+            try {
+                this.genJpa.edit(gen);
+            } catch(Exception ex) {
+                this.albJpa.destroy(nuevoAlbum.getIdAlbum());
+                throw new Exception("Ocurrio un error al actualizar el genero " + gen.getNombreGenero());
+            }
         }
         
         //creo los temas y los agrego a una lista
@@ -121,8 +137,7 @@ public class ControladoraPersistencia {
                         );
                 this.temaJpa.create(nuevoTemaConRuta);
                 temas.add(nuevoTemaConRuta);
-            } else {
-                
+            } else {   
                 TemaConURL nuevoTemaConURL = new TemaConURL(
                         ((DTTemaConURL) dataTema).getUrlTema(),
                         dataTema.getNombreTema(),
@@ -143,7 +158,8 @@ public class ControladoraPersistencia {
         nuevoAlbum.setMiArtista(art);
         nuevoAlbum.setMisGeneros(generosDeAlbum);
         nuevoAlbum.setMisTemas(temas);
-        //guardar cambios
+        //guardar cambios en el artista y el album
+        this.artJpa.edit(art);
         this.albJpa.edit(nuevoAlbum);
     }
     
@@ -499,6 +515,25 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }     
+    }
+    
+    public ArrayList<DTGenero_Simple> getListaDTGeneroSimple() {
+        List<Genero> generos = genJpa.findGeneroEntities();
+        ArrayList<DTGenero_Simple> dataGeneros = new ArrayList<>();
+
+        for (Genero g : generos) {
+
+            String padreDeG = (g.getMiPadre() == null) ? "" : g.getMiPadre().getNombreGenero();
+            List<String> subgenerosDeG = (g.getMisSubgeneros() == null) ? null : g.getMisSubgenerosString();
+
+            dataGeneros.add(new DTGenero_Simple(
+                g.getNombreGenero(), 
+                padreDeG,
+                g.getMisSubgenerosString()
+                )
+            );
+        }
+        return dataGeneros;
     }
 }
 
