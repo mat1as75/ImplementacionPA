@@ -10,62 +10,62 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import espotify.logica.ListaParticular;
+import java.util.ArrayList;
+import java.util.List;
 import espotify.logica.Usuario;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
  *
- * @author usuario
+ * @author tecnologo
  */
 public class ClienteJpaController implements Serializable {
 
     public ClienteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    // 1 de Singleton
-    public ClienteJpaController(){
-        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+    public ClienteJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
-    // 2 de Singleton
-    private static ClienteJpaController instancia = null;
-    
-    // 3 de Singleton
-    public static ClienteJpaController getInstance() {
-        if (ClienteJpaController.instancia == null)
-            ClienteJpaController.instancia = new ClienteJpaController();
-        
-        return (ClienteJpaController.instancia);
-    }
 
     public void create(Cliente cliente) throws PreexistingEntityException, Exception {
+        if (cliente.getMisListasReproduccionCreadas() == null) {
+            cliente.setMisListasReproduccionCreadasCompleta(new ArrayList<ListaParticular>());
+        }
         if (cliente.getMisSeguidores() == null) {
-            cliente.setMisSeguidores(new ArrayList<Usuario>());
+            cliente.setListaMisSeguidores(new ArrayList<Usuario>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<ListaParticular> attachedMisListasReproduccionCreadas = new ArrayList<ListaParticular>();
+            for (ListaParticular misListasReproduccionCreadasListaParticularToAttach : cliente.getMisListasReproduccionCreadas()) {
+                misListasReproduccionCreadasListaParticularToAttach = em.getReference(misListasReproduccionCreadasListaParticularToAttach.getClass(), misListasReproduccionCreadasListaParticularToAttach.getNombreLista());
+                attachedMisListasReproduccionCreadas.add(misListasReproduccionCreadasListaParticularToAttach);
+            }
+            cliente.setMisListasReproduccionCreadasCompleta(attachedMisListasReproduccionCreadas);
             List<Usuario> attachedMisSeguidores = new ArrayList<Usuario>();
             for (Usuario misSeguidoresUsuarioToAttach : cliente.getMisSeguidores()) {
                 misSeguidoresUsuarioToAttach = em.getReference(misSeguidoresUsuarioToAttach.getClass(), misSeguidoresUsuarioToAttach.getNickname());
                 attachedMisSeguidores.add(misSeguidoresUsuarioToAttach);
             }
-            cliente.setMisSeguidores(attachedMisSeguidores);
+            cliente.setListaMisSeguidores(attachedMisSeguidores);
             em.persist(cliente);
+            for (ListaParticular misListasReproduccionCreadasListaParticular : cliente.getMisListasReproduccionCreadas()) {
+                misListasReproduccionCreadasListaParticular.setMiCliente(cliente);
+                misListasReproduccionCreadasListaParticular = em.merge(misListasReproduccionCreadasListaParticular);
+            }
             for (Usuario misSeguidoresUsuario : cliente.getMisSeguidores()) {
                 misSeguidoresUsuario.getMisSeguidores().add(cliente);
                 misSeguidoresUsuario = em.merge(misSeguidoresUsuario);
@@ -89,16 +89,37 @@ public class ClienteJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Cliente persistentCliente = em.find(Cliente.class, cliente.getNickname());
+            List<ListaParticular> misListasReproduccionCreadasOld = persistentCliente.getMisListasReproduccionCreadas();
+            List<ListaParticular> misListasReproduccionCreadasNew = cliente.getMisListasReproduccionCreadas();
             List<Usuario> misSeguidoresOld = persistentCliente.getMisSeguidores();
             List<Usuario> misSeguidoresNew = cliente.getMisSeguidores();
+            List<ListaParticular> attachedMisListasReproduccionCreadasNew = new ArrayList<ListaParticular>();
+            for (ListaParticular misListasReproduccionCreadasNewListaParticularToAttach : misListasReproduccionCreadasNew) {
+                misListasReproduccionCreadasNewListaParticularToAttach = em.getReference(misListasReproduccionCreadasNewListaParticularToAttach.getClass(), misListasReproduccionCreadasNewListaParticularToAttach.getNombreLista());
+                attachedMisListasReproduccionCreadasNew.add(misListasReproduccionCreadasNewListaParticularToAttach);
+            }
+            misListasReproduccionCreadasNew = attachedMisListasReproduccionCreadasNew;
+            cliente.setMisListasReproduccionCreadasCompleta(misListasReproduccionCreadasNew);
             List<Usuario> attachedMisSeguidoresNew = new ArrayList<Usuario>();
             for (Usuario misSeguidoresNewUsuarioToAttach : misSeguidoresNew) {
                 misSeguidoresNewUsuarioToAttach = em.getReference(misSeguidoresNewUsuarioToAttach.getClass(), misSeguidoresNewUsuarioToAttach.getNickname());
                 attachedMisSeguidoresNew.add(misSeguidoresNewUsuarioToAttach);
             }
             misSeguidoresNew = attachedMisSeguidoresNew;
-            cliente.setMisSeguidores(misSeguidoresNew);
+            cliente.setListaMisSeguidores(misSeguidoresNew);
             cliente = em.merge(cliente);
+            for (ListaParticular misListasReproduccionCreadasOldListaParticular : misListasReproduccionCreadasOld) {
+                if (!misListasReproduccionCreadasNew.contains(misListasReproduccionCreadasOldListaParticular)) {
+                    misListasReproduccionCreadasOldListaParticular.setMiCliente(null);
+                    misListasReproduccionCreadasOldListaParticular = em.merge(misListasReproduccionCreadasOldListaParticular);
+                }
+            }
+            for (ListaParticular misListasReproduccionCreadasNewListaParticular : misListasReproduccionCreadasNew) {
+                if (!misListasReproduccionCreadasOld.contains(misListasReproduccionCreadasNewListaParticular)) {
+                    misListasReproduccionCreadasNewListaParticular.setMiCliente(cliente);
+                    misListasReproduccionCreadasNewListaParticular = em.merge(misListasReproduccionCreadasNewListaParticular);
+                }
+            }
             for (Usuario misSeguidoresOldUsuario : misSeguidoresOld) {
                 if (!misSeguidoresNew.contains(misSeguidoresOldUsuario)) {
                     misSeguidoresOldUsuario.getMisSeguidores().remove(cliente);
@@ -139,6 +160,11 @@ public class ClienteJpaController implements Serializable {
                 cliente.getNickname();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The cliente with id " + id + " no longer exists.", enfe);
+            }
+            List<ListaParticular> misListasReproduccionCreadas = cliente.getMisListasReproduccionCreadas();
+            for (ListaParticular misListasReproduccionCreadasListaParticular : misListasReproduccionCreadas) {
+                misListasReproduccionCreadasListaParticular.setMiCliente(null);
+                misListasReproduccionCreadasListaParticular = em.merge(misListasReproduccionCreadasListaParticular);
             }
             List<Usuario> misSeguidores = cliente.getMisSeguidores();
             for (Usuario misSeguidoresUsuario : misSeguidores) {

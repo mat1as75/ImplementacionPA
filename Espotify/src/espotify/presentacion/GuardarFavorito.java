@@ -137,10 +137,10 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTemaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonGuardarTemaFavorito)
-                .addGap(28, 28, 28))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanelTemaLayout.setVerticalGroup(
             jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,19 +168,20 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
         jPanelListaLayout.setHorizontalGroup(
             jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonGuardarListaFavorito)
-                .addGap(35, 35, 35))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanelListaLayout.setVerticalGroup(
             jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButtonGuardarListaFavorito)
                     .addComponent(jScrollPaneLista, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 44, Short.MAX_VALUE))
+                .addGap(0, 38, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Listas", jPanelLista);
@@ -201,9 +202,9 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             .addGroup(jPanelAlbumLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPaneAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonGuardarAlbumFavorito)
-                .addGap(40, 40, 40))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanelAlbumLayout.setVerticalGroup(
             jPanelAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

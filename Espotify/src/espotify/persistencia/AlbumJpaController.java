@@ -5,21 +5,23 @@
 package espotify.persistencia;
 
 import espotify.logica.Album;
-import espotify.persistencia.exceptions.NonexistentEntityException;
-import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import espotify.logica.Tema;
+import java.util.ArrayList;
+import java.util.List;
+import espotify.logica.Genero;
+import espotify.persistencia.exceptions.NonexistentEntityException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
- * @author usuario
+ * @author tecnologo
  */
 public class AlbumJpaController implements Serializable {
 
@@ -27,27 +29,52 @@ public class AlbumJpaController implements Serializable {
         this.emf = emf;
     }
     public AlbumJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Album album) throws PreexistingEntityException, Exception {
+    public void create(Album album) {
+        if (album.getMisTemas() == null) {
+            album.setMisTemas(new ArrayList<Tema>());
+        }
+        if (album.getMisGeneros() == null) {
+            album.setMisGeneros(new ArrayList<Genero>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(album);
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findAlbum(album.getIdAlbum()) != null) {
-                throw new PreexistingEntityException("Album " + album + " already exists.", ex);
+            List<Tema> attachedMisTemas = new ArrayList<Tema>();
+            for (Tema misTemasTemaToAttach : album.getMisTemas()) {
+                misTemasTemaToAttach = em.getReference(misTemasTemaToAttach.getClass(), misTemasTemaToAttach.getIdTema());
+                attachedMisTemas.add(misTemasTemaToAttach);
             }
-            throw ex;
+            album.setMisTemas(attachedMisTemas);
+            List<Genero> attachedMisGeneros = new ArrayList<Genero>();
+            for (Genero misGenerosGeneroToAttach : album.getMisGeneros()) {
+                misGenerosGeneroToAttach = em.getReference(misGenerosGeneroToAttach.getClass(), misGenerosGeneroToAttach.getNombreGenero());
+                attachedMisGeneros.add(misGenerosGeneroToAttach);
+            }
+            album.setMisGeneros(attachedMisGeneros);
+            em.persist(album);
+            for (Tema misTemasTema : album.getMisTemas()) {
+                Album oldMiAlbumOfMisTemasTema = misTemasTema.getMiAlbum();
+                misTemasTema.setMiAlbum(album);
+                misTemasTema = em.merge(misTemasTema);
+                if (oldMiAlbumOfMisTemasTema != null) {
+                    oldMiAlbumOfMisTemasTema.getMisTemas().remove(misTemasTema);
+                    oldMiAlbumOfMisTemasTema = em.merge(oldMiAlbumOfMisTemasTema);
+                }
+            }
+            for (Genero misGenerosGenero : album.getMisGeneros()) {
+                misGenerosGenero.getMisAlbumes().add(album);
+                misGenerosGenero = em.merge(misGenerosGenero);
+            }
+            em.getTransaction().commit();
         } finally {
             if (em != null) {
                 em.close();
@@ -60,7 +87,55 @@ public class AlbumJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Album persistentAlbum = em.find(Album.class, album.getIdAlbum());
+            List<Tema> misTemasOld = persistentAlbum.getMisTemas();
+            List<Tema> misTemasNew = album.getMisTemas();
+            List<Genero> misGenerosOld = persistentAlbum.getMisGeneros();
+            List<Genero> misGenerosNew = album.getMisGeneros();
+            List<Tema> attachedMisTemasNew = new ArrayList<Tema>();
+            for (Tema misTemasNewTemaToAttach : misTemasNew) {
+                misTemasNewTemaToAttach = em.getReference(misTemasNewTemaToAttach.getClass(), misTemasNewTemaToAttach.getIdTema());
+                attachedMisTemasNew.add(misTemasNewTemaToAttach);
+            }
+            misTemasNew = attachedMisTemasNew;
+            album.setMisTemas(misTemasNew);
+            List<Genero> attachedMisGenerosNew = new ArrayList<Genero>();
+            for (Genero misGenerosNewGeneroToAttach : misGenerosNew) {
+                misGenerosNewGeneroToAttach = em.getReference(misGenerosNewGeneroToAttach.getClass(), misGenerosNewGeneroToAttach.getNombreGenero());
+                attachedMisGenerosNew.add(misGenerosNewGeneroToAttach);
+            }
+            misGenerosNew = attachedMisGenerosNew;
+            album.setMisGeneros(misGenerosNew);
             album = em.merge(album);
+            for (Tema misTemasOldTema : misTemasOld) {
+                if (!misTemasNew.contains(misTemasOldTema)) {
+                    misTemasOldTema.setMiAlbum(null);
+                    misTemasOldTema = em.merge(misTemasOldTema);
+                }
+            }
+            for (Tema misTemasNewTema : misTemasNew) {
+                if (!misTemasOld.contains(misTemasNewTema)) {
+                    Album oldMiAlbumOfMisTemasNewTema = misTemasNewTema.getMiAlbum();
+                    misTemasNewTema.setMiAlbum(album);
+                    misTemasNewTema = em.merge(misTemasNewTema);
+                    if (oldMiAlbumOfMisTemasNewTema != null && !oldMiAlbumOfMisTemasNewTema.equals(album)) {
+                        oldMiAlbumOfMisTemasNewTema.getMisTemas().remove(misTemasNewTema);
+                        oldMiAlbumOfMisTemasNewTema = em.merge(oldMiAlbumOfMisTemasNewTema);
+                    }
+                }
+            }
+            for (Genero misGenerosOldGenero : misGenerosOld) {
+                if (!misGenerosNew.contains(misGenerosOldGenero)) {
+                    misGenerosOldGenero.getMisAlbumes().remove(album);
+                    misGenerosOldGenero = em.merge(misGenerosOldGenero);
+                }
+            }
+            for (Genero misGenerosNewGenero : misGenerosNew) {
+                if (!misGenerosOld.contains(misGenerosNewGenero)) {
+                    misGenerosNewGenero.getMisAlbumes().add(album);
+                    misGenerosNewGenero = em.merge(misGenerosNewGenero);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -86,9 +161,19 @@ public class AlbumJpaController implements Serializable {
             Album album;
             try {
                 album = em.getReference(Album.class, id);
-                album.getNombreAlbum();
+                album.getIdAlbum();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The album with id " + id + " no longer exists.", enfe);
+            }
+            List<Tema> misTemas = album.getMisTemas();
+            for (Tema misTemasTema : misTemas) {
+                misTemasTema.setMiAlbum(null);
+                misTemasTema = em.merge(misTemasTema);
+            }
+            List<Genero> misGeneros = album.getMisGeneros();
+            for (Genero misGenerosGenero : misGeneros) {
+                misGenerosGenero.getMisAlbumes().remove(album);
+                misGenerosGenero = em.merge(misGenerosGenero);
             }
             em.remove(album);
             em.getTransaction().commit();
