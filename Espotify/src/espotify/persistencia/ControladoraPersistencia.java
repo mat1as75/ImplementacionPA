@@ -7,6 +7,7 @@ package espotify.persistencia;
 
 
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
@@ -400,6 +401,28 @@ public class ControladoraPersistencia {
         return nombresListasReproduccion;
     }
     
+    public ArrayList<String> getNombresListasParticulares() {
+        List<ListaParticular> listaListasParticulares = this.lpartJpa.findListaParticularEntities();
+        ArrayList<String> nombresListasParticulares = new ArrayList<>();
+        
+        for (ListaParticular lp : listaListasParticulares) {
+            nombresListasParticulares.add(lp.getNombreLista());
+        }
+        
+        return nombresListasParticulares;
+    }
+    
+    public ArrayList<String> getNombresListasPorDefecto() {
+        List<ListaPorDefecto> listaListasPorDefecto = this.lxdefcJpa.findListaPorDefectoEntities();
+        ArrayList<String> nombresListasPorDefecto = new ArrayList<>();
+        
+        for (ListaPorDefecto lpd : listaListasPorDefecto) {
+            nombresListasPorDefecto.add(lpd.getNombreLista());
+        }
+        
+        return nombresListasPorDefecto;
+    }
+    
     /* Selecciona los Nombres de los Albumes que esten 
     disponibles para seleccionar en GuardarFavoritos */
     public Map<Long, String> getAlbumesDisponibles() {
@@ -419,6 +442,22 @@ public class ControladoraPersistencia {
         
         for (Album album: listaAlbumes) {
             dataAlbums.add(album.getDataAlbum());
+        }
+        return dataAlbums;
+    }
+    
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimple() {
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+        ArrayList<DTAlbum_Simple> dataAlbums = new ArrayList<>();
+        
+        for (Album album: listaAlbumes) {
+            dataAlbums.add(new DTAlbum_Simple(
+                    album.getIdAlbum(),
+                    album.getNombreAlbum(),
+                    album.getAnioCreacion(),
+                    album.getMiArtista().getNombreCompletoToString()
+                )
+            );
         }
         return dataAlbums;
     }

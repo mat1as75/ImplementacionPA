@@ -2,6 +2,7 @@ package espotify.logica;
 
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
@@ -144,6 +145,16 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public ArrayList<String> getNombresListasPorDefecto() {
+        return this.contpersis.getNombresListasPorDefecto();
+    }
+    
+    @Override
+    public ArrayList<String> getNombresListasParticulares() {
+        return this.contpersis.getNombresListasParticulares();
+    }
+    
+    @Override
     public Map<Long, String> getAlbumesDisponibles() {
         return this.contpersis.getAlbumesDisponibles();
     }
@@ -151,6 +162,11 @@ public class Controlador implements IControlador{
     @Override
     public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
         return this.contpersis.getDTAlbumesDisponibles();
+    }
+    
+    @Override
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimple() {
+        return this.contpersis.getDTAlbumesSimple();
     }
     
     @Override
