@@ -10,6 +10,7 @@ import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
 
@@ -36,8 +37,8 @@ public interface IControlador {
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
     public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero);
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
-    //public abstract DTListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
-
+    public abstract DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
+    public abstract List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen);
 
     
 

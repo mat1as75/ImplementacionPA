@@ -1,5 +1,14 @@
 package espotify.presentacion;
 
+import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -10,26 +19,81 @@ package espotify.presentacion;
  * @author ms
  */
 public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
+    
+    private IControlador controlador;
+    private String imgLista;
 
     /**
      * Creates new form ConsultadeListadeReproduccion
      */
     public ConsultaListaReproduccion() {
         initComponents();
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        /* Cargo el jList con los Nicknames de los Clientes del Sistema */
+        DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
+        ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
+
+        for (String nickname: nicknamesClientes) {
+            listaNicknamesClientes.addElement(nickname);
+        }
+        jListClientes.setModel(listaNicknamesClientes);
+        
+        // cargarGenerosEnJTree(); // Cargar los géneros en el JTree
+        
         jLabelListaDeGeneros.setVisible(true);
-        jListListaDeGeneros.setVisible(true);
+        jTreeGeneros.setVisible(true);
         jScrollPaneGenero.setVisible(true);
         jLabelGenero.setVisible(true);
         jTextFieldGenero.setVisible(true);
         
         
-        jLabelListaDeArtistas.setVisible(false);
-        jListListarDeArtistas.setVisible(false);
-        JScrollPanelArtista.setVisible(false);
+        jLabelListaDeClientes.setVisible(false);
+        jListClientes.setVisible(false);
+        JScrollPanelCliente.setVisible(false);
         jLabelCliente.setVisible(false);
         jTextFieldCliente.setVisible(false);
         
     }
+    
+     /* 
+    private void cargarGenerosEnJTree() {
+        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
+        ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener géneros
+
+        for (DTGenero genero : generos) {
+            DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombre());
+
+            if (genero.getGeneroPadre() != null) {
+                DefaultMutableTreeNode nodoPadre = buscarNodo(raiz, genero.getGeneroPadre());
+                if (nodoPadre != null) {
+                    nodoPadre.add(nodoGenero);
+                }
+            } else {
+                raiz.add(nodoGenero);
+            }
+        }
+        jTreeGeneros.setModel(new DefaultTreeModel(raiz));
+    }
+    
+     private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
+        for (int i = 0; i < nodo.getChildCount(); i++) {
+            DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
+            if (hijo.getUserObject().toString().equals(nombreGenero)) {
+                return hijo;
+            } else {
+                DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
+                if (resultado != null) {
+                    return resultado;
+                }
+            }
+        }
+        return null;
+    }
+    
+    */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,12 +108,12 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jLabelConsultarPor = new javax.swing.JLabel();
         jComboBoxConsultarPor = new javax.swing.JComboBox<>();
         jLabelListaDeGeneros = new javax.swing.JLabel();
-        jLabelListaDeArtistas = new javax.swing.JLabel();
+        jLabelListaDeClientes = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        JScrollPanelArtista = new javax.swing.JScrollPane();
-        jListListarDeArtistas = new javax.swing.JList<>();
+        JScrollPanelCliente = new javax.swing.JScrollPane();
+        jListClientes = new javax.swing.JList<>();
         jScrollPaneGenero = new javax.swing.JScrollPane();
-        jListListaDeGeneros = new javax.swing.JList<>();
+        jTreeGeneros = new javax.swing.JTree();
         jLabelListasDeReproduccion = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListListaDeReproduccion = new javax.swing.JList<>();
@@ -65,6 +129,8 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jButtonDescargarArchivosDeMusica = new javax.swing.JButton();
         jButtonVerDireccionWeb = new javax.swing.JButton();
         jTextFieldNombreDeLaLista = new javax.swing.JTextField();
+        jButtonSeleccionar = new javax.swing.JButton();
+        jButtonConsultarLista = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -83,7 +149,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
         jLabelListaDeGeneros.setText("Lista de Géneros:");
 
-        jLabelListaDeArtistas.setText("Lista de Artistas:");
+        jLabelListaDeClientes.setText("Lista de Clientes:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -96,27 +162,12 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             .addGap(0, 539, Short.MAX_VALUE)
         );
 
-        jListListarDeArtistas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Artista 1", "Artista 2", "Artista 3", "Artista 4", "Artista 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        JScrollPanelArtista.setViewportView(jListListarDeArtistas);
+        JScrollPanelCliente.setViewportView(jListClientes);
 
-        jListListaDeGeneros.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Género 1", "Género 2", "Género 3", "Género 4", "Género 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPaneGenero.setViewportView(jListListaDeGeneros);
+        jScrollPaneGenero.setViewportView(jTreeGeneros);
 
         jLabelListasDeReproduccion.setText("Listas de Reproducción:");
 
-        jListListaDeReproduccion.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Lista 1", "Lista 2", "Lista 3", "Lista 4", "Lista 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jListListaDeReproduccion);
 
         jLabelNombreDeLaLista.setText("Nombre de la Lista:");
@@ -131,14 +182,12 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jTextAreaInformacionDeLosTemas.setRows(5);
         jScrollPane2.setViewportView(jTextAreaInformacionDeLosTemas);
 
-        jTextFieldCliente.setText("Juan Jose");
         jTextFieldCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldClienteActionPerformed(evt);
             }
         });
 
-        jTextFieldGenero.setText("Rock Nacional");
         jTextFieldGenero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldGeneroActionPerformed(evt);
@@ -155,7 +204,19 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jButtonVerDireccionWeb.setText("Ver Dirección Web");
         jButtonVerDireccionWeb.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTextFieldNombreDeLaLista.setText("Canciones de Rock");
+        jButtonSeleccionar.setText("Seleccionar");
+        jButtonSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSeleccionarActionPerformed(evt);
+            }
+        });
+
+        jButtonConsultarLista.setText("Consultar Lista");
+        jButtonConsultarLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarListaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -174,45 +235,53 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabelListaDeGeneros)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelListaDeArtistas))
+                                .addComponent(jLabelListaDeClientes))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPaneGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(JScrollPanelArtista, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(JScrollPanelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(107, 107, 107)
+                                .addComponent(jButtonSeleccionar)))
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelListasDeReproduccion)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(12, 12, 12)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelListasDeReproduccion)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(38, 38, 38)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(12, 12, 12)
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addComponent(jLabelNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jTextFieldNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                            .addComponent(jLabelNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                            .addComponent(jTextFieldNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                            .addComponent(jLabelCliente)
+                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                            .addComponent(jTextFieldCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                    .addGap(0, 0, Short.MAX_VALUE))
                                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addComponent(jLabelCliente)
+                                                    .addComponent(jLabelGenero)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jTextFieldCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addGap(0, 0, Short.MAX_VALUE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabelGenero)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jTextFieldGenero)))))
+                                                    .addComponent(jTextFieldGenero)))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabelInformacionDeLosTemas))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButtonDescargarArchivosDeMusica)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButtonVerDireccionWeb))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(jLabelInformacionDeLosTemas))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonDescargarArchivosDeMusica)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonVerDireccionWeb)))
+                                .addComponent(jButtonConsultarLista)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -253,14 +322,21 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelListaDeGeneros)
-                            .addComponent(jLabelListaDeArtistas)
+                            .addComponent(jLabelListaDeClientes)
                             .addComponent(jLabelListasDeReproduccion))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPaneGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JScrollPanelArtista, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonConsultarLista))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPaneGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JScrollPanelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonSeleccionar)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -283,31 +359,31 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
     private void jComboBoxConsultarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxConsultarPorActionPerformed
         String opcion=(String)jComboBoxConsultarPor.getSelectedItem();
-        if(opcion=="Género"){
+        if("Género".equals(opcion)){
             jLabelListaDeGeneros.setVisible(true);
-            jListListaDeGeneros.setVisible(true);
+            jTreeGeneros.setVisible(true);
             jScrollPaneGenero.setVisible(true);
             jLabelGenero.setVisible(true);
             jTextFieldGenero.setVisible(true);
             
-            jLabelListaDeArtistas.setVisible(false);
-            jListListarDeArtistas.setVisible(false);
-            JScrollPanelArtista.setVisible(false);
+            jLabelListaDeClientes.setVisible(false);
+            jListClientes.setVisible(false);
+            JScrollPanelCliente.setVisible(false);
             jLabelCliente.setVisible(false);
             jTextFieldCliente.setVisible(false);
             
         }
         else{
             jLabelListaDeGeneros.setVisible(false);
-            jListListaDeGeneros.setVisible(false);
+            jTreeGeneros.setVisible(false);
             jScrollPaneGenero.setVisible(false);
             jLabelGenero.setVisible(false);
             jTextFieldGenero.setVisible(false);
             
             
-            jLabelListaDeArtistas.setVisible(true);
-            jListListarDeArtistas.setVisible(true);
-            JScrollPanelArtista.setVisible(true);
+            jLabelListaDeClientes.setVisible(true);
+            jListClientes.setVisible(true);
+            JScrollPanelCliente.setVisible(true);
             jLabelCliente.setVisible(true);
             jTextFieldCliente.setVisible(true);
         }
@@ -321,24 +397,92 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldClienteActionPerformed
 
+    private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
+       
+      // Limpiar la lista de reproducción antes de cargar los datos
+      DefaultListModel<String> modeloLista = new DefaultListModel<>();
+      jListListaDeReproduccion.setModel(modeloLista);
+
+    // Verificar el tipo de consulta seleccionada
+    String opcionSeleccionada = (String) jComboBoxConsultarPor.getSelectedItem();
+
+    if (opcionSeleccionada.equals("Género")) {
+        // Obtener el género seleccionado en el JTree
+        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
+        if (nodoSeleccionado != null) {
+            String generoSeleccionado = nodoSeleccionado.toString();
+
+            // Verificar si el género seleccionado no está vacío
+            if (generoSeleccionado.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Seleccione un género válido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Obtener los nombres de las listas por defecto para el género seleccionado a través del controlador
+            List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Genero", generoSeleccionado);
+
+            if (nombresListas.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el género seleccionado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Mostrar las listas en el jListListaDeReproduccion
+                for (String nombreLista : nombresListas) {
+                    modeloLista.addElement(nombreLista);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un género.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    } else if (opcionSeleccionada.equals("Cliente")) {
+        // Obtener el cliente seleccionado en el jListClientes
+        String clienteSeleccionado = jListClientes.getSelectedValue();
+
+        if (clienteSeleccionado != null) {
+            // Verificar si el cliente seleccionado no está vacío
+            if (clienteSeleccionado.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Seleccione un cliente válido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Obtener los nombres de las listas particulares del cliente seleccionado a través del controlador
+            List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", clienteSeleccionado);
+
+            if (nombresListas.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el cliente seleccionado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Mostrar las listas en el jListListaDeReproduccion
+                for (String nombreLista : nombresListas) {
+                    modeloLista.addElement(nombreLista);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un cliente de la lista de clientes.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_jButtonSeleccionarActionPerformed
+
+    private void jButtonConsultarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarListaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonConsultarListaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane JScrollPanelArtista;
+    private javax.swing.JScrollPane JScrollPanelCliente;
     private javax.swing.JLabel imageLabel;
+    private javax.swing.JButton jButtonConsultarLista;
     private javax.swing.JButton jButtonDescargarArchivosDeMusica;
+    private javax.swing.JButton jButtonSeleccionar;
     private javax.swing.JButton jButtonVerDireccionWeb;
     private javax.swing.JComboBox<String> jComboBoxConsultarPor;
     private javax.swing.JLabel jLabelCliente;
     private javax.swing.JLabel jLabelConsultarPor;
     private javax.swing.JLabel jLabelGenero;
     private javax.swing.JLabel jLabelInformacionDeLosTemas;
-    private javax.swing.JLabel jLabelListaDeArtistas;
+    private javax.swing.JLabel jLabelListaDeClientes;
     private javax.swing.JLabel jLabelListaDeGeneros;
     private javax.swing.JLabel jLabelListasDeReproduccion;
     private javax.swing.JLabel jLabelNombreDeLaLista;
-    private javax.swing.JList<String> jListListaDeGeneros;
+    private javax.swing.JList<String> jListClientes;
     private javax.swing.JList<String> jListListaDeReproduccion;
-    private javax.swing.JList<String> jListListarDeArtistas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -348,5 +492,6 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextFieldCliente;
     private javax.swing.JTextField jTextFieldGenero;
     private javax.swing.JTextField jTextFieldNombreDeLaLista;
+    private javax.swing.JTree jTreeGeneros;
     // End of variables declaration//GEN-END:variables
 }

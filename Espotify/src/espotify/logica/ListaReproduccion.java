@@ -19,6 +19,8 @@ public abstract class ListaReproduccion implements Serializable {
     protected String nombreLista;
     protected String fotoLista;
     
+    @ManyToMany
+    private List<Tema> misTemas;
     
     // Constructores
     public ListaReproduccion() {
@@ -45,6 +47,14 @@ public abstract class ListaReproduccion implements Serializable {
     
     public void setFotoLista(String fotoLista) {
         this.fotoLista = fotoLista;
+    }
+    
+    public List<Tema> getMisTemas() {
+        return misTemas;
+    }
+    
+    public void setMisTemas(List<Tema> misTemas) {
+        this.misTemas = misTemas;
     }
     
 }

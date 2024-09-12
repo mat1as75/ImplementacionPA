@@ -9,6 +9,7 @@ import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
@@ -139,11 +140,16 @@ public class Controlador implements IControlador{
         this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
     }
     
-   /* @Override
-    public DTListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op) {
-        return this.contpersis.getDatosListaReproduccion(tipoDeLista, op);
+    @Override
+    public DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String nombreLista) {
+        return this.contpersis.getDatosListaReproduccion(tipoDeLista, nombreLista);
     }
-    */
+    
+    @Override
+    public List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen) {
+    return this.contpersis.getNombresListasPorTipo(tipoDeLista, nickOgen);
+    }
+
 
     @Override
     public void setSeguidorSeguido(String Seguidor, String Seguido){

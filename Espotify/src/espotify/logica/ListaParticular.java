@@ -1,35 +1,37 @@
-
 package espotify.logica;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 
 @Entity
 public class ListaParticular extends ListaReproduccion{
-    
+
     // Atributos
     private boolean soyPrivada;
-    private String nicknameCliente;
+    @ManyToOne
+    private Cliente miCliente;
+
     // Constructores
     public ListaParticular(){
-        
+
     }
-    
-    public ListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean soyPrivada){
+
+    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente, boolean soyPrivada){
          super(nombreLista, fotoLista);
-         this.nicknameCliente = nicknameCliente;
+         this.miCliente = miCliente;
          this.soyPrivada = soyPrivada;
     }
 
     // Getters & Setters
-    public String getNicknameCliente(){
-        return nicknameCliente;
+    public Cliente getCliente(){
+        return miCliente;
     }
-    
-    public void setNicknameCliente(String nicknameCliente){
-        this.nicknameCliente = nicknameCliente;
+
+    public void setMiCliente(Cliente miCliente){
+        this.miCliente = miCliente;
     }
-    
+
     public boolean soyPrivada() {
         return soyPrivada;
     }

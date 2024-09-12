@@ -8,14 +8,16 @@ import espotify.DataTypes.exceptions.NonexistentEntityException;
 import espotify.DataTypes.exceptions.PreexistingEntityException;
 import espotify.logica.ListaParticular;
 import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import espotify.logica.Tema;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  *
@@ -26,9 +28,9 @@ public class ListaParticularJpaController implements Serializable {
     public ListaParticularJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public ListaParticularJpaController() {
+     public ListaParticularJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
-    }
+    } 
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -36,11 +38,24 @@ public class ListaParticularJpaController implements Serializable {
     }
 
     public void create(ListaParticular listaParticular) throws PreexistingEntityException, Exception {
+        if (listaParticular.getMisTemas() == null) {
+            listaParticular.setMisTemas(new ArrayList<Tema>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<Tema> attachedMisTemas = new ArrayList<Tema>();
+            for (Tema misTemasTemaToAttach : listaParticular.getMisTemas()) {
+                misTemasTemaToAttach = em.getReference(misTemasTemaToAttach.getClass(), misTemasTemaToAttach.getIdTema());
+                attachedMisTemas.add(misTemasTemaToAttach);
+            }
+            listaParticular.setMisTemas(attachedMisTemas);
             em.persist(listaParticular);
+            for (Tema misTemasTema : listaParticular.getMisTemas()) {
+                misTemasTema.getMisReproducciones().add(listaParticular);
+                misTemasTema = em.merge(misTemasTema);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findListaParticular(listaParticular.getNombreLista()) != null) {
@@ -59,7 +74,29 @@ public class ListaParticularJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            ListaParticular persistentListaParticular = em.find(ListaParticular.class, listaParticular.getNombreLista());
+            List<Tema> misTemasOld = persistentListaParticular.getMisTemas();
+            List<Tema> misTemasNew = listaParticular.getMisTemas();
+            List<Tema> attachedMisTemasNew = new ArrayList<Tema>();
+            for (Tema misTemasNewTemaToAttach : misTemasNew) {
+                misTemasNewTemaToAttach = em.getReference(misTemasNewTemaToAttach.getClass(), misTemasNewTemaToAttach.getIdTema());
+                attachedMisTemasNew.add(misTemasNewTemaToAttach);
+            }
+            misTemasNew = attachedMisTemasNew;
+            listaParticular.setMisTemas(misTemasNew);
             listaParticular = em.merge(listaParticular);
+            for (Tema misTemasOldTema : misTemasOld) {
+                if (!misTemasNew.contains(misTemasOldTema)) {
+                    misTemasOldTema.getMisReproducciones().remove(listaParticular);
+                    misTemasOldTema = em.merge(misTemasOldTema);
+                }
+            }
+            for (Tema misTemasNewTema : misTemasNew) {
+                if (!misTemasOld.contains(misTemasNewTema)) {
+                    misTemasNewTema.getMisReproducciones().add(listaParticular);
+                    misTemasNewTema = em.merge(misTemasNewTema);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -88,6 +125,11 @@ public class ListaParticularJpaController implements Serializable {
                 listaParticular.getNombreLista();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The listaParticular with id " + id + " no longer exists.", enfe);
+            }
+            List<Tema> misTemas = listaParticular.getMisTemas();
+            for (Tema misTemasTema : misTemas) {
+                misTemasTema.getMisReproducciones().remove(listaParticular);
+                misTemasTema = em.merge(misTemasTema);
             }
             em.remove(listaParticular);
             em.getTransaction().commit();
