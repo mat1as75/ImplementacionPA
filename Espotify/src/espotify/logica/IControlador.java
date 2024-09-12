@@ -11,6 +11,7 @@ import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public interface IControlador {
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
     public abstract DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
     public abstract List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen);
-
+    public abstract List<DTGenero> getGeneros();
     
 
     

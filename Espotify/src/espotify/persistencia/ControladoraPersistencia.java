@@ -171,6 +171,13 @@ public class ControladoraPersistencia {
         
         return clientesAL;
     }
+    
+    public ArrayList<Genero> getGeneros() {
+        List<Genero> generosL = genJpa.findGeneroEntities();
+        ArrayList<Genero> generosAL = new ArrayList<>(generosL);
+
+        return generosAL;
+    }
 
     public boolean ExisteCliente(String nicknameCliente) {
         List<Cliente> clientes = this.cliJpa.findClienteEntities();

@@ -1,13 +1,17 @@
 package espotify.presentacion;
 
 import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTGenero;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -23,9 +27,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private IControlador controlador;
     private String imgLista;
 
-    /**
-     * Creates new form ConsultadeListadeReproduccion
-     */
+    
     public ConsultaListaReproduccion() {
         initComponents();
         
@@ -41,7 +43,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         }
         jListClientes.setModel(listaNicknamesClientes);
         
-        // cargarGenerosEnJTree(); // Cargar los géneros en el JTree
+        cargarGenerosEnJTree(); // Cargar los géneros en el JTree
         
         jLabelListaDeGeneros.setVisible(true);
         jTreeGeneros.setVisible(true);
@@ -58,42 +60,56 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         
     }
     
-     /* 
     private void cargarGenerosEnJTree() {
-        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
-        ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener géneros
+    DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
+    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener géneros
 
-        for (DTGenero genero : generos) {
-            DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombre());
+    // Mapa para relacionar nombres de generos con sus nodos
+    Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
 
-            if (genero.getGeneroPadre() != null) {
-                DefaultMutableTreeNode nodoPadre = buscarNodo(raiz, genero.getGeneroPadre());
-                if (nodoPadre != null) {
-                    nodoPadre.add(nodoGenero);
-                }
-            } else {
-                raiz.add(nodoGenero);
+    // Primera pasada: Crear nodos para todos los generos y agregarlos al mapa
+    for (DTGenero genero : generos) {
+        DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombreGenero());
+        nodosGeneros.put(genero.getNombreGenero(), nodoGenero);
+        
+        // Si el genero no tiene padre, agregarlo a la raiz
+        if (genero.getMiPadre() == null) {
+            raiz.add(nodoGenero);
+        }
+    }
+
+    // Segunda pasada: Establecer relaciones de padre-hijo basadas en el mapa
+    for (DTGenero genero : generos) {
+        if (genero.getMiPadre() != null) {
+            DefaultMutableTreeNode nodoGenero = nodosGeneros.get(genero.getNombreGenero());
+            DefaultMutableTreeNode nodoPadre = nodosGeneros.get(genero.getMiPadre().getNombreGenero());
+
+            // Verificar que ambos nodos existan antes de establecer la relacion
+            if (nodoPadre != null && nodoGenero != null) {
+                nodoPadre.add(nodoGenero);
             }
         }
-        jTreeGeneros.setModel(new DefaultTreeModel(raiz));
     }
-    
-     private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
-        for (int i = 0; i < nodo.getChildCount(); i++) {
-            DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
-            if (hijo.getUserObject().toString().equals(nombreGenero)) {
-                return hijo;
-            } else {
-                DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
-                if (resultado != null) {
-                    return resultado;
-                }
+
+    // Establecer el modelo del arbol
+    jTreeGeneros.setModel(new DefaultTreeModel(raiz));
+    }
+
+    private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
+    for (int i = 0; i < nodo.getChildCount(); i++) {
+        DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
+        if (hijo.getUserObject().toString().equals(nombreGenero)) {
+            return hijo;
+        } else {
+            DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
+            if (resultado != null) {
+                return resultado;
             }
         }
-        return null;
     }
-    
-    */
+    return null;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -399,7 +415,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
     private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
        
-      // Limpiar la lista de reproducción antes de cargar los datos
+      // Limpiar la lista de reproduccion antes de cargar los datos
       DefaultListModel<String> modeloLista = new DefaultListModel<>();
       jListListaDeReproduccion.setModel(modeloLista);
 
@@ -407,18 +423,18 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     String opcionSeleccionada = (String) jComboBoxConsultarPor.getSelectedItem();
 
     if (opcionSeleccionada.equals("Género")) {
-        // Obtener el género seleccionado en el JTree
+        // Obtener el genero seleccionado en el JTree
         DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
         if (nodoSeleccionado != null) {
             String generoSeleccionado = nodoSeleccionado.toString();
 
-            // Verificar si el género seleccionado no está vacío
+            // Verificar si el genero seleccionado no esta vacio
             if (generoSeleccionado.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Seleccione un género válido.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
-            // Obtener los nombres de las listas por defecto para el género seleccionado a través del controlador
+            // Obtener los nombres de las listas por defecto para el genero seleccionado 
             List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Genero", generoSeleccionado);
 
             if (nombresListas.isEmpty()) {
@@ -437,13 +453,13 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         String clienteSeleccionado = jListClientes.getSelectedValue();
 
         if (clienteSeleccionado != null) {
-            // Verificar si el cliente seleccionado no está vacío
+            // Verificar si el cliente seleccionado no esta vacio
             if (clienteSeleccionado.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Seleccione un cliente válido.", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Obtener los nombres de las listas particulares del cliente seleccionado a través del controlador
+            // Obtener los nombres de las listas particulares del cliente seleccionado a traves del controlador
             List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", clienteSeleccionado);
 
             if (nombresListas.isEmpty()) {

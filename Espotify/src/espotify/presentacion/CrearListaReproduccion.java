@@ -9,19 +9,10 @@ package espotify.presentacion;
  * @author ms
  */
 
-import espotify.logica.ListaReproduccion;
-import espotify.logica.ListaPorDefecto;
-import espotify.logica.ListaParticular;
-import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTGenero;
-import espotify.DataTypes.DTParticulares;
-import espotify.DataTypes.DTPorDefecto;
-import espotify.logica.Cliente;
-import espotify.logica.Controlador;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.DefaultListModel;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -29,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -56,7 +49,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         }
         jListClientes.setModel(listaNicknamesClientes);
         
-       // cargarGenerosEnJTree(); // Cargar los géneros en el JTree
+        cargarGenerosEnJTree(); // Cargar los generos en el JTree
         
         jLabelGenero.setVisible(true);
         jTreeGeneros.setVisible(true);
@@ -66,43 +59,58 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         jScrollPaneClientes.setVisible(false);
     }
     
-      /* 
+      
     private void cargarGenerosEnJTree() {
-        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
-        ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener géneros
+    DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
+    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener generos
 
-        for (DTGenero genero : generos) {
-            DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombre());
+    // Mapa para relacionar nombres de generos con sus nodos
+    Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
 
-            if (genero.getGeneroPadre() != null) {
-                DefaultMutableTreeNode nodoPadre = buscarNodo(raiz, genero.getGeneroPadre());
-                if (nodoPadre != null) {
-                    nodoPadre.add(nodoGenero);
-                }
-            } else {
-                raiz.add(nodoGenero);
+    // Primera pasada: Crear nodos para todos los generos y agregarlos al mapa
+    for (DTGenero genero : generos) {
+        DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombreGenero());
+        nodosGeneros.put(genero.getNombreGenero(), nodoGenero);
+        
+        // Si el genero no tiene padre, agregarlo a la raiz
+        if (genero.getMiPadre() == null) {
+            raiz.add(nodoGenero);
+        }
+    }
+
+    // Segunda pasada: Establecer relaciones de padre-hijo basadas en el mapa
+    for (DTGenero genero : generos) {
+        if (genero.getMiPadre() != null) {
+            DefaultMutableTreeNode nodoGenero = nodosGeneros.get(genero.getNombreGenero());
+            DefaultMutableTreeNode nodoPadre = nodosGeneros.get(genero.getMiPadre().getNombreGenero());
+
+            // Verificar que ambos nodos existan antes de establecer la relacion
+            if (nodoPadre != null && nodoGenero != null) {
+                nodoPadre.add(nodoGenero);
             }
         }
-        jTreeGeneros.setModel(new DefaultTreeModel(raiz));
     }
-    
-     private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
-        for (int i = 0; i < nodo.getChildCount(); i++) {
-            DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
-            if (hijo.getUserObject().toString().equals(nombreGenero)) {
-                return hijo;
-            } else {
-                DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
-                if (resultado != null) {
-                    return resultado;
-                }
+
+    // Establecer el modelo del arbol
+    jTreeGeneros.setModel(new DefaultTreeModel(raiz));
+    }
+
+    private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
+    for (int i = 0; i < nodo.getChildCount(); i++) {
+        DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
+        if (hijo.getUserObject().toString().equals(nombreGenero)) {
+            return hijo;
+        } else {
+            DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
+            if (resultado != null) {
+                return resultado;
             }
         }
-        return null;
     }
-    
-    */
-    
+    return null;
+    }
+
+      
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
