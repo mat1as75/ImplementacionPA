@@ -414,7 +414,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
             // Verificar si el género seleccionado no está vacío
             if (generoSeleccionado.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Seleccione un género válido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Seleccione un género válido.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
@@ -422,7 +422,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Genero", generoSeleccionado);
 
             if (nombresListas.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el género seleccionado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el género seleccionado.", "--", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 // Mostrar las listas en el jListListaDeReproduccion
                 for (String nombreLista : nombresListas) {
@@ -430,7 +430,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un género.", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione un género de la lista de generos.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     } else if (opcionSeleccionada.equals("Cliente")) {
         // Obtener el cliente seleccionado en el jListClientes
@@ -439,7 +439,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         if (clienteSeleccionado != null) {
             // Verificar si el cliente seleccionado no está vacío
             if (clienteSeleccionado.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Seleccione un cliente válido.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Seleccione un cliente válido.", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -447,7 +447,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", clienteSeleccionado);
 
             if (nombresListas.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el cliente seleccionado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el cliente seleccionado.", "--", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 // Mostrar las listas en el jListListaDeReproduccion
                 for (String nombreLista : nombresListas) {
@@ -455,7 +455,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione un cliente de la lista de clientes.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la lista de clientes.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
     }//GEN-LAST:event_jButtonSeleccionarActionPerformed
