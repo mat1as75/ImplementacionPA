@@ -2,6 +2,7 @@ package espotify.presentacion;
 
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -110,6 +112,30 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     return null;
     }
 
+    private void mostrarTemasEnTabla(List<DTTemaSimple> temas) {
+    // Definir las columnas de la tabla
+    String[] columnas = {"Nombre Tema", "Duración (seg)", "Posición en Álbum", "Nombre del Álbum", "Artista"};
+
+    // Convertir la lista de temas a formato para JTable
+    Object[][] datos = new Object[temas.size()][columnas.length];
+    for (int i = 0; i < temas.size(); i++) {
+        DTTemaSimple tema = temas.get(i);
+        datos[i][0] = tema.getNombreTema();
+        datos[i][1] = tema.getDuracionSegundos();
+        datos[i][2] = tema.getPosicionEnAlbum();
+        datos[i][3] = tema.getNombreAlbum();
+        datos[i][4] = tema.getNombreCompletoArtista();
+    }
+
+    // Crear y configurar el modelo de la tabla
+     DefaultTableModel modeloTabla;
+     modeloTabla = new DefaultTableModel(datos, columnas) {};
+     
+    // Asignar el modelo a la JTable y evitar que se edite
+    jTableTemas.setModel(modeloTabla);
+    jTableTemas.setDefaultEditor(Object.class, null); 
+    jTableTemas.getTableHeader().setReorderingAllowed(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,8 +163,6 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jLabelGenero = new javax.swing.JLabel();
         jLabelCliente = new javax.swing.JLabel();
         jLabelInformacionDeLosTemas = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextAreaInformacionDeLosTemas = new javax.swing.JTextArea();
         jTextFieldCliente = new javax.swing.JTextField();
         jTextFieldGenero = new javax.swing.JTextField();
         imageLabel = new javax.swing.JLabel();
@@ -147,6 +171,8 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jTextFieldNombreDeLaLista = new javax.swing.JTextField();
         jButtonSeleccionar = new javax.swing.JButton();
         jButtonConsultarLista = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableTemas = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
@@ -194,10 +220,6 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
         jLabelInformacionDeLosTemas.setText("Información de los temas:");
 
-        jTextAreaInformacionDeLosTemas.setColumns(20);
-        jTextAreaInformacionDeLosTemas.setRows(5);
-        jScrollPane2.setViewportView(jTextAreaInformacionDeLosTemas);
-
         jTextFieldCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldClienteActionPerformed(evt);
@@ -219,6 +241,11 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jButtonVerDireccionWeb.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jButtonVerDireccionWeb.setText("Ver Dirección Web");
         jButtonVerDireccionWeb.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonVerDireccionWeb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVerDireccionWebActionPerformed(evt);
+            }
+        });
 
         jButtonSeleccionar.setText("Seleccionar");
         jButtonSeleccionar.addActionListener(new java.awt.event.ActionListener() {
@@ -233,6 +260,19 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                 jButtonConsultarListaActionPerformed(evt);
             }
         });
+
+        jTableTemas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(jTableTemas);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -257,7 +297,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(JScrollPanelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(107, 107, 107)
+                                .addGap(22, 22, 22)
                                 .addComponent(jButtonSeleccionar)))
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,38 +307,39 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(12, 12, 12)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                            .addComponent(jLabelNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(jTextFieldNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                            .addComponent(jLabelCliente)
-                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                            .addComponent(jTextFieldCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                    .addGap(0, 0, Short.MAX_VALUE))
-                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addComponent(jLabelGenero)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jTextFieldGenero)))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addComponent(jLabelNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jTextFieldNombreDeLaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addComponent(jLabelCliente)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jTextFieldCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(0, 62, Short.MAX_VALUE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabelGenero)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jTextFieldGenero))))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
-                                        .addComponent(jLabelInformacionDeLosTemas))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButtonDescargarArchivosDeMusica)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonVerDireccionWeb))))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabelInformacionDeLosTemas)
+                                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jButtonDescargarArchivosDeMusica)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jButtonVerDireccionWeb)))
+                                        .addGap(182, 182, 182))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jButtonConsultarLista)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -330,11 +371,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                         .addGap(15, 15, 15)
                         .addComponent(jLabelInformacionDeLosTemas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonDescargarArchivosDeMusica)
-                            .addComponent(jButtonVerDireccionWeb)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelListaDeGeneros)
@@ -344,16 +381,19 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonConsultarLista))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPaneGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(JScrollPanelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonSeleccionar)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonSeleccionar))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonConsultarLista)
+                                    .addComponent(jButtonDescargarArchivosDeMusica)
+                                    .addComponent(jButtonVerDireccionWeb))))))
+                .addContainerGap(191, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -376,6 +416,14 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private void jComboBoxConsultarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxConsultarPorActionPerformed
         String opcion=(String)jComboBoxConsultarPor.getSelectedItem();
         if("Género".equals(opcion)){
+            
+            jTextFieldNombreDeLaLista.setText("");
+            jTextFieldGenero.setText("");
+            jTextFieldCliente.setText("");
+            DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
+            modeloTabla.setRowCount(0);
+            jListListaDeReproduccion.setModel(new DefaultListModel<>());
+            
             jLabelListaDeGeneros.setVisible(true);
             jTreeGeneros.setVisible(true);
             jScrollPaneGenero.setVisible(true);
@@ -390,6 +438,14 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             
         }
         else{
+            
+            jTextFieldNombreDeLaLista.setText("");
+            jTextFieldGenero.setText("");
+            jTextFieldCliente.setText("");
+            DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
+            modeloTabla.setRowCount(0);
+            jListListaDeReproduccion.setModel(new DefaultListModel<>());
+        
             jLabelListaDeGeneros.setVisible(false);
             jTreeGeneros.setVisible(false);
             jScrollPaneGenero.setVisible(false);
@@ -474,11 +530,57 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente de la lista de clientes.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
+      jTextFieldNombreDeLaLista.setText("");
+      jTextFieldGenero.setText("");
+      jTextFieldCliente.setText("");
+      DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
+      modeloTabla.setRowCount(0);
+      
     }//GEN-LAST:event_jButtonSeleccionarActionPerformed
 
     private void jButtonConsultarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarListaActionPerformed
-        // TODO add your handling code here:
+        // Verificar que hay una lista seleccionada
+    String nombreListaSeleccionada = jListListaDeReproduccion.getSelectedValue();
+    if (nombreListaSeleccionada != null) {
+        // Obtener la opción seleccionada del JComboBox
+        String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
+
+        // Verificar si la opción es "Género" o "Cliente"
+        if (opcionSeleccionada.equals("Género")) {
+            // Consultar datos de la lista asociada al género
+            DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Genero", nombreListaSeleccionada);
+            if (datosLista != null) {
+                // Mostrar datos de la lista por defecto
+                jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
+                jTextFieldGenero.setText(datosLista.getGenero());
+                jTextFieldCliente.setText(""); // Limpiar campo de cliente
+
+                // Mostrar temas en el JTable
+                mostrarTemasEnTabla(datosLista.getTemas());
+            } else {
+                JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (opcionSeleccionada.equals("Cliente")) {
+            // Consultar datos de la lista asociada al cliente
+            DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Cliente", nombreListaSeleccionada);
+            if (datosLista != null) {
+                // Mostrar datos de la lista particular
+                jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
+                jTextFieldCliente.setText(datosLista.getCliente());
+                jTextFieldGenero.setText(""); // Limpiar campo de género
+
+                // Mostrar temas en el JTable
+                mostrarTemasEnTabla(datosLista.getTemas());
+            } else {
+                JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
     }//GEN-LAST:event_jButtonConsultarListaActionPerformed
+
+    private void jButtonVerDireccionWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerDireccionWebActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonVerDireccionWebActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -502,9 +604,9 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPaneGenero;
-    private javax.swing.JTextArea jTextAreaInformacionDeLosTemas;
+    private javax.swing.JTable jTableTemas;
     private javax.swing.JTextField jTextFieldCliente;
     private javax.swing.JTextField jTextFieldGenero;
     private javax.swing.JTextField jTextFieldNombreDeLaLista;
