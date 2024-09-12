@@ -88,9 +88,13 @@ public abstract class Usuario implements Serializable{
     public List<Usuario> getMisSeguidores() {
         return misSeguidores;
     }
-    public void setMisSeguidores(List<Usuario> misSeguidores) {
+    public void setListaMisSeguidores(List<Usuario> misSeguidores) {
         this.misSeguidores = misSeguidores;
     }
+    public void setMisSeguidores(Usuario u) {
+        this.misSeguidores.add(u);
+    }
+    
     public String getNombreCompletoToString() {
         return (this.getNombreUsuario() + " " + this.getApellidoUsuario());
     }

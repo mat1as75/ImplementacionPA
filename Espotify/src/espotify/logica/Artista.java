@@ -47,7 +47,9 @@ public class Artista extends Usuario{
     public List<Album> getMisAlbumesPublicados() {
         return this.misAlbumesPublicados;
     }
-    
+    public void setMisAlbumesPublicados(List<Album> albumes) {
+        this.misAlbumesPublicados = albumes;
+    }
     public void setMisAlbumesPublicados(Album a) {
         this.misAlbumesPublicados.addFirst(a);
     }

@@ -20,7 +20,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author usuario
+ * @author tecnologo
  */
 public class UsuarioJpaController implements Serializable {
 
@@ -28,9 +28,8 @@ public class UsuarioJpaController implements Serializable {
         this.emf = emf;
     }
     public UsuarioJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -39,7 +38,7 @@ public class UsuarioJpaController implements Serializable {
 
     public void create(Usuario usuario) throws PreexistingEntityException, Exception {
         if (usuario.getMisSeguidores() == null) {
-            usuario.setMisSeguidores(new ArrayList<Usuario>());
+            usuario.setListaMisSeguidores(new ArrayList<Usuario>());
         }
         EntityManager em = null;
         try {
@@ -50,7 +49,7 @@ public class UsuarioJpaController implements Serializable {
                 misSeguidoresUsuarioToAttach = em.getReference(misSeguidoresUsuarioToAttach.getClass(), misSeguidoresUsuarioToAttach.getNickname());
                 attachedMisSeguidores.add(misSeguidoresUsuarioToAttach);
             }
-            usuario.setMisSeguidores(attachedMisSeguidores);
+            usuario.setListaMisSeguidores(attachedMisSeguidores);
             em.persist(usuario);
             for (Usuario misSeguidoresUsuario : usuario.getMisSeguidores()) {
                 misSeguidoresUsuario.getMisSeguidores().add(usuario);
@@ -83,7 +82,7 @@ public class UsuarioJpaController implements Serializable {
                 attachedMisSeguidoresNew.add(misSeguidoresNewUsuarioToAttach);
             }
             misSeguidoresNew = attachedMisSeguidoresNew;
-            usuario.setMisSeguidores(misSeguidoresNew);
+            usuario.setListaMisSeguidores(misSeguidoresNew);
             usuario = em.merge(usuario);
             for (Usuario misSeguidoresOldUsuario : misSeguidoresOld) {
                 if (!misSeguidoresNew.contains(misSeguidoresOldUsuario)) {

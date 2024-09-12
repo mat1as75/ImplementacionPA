@@ -10,48 +10,37 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import espotify.logica.Genero;
+import espotify.logica.Album;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Persistence;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
- * @author brisa
+ * @author tecnologo
  */
 public class GeneroJpaController implements Serializable {
 
     public GeneroJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    // 1 de Singleton
-    public GeneroJpaController(){
-        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+    public GeneroJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
-    // 2 de Singleton
-    private static GeneroJpaController instancia = null;
-    
-    // 3 de Singleton
-    public static GeneroJpaController getInstance() {
-        if (GeneroJpaController.instancia == null)
-            GeneroJpaController.instancia = new GeneroJpaController();
-        
-        return (GeneroJpaController.instancia);
-    }
-    
-    
 
     public void create(Genero genero) throws PreexistingEntityException, Exception {
+        if (genero.getMisAlbumes() == null) {
+            genero.setListaMisAlbumes(new ArrayList<Album>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -61,6 +50,12 @@ public class GeneroJpaController implements Serializable {
                 miPadre = em.getReference(miPadre.getClass(), miPadre.getNombreGenero());
                 genero.setMiPadre(miPadre);
             }
+            List<Album> attachedMisAlbumes = new ArrayList<Album>();
+            for (Album misAlbumesAlbumToAttach : genero.getMisAlbumes()) {
+                misAlbumesAlbumToAttach = em.getReference(misAlbumesAlbumToAttach.getClass(), misAlbumesAlbumToAttach.getIdAlbum());
+                attachedMisAlbumes.add(misAlbumesAlbumToAttach);
+            }
+            genero.setListaMisAlbumes(attachedMisAlbumes);
             em.persist(genero);
             if (miPadre != null) {
                 Genero oldMiPadreOfMiPadre = miPadre.getMiPadre();
@@ -70,6 +65,10 @@ public class GeneroJpaController implements Serializable {
                 }
                 miPadre.setMiPadre(genero);
                 miPadre = em.merge(miPadre);
+            }
+            for (Album misAlbumesAlbum : genero.getMisAlbumes()) {
+                misAlbumesAlbum.getMisGeneros().add(genero);
+                misAlbumesAlbum = em.merge(misAlbumesAlbum);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -92,10 +91,19 @@ public class GeneroJpaController implements Serializable {
             Genero persistentGenero = em.find(Genero.class, genero.getNombreGenero());
             Genero miPadreOld = persistentGenero.getMiPadre();
             Genero miPadreNew = genero.getMiPadre();
+            List<Album> misAlbumesOld = persistentGenero.getMisAlbumes();
+            List<Album> misAlbumesNew = genero.getMisAlbumes();
             if (miPadreNew != null) {
                 miPadreNew = em.getReference(miPadreNew.getClass(), miPadreNew.getNombreGenero());
                 genero.setMiPadre(miPadreNew);
             }
+            List<Album> attachedMisAlbumesNew = new ArrayList<Album>();
+            for (Album misAlbumesNewAlbumToAttach : misAlbumesNew) {
+                misAlbumesNewAlbumToAttach = em.getReference(misAlbumesNewAlbumToAttach.getClass(), misAlbumesNewAlbumToAttach.getIdAlbum());
+                attachedMisAlbumesNew.add(misAlbumesNewAlbumToAttach);
+            }
+            misAlbumesNew = attachedMisAlbumesNew;
+            genero.setListaMisAlbumes(misAlbumesNew);
             genero = em.merge(genero);
             if (miPadreOld != null && !miPadreOld.equals(miPadreNew)) {
                 miPadreOld.setMiPadre(null);
@@ -109,6 +117,18 @@ public class GeneroJpaController implements Serializable {
                 }
                 miPadreNew.setMiPadre(genero);
                 miPadreNew = em.merge(miPadreNew);
+            }
+            for (Album misAlbumesOldAlbum : misAlbumesOld) {
+                if (!misAlbumesNew.contains(misAlbumesOldAlbum)) {
+                    misAlbumesOldAlbum.getMisGeneros().remove(genero);
+                    misAlbumesOldAlbum = em.merge(misAlbumesOldAlbum);
+                }
+            }
+            for (Album misAlbumesNewAlbum : misAlbumesNew) {
+                if (!misAlbumesOld.contains(misAlbumesNewAlbum)) {
+                    misAlbumesNewAlbum.getMisGeneros().add(genero);
+                    misAlbumesNewAlbum = em.merge(misAlbumesNewAlbum);
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -143,6 +163,11 @@ public class GeneroJpaController implements Serializable {
             if (miPadre != null) {
                 miPadre.setMiPadre(null);
                 miPadre = em.merge(miPadre);
+            }
+            List<Album> misAlbumes = genero.getMisAlbumes();
+            for (Album misAlbumesAlbum : misAlbumes) {
+                misAlbumesAlbum.getMisGeneros().remove(genero);
+                misAlbumesAlbum = em.merge(misAlbumesAlbum);
             }
             em.remove(genero);
             em.getTransaction().commit();

@@ -93,6 +93,9 @@ public class Cliente extends Usuario{
     public void setMisListasReproduccionCreadas(ListaParticular lrc) {
         this.misListasReproduccionCreadas.addFirst(lrc);
     }
+    public void setMisListasReproduccionCreadasCompleta(List<ListaParticular> lrc) {
+        this.misListasReproduccionCreadas = lrc;
+    }
     public void setPrivadafalse(String lista){ 
        for(ListaParticular lp:misListasReproduccionCreadas){
            if(lp.getNombreLista()==lista){

@@ -19,7 +19,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author ms
+ * @author tecnologo
  */
 public class ListaParticularJpaController implements Serializable {
 

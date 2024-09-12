@@ -261,7 +261,9 @@ public class ControladoraPersistencia {
         List<Usuario> listaSeguidores = c.getMisSeguidores();
         ArrayList<String> nicknamesSeguidores = new ArrayList<>();
         for (Usuario lSeg: listaSeguidores) {
-            nicknamesSeguidores.add(lSeg.getNickname());
+            String nickname;
+            nickname = lSeg.getNickname();
+            nicknamesSeguidores.add(nickname);
         }
         
         // Nombres de ListasR Creadas del Cliente
@@ -305,6 +307,7 @@ public class ControladoraPersistencia {
         Cliente c=this.cliJpa.findCliente(Seguidor);
         Usuario u=this.usuJpa.findUsuario(Seguido);
         c.setMisSeguidos(u);
+        u.setMisSeguidores(c);
         try {
             usuJpa.edit(c);
         } catch (Exception ex) {

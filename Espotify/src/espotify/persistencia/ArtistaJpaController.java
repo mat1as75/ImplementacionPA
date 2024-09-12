@@ -4,68 +4,73 @@
  */
 package espotify.persistencia;
 
-import espotify.logica.Artista;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import espotify.logica.Album;
+import espotify.logica.Artista;
+import java.util.ArrayList;
+import java.util.List;
 import espotify.logica.Usuario;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
  *
- * @author brisa
+ * @author tecnologo
  */
 public class ArtistaJpaController implements Serializable {
 
     public ArtistaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    // 1 de Singleton
     public ArtistaJpaController() {
-        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
-    // 2 de Singleton
-    private static ArtistaJpaController instancia = null;
-    
-    // 3 de Singleton
-    public static ArtistaJpaController getInstance() {
-        if (ArtistaJpaController.instancia == null)
-            ArtistaJpaController.instancia = new ArtistaJpaController();
-        
-        return (ArtistaJpaController.instancia);
-    }
 
     public void create(Artista artista) throws PreexistingEntityException, Exception {
+        if (artista.getMisAlbumesPublicados() == null) {
+            artista.setMisAlbumesPublicados(new ArrayList<Album>());
+        }
         if (artista.getMisSeguidores() == null) {
-            artista.setMisSeguidores(new ArrayList<Usuario>());
+            artista.setListaMisSeguidores(new ArrayList<Usuario>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<Album> attachedMisAlbumesPublicados = new ArrayList<Album>();
+            for (Album misAlbumesPublicadosAlbumToAttach : artista.getMisAlbumesPublicados()) {
+                misAlbumesPublicadosAlbumToAttach = em.getReference(misAlbumesPublicadosAlbumToAttach.getClass(), misAlbumesPublicadosAlbumToAttach.getIdAlbum());
+                attachedMisAlbumesPublicados.add(misAlbumesPublicadosAlbumToAttach);
+            }
+            artista.setMisAlbumesPublicados(attachedMisAlbumesPublicados);
             List<Usuario> attachedMisSeguidores = new ArrayList<Usuario>();
             for (Usuario misSeguidoresUsuarioToAttach : artista.getMisSeguidores()) {
                 misSeguidoresUsuarioToAttach = em.getReference(misSeguidoresUsuarioToAttach.getClass(), misSeguidoresUsuarioToAttach.getNickname());
                 attachedMisSeguidores.add(misSeguidoresUsuarioToAttach);
             }
-            artista.setMisSeguidores(attachedMisSeguidores);
+            artista.setListaMisSeguidores(attachedMisSeguidores);
             em.persist(artista);
+            for (Album misAlbumesPublicadosAlbum : artista.getMisAlbumesPublicados()) {
+                espotify.logica.Artista oldMiArtistaOfMisAlbumesPublicadosAlbum = (espotify.logica.Artista) misAlbumesPublicadosAlbum.getMiArtista();
+                misAlbumesPublicadosAlbum.setMiArtista(artista);
+                misAlbumesPublicadosAlbum = em.merge(misAlbumesPublicadosAlbum);
+                if (oldMiArtistaOfMisAlbumesPublicadosAlbum != null) {
+                    oldMiArtistaOfMisAlbumesPublicadosAlbum.getMisAlbumesPublicados().remove(misAlbumesPublicadosAlbum);
+                    oldMiArtistaOfMisAlbumesPublicadosAlbum = em.merge(oldMiArtistaOfMisAlbumesPublicadosAlbum);
+                }
+            }
             for (Usuario misSeguidoresUsuario : artista.getMisSeguidores()) {
                 misSeguidoresUsuario.getMisSeguidores().add(artista);
                 misSeguidoresUsuario = em.merge(misSeguidoresUsuario);
@@ -89,16 +94,42 @@ public class ArtistaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Artista persistentArtista = em.find(Artista.class, artista.getNickname());
+            List<Album> misAlbumesPublicadosOld = persistentArtista.getMisAlbumesPublicados();
+            List<Album> misAlbumesPublicadosNew = artista.getMisAlbumesPublicados();
             List<Usuario> misSeguidoresOld = persistentArtista.getMisSeguidores();
             List<Usuario> misSeguidoresNew = artista.getMisSeguidores();
+            List<Album> attachedMisAlbumesPublicadosNew = new ArrayList<Album>();
+            for (Album misAlbumesPublicadosNewAlbumToAttach : misAlbumesPublicadosNew) {
+                misAlbumesPublicadosNewAlbumToAttach = em.getReference(misAlbumesPublicadosNewAlbumToAttach.getClass(), misAlbumesPublicadosNewAlbumToAttach.getIdAlbum());
+                attachedMisAlbumesPublicadosNew.add(misAlbumesPublicadosNewAlbumToAttach);
+            }
+            misAlbumesPublicadosNew = attachedMisAlbumesPublicadosNew;
+            artista.setMisAlbumesPublicados(misAlbumesPublicadosNew);
             List<Usuario> attachedMisSeguidoresNew = new ArrayList<Usuario>();
             for (Usuario misSeguidoresNewUsuarioToAttach : misSeguidoresNew) {
                 misSeguidoresNewUsuarioToAttach = em.getReference(misSeguidoresNewUsuarioToAttach.getClass(), misSeguidoresNewUsuarioToAttach.getNickname());
                 attachedMisSeguidoresNew.add(misSeguidoresNewUsuarioToAttach);
             }
             misSeguidoresNew = attachedMisSeguidoresNew;
-            artista.setMisSeguidores(misSeguidoresNew);
+            artista.setListaMisSeguidores(misSeguidoresNew);
             artista = em.merge(artista);
+            for (Album misAlbumesPublicadosOldAlbum : misAlbumesPublicadosOld) {
+                if (!misAlbumesPublicadosNew.contains(misAlbumesPublicadosOldAlbum)) {
+                    misAlbumesPublicadosOldAlbum.setMiArtista(null);
+                    misAlbumesPublicadosOldAlbum = em.merge(misAlbumesPublicadosOldAlbum);
+                }
+            }
+            for (Album misAlbumesPublicadosNewAlbum : misAlbumesPublicadosNew) {
+                if (!misAlbumesPublicadosOld.contains(misAlbumesPublicadosNewAlbum)) {
+                    Artista oldMiArtistaOfMisAlbumesPublicadosNewAlbum = (Artista) misAlbumesPublicadosNewAlbum.getMiArtista();
+                    misAlbumesPublicadosNewAlbum.setMiArtista(artista);
+                    misAlbumesPublicadosNewAlbum = em.merge(misAlbumesPublicadosNewAlbum);
+                    if (oldMiArtistaOfMisAlbumesPublicadosNewAlbum != null && !oldMiArtistaOfMisAlbumesPublicadosNewAlbum.equals(artista)) {
+                        oldMiArtistaOfMisAlbumesPublicadosNewAlbum.getMisAlbumesPublicados().remove(misAlbumesPublicadosNewAlbum);
+                        oldMiArtistaOfMisAlbumesPublicadosNewAlbum = em.merge(oldMiArtistaOfMisAlbumesPublicadosNewAlbum);
+                    }
+                }
+            }
             for (Usuario misSeguidoresOldUsuario : misSeguidoresOld) {
                 if (!misSeguidoresNew.contains(misSeguidoresOldUsuario)) {
                     misSeguidoresOldUsuario.getMisSeguidores().remove(artista);
@@ -139,6 +170,11 @@ public class ArtistaJpaController implements Serializable {
                 artista.getNickname();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The artista with id " + id + " no longer exists.", enfe);
+            }
+            List<Album> misAlbumesPublicados = artista.getMisAlbumesPublicados();
+            for (Album misAlbumesPublicadosAlbum : misAlbumesPublicados) {
+                misAlbumesPublicadosAlbum.setMiArtista(null);
+                misAlbumesPublicadosAlbum = em.merge(misAlbumesPublicadosAlbum);
             }
             List<Usuario> misSeguidores = artista.getMisSeguidores();
             for (Usuario misSeguidoresUsuario : misSeguidores) {

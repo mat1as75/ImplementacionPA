@@ -19,7 +19,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author usuario
+ * @author tecnologo
  */
 public class ListaReproduccionJpaController implements Serializable {
 
@@ -29,7 +29,6 @@ public class ListaReproduccionJpaController implements Serializable {
     public ListaReproduccionJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
