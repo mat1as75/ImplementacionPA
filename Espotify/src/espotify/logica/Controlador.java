@@ -119,7 +119,12 @@ public class Controlador implements IControlador{
 
     @Override
     public void setSeguidorSeguido(String Seguidor, String Seguido){
-        this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
+        try {
+            this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
+        } catch (Exception ex) {
+            throw ex;
+        }
+            
     }
     
     @Override

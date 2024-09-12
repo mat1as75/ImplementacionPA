@@ -6,6 +6,7 @@ package espotify.presentacion;
 
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -15,9 +16,8 @@ import javax.swing.JOptionPane;
  */
 public class SeguirUsuario extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form SeguirUsuarioAux
-     */
+    private IControlador controlador;
+    
     public SeguirUsuario() {
         initComponents();
         Fabrica f=Fabrica.getInstance();
@@ -128,8 +128,35 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
       String Seguidor= (String)jComboBoxSeguidor.getSelectedItem();
       String Seguido= (String)jComboBoxSeguido.getSelectedItem();
       Fabrica f=Fabrica.getInstance();
-      IControlador i=f.getControlador();
-      i.setSeguidorSeguido(Seguidor,Seguido);
+      this.controlador=f.getControlador();
+      
+      // Verificar que un Usuario no se siga a sí mismo
+      if (!(Seguidor.equals(Seguido))) {
+          
+          try{
+            this.controlador.setSeguidorSeguido(Seguidor,Seguido);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Usuario seguido exitosamente.", 
+                    "Operacion exitosa", 
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch(HeadlessException ex) {
+            JOptionPane.showMessageDialog(
+            null,
+            ex.getMessage(), 
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+        }
+      } else {
+          
+          JOptionPane.showMessageDialog(
+                  this, 
+                  "Un usuario no puede seguirse a sí mismo.", 
+                  "Error", 
+                  JOptionPane.ERROR_MESSAGE);
+      }
+        
+        
       
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
