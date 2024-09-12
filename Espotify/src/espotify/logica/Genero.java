@@ -5,6 +5,7 @@
 package espotify.logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -79,5 +80,14 @@ public class Genero implements Serializable{
     }
     public void setMisListasReproduccion(ListaPorDefecto lr) {
         this.misListasParticulares.addFirst(lr);
+    }
+    
+    public List<String> getMisSubgenerosString () {
+        List<String> listaSubgeneros = new ArrayList<>(); 
+
+        for (Genero g : this.misGenerosHijos) {
+            listaSubgeneros.add(g.getNombreGenero());
+        }
+        return listaSubgeneros;
     }
 }
