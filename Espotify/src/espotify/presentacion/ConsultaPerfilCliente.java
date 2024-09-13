@@ -393,7 +393,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             jLabelFecNacInfo.setText(fecNacString);
             
             jLabelCorreoInfo.setText(datosCliente.getEmail());
-            
+
             try {
                
                 BufferedImage archivoAlmacenado;
@@ -406,8 +406,6 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
 
                 // Verificar si tiene foto de perfil
                 if (datosCliente.getFotoPerfil() != null) {
-                    
-                    
                     
                     // Lee la imagen desde el archivo(ruta)
                     archivoAlmacenado = ImageIO.read(new File(datosCliente.getFotoPerfil()));
