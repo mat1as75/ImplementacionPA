@@ -496,17 +496,18 @@ public class ControladoraPersistencia {
     } else if (tipoDeLista.equals("Cliente")) {
         // Buscar la lista particular asociada al cliente
         ListaParticular listaParticular = lpartJpa.findListaParticular(nombreLista);
-
+        
         if (listaParticular != null) {
             // Obtener los datos de la lista
             String nombreListaReproduccion = listaParticular.getNombreLista();
             String fotoLista = listaParticular.getFotoLista();
             String nicknameCliente = listaParticular.getCliente().getNickname();
-            Boolean privacidad = listaParticular.soyPrivada();
-
+            Boolean privacidad = listaParticular.soyPrivada();        
+                    
             // Convertir los temas a DTTemaSimple
             List<DTTemaSimple> temas = new ArrayList<>();
             for (Tema tema : listaParticular.getMisTemas()) {
+                
                 temas.add(new DTTemaSimple(
                         tema.getIdTema(),
                         tema.getNombreTema(),

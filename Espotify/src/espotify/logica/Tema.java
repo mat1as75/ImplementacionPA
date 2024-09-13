@@ -2,6 +2,7 @@ package espotify.logica;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +24,7 @@ public abstract class Tema implements Serializable {
     protected int posicionEnAlbum;
     @ManyToOne
     protected Album miAlbum;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     protected List<ListaReproduccion>misReproducciones;
     
     //constructor

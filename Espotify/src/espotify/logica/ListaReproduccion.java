@@ -3,10 +3,13 @@ package espotify.logica;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 
@@ -19,7 +22,11 @@ public abstract class ListaReproduccion implements Serializable {
     protected String nombreLista;
     protected String fotoLista;
     
-    @ManyToMany
+    
+    /*@JoinTable(name="LISTAREPRODUCCION_TEMA", 
+            joinColumns=@JoinColumn(name="ListaR_Nombre"),
+            inverseJoinColumns=@JoinColumn(name="Tema_Id"))*/
+    @ManyToMany(mappedBy="misReproducciones")
     private List<Tema> misTemas;
     
     // Constructores
