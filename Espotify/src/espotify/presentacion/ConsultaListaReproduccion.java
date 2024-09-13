@@ -475,7 +475,6 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
       DefaultListModel<String> modeloLista = new DefaultListModel<>();
       jListListaDeReproduccion.setModel(modeloLista);
 
-    // Verificar el tipo de consulta seleccionada
     String opcionSeleccionada = (String) jComboBoxConsultarPor.getSelectedItem();
 
     if (opcionSeleccionada.equals("Género")) {

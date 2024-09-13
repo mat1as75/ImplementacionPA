@@ -417,6 +417,46 @@ public class ControladoraPersistencia {
         }
     }
     
+    public List<String> getNombresListasPorTipo(String tipoDeLista, String nickOgen) {
+    List<String> nombresListas = new ArrayList<>();
+    
+    if (tipoDeLista == null || nickOgen == null) {
+        // Manejar el caso en que el tipoDeLista o nickOgen sean nulos
+        throw new IllegalArgumentException("Tipo de lista y nombre de género/cliente no pueden ser nulos.");
+    }
+    
+    if (tipoDeLista.equals("Genero")) {
+        // Obtener todas las listas por defecto
+        List<ListaPorDefecto> listasPorDefecto = lxdefcJpa.findListaPorDefectoEntities();
+        if (listasPorDefecto != null) {
+            for (ListaPorDefecto lista : listasPorDefecto) {
+                if (lista != null && lista.getGenero() != null && lista.getGenero().getNombreGenero() != null) {
+                    if (lista.getGenero().getNombreGenero().equals(nickOgen)) {  // Filtrar por género
+                        nombresListas.add(lista.getNombreLista());
+                    }
+                }
+            }
+        }
+    } else if (tipoDeLista.equals("Cliente")) {
+        // Obtener todas las listas particulares
+        List<ListaParticular> listasParticulares = lpartJpa.findListaParticularEntities();
+        if (listasParticulares != null) {
+            for (ListaParticular lista : listasParticulares) {
+                if (lista != null && lista.getCliente() != null && lista.getCliente().getNickname() != null) {
+                    if (lista.getCliente().getNickname().equals(nickOgen)) {  // Filtrar por cliente
+                        nombresListas.add(lista.getNombreLista());
+                    }
+                }
+            }
+        }
+    }
+
+    return nombresListas;
+    }
+
+
+
+    
     public DTDatosListaReproduccion getDatosListaReproduccion(String tipoDeLista, String nombreLista){
         
         DTDatosListaReproduccion datosLista = null;
