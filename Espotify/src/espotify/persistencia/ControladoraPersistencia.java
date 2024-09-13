@@ -360,10 +360,10 @@ public class ControladoraPersistencia {
     
 
     public void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero) {
-    // Buscar el género por su nombre
+    // Buscar el genero por su nombre
     Genero genero = this.genJpa.findGenero(nombreGenero);
 
-    // Verificar si el género existe
+    // Verificar si el genero existe
     if (genero == null) {
         throw new RuntimeException("No se encontró el género con nombre: " + nombreGenero);
     }
@@ -417,53 +417,12 @@ public class ControladoraPersistencia {
         }
     }
     
-    public List<String> getNombresListasPorTipo(String tipoDeLista, String nickOgen) {
-    List<String> nombresListas = new ArrayList<>();
-    
-    if (tipoDeLista == null || nickOgen == null) {
-        // Manejar el caso en que el tipoDeLista o nickOgen sean nulos
-        throw new IllegalArgumentException("Tipo de lista y nombre de género/cliente no pueden ser nulos.");
-    }
-    
-    if (tipoDeLista.equals("Genero")) {
-        // Obtener todas las listas por defecto
-        List<ListaPorDefecto> listasPorDefecto = lxdefcJpa.findListaPorDefectoEntities();
-        if (listasPorDefecto != null) {
-            for (ListaPorDefecto lista : listasPorDefecto) {
-                if (lista != null && lista.getGenero() != null && lista.getGenero().getNombreGenero() != null) {
-                    if (lista.getGenero().getNombreGenero().equals(nickOgen)) {  // Filtrar por género
-                        nombresListas.add(lista.getNombreLista());
-                    }
-                }
-            }
-        }
-    } else if (tipoDeLista.equals("Cliente")) {
-        // Obtener todas las listas particulares
-        List<ListaParticular> listasParticulares = lpartJpa.findListaParticularEntities();
-        if (listasParticulares != null) {
-            for (ListaParticular lista : listasParticulares) {
-                if (lista != null && lista.getCliente() != null && lista.getCliente().getNickname() != null) {
-                    if (lista.getCliente().getNickname().equals(nickOgen)) {  // Filtrar por cliente
-                        nombresListas.add(lista.getNombreLista());
-                    }
-                }
-            }
-        }
-    }
-
-    return nombresListas;
-}
-
-
-
-    
     public DTDatosListaReproduccion getDatosListaReproduccion(String tipoDeLista, String nombreLista){
         
-        // Crear la instancia de la lista de reproducción
         DTDatosListaReproduccion datosLista = null;
 
         if (tipoDeLista.equals("Genero")) {
-        // Buscar la lista de reproducción por defecto asociada al género
+        // Buscar la lista de reproduccion por defecto asociada al género
         ListaPorDefecto listaPorDefecto = lxdefcJpa.findListaPorDefecto(nombreLista);
 
         if (listaPorDefecto != null) {
@@ -485,7 +444,7 @@ public class ControladoraPersistencia {
                 ));
             }
 
-            // Crear el DTO para la lista por defecto
+            // Crear el DT para la lista por defecto
             datosLista = new DTDatosListaReproduccion(
                     nombreListaReproduccion,
                     fotoLista,
@@ -518,7 +477,7 @@ public class ControladoraPersistencia {
                 ));
             }
 
-            // Crear el DTO para la lista particular
+            // Crear el DT para la lista particular
             datosLista = new DTDatosListaReproduccion(
                     nombreListaReproduccion,
                     fotoLista,
