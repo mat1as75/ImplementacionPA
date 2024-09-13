@@ -140,6 +140,21 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public Map<Long, DTTemaSimple> getDTTemasDeListaParticular(String nombreListaReproduccion) {
+        return this.contpersis.getDTTemasDeListaParticular(nombreListaReproduccion);
+    }
+    
+    @Override
+    public Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion) {
+        return this.contpersis.getDTTemasDeListaPorDefecto(nombreListaReproduccion);
+    }
+    
+    @Override
+    public Map<Long, DTTemaSimple> getDTTemasDeAlbum(Long idAlbum) {
+        return this.contpersis.getDTTemasDeAlbum(idAlbum);
+    }
+    
+    @Override
     public ArrayList<String> getListasReproduccionDisponibles() {
         return this.contpersis.getListasReproduccionDisponibles();
     }
@@ -152,6 +167,11 @@ public class Controlador implements IControlador{
     @Override
     public ArrayList<String> getNombresListasParticulares() {
         return this.contpersis.getNombresListasParticulares();
+    }
+    
+    @Override
+    public ArrayList<String> getNombresListasParticularesPublicas() {
+        return this.contpersis.getNombresListasParticularesPublicas();
     }
     
     @Override

@@ -240,7 +240,9 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
 
         DefaultListModel<String> listaGenerosRegistradosModel = new DefaultListModel<>();
         for (espotify.DataTypes.DTGenero_Simple dataG : this.generosRegistrados) {
-            listaGenerosRegistradosModel.addElement(dataG.getNombreGenero());
+            if (!dataG.getNombreGenero().equals("Genero")) {
+                listaGenerosRegistradosModel.addElement(dataG.getNombreGenero());
+            }
         }
         jlistGenerosRegistrados.setModel(listaGenerosRegistradosModel);
         jScrollPane5.setViewportView(jlistGenerosRegistrados);

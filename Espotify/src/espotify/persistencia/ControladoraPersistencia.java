@@ -423,6 +423,19 @@ public class ControladoraPersistencia {
         return nombresListasPorDefecto;
     }
     
+    public ArrayList<String> getNombresListasParticularesPublicas() {
+        List<ListaParticular> listaListasParticulares = this.lpartJpa.findListaParticularEntities();
+        ArrayList<String> nombresListasParticularesPublicas = new ArrayList<>();
+        
+        for (ListaParticular lp : listaListasParticulares) {
+            if (!lp.soyPrivada()) {
+                nombresListasParticularesPublicas.add(lp.getNombreLista());
+            }
+        }
+        
+        return nombresListasParticularesPublicas;
+    }
+    
     /* Selecciona los Nombres de los Albumes que esten 
     disponibles para seleccionar en GuardarFavoritos */
     public Map<Long, String> getAlbumesDisponibles() {
@@ -451,6 +464,7 @@ public class ControladoraPersistencia {
         ArrayList<DTAlbum_Simple> dataAlbums = new ArrayList<>();
         
         for (Album album: listaAlbumes) {
+
             dataAlbums.add(new DTAlbum_Simple(
                     album.getIdAlbum(),
                     album.getNombreAlbum(),
@@ -574,6 +588,36 @@ public class ControladoraPersistencia {
         }
         return dataGeneros;
     }
+    
+     public Map<Long, DTTemaSimple> getDTTemasDeAlbum(Long idAlbum) {
+         Album alb = this.albJpa.findAlbum(idAlbum);
+         List<Tema> temas = alb.getMisTemas();
+         
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap(temas.size());
+         for (Tema t : temas) {
+             mapDataTemas.put(t.getIdTema(), t.getDTTemaSimple());
+         }
+         
+         return mapDataTemas;
+     }
+     
+     public Map<Long, DTTemaSimple> getDTTemasDeListaParticular(String nombreListaReproduccion) {
+         ListaParticular listaP = this.lpartJpa.findListaParticular(nombreListaReproduccion);
+         List<Tema> temas;
+         
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap();
+         
+         return mapDataTemas;
+     }
+     
+     public Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion) {
+         ListaPorDefecto listaPDef = this.lxdefcJpa.findListaPorDefecto(nombreListaReproduccion);
+         List<Tema> temas;
+         
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap();
+         
+         return mapDataTemas;
+     }
 }
 
 

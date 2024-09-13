@@ -33,7 +33,7 @@ private String nombreCompletoArtista;
     }
 
     public String getNombreCompletoArtista() {
-        return this.getNombreCompletoArtista();
+        return this.nombreCompletoArtista;
     }
     
     public void setIdAlbum(Long idAlbum) {
@@ -53,10 +53,10 @@ private String nombreCompletoArtista;
     }
     
     public String datosToString() {
-        return ("Id: " + this.getIdAlbum() + 
-                ", Nombre: " + this.getNombreAlbum() +
-                ", Año: " + this.getAnioCreacion() +
-                ", Artista: " + this.getNombreCompletoArtista());
+        return ("[" + this.getIdAlbum() + 
+                "] " + this.getNombreAlbum() +
+                " (" + this.getAnioCreacion() +
+                ") Artista: " + this.getNombreCompletoArtista());
     }
 }
 

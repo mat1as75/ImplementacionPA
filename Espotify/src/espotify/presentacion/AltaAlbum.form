@@ -535,7 +535,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultListModel&lt;String&gt; listaGenerosRegistradosModel = new DefaultListModel&lt;&gt;();&#xa;for (espotify.DataTypes.DTGenero_Simple dataG : this.generosRegistrados) {&#xa;    listaGenerosRegistradosModel.addElement(dataG.getNombreGenero());&#xa;}&#xa;jlistGenerosRegistrados.setModel(listaGenerosRegistradosModel);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="DefaultListModel&lt;String&gt; listaGenerosRegistradosModel = new DefaultListModel&lt;&gt;();&#xa;for (espotify.DataTypes.DTGenero_Simple dataG : this.generosRegistrados) {&#xa;    if (!dataG.getNombreGenero().equals(&quot;Genero&quot;)) {&#xa;        listaGenerosRegistradosModel.addElement(dataG.getNombreGenero());&#xa;    }&#xa;}&#xa;jlistGenerosRegistrados.setModel(listaGenerosRegistradosModel);"/>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
