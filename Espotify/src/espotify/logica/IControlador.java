@@ -40,6 +40,7 @@ public interface IControlador {
     public abstract ArrayList<String> getNombresListasPorDefecto();
     public abstract ArrayList<String> getNombresListasParticulares();
     public abstract ArrayList<String> getNombresListasParticularesPublicas();
+    public abstract ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception;
     public abstract Map<Long, String> getAlbumesDisponibles();
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
@@ -51,4 +52,6 @@ public interface IControlador {
     public abstract List<String> listasCreadasEstadoPrivadoTrue(String cliente);
 
     public abstract void setPrivadafalse(String cliente, String lista);
+    
+    public abstract void agregarTemaALista(Long idTema, String nombreLista) throws Exception;
 }

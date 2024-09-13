@@ -56,7 +56,7 @@ private String nombreCompletoArtista;
         return ("[" + this.getIdAlbum() + 
                 "] " + this.getNombreAlbum() +
                 " (" + this.getAnioCreacion() +
-                ") Artista: " + this.getNombreCompletoArtista());
+                ") de " + this.getNombreCompletoArtista());
     }
 }
 

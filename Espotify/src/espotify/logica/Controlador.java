@@ -231,4 +231,22 @@ public class Controlador implements IControlador{
         return this.contpersis.getListaDTGeneroSimple();
     }
 
+    @Override
+    public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
+        try {
+            this.contpersis.agregarTemaALista(idTema, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception {
+        try {
+            return this.contpersis.getNombresListasParticularesDeCliente(nicknameCliente);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
 }

@@ -603,21 +603,98 @@ public class ControladoraPersistencia {
      
      public Map<Long, DTTemaSimple> getDTTemasDeListaParticular(String nombreListaReproduccion) {
          ListaParticular listaP = this.lpartJpa.findListaParticular(nombreListaReproduccion);
-         List<Tema> temas;
+         List<Tema> temas = listaP.getMisTemas();
          
-         Map<Long, DTTemaSimple> mapDataTemas = new HashMap();
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap(temas.size());
+         for (Tema t : temas) {
+             mapDataTemas.put(t.getIdTema(), t.getDTTemaSimple());
+         }
          
          return mapDataTemas;
      }
      
      public Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion) {
          ListaPorDefecto listaPDef = this.lxdefcJpa.findListaPorDefecto(nombreListaReproduccion);
-         List<Tema> temas;
+         List<Tema> temas = listaPDef.getMisTemas();
          
-         Map<Long, DTTemaSimple> mapDataTemas = new HashMap();
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap(temas.size());
+         for (Tema t : temas) {
+             mapDataTemas.put(t.getIdTema(), t.getDTTemaSimple());
+         }
          
          return mapDataTemas;
      }
+     
+     public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
+        Tema tema = this.temaJpa.findTema(idTema);
+        ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
+        //obtengo los temas de la lista de reproduccion destino
+        List<Tema> temasDeListaRep = listaRep.getMisTemas();
+        
+        for (Tema t : temasDeListaRep) {
+            if (t.getIdTema() == tema.getIdTema()) {
+                //error si el tema ya pertenece a la lista
+                throw new Exception("El tema elegido [" 
+                        + tema.getIdTema()
+                        + "] ya pertenece a la lista "
+                        + listaRep.getNombreLista()
+                );
+            }
+        }
+        //si no existe el tema en la lista destino, lo agrego
+        listaRep.agregarTema(tema);
+
+        //obtengo las listas a las que se asocia el tema
+        List<ListaReproduccion> listasAsociadasAlTema = tema.getMisReproducciones();
+        //si el tema no esta asociado a esta lista, entonces agrego la misma a sus listas asociadas
+        
+        Boolean temaYaEstaAsociadoALista = false;
+        for (ListaReproduccion lr : listasAsociadasAlTema) {
+            if (lr.getNombreLista().equals(listaRep.getNombreLista())) {
+                temaYaEstaAsociadoALista = true;
+                break;
+            }
+        }
+        
+        if (!temaYaEstaAsociadoALista) {
+            tema.setMisReproducciones(listaRep);
+            try {
+                this.lreprodccJpa.edit(listaRep);
+            } catch(Exception ex) {
+                throw new Exception("Ocurrio un error al agregar la lista "
+                    + listaRep.getNombreLista() 
+                    + " a las listas asociadas al tema ["
+                    + tema.getIdTema() + "]."
+                );
+            }
+        }
+
+        try {
+           this.temaJpa.edit(tema);
+        } catch (Exception ex) {
+           throw new Exception(
+                "Ocurrio un error al agregar el tema [" 
+                + tema.getIdTema() + "] a la lista " 
+                + listaRep.getNombreLista());
+        }
+    }
+     
+    public ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception {
+        Cliente cl = this.cliJpa.findCliente(nicknameCliente);
+        
+        if (cl == null) {
+            throw new Exception ("No se encontró el cliente " + nicknameCliente + ".");
+        }
+        
+        List<ListaParticular> listasPart = cl.getMisListasReproduccionCreadas();
+        ArrayList<String> nombresListasPart = new ArrayList();
+        
+        for (ListaParticular lp : listasPart) {
+            nombresListasPart.add(lp.getNombreLista());
+        }
+        
+        return nombresListasPart;
+    }
 }
 
 
