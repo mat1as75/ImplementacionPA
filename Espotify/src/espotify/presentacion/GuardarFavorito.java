@@ -376,7 +376,7 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                         break;
                     }
                 }
-                System.out.println("ACA1");
+                
                 if (datosTema != null && idTemaSeleccionado != null) {
                     try {
                         controlador.GuardarTemaFavorito(nicknameCliente, idTemaSeleccionado);

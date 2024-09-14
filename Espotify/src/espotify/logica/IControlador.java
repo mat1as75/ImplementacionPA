@@ -40,7 +40,8 @@ public interface IControlador {
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
     public abstract void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception;
 
-    public abstract List<String> listasCreadasEstadoPrivadoTrue(String cliente);
+    public abstract ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente);
 
     public abstract void setPrivadafalse(String cliente, String lista);
+    public abstract ArrayList<String> getNicknamesClientesListasPrivadas();
 }

@@ -1,31 +1,32 @@
 package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 public class PublicarLista extends javax.swing.JInternalFrame {
+    
+    IControlador controlador;
+    
     public PublicarLista() {
         initComponents();
         Fabrica f = Fabrica.getInstance();
-        IControlador i = f.getControlador();
-        List<String> clientes=i.getNicknamesClientes();
-        for (String c : clientes) {
-            this.jComboBoxNickName.addItem(c);
+        controlador = f.getControlador();
+  
+        // Se añaden los nicknames de los Clientes
+        DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
+        ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientesListasPrivadas());
+        for (String nickname : nicknamesClientes) {
+            listaNicknamesClientes.addElement(nickname);
         }
+        jListClientes.setModel(listaNicknamesClientes);
         
-        
-        String cliente =(String)jComboBoxNickName.getSelectedItem();
-        List<String> privadotrue = i.listasCreadasEstadoPrivadoTrue(cliente);
-        for (String p : privadotrue) {
-JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPane.ERROR_MESSAGE);
-            jComboBoxListaSeraPublica.addItem(p);
-        }
-
-
-
-
+        // Inicializo el jList vacío
+        DefaultListModel<String> listaVacia = new DefaultListModel<>();
+        jListListasPrivadas.setModel(listaVacia);
     }
 
     @SuppressWarnings("unchecked")
@@ -36,8 +37,10 @@ JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPan
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButtonEnviar = new javax.swing.JButton();
-        jComboBoxListaSeraPublica = new javax.swing.JComboBox<>();
-        jComboBoxNickName = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListClientes = new javax.swing.JList<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jListListasPrivadas = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -45,9 +48,9 @@ JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPan
         setResizable(true);
         setTitle("Publicar Lista");
 
-        jLabel1.setText("nickname de usuario");
+        jLabel1.setText("Nickname de Clientes");
 
-        jLabel2.setText("lista que se hará pública");
+        jLabel2.setText("Listas Privadas");
 
         jButtonEnviar.setText("Enviar");
         jButtonEnviar.addActionListener(new java.awt.event.ActionListener() {
@@ -56,37 +59,56 @@ JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPan
             }
         });
 
+        jListClientes.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jListClientes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListClientesValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jListClientes);
+
+        jListListasPrivadas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jListListasPrivadas);
+
         javax.swing.GroupLayout jPanelPublicarListaLayout = new javax.swing.GroupLayout(jPanelPublicarLista);
         jPanelPublicarLista.setLayout(jPanelPublicarListaLayout);
         jPanelPublicarListaLayout.setHorizontalGroup(
             jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPublicarListaLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                .addContainerGap(92, Short.MAX_VALUE)
                 .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBoxListaSeraPublica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxNickName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(345, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPublicarListaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonEnviar)
+                    .addComponent(jButtonEnviar)
+                    .addGroup(jPanelPublicarListaLayout.createSequentialGroup()
+                        .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(72, 72, 72)
+                        .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(129, 129, 129)))
                 .addGap(23, 23, 23))
         );
         jPanelPublicarListaLayout.setVerticalGroup(
             jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPublicarListaLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBoxNickName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(62, 62, 62)
+                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBoxListaSeraPublica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(jButtonEnviar)
                 .addGap(29, 29, 29))
         );
@@ -106,20 +128,65 @@ JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPan
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarActionPerformed
-        String cliente =(String)jComboBoxNickName.getSelectedItem();
-        String lista=(String)this.jComboBoxListaSeraPublica.getSelectedItem();
+       
         Fabrica f = Fabrica.getInstance();
-        IControlador i = f.getControlador();
-        i.setPrivadafalse(cliente,lista);
+        controlador = f.getControlador();
+        
+        String nicknameCliente = jListClientes.getSelectedValue();
+        String nombreLista = jListListasPrivadas.getSelectedValue();
+        
+        if (nicknameCliente != null) {
+            if (nombreLista != null) {
+                try {
+                    controlador.setPrivadafalse(nicknameCliente, nombreLista);
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "Lista Publicada exitosamente.", 
+                        "Operacion exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                } catch (HeadlessException ex) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            ex.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione una Lista.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un Cliente.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
     }//GEN-LAST:event_jButtonEnviarActionPerformed
+
+    private void jListClientesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListClientesValueChanged
+  
+        // Nickname del Cliente Seleccionado
+        String nicknameSeleccionado = jListClientes.getSelectedValue();
+        
+        if (nicknameSeleccionado != null) {
+            // Se añaden los nombres de las ListasPrivadas del clienteSeleccionado
+            DefaultListModel<String> listaListasPrivadas = new DefaultListModel<>();
+            ArrayList<String> listasPrivadas = new ArrayList<>(controlador.listasCreadasEstadoPrivadoTrue(nicknameSeleccionado));
+            for (String nombreLista : listasPrivadas) {
+                listaListasPrivadas.addElement(nombreLista);
+            }
+            jListListasPrivadas.setModel(listaListasPrivadas);
+        }
+    }//GEN-LAST:event_jListClientesValueChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEnviar;
-    private javax.swing.JComboBox<String> jComboBoxListaSeraPublica;
-    private javax.swing.JComboBox<String> jComboBoxNickName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jListClientes;
+    private javax.swing.JList<String> jListListasPrivadas;
     private javax.swing.JPanel jPanelPublicarLista;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

@@ -181,7 +181,7 @@ public class Controlador implements IControlador{
     }
 
     @Override
-    public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
+    public ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente){
         return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
     }
     
@@ -195,4 +195,8 @@ public class Controlador implements IControlador{
         return this.contpersis.getListaDTGeneroSimple();
     }
 
+    @Override
+    public ArrayList<String> getNicknamesClientesListasPrivadas() {
+        return this.contpersis.getNicknamesClientesListasPrivadas();
+    }
 }
