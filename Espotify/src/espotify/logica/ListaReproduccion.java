@@ -19,8 +19,9 @@ public abstract class ListaReproduccion implements Serializable {
     @Id
     protected String nombreLista;
     protected String fotoLista;
-    @ManyToMany
-    @JoinTable(name = "TemasDeLista")
+ 
+    // Referencias
+    @ManyToMany(mappedBy="misReproducciones")
     protected List<Tema> misTemas;
     
     // Constructores

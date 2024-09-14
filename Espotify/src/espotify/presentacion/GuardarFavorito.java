@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -42,9 +43,12 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
     }
     
     private void cargarTemas() {
+        this.mapaDTTemas = new HashMap<>();
+        this.mapaDTTemas = controlador.getDTTemasDisponibles();
+        Map<Long, DTTemaSimple> mapDTTemasOrdenado = new TreeMap<>(this.mapaDTTemas);
+        
         DefaultListModel<String> listaDatosTemas = new DefaultListModel<>();
-        mapaDTTemas = controlador.getDTTemasDisponibles();
-        for (DTTemaSimple dataTema : mapaDTTemas.values()) {
+        for (DTTemaSimple dataTema : mapDTTemasOrdenado.values()) {
             listaDatosTemas.addElement(dataTema.getDatosTemaToString());
         }
         jListTemas.setModel(listaDatosTemas);
@@ -137,19 +141,22 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
             jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTemaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonGuardarTemaFavorito)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGroup(jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneTemas)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTemaLayout.createSequentialGroup()
+                        .addGap(0, 218, Short.MAX_VALUE)
+                        .addComponent(jButtonGuardarTemaFavorito)
+                        .addGap(212, 212, 212)))
+                .addContainerGap())
         );
         jPanelTemaLayout.setVerticalGroup(
             jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTemaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonGuardarTemaFavorito)
-                    .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addComponent(jScrollPaneTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonGuardarTemaFavorito)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Temas", jPanelTema);
@@ -288,15 +295,15 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                     }
                 } else { // Album no se seleccionó
 
-                    JOptionPane.showMessageDialog(this, "Seleccione un album.");
+                    JOptionPane.showMessageDialog(this, "Seleccione un album.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else { // nicknameCliente no existe en el Sistema
 
-                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
+                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else { // nicknameCliete es vacío
             
-            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.");
+            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_jButtonGuardarAlbumFavoritoActionPerformed
@@ -334,15 +341,15 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                     
                 } else { // Lista no se seleccionó
                     
-                    JOptionPane.showMessageDialog(this, "Seleccione una lista de reproduccion.");
+                    JOptionPane.showMessageDialog(this, "Seleccione una lista de reproduccion.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else { // nicknameCliente no existe en el Sistema
                 
-                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
+                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else { // nicknameCliente es vacío
             
-            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.");
+            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonGuardarListaFavoritoActionPerformed
 
@@ -369,7 +376,7 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                         break;
                     }
                 }
-
+                
                 if (datosTema != null && idTemaSeleccionado != null) {
                     try {
                         controlador.GuardarTemaFavorito(nicknameCliente, idTemaSeleccionado);
@@ -386,16 +393,16 @@ public class GuardarFavorito extends javax.swing.JInternalFrame {
                         JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Seleccione un Tema.");
+                    JOptionPane.showMessageDialog(this, "Seleccione un Tema.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 
             } else { // nicknameCliente no existe en el Sistema
                 
-                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.");
+                JOptionPane.showMessageDialog(this, "El cliente " + nicknameCliente + " no existe.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else { // nicknameCliente es vacío
             
-            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.");
+            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonGuardarTemaFavoritoActionPerformed
 

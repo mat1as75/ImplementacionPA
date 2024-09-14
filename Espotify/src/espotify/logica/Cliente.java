@@ -98,10 +98,11 @@ public class Cliente extends Usuario{
     }
     public void setPrivadafalse(String lista){ 
        for(ListaParticular lp:misListasReproduccionCreadas){
-           if(lp.getNombreLista()==lista){
+           if(lp.getNombreLista().equals(lista)){
                lp.setsoyPrivada(false);
            }
        
        }
     }
+    
 }

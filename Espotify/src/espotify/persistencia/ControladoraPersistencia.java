@@ -483,7 +483,7 @@ public class ControladoraPersistencia {
         
         List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
         for (Tema t : temasFavoritosDelCliente) {
-            if (tema.getIdTema() == t.getIdTema()) {
+            if (tema.getIdTema().equals(t.getIdTema())) {
                 throw new Exception("El cliente ya tiene este tema en su lista de favoritos.");
             }
         }
@@ -525,7 +525,7 @@ public class ControladoraPersistencia {
         List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
         
         for (Album a : albumsFavoritosDelCliente) {
-            if (a.getIdAlbum() == album.getIdAlbum()) {
+            if (a.getIdAlbum().equals(album.getIdAlbum())) {
                 throw new Exception("Este cliente ya tiene a este album en sus favoritos.");
             }
         }
@@ -539,18 +539,21 @@ public class ControladoraPersistencia {
         }
     }
 
-    public List<String> listasCreadasEstadoPrivadoTrue(String cliente) {
-        List<String>retorno=new ArrayList<String>();
-        Cliente c =cliJpa.findCliente(cliente);
-        if(c!=null){
-            List<ListaParticular> creadas =c.getMisListasReproduccionCreadas();
-            for(ListaParticular lp:creadas){
-                if(lp.soyPrivada()){
-                    retorno.add(lp.getNombreLista());
+    public ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente) {
+        ArrayList<String> nombresListasPrivadas = new ArrayList<>();
+        Cliente c = cliJpa.findCliente(cliente);
+        
+        if (c != null){
+            List<ListaParticular> listasCreadas = c.getMisListasReproduccionCreadas();
+            // Recorro las ListasParticulares
+            for (ListaParticular lp : listasCreadas){
+                // Si es Privada
+                if (lp.soyPrivada()){
+                    nombresListasPrivadas.add(lp.getNombreLista());
                 }
             }   
         }
-        return retorno;
+        return nombresListasPrivadas;
     }
 
     public void setPrivadafalse(String cliente, String lista) {
@@ -694,6 +697,30 @@ public class ControladoraPersistencia {
         }
         
         return nombresListasPart;
+
+    public ArrayList<String> getNicknamesClientesListasPrivadas() {
+        
+        List<Cliente> clientes = cliJpa.findClienteEntities();
+        ArrayList<String> nicknamesClientesLPrivadas = new ArrayList<>();
+        
+        if (clientes != null) {
+            //Recorro Clientes
+            for (Cliente c : clientes) {
+                // Recorro ListasParticularCreadas por dicho Cliente
+                for (ListaParticular lpc : c.getMisListasReproduccionCreadas()) {
+
+                    // Si la ListaP es Privada
+                    if (lpc.soyPrivada()) {
+                        nicknamesClientesLPrivadas.add(c.getNickname());
+                        break;
+                    }
+                }
+            }
+        }
+       
+        /* Retorno nicknames de Clientes 
+        que contienen ListasPrivadas */
+        return nicknamesClientesLPrivadas;
     }
 }
 
