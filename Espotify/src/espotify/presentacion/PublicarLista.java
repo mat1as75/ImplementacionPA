@@ -6,28 +6,28 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 public class PublicarLista extends javax.swing.JInternalFrame {
+    private IControlador ictrl = null;
+    
     public PublicarLista() {
         initComponents();
         Fabrica f = Fabrica.getInstance();
-        IControlador i = f.getControlador();
-        List<String> clientes=i.getNicknamesClientes();
+        ictrl = f.getControlador();
+        List<String> clientes = ictrl.getNicknamesClientes();
         for (String c : clientes) {
             this.jComboBoxNickName.addItem(c);
         }
-        
-        
-        String cliente =(String)jComboBoxNickName.getSelectedItem();
-        List<String> privadotrue = i.listasCreadasEstadoPrivadoTrue(cliente);
-        for (String p : privadotrue) {
-JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPane.ERROR_MESSAGE);
-            jComboBoxListaSeraPublica.addItem(p);
-        }
-
-
-
-
+        cargarListas();
     }
 
+    private void cargarListas() {
+        jComboBoxListaSeraPublica.removeAllItems();
+        String cliente =(String)jComboBoxNickName.getSelectedItem();
+        List<String> privadotrue = ictrl.listasCreadasEstadoPrivadoTrue(cliente);
+        for (String p : privadotrue) {
+            jComboBoxListaSeraPublica.addItem(p);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -56,6 +56,10 @@ JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPan
             }
         });
 
+        jComboBoxListaSeraPublica.setPreferredSize(new java.awt.Dimension(150, 24));
+
+        jComboBoxNickName.setMinimumSize(new java.awt.Dimension(150, 24));
+
         javax.swing.GroupLayout jPanelPublicarListaLayout = new javax.swing.GroupLayout(jPanelPublicarLista);
         jPanelPublicarLista.setLayout(jPanelPublicarListaLayout);
         jPanelPublicarListaLayout.setHorizontalGroup(
@@ -66,10 +70,10 @@ JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPan
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBoxListaSeraPublica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxNickName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(345, Short.MAX_VALUE))
+                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBoxListaSeraPublica, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBoxNickName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(267, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPublicarListaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonEnviar)
@@ -82,11 +86,11 @@ JOptionPane.showMessageDialog(null, "entro al for privado.", "Error", JOptionPan
                 .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jComboBoxNickName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(28, 28, 28)
+                .addGroup(jPanelPublicarListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBoxListaSeraPublica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
                 .addComponent(jButtonEnviar)
                 .addGap(29, 29, 29))
         );
