@@ -723,6 +723,19 @@ public class ControladoraPersistencia {
         que contienen ListasPrivadas */
         return nicknamesClientesLPrivadas;
     }
+
+    public boolean existeRelacion(String Seguidor, String Seguido) {
+        Cliente c = cliJpa.findCliente(Seguidor);
+        boolean retorno=false;
+        // Nicknames de Seguidos del Cliente
+        List<Usuario> listaSeguidos = c.getMisSeguidos();
+        for (Usuario lSeg: listaSeguidos) {
+            if (lSeg.getClass().equals(Cliente.class)){
+                retorno=true;
+            }
+        }
+        return retorno;
+     }
 }
 
 
