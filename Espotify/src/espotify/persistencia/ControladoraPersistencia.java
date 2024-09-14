@@ -730,7 +730,8 @@ public class ControladoraPersistencia {
         // Nicknames de Seguidos del Cliente
         List<Usuario> listaSeguidos = c.getMisSeguidos();
         for (Usuario lSeg: listaSeguidos) {
-            if (lSeg.getClass().equals(Cliente.class)){
+            if (lSeg.getNickname().equals(Seguido)){    
+//if (lSeg.getClass().equals(Cliente.class)){
                 retorno=true;
             }
         }
