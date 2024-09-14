@@ -337,18 +337,18 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         
         
         if (nombreLista.isEmpty()){
-            JOptionPane.showMessageDialog(null, "El nombre de la lista esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El nombre de la lista esta vacio", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
         try {
             if ("Por defecto".equals(opcion)) {
             i.CrearListaPorDefecto(nombreLista, imgLista, generoSeleccionado);
-            JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else if ("Particular".equals(opcion)) {
                 boolean soyPrivada = true; // 
                 i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado, soyPrivada);
-                JOptionPane.showMessageDialog(null, "Lista Creada con Éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
           }
         } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

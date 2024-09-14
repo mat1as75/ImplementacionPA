@@ -135,26 +135,32 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarActionPerformed
-       
-       String C = (String) jComboBoxC.getSelectedItem();  // Cliente que desea finalizar el seguimiento
-       String U = (String) jComboBoxCyA.getSelectedItem();  // Usuario (Cliente/Artista) al que desea dejar de seguir
+     
+        String C = (String) jComboBoxC.getSelectedItem();  // Cliente que desea finalizar el seguimiento
+        String U = (String) jComboBoxCyA.getSelectedItem();  // Usuario (Cliente/Artista) al que desea dejar de seguir
 
-       // Verificar si se selecciono un cliente y un usuario 
-       if (C == null || U == null) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente y un usuario (cliente/artista) para dejar de seguir.", "Error",JOptionPane.ERROR_MESSAGE);
-       }
-       
+        // Verificar si se seleccionó un cliente y un usuario
+        if (C == null || U == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente y un usuario (cliente/artista) para dejar de seguir.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;  // Salir del método si no se seleccionó algo
+        }
+
         if (!C.equals(U)) {
             try {
-               //this.controlador.dejarDeSeguir(C, U);
-               JOptionPane.showMessageDialog( null,"Se ha dejado de seguir al usuario.", "Exito",JOptionPane.INFORMATION_MESSAGE);
-            } catch (HeadlessException ex) {JOptionPane.showMessageDialog(    null,    ex.getMessage(),  "Error",   JOptionPane.ERROR_MESSAGE);}
-       } else {
-           JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a si mismo.", "Error",JOptionPane.ERROR_MESSAGE);
-         }
-       
-       
-       
+                // Verificar si el cliente sigue al usuario
+                if (!this.controlador.clienteSigueAUsuario(C, U)) {
+                    JOptionPane.showMessageDialog(this, "El cliente no sigue a este usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;  // Salir del método si no sigue al usuario
+                }
+                // Si lo sigue
+                this.controlador.dejarDeSeguir(C, U);
+                JOptionPane.showMessageDialog(null, "Se ha dejado de seguir al usuario", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (HeadlessException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a sí mismo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
     private void jComboBoxCyAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCyAActionPerformed

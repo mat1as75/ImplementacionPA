@@ -194,7 +194,7 @@ public class Controlador implements IControlador{
     
     @Override
     public List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen) {
-    return this.contpersis.getNombresListasPorTipo(tipoDeLista, nickOgen);
+        return this.contpersis.getNombresListasPorTipo(tipoDeLista, nickOgen);
     }
 
 
@@ -211,6 +211,11 @@ public class Controlador implements IControlador{
     @Override
     public void dejarDeSeguir(String C, String U){
         this.contpersis.dejarDeSeguir(C,U);
+    }
+    
+    @Override
+    public boolean clienteSigueAUsuario(String C, String U){
+        return this.contpersis.clienteSigueAUsuario(C, U);
     }
     
     @Override
