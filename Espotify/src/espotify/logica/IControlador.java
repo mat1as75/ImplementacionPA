@@ -14,7 +14,7 @@ import java.util.Map;
 public interface IControlador {
     public abstract List<String>getNicknamesArtistas();
     public abstract List<String>getNicknamesClientes();
-    public abstract void AltaGenero(String nombreGenero);
+    public abstract void AltaGenero(String nombreGenero, String nomPadre);
     public abstract void AltaArtista(Artista a);
     public abstract void AltaCliente(Cliente c);
     public abstract void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception;

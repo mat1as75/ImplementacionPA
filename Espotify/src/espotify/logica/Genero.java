@@ -22,18 +22,20 @@ public class Genero implements Serializable{
     @ManyToOne
     private Genero miPadre;
     @ManyToMany(mappedBy="misGeneros")
-    private List<Album> misAlbumes;
+    private List<Album> misAlbumes = null;
     @OneToMany(mappedBy="miGenero")
-    private List<ListaPorDefecto> misListasParticulares;
+    private List<ListaPorDefecto> misListasParticulares = null;
     @OneToMany
-    private List<Genero> misGenerosHijos;
+    private List<Genero> misGenerosHijos = null;
     
     // Constructores
     public Genero() {
         
     }
-    public Genero(String nombreGenero) {
+    public Genero(String nombreGenero, Genero padre) {
         this.nombreGenero = nombreGenero;
+        this.miPadre = padre;
+        this.miPadre.agregarGeneroHijo(this);
     }
     
     // Getters & Setters

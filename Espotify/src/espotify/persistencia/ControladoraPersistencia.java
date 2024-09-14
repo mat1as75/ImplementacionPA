@@ -56,8 +56,10 @@ public class ControladoraPersistencia {
 
     public ControladoraPersistencia(){};
     
-    public void AltaGenero(String nombreGenero) {
-        Genero genero=new Genero(nombreGenero);
+    public void AltaGenero(String nombreGenero, String nomPadre) {
+        
+        Genero padre = this.genJpa.findGenero(nomPadre);
+        Genero genero=new Genero(nombreGenero, padre);
         try {
             genJpa.create(genero);//para que lo guarde en la BD
         } catch (Exception ex) {
@@ -564,6 +566,53 @@ public class ControladoraPersistencia {
         que contienen ListasPrivadas */
         return nicknamesClientesLPrivadas;
     }
+    public void EliminarTemaFavorito(String nicknameCliente, long idTema)throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
+        for (Tema t : temasFavoritosDelCliente) {
+            if (t.getIdTema().equals(idTema)) {
+                temasFavoritosDelCliente.remove(t);
+            }
+        }
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public void EliminarListaFavorito(String nicknameCliente, String nombreListaR)throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<ListaReproduccion> listasFavoritasDelCliente = c.getMisListasReproduccionFav();
+        
+        for (ListaReproduccion lr : listasFavoritasDelCliente) {
+            if (lr.getNombreLista().equals(nombreListaR)) {
+                listasFavoritasDelCliente.remove(lr);
+            }
+        }
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public void EliminarAlbumFavorito(String nicknameCliente, long idAlbum)throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
+        
+        for (Album a : albumsFavoritosDelCliente) {
+            if (a.getIdAlbum().equals(idAlbum)) {
+                albumsFavoritosDelCliente.remove(a);
+            }
+        }
+        
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
+        
+        
+    }
 }
-
-
