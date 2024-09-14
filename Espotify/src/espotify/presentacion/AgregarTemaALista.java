@@ -14,17 +14,15 @@ import javax.swing.JOptionPane;
 
 public class AgregarTemaALista extends javax.swing.JInternalFrame {
 
-    private IControlador controlador;
+    private final IControlador controlador;
     private DefaultComboBoxModel comboBoxDeListasModel = new DefaultComboBoxModel();
     private DefaultComboBoxModel comboBoxListasOAlbumsModel = new DefaultComboBoxModel();
     private DefaultComboBoxModel comboBoxTemasModel = new DefaultComboBoxModel();
     
-    private List<String> nicknamesClientes;
+    private final List<String> nicknamesClientes;
     private List<String> listaNombresDeListasGenericas;
     private List<String> listaNombresListasParticularesPublicas;
     private List<String> listaNombresListasPorDefecto;
-    private List<String> listaDatosAlbums;
-    private List<String> listaDatosTemas;
     private Map<Long, String> mapAlbums;
     private Map<Long, String> mapTemas = new HashMap();
     private Map<Long, DTTemaSimple> mapDataTemas = new HashMap();

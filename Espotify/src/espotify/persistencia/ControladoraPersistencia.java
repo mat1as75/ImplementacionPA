@@ -723,6 +723,42 @@ public class ControladoraPersistencia {
         que contienen ListasPrivadas */
         return nicknamesClientesLPrivadas;
     }
+    
+    public void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception {
+        
+        Tema tema = this.temaJpa.findTema(idTema);
+        ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
+        
+        if (tema == null || listaRep == null) {
+            throw new Exception("No se pudo encontrar el tema [" + idTema + "] o la lista [" + nombreLista + "].");
+        }
+        
+        List<Tema> temasDeListaRep = listaRep.getMisTemas();
+        
+        for (Tema t : temasDeListaRep) {
+            if (tema.getIdTema() == t.getIdTema()) {
+                temasDeListaRep.remove(temasDeListaRep.indexOf(t));
+                break;
+            }
+        }
+        
+        //si el tema borrado era el unico tema en la lista, entonces remuevo el link del tema hacia la lista
+        if (temasDeListaRep.isEmpty()) {
+            List<ListaReproduccion> listasRepDeTema = tema.getMisReproducciones();
+            for (ListaReproduccion lrep : listasRepDeTema) {
+                listasRepDeTema.remove(listasRepDeTema.indexOf(lrep));
+                break;
+            }
+        }
+        
+        try {
+            this.temaJpa.edit(tema);
+            this.lreprodccJpa.edit(listaRep);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
 }
 
 
