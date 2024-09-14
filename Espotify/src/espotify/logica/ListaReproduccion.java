@@ -19,6 +19,9 @@ public abstract class ListaReproduccion implements Serializable {
     protected String nombreLista;
     protected String fotoLista;
     
+    // Referencias
+    @ManyToMany(mappedBy="misReproducciones")
+    protected List<Tema> misTemas;
     
     // Constructores
     public ListaReproduccion() {
