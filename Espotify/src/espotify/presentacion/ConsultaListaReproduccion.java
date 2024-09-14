@@ -462,16 +462,12 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     String opcionSeleccionada = (String) jComboBoxConsultarPor.getSelectedItem();
 
     if (opcionSeleccionada.equals("Género")) {
+        
         // Obtener el genero del JTree
         DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
+        
         if (nodoSeleccionado != null) {
             String generoSeleccionado = nodoSeleccionado.toString();
-
-            // Verificar si el genero seleccionado no esta vacio
-            if (generoSeleccionado.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Seleccione un género válido.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
 
             // Obtener los nombres de las listas por defecto para el genero seleccionado 
             List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Genero", generoSeleccionado);
@@ -488,17 +484,11 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Seleccione un género de la lista de generos.", "Error", JOptionPane.WARNING_MESSAGE);
         }
     } else if (opcionSeleccionada.equals("Cliente")) {
-        // Obtener el cliente seleccionado en el jListClientes
+        
+        // Obtener el cliente del jListClientes
         String clienteSeleccionado = jListClientes.getSelectedValue();
-
-        if (clienteSeleccionado != null) {
-            // Verificar si el cliente seleccionado no esta vacio
-            if (clienteSeleccionado.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Seleccione un cliente válido.", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Obtener los nombres de las listas particulares del cliente seleccionado a traves del controlador
+        
+        if (clienteSeleccionado != null) {           
             List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", clienteSeleccionado);
 
             if (nombresListas.isEmpty()) {
@@ -517,32 +507,30 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
       jTextFieldGenero.setText("");
       jTextFieldCliente.setText("");
       DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
-      modeloTabla.setRowCount(0);
-      
+      modeloTabla.setRowCount(0);     
     }//GEN-LAST:event_jButtonSeleccionarActionPerformed
 
     private void jButtonConsultarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarListaActionPerformed
-        // Verificar que hay una lista seleccionada
+        
+    // Verificar que hay una lista seleccionada
     String nombreListaSeleccionada = jListListaDeReproduccion.getSelectedValue();
+    
     if (nombreListaSeleccionada != null) {
-        // Obtener la opción seleccionada del JComboBox
+        // Obtener la opcion seleccionada 
         String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
 
-        // Verificar si la opción es "Género" o "Cliente"
         if (opcionSeleccionada.equals("Género")) {
-            // Consultar datos de la lista asociada al género
+            // Consultar datos de la lista asociada al genero
             DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Genero", nombreListaSeleccionada);
             if (datosLista != null) {
                 // Mostrar datos de la lista por defecto
                 jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
                 jTextFieldGenero.setText(datosLista.getGenero());
-                jTextFieldCliente.setText(""); // Limpiar campo de cliente
+                jTextFieldCliente.setText(""); 
 
                 // Mostrar temas en el JTable
                 mostrarTemasEnTabla(datosLista.getTemas());
-            } else {
-                JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            } 
         } else if (opcionSeleccionada.equals("Cliente")) {
             // Consultar datos de la lista asociada al cliente
             DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Cliente", nombreListaSeleccionada);
@@ -554,9 +542,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
                 // Mostrar temas en el JTable
                 mostrarTemasEnTabla(datosLista.getTemas());
-            } else {
-                JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            } 
         }
     }
     }//GEN-LAST:event_jButtonConsultarListaActionPerformed
