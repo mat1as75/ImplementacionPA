@@ -45,7 +45,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         }
         jListClientes.setModel(listaNicknamesClientes);
         
-        cargarGenerosEnJTree(); // Cargar los géneros en el JTree
+        cargarGenerosEnJTree(); // Cargar los generos en el JTree
         
         jLabelListaDeGeneros.setVisible(true);
         jTreeGeneros.setVisible(true);
@@ -63,8 +63,9 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     }
     
     private void cargarGenerosEnJTree() {
+    
     DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
-    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener géneros
+    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); 
 
     // Mapa para relacionar nombres de generos con sus nodos
     Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
@@ -74,7 +75,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombreGenero());
         nodosGeneros.put(genero.getNombreGenero(), nodoGenero);
         
-        // Si el genero no tiene padre, agregarlo a la raiz
+        // Si el genero no tiene padre agregarlo a la raiz
         if (genero.getMiPadre() == null) {
             raiz.add(nodoGenero);
         }
@@ -86,7 +87,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             DefaultMutableTreeNode nodoGenero = nodosGeneros.get(genero.getNombreGenero());
             DefaultMutableTreeNode nodoPadre = nodosGeneros.get(genero.getMiPadre().getNombreGenero());
 
-            // Verificar que ambos nodos existan antes de establecer la relacion
+            // Verificar que ambos nodos existan 
             if (nodoPadre != null && nodoGenero != null) {
                 nodoPadre.add(nodoGenero);
             }
@@ -97,22 +98,8 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     jTreeGeneros.setModel(new DefaultTreeModel(raiz));
     }
 
-    private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
-    for (int i = 0; i < nodo.getChildCount(); i++) {
-        DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
-        if (hijo.getUserObject().toString().equals(nombreGenero)) {
-            return hijo;
-        } else {
-            DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
-            if (resultado != null) {
-                return resultado;
-            }
-        }
-    }
-    return null;
-    }
-
     private void mostrarTemasEnTabla(List<DTTemaSimple> temas) {
+    
     // Definir las columnas de la tabla
     String[] columnas = {"Nombre Tema", "Duración (seg)", "Posición en Álbum", "Nombre del Álbum", "Artista"};
 
@@ -398,6 +385,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxConsultarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxConsultarPorActionPerformed
+        
         String opcion=(String)jComboBoxConsultarPor.getSelectedItem();
         if("Género".equals(opcion)){
             
