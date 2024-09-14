@@ -5,11 +5,13 @@ import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -123,6 +125,28 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     jTableTemas.setDefaultEditor(Object.class, null); 
     jTableTemas.getTableHeader().setReorderingAllowed(false);
     }
+    
+    private void fotoLista(String rutaImagen) {
+    if (rutaImagen != null && !rutaImagen.isEmpty()) {
+        try {
+            ImageIcon iconoImagen = new ImageIcon(rutaImagen);
+            
+            // Escalar la imagen para ajustarla al JLabel 
+            Image imagenEscalada = iconoImagen.getImage().getScaledInstance(imageLabelFotoLista.getWidth(), imageLabelFotoLista.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+            
+            // Asignar la imagen al JLabel
+            imageLabelFotoLista.setIcon(iconoEscalado);
+        } catch (Exception e) {
+            System.out.println("Error al cargar la imagen: " + e.getMessage());
+            imageLabelFotoLista.setIcon(null); // Deja vacia la foto si hay error
+        }
+    } else {
+        // Deja vacia la foto si no tiene
+        imageLabelFotoLista.setIcon(null);
+      }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -151,7 +175,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jLabelInformacionDeLosTemas = new javax.swing.JLabel();
         jTextFieldCliente = new javax.swing.JTextField();
         jTextFieldGenero = new javax.swing.JTextField();
-        imageLabel = new javax.swing.JLabel();
+        imageLabelFotoLista = new javax.swing.JLabel();
         jButtonDescargarArchivosDeMusica = new javax.swing.JButton();
         jButtonVerDireccionWeb = new javax.swing.JButton();
         jTextFieldNombreDeLaLista = new javax.swing.JTextField();
@@ -207,7 +231,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             }
         });
 
-        imageLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        imageLabelFotoLista.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButtonDescargarArchivosDeMusica.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jButtonDescargarArchivosDeMusica.setText("Descargar Archivo de Música");
@@ -282,7 +306,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(imageLabelFotoLista, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(12, 12, 12)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -326,7 +350,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(imageLabelFotoLista, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -514,6 +538,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                 // Mostrar datos de la lista por defecto
                 jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
                 jTextFieldGenero.setText(datosLista.getGenero());
+                fotoLista(datosLista.getFotoLista());
                 jTextFieldCliente.setText(""); 
 
                 // Mostrar temas en el JTable
@@ -526,7 +551,8 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                 // Mostrar datos de la lista particular
                 jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
                 jTextFieldCliente.setText(datosLista.getCliente());
-                jTextFieldGenero.setText(""); // Limpiar campo de género
+                fotoLista(datosLista.getFotoLista());
+                jTextFieldGenero.setText(""); 
 
                 // Mostrar temas en el JTable
                 mostrarTemasEnTabla(datosLista.getTemas());
@@ -542,7 +568,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane JScrollPanelCliente;
-    private javax.swing.JLabel imageLabel;
+    private javax.swing.JLabel imageLabelFotoLista;
     private javax.swing.JButton jButtonConsultarLista;
     private javax.swing.JButton jButtonDescargarArchivosDeMusica;
     private javax.swing.JButton jButtonSeleccionar;
