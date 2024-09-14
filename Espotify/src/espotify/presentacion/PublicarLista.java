@@ -21,10 +21,12 @@ public class PublicarLista extends javax.swing.JInternalFrame {
 
     private void cargarListas() {
         jComboBoxListaSeraPublica.removeAllItems();
-        String cliente =(String)jComboBoxNickName.getSelectedItem();
-        List<String> privadotrue = ictrl.listasCreadasEstadoPrivadoTrue(cliente);
-        for (String p : privadotrue) {
-            jComboBoxListaSeraPublica.addItem(p);
+        if (jComboBoxNickName.getSelectedItem() != null) {
+            String cliente =(String)jComboBoxNickName.getSelectedItem();
+            List<String> privadotrue = ictrl.listasCreadasEstadoPrivadoTrue(cliente);
+            for (String p : privadotrue) {
+                jComboBoxListaSeraPublica.addItem(p);
+            }
         }
     }
     
@@ -59,6 +61,11 @@ public class PublicarLista extends javax.swing.JInternalFrame {
         jComboBoxListaSeraPublica.setPreferredSize(new java.awt.Dimension(150, 24));
 
         jComboBoxNickName.setMinimumSize(new java.awt.Dimension(150, 24));
+        jComboBoxNickName.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxNickNameItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelPublicarListaLayout = new javax.swing.GroupLayout(jPanelPublicarLista);
         jPanelPublicarLista.setLayout(jPanelPublicarListaLayout);
@@ -116,6 +123,12 @@ public class PublicarLista extends javax.swing.JInternalFrame {
         IControlador i = f.getControlador();
         i.setPrivadafalse(cliente,lista);
     }//GEN-LAST:event_jButtonEnviarActionPerformed
+
+    private void jComboBoxNickNameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxNickNameItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            cargarListas();
+        }
+    }//GEN-LAST:event_jComboBoxNickNameItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
