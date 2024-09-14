@@ -697,7 +697,8 @@ public class ControladoraPersistencia {
         }
         
         return nombresListasPart;
-
+    }
+    
     public ArrayList<String> getNicknamesClientesListasPrivadas() {
         
         List<Cliente> clientes = cliJpa.findClienteEntities();
