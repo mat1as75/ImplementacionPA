@@ -7,6 +7,7 @@ package espotify.persistencia;
 
 
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
@@ -400,6 +401,41 @@ public class ControladoraPersistencia {
         return nombresListasReproduccion;
     }
     
+    public ArrayList<String> getNombresListasParticulares() {
+        List<ListaParticular> listaListasParticulares = this.lpartJpa.findListaParticularEntities();
+        ArrayList<String> nombresListasParticulares = new ArrayList<>();
+        
+        for (ListaParticular lp : listaListasParticulares) {
+            nombresListasParticulares.add(lp.getNombreLista());
+        }
+        
+        return nombresListasParticulares;
+    }
+    
+    public ArrayList<String> getNombresListasPorDefecto() {
+        List<ListaPorDefecto> listaListasPorDefecto = this.lxdefcJpa.findListaPorDefectoEntities();
+        ArrayList<String> nombresListasPorDefecto = new ArrayList<>();
+        
+        for (ListaPorDefecto lpd : listaListasPorDefecto) {
+            nombresListasPorDefecto.add(lpd.getNombreLista());
+        }
+        
+        return nombresListasPorDefecto;
+    }
+    
+    public ArrayList<String> getNombresListasParticularesPublicas() {
+        List<ListaParticular> listaListasParticulares = this.lpartJpa.findListaParticularEntities();
+        ArrayList<String> nombresListasParticularesPublicas = new ArrayList<>();
+        
+        for (ListaParticular lp : listaListasParticulares) {
+            if (!lp.soyPrivada()) {
+                nombresListasParticularesPublicas.add(lp.getNombreLista());
+            }
+        }
+        
+        return nombresListasParticularesPublicas;
+    }
+    
     /* Selecciona los Nombres de los Albumes que esten 
     disponibles para seleccionar en GuardarFavoritos */
     public Map<Long, String> getAlbumesDisponibles() {
@@ -419,6 +455,23 @@ public class ControladoraPersistencia {
         
         for (Album album: listaAlbumes) {
             dataAlbums.add(album.getDataAlbum());
+        }
+        return dataAlbums;
+    }
+    
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimple() {
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+        ArrayList<DTAlbum_Simple> dataAlbums = new ArrayList<>();
+        
+        for (Album album: listaAlbumes) {
+
+            dataAlbums.add(new DTAlbum_Simple(
+                    album.getIdAlbum(),
+                    album.getNombreAlbum(),
+                    album.getAnioCreacion(),
+                    album.getMiArtista().getNombreCompletoToString()
+                )
+            );
         }
         return dataAlbums;
     }
@@ -539,6 +592,112 @@ public class ControladoraPersistencia {
         return dataGeneros;
     }
     
+     public Map<Long, DTTemaSimple> getDTTemasDeAlbum(Long idAlbum) {
+         Album alb = this.albJpa.findAlbum(idAlbum);
+         List<Tema> temas = alb.getMisTemas();
+         
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap(temas.size());
+         for (Tema t : temas) {
+             mapDataTemas.put(t.getIdTema(), t.getDTTemaSimple());
+         }
+         
+         return mapDataTemas;
+     }
+     
+     public Map<Long, DTTemaSimple> getDTTemasDeListaParticular(String nombreListaReproduccion) {
+         ListaParticular listaP = this.lpartJpa.findListaParticular(nombreListaReproduccion);
+         List<Tema> temas = listaP.getMisTemas();
+         
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap(temas.size());
+         for (Tema t : temas) {
+             mapDataTemas.put(t.getIdTema(), t.getDTTemaSimple());
+         }
+         
+         return mapDataTemas;
+     }
+     
+     public Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion) {
+         ListaPorDefecto listaPDef = this.lxdefcJpa.findListaPorDefecto(nombreListaReproduccion);
+         List<Tema> temas = listaPDef.getMisTemas();
+         
+         Map<Long, DTTemaSimple> mapDataTemas = new HashMap(temas.size());
+         for (Tema t : temas) {
+             mapDataTemas.put(t.getIdTema(), t.getDTTemaSimple());
+         }
+         
+         return mapDataTemas;
+     }
+     
+     public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
+        Tema tema = this.temaJpa.findTema(idTema);
+        ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
+        //obtengo los temas de la lista de reproduccion destino
+        List<Tema> temasDeListaRep = listaRep.getMisTemas();
+        
+        for (Tema t : temasDeListaRep) {
+            if (t.getIdTema() == tema.getIdTema()) {
+                //error si el tema ya pertenece a la lista
+                throw new Exception("El tema elegido [" 
+                        + tema.getIdTema()
+                        + "] ya pertenece a la lista "
+                        + listaRep.getNombreLista()
+                );
+            }
+        }
+        //si no existe el tema en la lista destino, lo agrego
+        listaRep.agregarTema(tema);
+
+        //obtengo las listas a las que se asocia el tema
+        List<ListaReproduccion> listasAsociadasAlTema = tema.getMisReproducciones();
+        //si el tema no esta asociado a esta lista, entonces agrego la misma a sus listas asociadas
+        
+        Boolean temaYaEstaAsociadoALista = false;
+        for (ListaReproduccion lr : listasAsociadasAlTema) {
+            if (lr.getNombreLista().equals(listaRep.getNombreLista())) {
+                temaYaEstaAsociadoALista = true;
+                break;
+            }
+        }
+        
+        if (!temaYaEstaAsociadoALista) {
+            tema.setMisReproducciones(listaRep);
+            try {
+                this.lreprodccJpa.edit(listaRep);
+            } catch(Exception ex) {
+                throw new Exception("Ocurrio un error al agregar la lista "
+                    + listaRep.getNombreLista() 
+                    + " a las listas asociadas al tema ["
+                    + tema.getIdTema() + "]."
+                );
+            }
+        }
+
+        try {
+           this.temaJpa.edit(tema);
+        } catch (Exception ex) {
+           throw new Exception(
+                "Ocurrio un error al agregar el tema [" 
+                + tema.getIdTema() + "] a la lista " 
+                + listaRep.getNombreLista());
+        }
+    }
+     
+    public ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception {
+        Cliente cl = this.cliJpa.findCliente(nicknameCliente);
+        
+        if (cl == null) {
+            throw new Exception ("No se encontró el cliente " + nicknameCliente + ".");
+        }
+        
+        List<ListaParticular> listasPart = cl.getMisListasReproduccionCreadas();
+        ArrayList<String> nombresListasPart = new ArrayList();
+        
+        for (ListaParticular lp : listasPart) {
+            nombresListasPart.add(lp.getNombreLista());
+        }
+        
+        return nombresListasPart;
+
     public ArrayList<String> getNicknamesClientesListasPrivadas() {
         
         List<Cliente> clientes = cliJpa.findClienteEntities();
@@ -558,8 +717,7 @@ public class ControladoraPersistencia {
                 }
             }
         }
-        
-        
+       
         /* Retorno nicknames de Clientes 
         que contienen ListasPrivadas */
         return nicknamesClientesLPrivadas;

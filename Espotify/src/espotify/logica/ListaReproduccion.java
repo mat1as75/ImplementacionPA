@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 
@@ -18,7 +19,7 @@ public abstract class ListaReproduccion implements Serializable {
     @Id
     protected String nombreLista;
     protected String fotoLista;
-    
+ 
     // Referencias
     @ManyToMany(mappedBy="misReproducciones")
     protected List<Tema> misTemas;
@@ -48,6 +49,22 @@ public abstract class ListaReproduccion implements Serializable {
     
     public void setFotoLista(String fotoLista) {
         this.fotoLista = fotoLista;
+    }
+    
+    public List<Tema> getMisTemas() {
+        return this.misTemas;
+    }
+    
+    public void setMisTemas(List<Tema> temas) {
+        this.misTemas = temas;
+    }
+    
+    public void agregarTema(Tema tema) {
+        this.misTemas.add(tema);
+    }
+    
+    public void removerTema(Tema tema) {
+        this.misTemas.remove(tema);
     }
     
 }
