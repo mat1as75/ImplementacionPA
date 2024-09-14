@@ -7,6 +7,7 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTListaReproduccion;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
@@ -223,8 +224,38 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public Map<Long, DTTemaSimple> getDTTemasDeListaParticular(String nombreListaReproduccion) {
+        return this.contpersis.getDTTemasDeListaParticular(nombreListaReproduccion);
+    }
+    
+    @Override
+    public Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion) {
+        return this.contpersis.getDTTemasDeListaPorDefecto(nombreListaReproduccion);
+    }
+    
+    @Override
+    public Map<Long, DTTemaSimple> getDTTemasDeAlbum(Long idAlbum) {
+        return this.contpersis.getDTTemasDeAlbum(idAlbum);
+    }
+    
+    @Override
     public ArrayList<String> getListasReproduccionDisponibles() {
         return this.contpersis.getListasReproduccionDisponibles();
+    }
+    
+    @Override
+    public ArrayList<String> getNombresListasPorDefecto() {
+        return this.contpersis.getNombresListasPorDefecto();
+    }
+    
+    @Override
+    public ArrayList<String> getNombresListasParticulares() {
+        return this.contpersis.getNombresListasParticulares();
+    }
+    
+    @Override
+    public ArrayList<String> getNombresListasParticularesPublicas() {
+        return this.contpersis.getNombresListasParticularesPublicas();
     }
     
     @Override
@@ -235,6 +266,11 @@ public class Controlador implements IControlador{
     @Override
     public ArrayList<DTAlbum> getDTAlbumesDisponibles() {
         return this.contpersis.getDTAlbumesDisponibles();
+    }
+    
+    @Override
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimple() {
+        return this.contpersis.getDTAlbumesSimple();
     }
     
     @Override
@@ -265,7 +301,7 @@ public class Controlador implements IControlador{
     }
 
     @Override
-    public List<String> listasCreadasEstadoPrivadoTrue(String cliente){
+    public ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente){
         return contpersis.listasCreadasEstadoPrivadoTrue(cliente);
     }
     
@@ -279,5 +315,28 @@ public class Controlador implements IControlador{
         return this.contpersis.getListaDTGeneroSimple();
     }
 
+
+    @Override
+    public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
+        try {
+            this.contpersis.agregarTemaALista(idTema, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception {
+        try {
+            return this.contpersis.getNombresListasParticularesDeCliente(nicknameCliente);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    @Override  
+    public ArrayList<String> getNicknamesClientesListasPrivadas() {
+        return this.contpersis.getNicknamesClientesListasPrivadas();
+    }
 
 }

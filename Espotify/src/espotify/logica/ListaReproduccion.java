@@ -21,14 +21,11 @@ public abstract class ListaReproduccion implements Serializable {
     @Id
     protected String nombreLista;
     protected String fotoLista;
-    
-    
-    /*@JoinTable(name="LISTAREPRODUCCION_TEMA", 
-            joinColumns=@JoinColumn(name="ListaR_Nombre"),
-            inverseJoinColumns=@JoinColumn(name="Tema_Id"))*/
+ 
+    // Referencias
     @ManyToMany(mappedBy="misReproducciones")
-    private List<Tema> misTemas;
-    
+    protected List<Tema> misTemas;
+     
     // Constructores
     public ListaReproduccion() {
        super(); 
@@ -58,10 +55,19 @@ public abstract class ListaReproduccion implements Serializable {
     
     public List<Tema> getMisTemas() {
         return misTemas;
+    }  
+    
+    public void setMisTemas(List<Tema> temas) {
+        this.misTemas = temas;
     }
     
-    public void setMisTemas(List<Tema> misTemas) {
-        this.misTemas = misTemas;
+    public void agregarTema(Tema tema) {
+        this.misTemas.add(tema);
+    }
+    
+    public void removerTema(Tema tema) {
+        this.misTemas.remove(tema);
+
     }
     
 }
