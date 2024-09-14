@@ -358,6 +358,33 @@ public class ControladoraPersistencia {
 
     }
     
+    public void dejarDeSeguir(String C, String U) {
+        try {
+            // Cliente que desea dejar de seguir
+            Cliente c = this.cliJpa.findCliente(C);
+            // Usuario que se desea dejar de seguir
+            Usuario u = this.usuJpa.findUsuario(U);
+
+            // Verificar si el cliente sigue al usuario
+            if (!c.getMisSeguidos().contains(u)) {
+                throw new Exception("El cliente no sigue a este usuario.");
+            }
+
+            // Eliminar al usuario de la lista de seguidos del cliente
+            c.getMisSeguidos().remove(u);
+            // Eliminar al cliente de la lista de seguidores del usuario
+            u.getMisSeguidores().remove(c);
+
+            // Actualizar 
+            this.usuJpa.edit(c);
+            this.usuJpa.edit(u);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Error al intentar dejar de seguir al usuario: " + ex.getMessage(), ex);
+        }
+    }
+
+    
 
     public void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero) {
     // Buscar el genero por su nombre

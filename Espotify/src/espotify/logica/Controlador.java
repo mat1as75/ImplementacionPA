@@ -208,6 +208,11 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public void dejarDeSeguir(String C, String U){
+        this.contpersis.dejarDeSeguir(C,U);
+    }
+    
+    @Override
     public Map<Long, String> getTemasDisponibles() {
         return this.contpersis.getTemasDisponibles();
     }

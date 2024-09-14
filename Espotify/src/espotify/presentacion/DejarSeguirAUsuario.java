@@ -145,14 +145,13 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
        }
        
         if (!C.equals(U)) {
-        try {
-            //this.controlador.dejarDeSeguir(C, U);
-            JOptionPane.showMessageDialog( null,"Se ha dejado de seguir al usuario.", "Exito",JOptionPane.INFORMATION_MESSAGE);
-        } catch (HeadlessException ex) {JOptionPane.showMessageDialog(    null,    ex.getMessage(),  "Error",   JOptionPane.ERROR_MESSAGE);
-          }
+            try {
+               //this.controlador.dejarDeSeguir(C, U);
+               JOptionPane.showMessageDialog( null,"Se ha dejado de seguir al usuario.", "Exito",JOptionPane.INFORMATION_MESSAGE);
+            } catch (HeadlessException ex) {JOptionPane.showMessageDialog(    null,    ex.getMessage(),  "Error",   JOptionPane.ERROR_MESSAGE);}
        } else {
-        JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a si mismo.", "Error",JOptionPane.ERROR_MESSAGE);
-        }
+           JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a si mismo.", "Error",JOptionPane.ERROR_MESSAGE);
+         }
        
        
        
