@@ -42,10 +42,8 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
         ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
 
-        for (String nickname: nicknamesClientes) {
-            listaNicknamesClientes.addElement(nickname);
-        }
-        jListClientes.setModel(listaNicknamesClientes);
+        nicknamesClientes.forEach(listaNicknamesClientes::addElement);
+        jListC.setModel(listaNicknamesClientes);
         
         cargarGenerosEnJTree(); // Cargar los generos en el JTree
         
@@ -57,7 +55,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         
         
         jLabelListaDeClientes.setVisible(false);
-        jListClientes.setVisible(false);
+        jListC.setVisible(false);
         JScrollPanelCliente.setVisible(false);
         jLabelCliente.setVisible(false);
         jTextFieldCliente.setVisible(false);
@@ -163,7 +161,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jLabelListaDeGeneros = new javax.swing.JLabel();
         jLabelListaDeClientes = new javax.swing.JLabel();
         JScrollPanelCliente = new javax.swing.JScrollPane();
-        jListClientes = new javax.swing.JList<>();
+        jListC = new javax.swing.JList<>();
         jScrollPaneGenero = new javax.swing.JScrollPane();
         jTreeGeneros = new javax.swing.JTree();
         jLabelListasDeReproduccion = new javax.swing.JLabel();
@@ -203,7 +201,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
         jLabelListaDeClientes.setText("Lista de Clientes:");
 
-        JScrollPanelCliente.setViewportView(jListClientes);
+        JScrollPanelCliente.setViewportView(jListC);
 
         jScrollPaneGenero.setViewportView(jTreeGeneros);
 
@@ -236,6 +234,11 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jButtonDescargarArchivosDeMusica.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jButtonDescargarArchivosDeMusica.setText("Descargar Archivo de Música");
         jButtonDescargarArchivosDeMusica.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonDescargarArchivosDeMusica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDescargarArchivosDeMusicaActionPerformed(evt);
+            }
+        });
 
         jButtonVerDireccionWeb.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jButtonVerDireccionWeb.setText("Ver Dirección Web");
@@ -330,9 +333,9 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                                             .addComponent(jLabelInformacionDeLosTemas)
                                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jButtonDescargarArchivosDeMusica)
+                                                .addComponent(jButtonVerDireccionWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButtonVerDireccionWeb)))
+                                                .addComponent(jButtonDescargarArchivosDeMusica)))
                                         .addGap(182, 182, 182))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
@@ -367,7 +370,11 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                         .addGap(15, 15, 15)
                         .addComponent(jLabelInformacionDeLosTemas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonVerDireccionWeb)
+                            .addComponent(jButtonDescargarArchivosDeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelListaDeGeneros)
@@ -384,10 +391,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButtonConsultarLista)
-                                    .addComponent(jButtonDescargarArchivosDeMusica)
-                                    .addComponent(jButtonVerDireccionWeb))))))
+                                .addComponent(jButtonConsultarLista)))))
                 .addContainerGap(333, Short.MAX_VALUE))
         );
 
@@ -427,7 +431,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             jTextFieldGenero.setVisible(true);
             
             jLabelListaDeClientes.setVisible(false);
-            jListClientes.setVisible(false);
+            jListC.setVisible(false);
             JScrollPanelCliente.setVisible(false);
             jLabelCliente.setVisible(false);
             jTextFieldCliente.setVisible(false);
@@ -450,7 +454,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             
             
             jLabelListaDeClientes.setVisible(true);
-            jListClientes.setVisible(true);
+            jListC.setVisible(true);
             JScrollPanelCliente.setVisible(true);
             jLabelCliente.setVisible(true);
             jTextFieldCliente.setVisible(true);
@@ -498,7 +502,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     } else if (opcionSeleccionada.equals("Cliente")) {
         
         // Obtener el cliente del jListClientes
-        String clienteSeleccionado = jListClientes.getSelectedValue();
+        String clienteSeleccionado = jListC.getSelectedValue();
         
         if (clienteSeleccionado != null) {           
             List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", clienteSeleccionado);
@@ -565,6 +569,10 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonVerDireccionWebActionPerformed
 
+    private void jButtonDescargarArchivosDeMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarArchivosDeMusicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonDescargarArchivosDeMusicaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane JScrollPanelCliente;
@@ -582,7 +590,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelListaDeGeneros;
     private javax.swing.JLabel jLabelListasDeReproduccion;
     private javax.swing.JLabel jLabelNombreDeLaLista;
-    private javax.swing.JList<String> jListClientes;
+    private javax.swing.JList<String> jListC;
     private javax.swing.JList<String> jListListaDeReproduccion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

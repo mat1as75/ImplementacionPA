@@ -111,9 +111,9 @@
                                               <Component id="jLabelInformacionDeLosTemas" min="-2" max="-2" attributes="0"/>
                                               <Component id="jScrollPane3" min="-2" pref="638" max="-2" attributes="0"/>
                                               <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="jButtonDescargarArchivosDeMusica" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jButtonVerDireccionWeb" min="-2" pref="149" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="jButtonVerDireccionWeb" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jButtonDescargarArchivosDeMusica" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
@@ -166,6 +166,11 @@
                           <Component id="jLabelInformacionDeLosTemas" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane3" min="-2" pref="248" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jButtonVerDireccionWeb" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButtonDescargarArchivosDeMusica" min="-2" pref="24" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -186,11 +191,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jScrollPane1" min="-2" pref="363" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jButtonConsultarLista" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jButtonDescargarArchivosDeMusica" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jButtonVerDireccionWeb" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="jButtonConsultarLista" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -236,7 +237,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="jListClientes">
+            <Component class="javax.swing.JList" name="jListC">
               <Properties>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="0"/>
@@ -331,6 +332,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDescargarArchivosDeMusicaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonVerDireccionWeb">
           <Properties>

@@ -1,5 +1,13 @@
 package espotify.presentacion;
 
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
+import java.awt.HeadlessException;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -10,12 +18,32 @@ package espotify.presentacion;
  * @author ms
  */
 public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
-
+    
+    private IControlador controlador;
     /**
      * Creates new form DejarDeSeguirAUsuario
      */
     public DejarSeguirAUsuario() {
         initComponents();
+        
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
+        
+        // Cargo el ComboBoxC con los Nicknames de los Clientes del Sistema
+        DefaultComboBoxModel<String> comboBoxModelClientes = new DefaultComboBoxModel<>();
+        ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
+
+        nicknamesClientes.forEach(comboBoxModelClientes::addElement);
+        jComboBoxC.setModel(comboBoxModelClientes);
+
+        // Cargo el ComboBoxCyA con los Nicknames de Clientes y Artistas del Sistema
+        DefaultComboBoxModel<String> comboBoxModelCyA = new DefaultComboBoxModel<>();
+        ArrayList<String> nicknamesCya = new ArrayList<>(nicknamesClientes);
+        nicknamesCya.addAll(controlador.getNicknamesArtistas());
+
+        nicknamesCya.forEach(comboBoxModelCyA::addElement);
+        jComboBoxCyA.setModel(comboBoxModelCyA);
+
     }
 
     /**
@@ -29,10 +57,10 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabelNickname = new javax.swing.JLabel();
-        jTextFieldNickname = new javax.swing.JTextField();
         jLabelNickname1 = new javax.swing.JLabel();
-        jTextFieldNickname1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonConfirmar = new javax.swing.JButton();
+        jComboBoxC = new javax.swing.JComboBox<>();
+        jComboBoxCyA = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -42,26 +70,23 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
 
         jLabelNickname.setText("Nickname del Cliente que desea finalizar el seguimiento:");
 
-        jTextFieldNickname.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNicknameActionPerformed(evt);
-            }
-        });
-
         jLabelNickname1.setText("Nickname del Usuario (Cliente/Artista) al que desea dejar de seguir:");
 
-        jTextFieldNickname1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonConfirmar.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
+        jButtonConfirmar.setText("Confirmar");
+        jButtonConfirmar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNickname1ActionPerformed(evt);
+                jButtonConfirmarActionPerformed(evt);
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
-        jButton1.setText("Confirmar");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jComboBoxC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBoxCyA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxCyA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jComboBoxCyAActionPerformed(evt);
             }
         });
 
@@ -72,11 +97,11 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(jComboBoxCyA, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonConfirmar)
                     .addComponent(jLabelNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelNickname1)
-                    .addComponent(jTextFieldNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldNickname1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxC, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(187, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -85,14 +110,14 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabelNickname)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBoxC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelNickname1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldNickname1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBoxCyA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(291, Short.MAX_VALUE))
+                .addComponent(jButtonConfirmar)
+                .addContainerGap(297, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -109,25 +134,41 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNicknameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNicknameActionPerformed
+    private void jButtonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarActionPerformed
+       
+       String C = (String) jComboBoxC.getSelectedItem();  // Cliente que desea finalizar el seguimiento
+       String U = (String) jComboBoxCyA.getSelectedItem();  // Usuario (Cliente/Artista) al que desea dejar de seguir
 
-    private void jTextFieldNickname1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNickname1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNickname1ActionPerformed
+       // Verificar si se selecciono un cliente y un usuario 
+       if (C == null || U == null) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente y un usuario (cliente/artista) para dejar de seguir.", "Error",JOptionPane.ERROR_MESSAGE);
+       }
+       
+        if (!C.equals(U)) {
+        try {
+            //this.controlador.dejarDeSeguir(C, U);
+            JOptionPane.showMessageDialog( null,"Se ha dejado de seguir al usuario.", "Exito",JOptionPane.INFORMATION_MESSAGE);
+        } catch (HeadlessException ex) {JOptionPane.showMessageDialog(    null,    ex.getMessage(),  "Error",   JOptionPane.ERROR_MESSAGE);
+          }
+       } else {
+        JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a si mismo.", "Error",JOptionPane.ERROR_MESSAGE);
+        }
+       
+       
+       
+    }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jComboBoxCyAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCyAActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jComboBoxCyAActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonConfirmar;
+    private javax.swing.JComboBox<String> jComboBoxC;
+    private javax.swing.JComboBox<String> jComboBoxCyA;
     private javax.swing.JLabel jLabelNickname;
     private javax.swing.JLabel jLabelNickname1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextFieldNickname;
-    private javax.swing.JTextField jTextFieldNickname1;
     // End of variables declaration//GEN-END:variables
 }

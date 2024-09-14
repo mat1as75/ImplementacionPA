@@ -40,14 +40,12 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
          
-        /* Cargo el jList con los Nicknames de los Clientes del Sistema */
+        //* Cargo el jList con los Nicknames de los Clientes del Sistema */
         DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
         ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
 
-        for (String nickname: nicknamesClientes) {
-            listaNicknamesClientes.addElement(nickname);
-        }
-        jListClientes.setModel(listaNicknamesClientes);
+        nicknamesClientes.forEach(listaNicknamesClientes::addElement);
+        jListC.setModel(listaNicknamesClientes);
         
         cargarGenerosEnJTree(); // Cargar los generos en el JTree
         
@@ -55,7 +53,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         jTreeGeneros.setVisible(true);
         jScrollPaneGeneros.setVisible(true);
         jLabelClientePropietario.setVisible(false);
-        jListClientes.setVisible(false);
+        jListC.setVisible(false);
         jScrollPaneClientes.setVisible(false);
     }
     
@@ -133,7 +131,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         jScrollPaneGeneros = new javax.swing.JScrollPane();
         jTreeGeneros = new javax.swing.JTree();
         jScrollPaneClientes = new javax.swing.JScrollPane();
-        jListClientes = new javax.swing.JList<>();
+        jListC = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -182,12 +180,12 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
 
         jScrollPaneGeneros.setViewportView(jTreeGeneros);
 
-        jListClientes.setModel(new javax.swing.AbstractListModel<String>() {
+        jListC.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPaneClientes.setViewportView(jListClientes);
+        jScrollPaneClientes.setViewportView(jListC);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -276,7 +274,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             jTreeGeneros.setVisible(true);
             jScrollPaneGeneros.setVisible(true);
             jLabelClientePropietario.setVisible(false);
-            jListClientes.setVisible(false);
+            jListC.setVisible(false);
             jScrollPaneClientes.setVisible(false);
         }
         else{
@@ -284,7 +282,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             jTreeGeneros.setVisible(false);
             jScrollPaneGeneros.setVisible(false);
             jLabelClientePropietario.setVisible(true);
-            jListClientes.setVisible(true);
+            jListC.setVisible(true);
             jScrollPaneClientes.setVisible(true);
         }            // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxTipodeListaActionPerformed
@@ -330,7 +328,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
     private void jButtonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearActionPerformed
         
         String nombreLista = jTextFieldNombre.getText();
-        String nicknameClienteSeleccionado = jListClientes.getSelectedValue();
+        String nicknameClienteSeleccionado = jListC.getSelectedValue();
         String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
         DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
         String generoSeleccionado = nodoSeleccionado != null ? nodoSeleccionado.getUserObject().toString() : null;
@@ -367,7 +365,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelClientePropietario;
     private javax.swing.JLabel jLabelGenero;
     private javax.swing.JLabel jLabelNombre;
-    private javax.swing.JList<String> jListClientes;
+    private javax.swing.JList<String> jListC;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPaneClientes;
     private javax.swing.JScrollPane jScrollPaneGeneros;
