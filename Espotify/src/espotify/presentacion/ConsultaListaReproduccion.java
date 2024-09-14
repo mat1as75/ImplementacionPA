@@ -462,7 +462,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     String opcionSeleccionada = (String) jComboBoxConsultarPor.getSelectedItem();
 
     if (opcionSeleccionada.equals("Género")) {
-        // Obtener el genero seleccionado en el JTree
+        // Obtener el genero del JTree
         DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
         if (nodoSeleccionado != null) {
             String generoSeleccionado = nodoSeleccionado.toString();
