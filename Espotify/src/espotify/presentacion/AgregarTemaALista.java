@@ -17,7 +17,7 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
     private final IControlador controlador;
     private DefaultComboBoxModel comboBoxDeListasModel = new DefaultComboBoxModel();
     private DefaultComboBoxModel comboBoxListasOAlbumsModel = new DefaultComboBoxModel();
-    private DefaultComboBoxModel comboBoxTemasModel = new DefaultComboBoxModel();
+    private DefaultListModel jlistTemasModel = new DefaultListModel();
     
     private final List<String> nicknamesClientes;
     private List<String> listaNombresDeListasGenericas;
@@ -56,13 +56,13 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        labelError = new javax.swing.JLabel();
         comboBoxClientes = new javax.swing.JComboBox<>();
         comboBoxListasReproduccion = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         comboBoxListasOAlbums = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        comboBoxTemas = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlistTemas = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -124,8 +124,6 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Cliente:");
 
-        labelError.setForeground(new java.awt.Color(255, 0, 0));
-
         String[] arrayNicknamesClientes = nicknamesClientes.toArray(new String[nicknamesClientes.size()]);
         comboBoxClientes.setModel(new javax.swing.DefaultComboBoxModel<>(arrayNicknamesClientes));
         comboBoxClientes.setToolTipText("");
@@ -144,7 +142,8 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
         jLabel1.setText("Lista de reproduccion:");
 
         comboBoxListasOAlbums.setEnabled(false);
-        comboBoxListasOAlbums.setMaximumSize(new java.awt.Dimension(32767, 600));
+        comboBoxListasOAlbums.setMaximumSize(new java.awt.Dimension(585, 600));
+        comboBoxListasOAlbums.setPreferredSize(new java.awt.Dimension(585, 24));
         comboBoxListasOAlbums.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboBoxListasOAlbumsItemStateChanged(evt);
@@ -153,50 +152,45 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Elija la lista o album del cual desea seleccionar el tema:");
 
-        comboBoxTemas.setEnabled(false);
-        comboBoxTemas.setMaximumSize(new java.awt.Dimension(32767, 600));
+        jlistTemas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jlistTemas.setEnabled(false);
+        jScrollPane1.setViewportView(jlistTemas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(comboBoxListasOAlbums, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(191, 191, 191)
-                                    .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(35, 35, 35)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addComponent(comboBoxTipoDeOrigenTema, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(comboBoxClientes, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(comboBoxListasReproduccion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(comboBoxTipoLista, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(129, 129, 129)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(54, 54, 54)
                             .addComponent(btnCancelarAgregarTemaALista, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(33, 33, 33)
-                            .addComponent(btnConfirmarAgregarTemaALista, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(47, Short.MAX_VALUE))
+                            .addGap(68, 68, 68)
+                            .addComponent(btnConfirmarAgregarTemaALista, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(comboBoxClientes, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboBoxListasReproduccion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboBoxTipoLista, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboBoxTipoDeOrigenTema, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(comboBoxListasOAlbums, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(65, 65, 65))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,24 +212,22 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboBoxTipoDeOrigenTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(comboBoxTipoDeOrigenTema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGap(10, 10, 10)
+                .addGap(18, 18, 18)
                 .addComponent(comboBoxListasOAlbums, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(comboBoxTemas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelError)
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelarAgregarTemaALista)
                     .addComponent(btnConfirmarAgregarTemaALista))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
 
         pack();
@@ -321,7 +313,7 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
                         "Debe indicar a que lista desea agregar el tema.", 
                         "Error", 
                         JOptionPane.ERROR_MESSAGE);
-        } else if (comboBoxTemas.getSelectedItem() == null) {
+        } else if (jlistTemas.getSelectedValue() == null) {
             JOptionPane.showMessageDialog(
                         null, 
                         "Debe indicar el tema que desea agregar.", 
@@ -329,7 +321,7 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
                         JOptionPane.ERROR_MESSAGE);
         } else {
             String listaDestino = comboBoxListasReproduccion.getSelectedItem().toString();
-            String temaSeleccionado = comboBoxTemas.getSelectedItem().toString();
+            String temaSeleccionado = jlistTemas.getSelectedValue();
             
             Long idTema = null;
             for (Entry<Long, String> entry : mapTemas.entrySet()) {
@@ -396,16 +388,17 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
             } else {
                 comboBoxListasOAlbums.setEnabled(false);
             }
-            cargarComboBoxTemas();
+            cargarTemas();
         }
     }//GEN-LAST:event_comboBoxTipoDeOrigenTemaItemStateChanged
 
-    private void cargarComboBoxTemas() {
-        comboBoxTemasModel.removeAllElements();
-            
+    private void cargarTemas() {
+        jlistTemasModel.removeAllElements();
+        
         if (comboBoxListasOAlbums.getSelectedItem() != null) {
 
-            comboBoxTemas.setEnabled(true);
+            jlistTemas.setEnabled(true);
+            
             mapTemas.clear();
             mapDataTemas.clear();
 
@@ -432,19 +425,20 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
 
             for (Entry<Long, DTTemaSimple> entry : mapDataTemas.entrySet()) {
                 mapTemas.put(entry.getKey(), entry.getValue().getDatosTemaToString());
-                comboBoxTemasModel.addElement(entry.getValue().getDatosTemaToString());
+                jlistTemasModel.addElement(entry.getValue().getDatosTemaToString());
+
             }
 
-            comboBoxTemas.setModel(comboBoxTemasModel);
+            jlistTemas.setModel(jlistTemasModel);
 
         } else {
-            comboBoxTemas.setEnabled(false);
+            jlistTemas.setEnabled(false);
         }
     }
     
     private void comboBoxListasOAlbumsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxListasOAlbumsItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-            cargarComboBoxTemas();
+            cargarTemas();
         }
     }//GEN-LAST:event_comboBoxListasOAlbumsItemStateChanged
 
@@ -486,7 +480,6 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> comboBoxClientes;
     private javax.swing.JComboBox<String> comboBoxListasOAlbums;
     private javax.swing.JComboBox<String> comboBoxListasReproduccion;
-    private javax.swing.JComboBox<String> comboBoxTemas;
     private javax.swing.JComboBox<String> comboBoxTipoDeOrigenTema;
     private javax.swing.JComboBox<String> comboBoxTipoLista;
     private javax.swing.JLabel jLabel1;
@@ -496,7 +489,8 @@ public class AgregarTemaALista extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JLabel labelError;
+    private javax.swing.JList<String> jlistTemas;
     // End of variables declaration//GEN-END:variables
 }
