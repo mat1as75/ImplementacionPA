@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -40,6 +41,10 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private DefaultListModel listaGenerosAgregadosModel;
     private List<DTTemaGenerico> dataTemas = new ArrayList<DTTemaGenerico>();
     private Map<String, Path> mapRutasDeTemasAgregados = new HashMap();
+    
+    private File temaSeleccionado;
+    private File temaDestino;
+    private String nombreTemaASubir;
     /**
      * Creates new form AltaAlbum
      */
@@ -112,6 +117,23 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Alta de Álbum");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -185,6 +207,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         });
 
         listaTemasAgregados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaTemasAgregados.setMaximumSize(new java.awt.Dimension(317, 0));
         jScrollPane4.setViewportView(listaTemasAgregados);
 
         jLabel11.setText("Temas añadidos:");
@@ -314,8 +337,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                                     .addComponent(checkboxAccesoURL, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane4))))
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(205, 205, 205))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,8 +470,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 .addGap(11, 11, 11)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3)
-                .addContainerGap())
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -640,16 +663,27 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             if (checkboxAccesoURL.isSelected()) {
                 nuevoDataTema = new DTTemaConURL(nombre,duracionTotalSegundos,intPosicionTema,url);
             } else {
-                nuevoDataTema = new DTTemaConRuta("", nombre, duracionTotalSegundos, intPosicionTema);
+                nuevoDataTema = new DTTemaConRuta(ruta, nombre, duracionTotalSegundos, intPosicionTema);
             }
             dataTemas.add(nuevoDataTema);
+            copiarArchivoTema(); //hago la copia del archivo seleccionado a la carpeta temas
             String datos = nuevoDataTema.toString();
-            listaTemasAgregadosModel.addElement(datos);
+            listaTemasAgregadosModel.addElement(datos); //agrego tema a la lista de temas agregados
             btnRemoverTema.setEnabled(true);
-            labelRutaTema.setText("");
+            resetCamposTema();
         }
     }//GEN-LAST:event_btnAgregarTemaActionPerformed
 
+    private void resetCamposTema() {
+        labelRutaTema.setText("");
+        nombreTema.setText("");
+        duracionTema.setText("");
+        posicionTema.setText("");
+        checkboxAccesoURL.setSelected(false);
+        urlTema.setText("");
+        urlTema.setEnabled(false);
+    }
+    
     private void nombreTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreTemaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nombreTemaActionPerformed
@@ -714,6 +748,25 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnRemoverGeneroDeAlbumActionPerformed
 
+    private void removerArchivoTema(String nombreTema) {
+        
+        Path rutaTema = this.mapRutasDeTemasAgregados.get(nombreTema);
+        Boolean borradoExitosamente = false;
+        try {
+            borradoExitosamente = Files.deleteIfExists(rutaTema);
+        } catch(Exception ex) {
+            if (!borradoExitosamente) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+                
+        this.mapRutasDeTemasAgregados.remove(nombreTema);
+    }
+    
     private void btnRemoverTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverTemaActionPerformed
         int indiceTemaSeleccionado = listaTemasAgregados.getSelectedIndex();
         String datosTemaSeleccionado = listaTemasAgregados.getSelectedValue();
@@ -723,6 +776,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             for (DTTemaGenerico dataTema : this.dataTemas) {
                 if (datosTemaSeleccionado.contains(dataTema.getNombreTema())) {
                     this.dataTemas.remove(dataTema);
+                    removerArchivoTema(dataTema.getNombreTema());
                     break;
                 }
             }
@@ -762,11 +816,29 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                         ex.getMessage(), 
                         "Error", 
                         JOptionPane.ERROR_MESSAGE);
-            };
-        };
+            }
+        }
     }//GEN-LAST:event_btnSeleccionarImagenAlbumActionPerformed
 
+    private void eliminarTemasSubidos() {
+        //remuevo los temas que copie si cancelo y cierro la ventana
+        for (Entry<String, Path> archivo : mapRutasDeTemasAgregados.entrySet()) {
+            File f = archivo.getValue().toFile();
+            if (f.exists() && f.isFile()) {
+                if (!f.delete()) {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "No se pudo borrar el archivo: " + f.getPath(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+    
     private void btnCancelarAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAltaAlbumActionPerformed
+        
+        eliminarTemasSubidos();
         this.dispose();
     }//GEN-LAST:event_btnCancelarAltaAlbumActionPerformed
 
@@ -787,6 +859,33 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             btnSubirTema.setEnabled(true);
         }
     }//GEN-LAST:event_checkboxAccesoURLStateChanged
+    
+    private Boolean albumTieneAlMenosUnGenero() {
+        
+        if (dataGeneros.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                        null, 
+                        "El album debe tener al menos un género.", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private Boolean albumTieneAlMenosUnTema() {
+        if (dataTemas.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                        null, 
+                        "El album debe tener al menos un tema.", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        return true;
+    }
     
     private void btnConfirmarAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAltaAlbumActionPerformed
         String nombre = nombreAlbum.getText().trim();
@@ -838,39 +937,58 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private void btnSubirTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirTemaActionPerformed
         
         String nombre = nombreTema.getText().trim();
+        String album = nombreAlbum.getText().trim();
         
-        if ( validarNombreTemaVacio(nombre) && validarNombreTemaRepetido(nombre)) {
+        if (validarNombreTemaVacio(nombre) && validarNombreTemaRepetido(nombre) && !tieneNombreAlbumVacio(album)) {
             JFileChooser buscarArchivo = new JFileChooser();
             FileNameExtensionFilter extension = new FileNameExtensionFilter("Seleccionar tema", "mp3", "wav");
             buscarArchivo.setFileFilter(extension);
 
             if (buscarArchivo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = buscarArchivo.getSelectedFile();
-                String ruta = selectedFile.getAbsolutePath();
+                File archivoSeleccionado = buscarArchivo.getSelectedFile();
+                String ruta = archivoSeleccionado.getAbsolutePath();
 
                 File destino = new File("./Resource/temas");
                 if (!destino.exists()) {
                     destino.mkdirs();
                 }
-
-                File destinoArchivo = new File(destino, selectedFile.getName());
-
-                try {
-                    Files.copy(selectedFile.toPath(), destinoArchivo.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    this.mapRutasDeTemasAgregados.put(nombre, destinoArchivo.toPath());
-                    labelRutaTema.setText(destinoArchivo.toPath().toString());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            ex.getMessage(), 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
+                
+                String nombreArchivoSeleccionado = archivoSeleccionado.getName();
+                
+                Path potencialRutaDestino = Paths.get(destino.getPath(), nombreArchivoSeleccionado);
+                
+                //si un archivo con el mismo nombre ya existe entonces le doy otro nombre
+                if (Files.exists(potencialRutaDestino)) {
+                    nombreArchivoSeleccionado = nombre + " - " + album + " - "+ nombreArchivoSeleccionado;
                 }
+                
+                //creo un nuevo archivo a partir del archivo seleccionado que sera copiado a la ruta destino
+                File archivoDestino = new File(destino, nombreArchivoSeleccionado);
+                temaSeleccionado = archivoSeleccionado;
+                temaDestino = archivoDestino;
+                nombreTemaASubir = nombre;
+                labelRutaTema.setText(archivoDestino.toPath().toString());
             }
         }
     }//GEN-LAST:event_btnSubirTemaActionPerformed
 
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        eliminarTemasSubidos();
+    }//GEN-LAST:event_formInternalFrameClosing
 
+    private void copiarArchivoTema() {
+        try {
+            Files.copy(temaSeleccionado.toPath(), temaDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            mapRutasDeTemasAgregados.put(nombreTemaASubir, temaDestino.toPath());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(
+                    null, 
+                    ex.getMessage(), 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JYearChooser anioAlbum;
     private javax.swing.JButton btnAgregarGeneroAAlbum;
