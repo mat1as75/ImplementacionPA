@@ -773,9 +773,9 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         
         if (indiceTemaSeleccionado != -1) {
             listaTemasAgregadosModel.remove(indiceTemaSeleccionado);
-            for (DTTemaGenerico dataTema : this.dataTemas) {
+            for (DTTemaGenerico dataTema : dataTemas) {
                 if (datosTemaSeleccionado.contains(dataTema.getNombreTema())) {
-                    this.dataTemas.remove(dataTema);
+                    dataTemas.remove(dataTema);
                     removerArchivoTema(dataTema.getNombreTema());
                     break;
                 }
@@ -896,10 +896,12 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         if (validarPosicionesDeTemas() 
                 && !tieneNombreAlbumVacio(nombre) 
                 && !nombreArt.isBlank() 
-                && !nombreArt.isEmpty()) {
+                && !nombreArt.isEmpty()
+                && albumTieneAlMenosUnGenero()
+                && albumTieneAlMenosUnTema()) {
             DTAlbum_SinDTArtista dataAlbum = new DTAlbum_SinDTArtista(
                 nombre, anioAlb, fotoAlb, 
-                this.dataTemas, this.dataGeneros, nombreArt
+                dataTemas, dataGeneros, nombreArt
             );
             
             try {
