@@ -1,5 +1,6 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTTemaSimple;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -87,5 +88,25 @@ public abstract class Tema implements Serializable {
     
     public void setMisReproducciones(ListaReproduccion lr) {
         this.misReproducciones.add(lr);
+    }
+    
+    public DTTemaSimple getDTTemaSimple() {
+        
+        String nombreArtista = "";
+        String nombreAlbum = "";
+        
+        if (this.getMiAlbum() != null && this.getMiAlbum().getMiArtista() != null) {
+            nombreArtista = this.getMiAlbum().getMiArtista().getNombreCompletoToString();
+            nombreAlbum = this.getMiAlbum().getNombreAlbum();
+        }
+        
+        return new DTTemaSimple(
+                this.getIdTema(),
+                this.getNombreTema(),
+                this.getDuracionSegundos(),
+                this.getPosicionEnAlbum(),
+                nombreAlbum,
+                nombreArtista
+        );
     }
 }
