@@ -241,6 +241,16 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception {
+        try {
+            this.contpersis.quitarTemaDeLista(idTema, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    
+    @Override
     public ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception {
         try {
             return this.contpersis.getNombresListasParticularesDeCliente(nicknameCliente);
