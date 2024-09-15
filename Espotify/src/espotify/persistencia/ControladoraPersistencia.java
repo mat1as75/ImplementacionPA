@@ -723,7 +723,7 @@ public class ControladoraPersistencia {
         que contienen ListasPrivadas */
         return nicknamesClientesLPrivadas;
     }
-    
+
     public void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception {
         
         Tema tema = this.temaJpa.findTema(idTema);
@@ -759,6 +759,19 @@ public class ControladoraPersistencia {
         }
     }
 
+    public boolean existeRelacion(String Seguidor, String Seguido) {
+        Cliente c = cliJpa.findCliente(Seguidor);
+        boolean retorno=false;
+        // Nicknames de Seguidos del Cliente
+        List<Usuario> listaSeguidos = c.getMisSeguidos();
+        for (Usuario lSeg: listaSeguidos) {
+            if (lSeg.getNickname().equals(Seguido)){    
+//if (lSeg.getClass().equals(Cliente.class)){
+                retorno=true;
+            }
+        }
+        return retorno;
+     }
 }
 
 

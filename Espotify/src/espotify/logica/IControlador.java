@@ -56,4 +56,6 @@ public interface IControlador {
     public abstract void agregarTemaALista(Long idTema, String nombreLista) throws Exception;
     public abstract void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception;
     public abstract ArrayList<String> getNicknamesClientesListasPrivadas();
+
+    public abstract boolean existeRelacion(String Seguidor, String Seguido);
 }

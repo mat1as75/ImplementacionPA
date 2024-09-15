@@ -24,13 +24,13 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
         IControlador i=f.getControlador();
         List<String> nicknamesArtistas = i.getNicknamesArtistas();
         List<String> nicknamesClientes = i.getNicknamesClientes();
-        for(String c:nicknamesClientes){
+        for (String c : nicknamesClientes) {
             jComboBoxSeguidor.addItem(c);
         }
-        for(String c:nicknamesClientes){
-           jComboBoxSeguido.addItem(c);
+        for (String c : nicknamesClientes) {
+            jComboBoxSeguido.addItem(c);
         }
-        for(String a:nicknamesArtistas){
+        for (String a : nicknamesArtistas) {
             jComboBoxSeguido.addItem(a);
         }
     }
@@ -125,39 +125,47 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-      String Seguidor= (String)jComboBoxSeguidor.getSelectedItem();
-      String Seguido= (String)jComboBoxSeguido.getSelectedItem();
-      Fabrica f=Fabrica.getInstance();
-      this.controlador=f.getControlador();
-      
-      // Verificar que un Usuario no se siga a sí mismo
-      if (!(Seguidor.equals(Seguido))) {
-          
-          try{
-            this.controlador.setSeguidorSeguido(Seguidor,Seguido);
+        String Seguidor = (String) jComboBoxSeguidor.getSelectedItem();
+        String Seguido = (String) jComboBoxSeguido.getSelectedItem();
+        Fabrica f = Fabrica.getInstance();
+        controlador = f.getControlador();
+        
+        if (Seguidor.equals(Seguido)) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Un usuario no puede seguirse a sí mismo.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        boolean existeRelacion = controlador.existeRelacion(Seguidor, Seguido);
+        if ((existeRelacion)&&(!Seguidor.equals(Seguido))) {
             JOptionPane.showMessageDialog(
                     null,
-                    "Usuario seguido exitosamente.", 
-                    "Operacion exitosa", 
+                    "Usuario " + Seguidor + " ya sigue a " + Seguido,
+                    "Operacion exitosa",
                     JOptionPane.INFORMATION_MESSAGE);
-        } catch(HeadlessException ex) {
-            JOptionPane.showMessageDialog(
-            null,
-            ex.getMessage(), 
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
+
         }
-      } else {
-          
-          JOptionPane.showMessageDialog(
-                  this, 
-                  "Un usuario no puede seguirse a sí mismo.", 
-                  "Error", 
-                  JOptionPane.ERROR_MESSAGE);
-      }
-        
-        
-      
+        // Verificar que un Usuario no se siga a sí mismo
+        if ((!Seguidor.equals(Seguido)) && (!existeRelacion)) {
+
+            try {
+                this.controlador.setSeguidorSeguido(Seguidor, Seguido);
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Usuario seguido exitosamente.",
+                        "Operacion exitosa",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (HeadlessException ex) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
 
