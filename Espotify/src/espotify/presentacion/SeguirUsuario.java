@@ -143,8 +143,8 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(
                     null,
                     "Usuario " + Seguidor + " ya sigue a " + Seguido,
-                    "Operacion exitosa",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
 
         }
         // Verificar que un Usuario no se siga a sí mismo

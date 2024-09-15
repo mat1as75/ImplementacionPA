@@ -1,7 +1,7 @@
 package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
-import espotify.logica.ListaReproduccion_;
+import espotify.logica.ListaReproduccion;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.List;
