@@ -345,15 +345,16 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             if ("Por defecto".equals(opcion)) {
             i.CrearListaPorDefecto(nombreLista, imgLista, generoSeleccionado);
             JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            jButtonCrear.setVisible(false);
         } else if ("Particular".equals(opcion)) {
                 boolean soyPrivada = true; // 
                 i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado, soyPrivada);
                 JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                jButtonCrear.setVisible(false);
           }
         } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-          }   
-        jTextFieldNombre.setText("");
+          }               
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
 
