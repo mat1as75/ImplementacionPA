@@ -14,6 +14,11 @@ public class Cliente extends Usuario{
     
     // Referencias
     @OneToMany /* Hace referencia a una relacion Unidireccional de 1 a N ( 1 -> N ) */
+    @JoinTable(
+            name = "CLIENTE_USUARIO",
+            joinColumns = @JoinColumn(name = "nickname_Cliente"),
+            inverseJoinColumns = @JoinColumn(name = "nickname_Seguido")
+    )
     private List<Usuario> misSeguidos;
     
     @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
@@ -103,6 +108,14 @@ public class Cliente extends Usuario{
            }
        
        }
+    }
+
+    public void add(Cliente cliente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void remove(Cliente cliente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

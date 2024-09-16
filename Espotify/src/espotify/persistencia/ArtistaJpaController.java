@@ -43,7 +43,7 @@ public class ArtistaJpaController implements Serializable {
             artista.setMisAlbumesPublicados(new ArrayList<Album>());
         }
         if (artista.getMisSeguidores() == null) {
-            artista.setListaMisSeguidores(new ArrayList<Usuario>());
+            artista.setMisSeguidoresCompletos(new ArrayList<Usuario>());
         }
         EntityManager em = null;
         try {
@@ -60,7 +60,7 @@ public class ArtistaJpaController implements Serializable {
                 misSeguidoresUsuarioToAttach = em.getReference(misSeguidoresUsuarioToAttach.getClass(), misSeguidoresUsuarioToAttach.getNickname());
                 attachedMisSeguidores.add(misSeguidoresUsuarioToAttach);
             }
-            artista.setListaMisSeguidores(attachedMisSeguidores);
+            artista.setMisSeguidoresCompletos(attachedMisSeguidores);
             em.persist(artista);
             for (Album misAlbumesPublicadosAlbum : artista.getMisAlbumesPublicados()) {
                 espotify.logica.Artista oldMiArtistaOfMisAlbumesPublicadosAlbum = (espotify.logica.Artista) misAlbumesPublicadosAlbum.getMiArtista();
@@ -111,7 +111,7 @@ public class ArtistaJpaController implements Serializable {
                 attachedMisSeguidoresNew.add(misSeguidoresNewUsuarioToAttach);
             }
             misSeguidoresNew = attachedMisSeguidoresNew;
-            artista.setListaMisSeguidores(misSeguidoresNew);
+            artista.setMisSeguidoresCompletos(misSeguidoresNew);
             artista = em.merge(artista);
             for (Album misAlbumesPublicadosOldAlbum : misAlbumesPublicadosOld) {
                 if (!misAlbumesPublicadosNew.contains(misAlbumesPublicadosOldAlbum)) {
