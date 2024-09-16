@@ -1,6 +1,7 @@
 package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import espotify.logica.ListaReproduccion_;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +160,8 @@ public class PublicarLista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Seleccione un Cliente.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
+        ActualizoListaListasPrivadas(nombreLista);
+        ActualizoListaClientes(nicknameCliente);
         
     }//GEN-LAST:event_jButtonEnviarActionPerformed
 
@@ -178,6 +181,35 @@ public class PublicarLista extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jListClientesValueChanged
 
+    private void ActualizoListaClientes(String nicknameSeleccionado) {
+        
+        // Cantidad de ListasPrivadas del Clientes es vacía
+        if (jListListasPrivadas.getModel().getSize() == 0) {
+            DefaultListModel<String> nicknamesClientesJList = new DefaultListModel<>();
+
+            // Recorro los elementos del jListClientes
+            for (int i = 0; i < jListClientes.getModel().getSize(); i++) {
+                // Si NicknameActual != nicknameSeleccionado
+                if (!(jListClientes.getModel().getElementAt(i).equals(nicknameSeleccionado))) {
+                    nicknamesClientesJList.addElement(jListClientes.getModel().getElementAt(i));
+                }
+            }
+            jListClientes.setModel(nicknamesClientesJList);
+        }
+    }
+    
+    private void ActualizoListaListasPrivadas(String nombreLista) {
+        DefaultListModel<String> nombresListasJList = new DefaultListModel<>();
+
+        // Recorro los elementos del jListListasPrivadas
+        for (int i = 0; i < jListListasPrivadas.getModel().getSize(); i++) {
+            // Si NombreListaActual != nombreLista
+            if (!(jListListasPrivadas.getModel().getElementAt(i).equals(nombreLista))) {
+                nombresListasJList.addElement(jListListasPrivadas.getModel().getElementAt(i));
+            }
+        }
+        jListListasPrivadas.setModel(nombresListasJList);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEnviar;
