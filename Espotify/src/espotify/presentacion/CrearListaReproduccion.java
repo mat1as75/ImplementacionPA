@@ -327,7 +327,6 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
           jTextFieldNombre.setText("");
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imageLabel;
     private javax.swing.JButton jButtonCrear;

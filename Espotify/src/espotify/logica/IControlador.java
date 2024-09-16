@@ -42,7 +42,6 @@ public interface IControlador {
     public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero);
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
     public abstract DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
-    public abstract List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen);
     
     
    
@@ -60,6 +59,7 @@ public interface IControlador {
     public abstract ArrayList<String> getNombresListasParticulares();
     public abstract ArrayList<String> getNombresListasParticularesPublicas();
     public abstract ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception;
+    public abstract List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen);
     public abstract Map<Long, String> getAlbumesDisponibles();
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();

@@ -466,7 +466,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             if (nodoSeleccionado != null) {
                 String gen = nodoSeleccionado.toString();
                 // Obtener nombres de las listas por defecto para el genero seleccionado 
-                List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Genero", gen);
+                List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Por Defecto", gen);
                 if (nombresListas.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el género seleccionado", "--", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -482,7 +482,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             // Obtener el cliente del jList
             String cl = jListC.getSelectedValue();
             if (cl != null) {
-                List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", cl);
+                List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Particular", cl);
                 if (nombresListas.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el cliente seleccionado", "--", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -513,7 +513,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             String op = jComboBoxConsultarPor.getSelectedItem().toString();
             if (op.equals("Género")) {
                 // Obtener datos de la lista asociada al genero
-                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Genero", nombreLista);
+                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Por Defecto", nombreLista);
                 if (datosLista != null) {
                     // Mostrar datos de la lista 
                     jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
@@ -526,7 +526,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                 }
             } else if (op.equals("Cliente")) {
                 // Obtener datos de la lista asociada al cliente
-                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Cliente", nombreLista);
+                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Particular", nombreLista);
                 if (datosLista != null) {
                     // Mostrar datos de la lista 
                     jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());

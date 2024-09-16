@@ -359,6 +359,7 @@ public class ControladoraPersistencia {
     }
     
     public void dejarDeSeguir(String C, String U) {
+        
         try {
             Cliente c = this.cliJpa.findCliente(C);         
             Usuario u = this.usuJpa.findUsuario(U);
@@ -385,60 +386,65 @@ public class ControladoraPersistencia {
     }
     
     public boolean clienteSigueAUsuario(String C, String U) {
-    try {
+        
         Cliente c = this.cliJpa.findCliente(C);
-        Usuario u = this.usuJpa.findUsuario(U);
 
-        // Verificar si el cliente sigue al usuario
-        return c.getMisSeguidos().contains(u);
-    } catch (Exception ex) {
-        Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
-        throw new RuntimeException("Error al verificar si el cliente sigue al usuario: " + ex.getMessage(), ex);
-      }
+        // Obtener lista de seguidos del cliente
+        List<Usuario> listaSeguidos = c.getMisSeguidos();
+
+        // Recorrer la lista y comprobar si lo sigue
+        for (Usuario lSeg : listaSeguidos) {
+            if (lSeg.getNickname().equalsIgnoreCase(U)) {
+                return true; // Si lo sigue retorna true
+            }
+        }
+        return false;  // Caso contrario retorna false
     }
+
    
     public void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero) {
-    // Buscar el genero por su nombre
-    Genero genero = this.genJpa.findGenero(nombreGenero);
+    
+        // Buscar genero por su nombre
+        Genero gen = this.genJpa.findGenero(nombreGenero);
 
-    // Crear la nueva lista por defecto
-    ListaPorDefecto nuevaLista = new ListaPorDefecto(nombreLista, fotoLista, genero);
-    try {
-        lxdefcJpa.create(nuevaLista);
-        genero.getMisListasReproduccion().add(nuevaLista);
-        genJpa.edit(genero);
-    } catch (Exception ex) {
-        Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista por defecto", ex);
-        throw new RuntimeException("Error al crear la lista por defecto: " + ex.getMessage());
-    }
+        // Crear la nueva lista por defecto
+        ListaPorDefecto nuevaLista = new ListaPorDefecto(nombreLista, fotoLista, gen);
+        try {
+            lxdefcJpa.create(nuevaLista);
+            gen.getMisListasReproduccion().add(nuevaLista);
+            genJpa.edit(gen);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista por defecto", ex);
+            throw new RuntimeException("Error al crear la lista por defecto: " + ex.getMessage());
+        }
     }
 
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
-    // Buscar al cliente por su nickname
-    Cliente cli = this.cliJpa.findCliente(nicknameCliente);
+    
+        // Buscar cliente por su nickname
+        Cliente cli = this.cliJpa.findCliente(nicknameCliente);
 
-    // Crear la nueva lista particular
-    ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, esPrivada);
-      try {
-        lpartJpa.create(lista);
-        cli.getMisListasReproduccionCreadas().add(lista);
-        cliJpa.edit(cli);
-      } catch (Exception ex) {
-        Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista particular", ex);
-        throw new RuntimeException("Error al crear la lista particular: " + ex.getMessage());
+        // Crear la nueva lista particular
+        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, esPrivada);
+        try {
+            lpartJpa.create(lista);
+            cli.getMisListasReproduccionCreadas().add(lista);
+            cliJpa.edit(cli);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista particular", ex);
+            throw new RuntimeException("Error al crear la lista particular: " + ex.getMessage());
         }
     }
     
     public List<String> getNombresListasPorTipo(String tipoDeLista, String nickOgen) {
+        
         List<String> nombresListas = new ArrayList<>();
-    
         if (tipoDeLista == null || nickOgen == null) {
             // Manejar el caso en que el tipoDeLista o nickOgen sean nulos
-            throw new IllegalArgumentException("Tipo de lista y nombre de género/cliente no pueden ser nulos.");
+            throw new IllegalArgumentException("Tipo de lista o nombre de género/cliente nulos");
         }
     
-        if (tipoDeLista.equals("Genero")) {
-            // Obtener todas las listas por defecto
+        if (tipoDeLista.equalsIgnoreCase("Por Defecto")) {
             List<ListaPorDefecto> listasPorDefecto = lxdefcJpa.findListaPorDefectoEntities();
             if (listasPorDefecto != null) {
                 for (ListaPorDefecto lista : listasPorDefecto) {
@@ -449,8 +455,7 @@ public class ControladoraPersistencia {
                     }
                 }   
             }
-        } else if (tipoDeLista.equals("Cliente")) {
-            // Obtener todas las listas particulares
+        } else if (tipoDeLista.equalsIgnoreCase("Particular")) {
             List<ListaParticular> listasParticulares = lpartJpa.findListaParticularEntities();
             if (listasParticulares != null) {
                 for (ListaParticular lista : listasParticulares) {
@@ -462,85 +467,80 @@ public class ControladoraPersistencia {
                 }
             }
         }
-
         return nombresListas;
-        }
+    }
   
     public DTDatosListaReproduccion getDatosListaReproduccion(String tipoDeLista, String nombreLista){
         
         DTDatosListaReproduccion datosLista = null;
 
-        if (tipoDeLista.equals("Genero")) {
-        ListaPorDefecto listaPorDefecto = lxdefcJpa.findListaPorDefecto(nombreLista);
+        if (tipoDeLista.equalsIgnoreCase("Por Defecto")) {
+            ListaPorDefecto listaPorDefecto = lxdefcJpa.findListaPorDefecto(nombreLista);
 
-        if (listaPorDefecto != null) {
-            // Obtener los datos de la lista
-            String nombreListaReproduccion = listaPorDefecto.getNombreLista();
-            String fotoLista = listaPorDefecto.getFotoLista();
-            String nombreGenero = listaPorDefecto.getGenero().getNombreGenero();
+            if (listaPorDefecto != null) {
+                // Obtener datos de la lista
+                String nombreListaReproduccion = listaPorDefecto.getNombreLista();
+                String fotoLista = listaPorDefecto.getFotoLista();
+                String nombreGenero = listaPorDefecto.getGenero().getNombreGenero();
 
-            // Convertir los temas a DTTemaSimple
-            List<DTTemaSimple> temas = new ArrayList<>();
-            for (Tema tema : listaPorDefecto.getMisTemas()) {
-                temas.add(new DTTemaSimple(
-                        tema.getIdTema(),
-                        tema.getNombreTema(),
-                        tema.getDuracionSegundos(),
-                        tema.getPosicionEnAlbum(),
-                        tema.getMiAlbum().getNombreAlbum(),
-                        tema.getMiAlbum().getMiArtista().getNombreCompletoToString()
-                ));
+                // Convertir los temas a DTTemaSimple
+                List<DTTemaSimple> temas = new ArrayList<>();
+                for (Tema tema : listaPorDefecto.getMisTemas()) {
+                    temas.add(new DTTemaSimple(
+                            tema.getIdTema(),
+                            tema.getNombreTema(),
+                            tema.getDuracionSegundos(),
+                            tema.getPosicionEnAlbum(),
+                            tema.getMiAlbum().getNombreAlbum(),
+                            tema.getMiAlbum().getMiArtista().getNombreCompletoToString()
+                    ));
+                }
+                // Crear el DTO para la lista por defecto
+                datosLista = new DTDatosListaReproduccion(
+                        nombreListaReproduccion,
+                        fotoLista,
+                        tipoDeLista,
+                        temas,
+                        nombreGenero
+                );
             }
+        } else if (tipoDeLista.equalsIgnoreCase("Particular")) {
+            ListaParticular listaParticular = lpartJpa.findListaParticular(nombreLista);
 
-            // Crear el DTO para la lista por defecto
-            datosLista = new DTDatosListaReproduccion(
-                    nombreListaReproduccion,
-                    fotoLista,
-                    tipoDeLista,
-                    temas,
-                    nombreGenero
-            );
-        }
-    } else if (tipoDeLista.equals("Cliente")) {
-        ListaParticular listaParticular = lpartJpa.findListaParticular(nombreLista);
-        
-        if (listaParticular != null) {
-            // Obtener los datos de la lista
-            String nombreListaReproduccion = listaParticular.getNombreLista();
-            String fotoLista = listaParticular.getFotoLista();
-            String nicknameCliente = listaParticular.getCliente().getNickname();
-            Boolean privacidad = listaParticular.soyPrivada();        
-                    
-            // Convertir los temas a DTTemaSimple
-            List<DTTemaSimple> temas = new ArrayList<>();
-            for (Tema tema : listaParticular.getMisTemas()) {
-                
-                temas.add(new DTTemaSimple(
-                        tema.getIdTema(),
-                        tema.getNombreTema(),
-                        tema.getDuracionSegundos(),
-                        tema.getPosicionEnAlbum(),
-                        tema.getMiAlbum().getNombreAlbum(),
-                        tema.getMiAlbum().getMiArtista().getNombreCompletoToString()
-                ));
+            if (listaParticular != null) {
+                // Obtener datos de la lista
+                String nombreListaReproduccion = listaParticular.getNombreLista();
+                String fotoLista = listaParticular.getFotoLista();
+                String nicknameCliente = listaParticular.getCliente().getNickname();
+                Boolean privacidad = listaParticular.soyPrivada();
+
+                // Convertir los temas a DTTemaSimple
+                List<DTTemaSimple> temas = new ArrayList<>();
+                for (Tema tema : listaParticular.getMisTemas()) {
+
+                    temas.add(new DTTemaSimple(
+                            tema.getIdTema(),
+                            tema.getNombreTema(),
+                            tema.getDuracionSegundos(),
+                            tema.getPosicionEnAlbum(),
+                            tema.getMiAlbum().getNombreAlbum(),
+                            tema.getMiAlbum().getMiArtista().getNombreCompletoToString()
+                    ));
+                }
+
+                // Crear el DTO para la lista particular
+                datosLista = new DTDatosListaReproduccion(
+                        nombreListaReproduccion,
+                        fotoLista,
+                        tipoDeLista,
+                        temas,
+                        nicknameCliente,
+                        privacidad
+                );
             }
-
-            // Crear el DTO para la lista particular
-            datosLista = new DTDatosListaReproduccion(
-                    nombreListaReproduccion,
-                    fotoLista,
-                    tipoDeLista,
-                    temas,
-                    nicknameCliente,
-                    privacidad
-            );
         }
+        return datosLista;  
     }
-
-    return datosLista;
-       
-    }  
-    
     
     public List<DTGenero> getGenerosjTree() {
     

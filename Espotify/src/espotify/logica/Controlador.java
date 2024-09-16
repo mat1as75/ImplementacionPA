@@ -1,10 +1,5 @@
 package espotify.logica;
 
-
-import espotify.DataTypes.DTCliente;
-import espotify.DataTypes.DTDatosArtista;
-import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTListaReproduccion;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_Simple;
@@ -14,14 +9,10 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaSimple;
-import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Controlador implements IControlador{
     ControladoraPersistencia contpersis = new ControladoraPersistencia();
