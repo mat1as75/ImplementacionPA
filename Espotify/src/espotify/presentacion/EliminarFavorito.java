@@ -235,38 +235,29 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_nicknameActionPerformed
 
     private void deleteTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteTemaActionPerformed
-        // TODO add your handling code here:
-        //este boton confirmaria eliminar tema de favoritos
         String tema = listaTemas.getSelectedValue();
         Long idtemaSeleccionado = null;
         for (Entry<Long, String> entry : this.temasFavoritosDelCliente.entrySet()){
             if(entry.getValue().equals(tema)){
-                
                 idtemaSeleccionado = entry.getKey();
-                
                 break;
             }
         }
         //Verifica si se selecciono Tema
         if(tema !=null && idtemaSeleccionado != null){
             try{
-                System.out.println("ACA");
                 this.controlador.EliminarTemaFavorito(nickIngresado, idtemaSeleccionado);
+                actualizarJListTemas();
                 JOptionPane.showMessageDialog(null, "Tema eliminado de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
             }catch(Exception ex){
-                System.out.println("ACA2");
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);  
             }
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione un Tema.", "Error", JOptionPane.ERROR_MESSAGE);
         }   
-           
     }//GEN-LAST:event_deleteTemaActionPerformed
 
     private void deleteAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAlbumActionPerformed
-        // TODO add your handling code here:
-        //este boton confirma eliminar album de favorito
-        
         String album = listaAlbumes.getSelectedValue();
         Long idalbumSeleccionado = null;
         
@@ -280,6 +271,7 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
         if(album !=null && idalbumSeleccionado != null){
             try{
                 this.controlador.EliminarAlbumFavorito(nickIngresado, idalbumSeleccionado);
+                actualizarJListAlbumes();
                 JOptionPane.showMessageDialog(null, "Album eliminado de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
             }catch(Exception ex){
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);  
@@ -287,34 +279,23 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione un Album.", "Error", JOptionPane.ERROR_MESSAGE);
         }   
-          
-        
-        
     }//GEN-LAST:event_deleteAlbumActionPerformed
 
     private void deleteListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteListaActionPerformed
-        // TODO add your handling code here:
-        //este boton confirma eliminar list de favoritos
         String lista = listaLReproduccion.getSelectedValue();
         
-       
         //Verifica si se selecciono Lista
-        if(lista !=null ){
+        if(lista != null){
             try{
                 this.controlador.EliminarListaFavorito(nickIngresado, lista);
+                actualizarJListListasReproduccion();
                 JOptionPane.showMessageDialog(null, "Lista de reproduccion eliminada de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
             }catch(Exception ex){
-               // try {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                   // throw ex;
-               // } catch (Exception ex1) {
-                 //   Logger.getLogger(EliminarFavorito.class.getName()).log(Level.SEVERE, null, ex1);
-                //}
             }
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione una Lista.", "Error", JOptionPane.ERROR_MESSAGE);
         }   
-          
     }//GEN-LAST:event_deleteListaActionPerformed
 
     private void botonNickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNickActionPerformed
@@ -373,6 +354,45 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
         listaAlbumes.setModel(modelo);
         listaTemas.setModel(modelo);
         listaLReproduccion.setModel(modelo);
+    }
+    private void actualizarJListTemas() {
+        String temaSeleccionado = listaTemas.getSelectedValue();
+        DefaultListModel modelActualizado = new DefaultListModel<>();
+        
+        // Recorro los elementos de ListaTemas
+        for (int i = 0; i < listaTemas.getModel().getSize(); i++) {
+            // Si NombreTemaActual != temaSeleccionado
+            if (!(listaTemas.getModel().getElementAt(i).equals(temaSeleccionado))) {
+                modelActualizado.addElement(listaTemas.getModel().getElementAt(i));
+            }
+        }
+        listaTemas.setModel(modelActualizado);
+    }
+    private void actualizarJListListasReproduccion() {
+        String listaRSeleccionada = listaLReproduccion.getSelectedValue();
+        DefaultListModel modelActualizado = new DefaultListModel<>();
+        
+        // Recorro los elementos de ListaListasReproduccion
+        for (int i = 0; i < listaLReproduccion.getModel().getSize(); i++) {
+            // Si NombreListaRActual != listaRSeleccionado
+            if (!(listaLReproduccion.getModel().getElementAt(i).equals(listaRSeleccionada))) {
+                modelActualizado.addElement(listaLReproduccion.getModel().getElementAt(i));
+            }
+        }
+        listaLReproduccion.setModel(modelActualizado);
+    }
+    private void actualizarJListAlbumes() {
+        String albumSeleccionado = listaAlbumes.getSelectedValue();
+        DefaultListModel modelActualizado = new DefaultListModel<>();
+        
+        // Recorro los elementos de ListaAlbumes
+        for (int i = 0; i < listaAlbumes.getModel().getSize(); i++) {
+            // Si NombreAlbumActual != albumSeleccionado
+            if (!(listaAlbumes.getModel().getElementAt(i).equals(albumSeleccionado))) {
+                modelActualizado.addElement(listaAlbumes.getModel().getElementAt(i));
+            }
+        }
+        listaAlbumes.setModel(modelActualizado);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
