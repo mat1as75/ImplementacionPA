@@ -294,37 +294,49 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
 
     private void jButtonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearActionPerformed
         
-        String nombreLista = jTextFieldNombre.getText();
-        String nicknameClienteSeleccionado = jListC.getSelectedValue();
-        String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
-        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
-        String generoSeleccionado = nodoSeleccionado != null ? nodoSeleccionado.getUserObject().toString() : null;
-        
         Fabrica fb = Fabrica.getInstance();
         IControlador i = fb.getControlador();
-        
-        if (nombreLista.isEmpty()){
-            JOptionPane.showMessageDialog(null, "El nombre de la lista está vacio", "Error", JOptionPane.ERROR_MESSAGE);
+
+        String op = (String) jComboBoxTipodeLista.getSelectedItem();
+        String nombreLista = jTextFieldNombre.getText();
+
+        // Comprobar si el nombre de la lista está vacio
+        if (nombreLista.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Seleccione un nombre para la lista", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
+        // Comprobar si el nombre de la lista ya existe
+        if (i.existeNombreLista(nombreLista)) {
+            JOptionPane.showMessageDialog(null, "El nombre de la lista ya existe", "--", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         try {
-            if ("Por defecto".equals(opcion) && !i.existeNombreLista(nombreLista)) {
-                i.CrearListaPorDefecto(nombreLista, imgLista, generoSeleccionado);
-                JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            }else if ("Particular".equals(opcion) && !i.existeNombreLista(nombreLista)) {
-                    boolean soyPrivada = true; // 
-                    i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado, soyPrivada);
-                    JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            } else{
-                JOptionPane.showMessageDialog(null, "El nombre de la lista ya existe", "--", JOptionPane.INFORMATION_MESSAGE);
-            }    
+            if ("Por defecto".equalsIgnoreCase(op)) {
+                DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
+                if (nodoSeleccionado == null) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un género de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String gen = nodoSeleccionado.toString();
+                i.CrearListaPorDefecto(nombreLista, imgLista, gen);
+            } else if ("Particular".equalsIgnoreCase(op)) {
+                String nickcliente = jListC.getSelectedValue();
+                
+                if (nickcliente == null || nickcliente.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un cliente", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                boolean soyPrivada = true; // Crear privada
+                i.CrearListaParticular(nombreLista, imgLista, nickcliente, soyPrivada);
+            }
+            JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-          }
-        
-          //Limpio el campo del nombre
-          jTextFieldNombre.setText("");
+        }
+        // Limpiar el campo del nombre al crear
+        jTextFieldNombre.setText("");
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
