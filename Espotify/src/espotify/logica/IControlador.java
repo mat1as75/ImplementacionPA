@@ -48,6 +48,10 @@ public interface IControlador {
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
     public abstract void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception;
+    public abstract void EliminarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
+    public abstract void EliminarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
+    public abstract void EliminarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception;
+
 
     public abstract ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente);
 
@@ -56,6 +60,14 @@ public interface IControlador {
     public abstract void agregarTemaALista(Long idTema, String nombreLista) throws Exception;
     public abstract void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception;
     public abstract ArrayList<String> getNicknamesClientesListasPrivadas();
+<<<<<<< Updated upstream
 
     public abstract boolean existeRelacion(String Seguidor, String Seguido);
+=======
+    
+    public abstract DTAlbum ConsultaAlbum(int clas, String buscador, Long idAlbum);
+    public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);
+    public abstract Map<Long, String> getAlbumsFavCliente(String nicknameCliente);
+    public abstract List<String> getListasFavCliente(String nicknameCliente);
+>>>>>>> Stashed changes
 }

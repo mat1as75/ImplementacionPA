@@ -210,6 +210,32 @@ public class Controlador implements IControlador{
             throw ex;
         }
     }
+    @Override
+    public void EliminarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
+        try {
+            this.contpersis.EliminarTemaFavorito(nicknameCliente, idTema);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public void EliminarListaFavorito(String nicknameCliente, String nombreLista) throws Exception {
+        try {
+            this.contpersis.EliminarListaFavorito(nicknameCliente, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public void EliminarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        try {
+            this.contpersis.EliminarAlbumFavorito(nicknameCliente, idAlbum);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
     @Override
     public ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente){
@@ -258,6 +284,7 @@ public class Controlador implements IControlador{
     public ArrayList<String> getNicknamesClientesListasPrivadas() {
         return this.contpersis.getNicknamesClientesListasPrivadas();
     }
+<<<<<<< Updated upstream
 
 
 
@@ -266,3 +293,26 @@ public class Controlador implements IControlador{
     }
 }
 
+=======
+    
+    @Override
+    public DTAlbum ConsultaAlbum(int clas, String buscador, Long idAlbum){
+        return this.contpersis.ConsultaAlbum(clas,buscador,idAlbum);
+    }
+    
+    @Override
+    public Map<Long, String>  getTemasFavCliente(String nicknameCliente){
+        return this.contpersis.getTemasFavCliente(nicknameCliente);
+    }
+    
+     @Override
+    public Map<Long, String> getAlbumsFavCliente(String nicknameCliente){
+        return this.contpersis.getAlbumsFavCliente(nicknameCliente);
+    }
+    
+     @Override
+    public List<String> getListasFavCliente(String nicknameCliente){
+        return this.contpersis.getListasFavCliente(nicknameCliente);
+    }
+}
+>>>>>>> Stashed changes

@@ -732,8 +732,10 @@ public class ControladoraPersistencia {
         for (Tema t : temasFavoritosDelCliente) {
             if (t.getIdTema().equals(idTema)) {
                 temasFavoritosDelCliente.remove(t);
+                c.setMisTemasFavLista(temasFavoritosDelCliente);
             }
         }
+        
         try {
             cliJpa.edit(c);
         } catch (Exception ex) {
@@ -775,6 +777,7 @@ public class ControladoraPersistencia {
         
         
     }
+<<<<<<< Updated upstream
 
 
     public void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception {
@@ -832,3 +835,51 @@ public class ControladoraPersistencia {
 
      
  
+=======
+    
+    public DTAlbum ConsultaAlbum(int clasif, String buscador, Long idAlbum){
+        DTAlbum dta = new DTAlbum();
+        if(clasif ==1){//busco por genero
+            Genero genero = this.genJpa.findGenero(buscador);
+            List<Album> albums = genero.getMisAlbumes();
+            for (Album a : albums) {
+                if (a.getIdAlbum().equals(idAlbum)) {
+                    dta = a.getDataAlbum();
+
+                }
+            }
+        }else{ //busco por artista
+            Artista artista = this.artJpa.findArtista(buscador);
+            List<Album> albums = artista.getMisAlbumesPublicados();
+            for (Album a : albums) {
+                if (a.getIdAlbum().equals(idAlbum)) {
+                   dta = a.getDataAlbum();
+                }
+            }       
+        }
+        return dta;    
+    }
+    
+    public Map<Long, String>  getTemasFavCliente(String nicknameCliente){
+        Cliente c = this.cliJpa.findCliente(nicknameCliente);
+        Map<Long, String>  temasFavCliente;
+        temasFavCliente = c.getTemasFavMap();
+        return temasFavCliente;
+    }
+    
+    public List<String> getListasFavCliente(String nicknameCliente){
+        Cliente c = this.cliJpa.findCliente(nicknameCliente);
+        List<String> listasFavCliente;
+        listasFavCliente = c.getListasFavString();
+        return listasFavCliente;
+    }
+    
+    public Map<Long, String> getAlbumsFavCliente(String nicknameCliente){
+        Cliente c = this.cliJpa.findCliente(nicknameCliente);
+        Map<Long, String> albumsFavCliente;
+        albumsFavCliente = c.getAlbumsFavMap();
+        return albumsFavCliente;
+    }
+    
+}
+>>>>>>> Stashed changes

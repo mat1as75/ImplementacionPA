@@ -4,12 +4,14 @@
  */
 package espotify.presentacion;
 
+
+
 /**
  *
  * @author brisa
  */
 public class AltaGenero extends javax.swing.JInternalFrame {
-
+    
     /**
      * Creates new form AltaGenero
      */
@@ -526,8 +528,7 @@ public class AltaGenero extends javax.swing.JInternalFrame {
                         .addGap(39, 39, 39))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filler3, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(filler3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
