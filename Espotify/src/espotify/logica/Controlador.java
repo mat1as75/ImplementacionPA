@@ -77,47 +77,9 @@ public class Controlador implements IControlador{
     };
     
     @Override
-    public List<DTGenero> getGeneros() {
-    ArrayList<Genero> generos = contpersis.getGeneros();
-    ArrayList<DTGenero> dtGeneros = new ArrayList<>();
-    Map<String, DTGenero> generosMap = new HashMap<>();
-
-    // Primera pasada: crear los DTGenero y añadirlos al mapa
-    for (Genero g : generos) {
-        DTGenero dtGenero = new DTGenero(g.getNombreGenero());
-        generosMap.put(g.getNombreGenero(), dtGenero);
-        dtGeneros.add(dtGenero);
+    public List<DTGenero> getGenerosjTree(){
+        return this.contpersis.getGenerosjTree();
     }
-
-    // Segunda pasada: establecer relaciones de padre-hijo
-    for (Genero g : generos) {
-        DTGenero dtGenero = generosMap.get(g.getNombreGenero());
-
-        // Establecer el genero padre si existe y no es nulo
-        if (g.getMiPadre() != null && g.getMiPadre().getNombreGenero() != null) {
-            DTGenero dtPadre = generosMap.get(g.getMiPadre().getNombreGenero());
-            if (dtPadre != null) {
-                dtGenero.setMiPadre(dtPadre);
-            }
-        }
-
-        // Establecer los hijos del genero si aplica
-        if (g.getMisSubgeneros() != null) {
-            for (Genero hijo : g.getMisSubgeneros()) {
-                if (hijo != null && hijo.getNombreGenero() != null) {
-                    DTGenero dtHijo = generosMap.get(hijo.getNombreGenero());
-                    if (dtHijo != null) {
-                        dtGenero.setMisGenerosHijos(dtHijo);
-                    }
-                }
-            }
-        }
-    }
-
-    // Devolver la lista de DTGenero
-    return dtGeneros;
-    }
-
 
     @Override
     public List<String>getNicknamesClientes() {

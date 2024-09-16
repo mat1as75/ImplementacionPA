@@ -458,51 +458,47 @@ public class ControladoraPersistencia {
     }
     
     public List<String> getNombresListasPorTipo(String tipoDeLista, String nickOgen) {
-    List<String> nombresListas = new ArrayList<>();
+        List<String> nombresListas = new ArrayList<>();
     
-    if (tipoDeLista == null || nickOgen == null) {
-        // Manejar el caso en que el tipoDeLista o nickOgen sean nulos
-        throw new IllegalArgumentException("Tipo de lista y nombre de género/cliente no pueden ser nulos.");
-    }
+        if (tipoDeLista == null || nickOgen == null) {
+            // Manejar el caso en que el tipoDeLista o nickOgen sean nulos
+            throw new IllegalArgumentException("Tipo de lista y nombre de género/cliente no pueden ser nulos.");
+        }
     
-    if (tipoDeLista.equals("Genero")) {
-        // Obtener todas las listas por defecto
-        List<ListaPorDefecto> listasPorDefecto = lxdefcJpa.findListaPorDefectoEntities();
-        if (listasPorDefecto != null) {
-            for (ListaPorDefecto lista : listasPorDefecto) {
-                if (lista != null && lista.getGenero() != null && lista.getGenero().getNombreGenero() != null) {
-                    if (lista.getGenero().getNombreGenero().equals(nickOgen)) {  // Filtrar por género
-                        nombresListas.add(lista.getNombreLista());
+        if (tipoDeLista.equals("Genero")) {
+            // Obtener todas las listas por defecto
+            List<ListaPorDefecto> listasPorDefecto = lxdefcJpa.findListaPorDefectoEntities();
+            if (listasPorDefecto != null) {
+                for (ListaPorDefecto lista : listasPorDefecto) {
+                    if (lista != null && lista.getGenero() != null && lista.getGenero().getNombreGenero() != null) {
+                        if (lista.getGenero().getNombreGenero().equals(nickOgen)) { 
+                            nombresListas.add(lista.getNombreLista());
+                        }
+                    }
+                }   
+            }
+        } else if (tipoDeLista.equals("Cliente")) {
+            // Obtener todas las listas particulares
+            List<ListaParticular> listasParticulares = lpartJpa.findListaParticularEntities();
+            if (listasParticulares != null) {
+                for (ListaParticular lista : listasParticulares) {
+                    if (lista != null && lista.getCliente() != null && lista.getCliente().getNickname() != null) {
+                        if (lista.getCliente().getNickname().equals(nickOgen)) {  
+                            nombresListas.add(lista.getNombreLista());
+                        }
                     }
                 }
             }
         }
-    } else if (tipoDeLista.equals("Cliente")) {
-        // Obtener todas las listas particulares
-        List<ListaParticular> listasParticulares = lpartJpa.findListaParticularEntities();
-        if (listasParticulares != null) {
-            for (ListaParticular lista : listasParticulares) {
-                if (lista != null && lista.getCliente() != null && lista.getCliente().getNickname() != null) {
-                    if (lista.getCliente().getNickname().equals(nickOgen)) {  // Filtrar por cliente
-                        nombresListas.add(lista.getNombreLista());
-                    }
-                }
-            }
+
+        return nombresListas;
         }
-    }
-
-    return nombresListas;
-    }
-
-
-
-    
+  
     public DTDatosListaReproduccion getDatosListaReproduccion(String tipoDeLista, String nombreLista){
         
         DTDatosListaReproduccion datosLista = null;
 
         if (tipoDeLista.equals("Genero")) {
-        // Buscar la lista de reproduccion por defecto asociada al género
         ListaPorDefecto listaPorDefecto = lxdefcJpa.findListaPorDefecto(nombreLista);
 
         if (listaPorDefecto != null) {
@@ -524,7 +520,7 @@ public class ControladoraPersistencia {
                 ));
             }
 
-            // Crear el DT para la lista por defecto
+            // Crear el DTO para la lista por defecto
             datosLista = new DTDatosListaReproduccion(
                     nombreListaReproduccion,
                     fotoLista,
@@ -534,7 +530,6 @@ public class ControladoraPersistencia {
             );
         }
     } else if (tipoDeLista.equals("Cliente")) {
-        // Buscar la lista particular asociada al cliente
         ListaParticular listaParticular = lpartJpa.findListaParticular(nombreLista);
         
         if (listaParticular != null) {
@@ -558,7 +553,7 @@ public class ControladoraPersistencia {
                 ));
             }
 
-            // Crear el DT para la lista particular
+            // Crear el DTO para la lista particular
             datosLista = new DTDatosListaReproduccion(
                     nombreListaReproduccion,
                     fotoLista,
@@ -574,6 +569,51 @@ public class ControladoraPersistencia {
        
     }  
     
+    
+    public List<DTGenero> getGenerosjTree() {
+    
+        List<Genero> generosL = genJpa.findGeneroEntities();
+        ArrayList<Genero> generosAL = new ArrayList<>(generosL);
+
+        // Crear una lista para DTGenero
+        ArrayList<DTGenero> dtGeneros = new ArrayList<>();
+        Map<String, DTGenero> generosMap = new HashMap<>();
+
+        // Primera pasada: crear los DTGenero y añadirlos al mapa
+        for (Genero g : generosAL) {
+            DTGenero dtGenero = new DTGenero(g.getNombreGenero());
+            generosMap.put(g.getNombreGenero(), dtGenero);
+            dtGeneros.add(dtGenero);
+        }
+
+        // Segunda pasada: establecer relaciones de padre-hijo
+        for (Genero g : generosAL) {
+            DTGenero dtGenero = generosMap.get(g.getNombreGenero());
+
+            // Establecer el genero padre si existe y no es nulo
+            if (g.getMiPadre() != null && g.getMiPadre().getNombreGenero() != null) {
+                DTGenero dtPadre = generosMap.get(g.getMiPadre().getNombreGenero());
+                if (dtPadre != null) {
+                    dtGenero.setMiPadre(dtPadre);
+                }
+            }
+
+            // Establecer los hijos del genero si aplica
+            if (g.getMisSubgeneros() != null) {
+                for (Genero hijo : g.getMisSubgeneros()) {
+                    if (hijo != null && hijo.getNombreGenero() != null) {
+                        DTGenero dtHijo = generosMap.get(hijo.getNombreGenero());
+                        if (dtHijo != null) {
+                            dtGenero.setMisGenerosHijos(dtHijo);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Devolver la lista de DTGenero
+        return dtGeneros;
+    }
     
     
   

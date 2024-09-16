@@ -43,10 +43,9 @@ public interface IControlador {
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
     public abstract DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
     public abstract List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen);
-    public abstract List<DTGenero> getGeneros();
     
-
     
+   
     public abstract void cargarDatosDePrueba();
    
    
@@ -65,6 +64,7 @@ public interface IControlador {
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
     public abstract ArrayList<DTGenero_Simple> getListaDTGeneroSimple();
+    public abstract List<DTGenero> getGenerosjTree();
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
     public abstract void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception;

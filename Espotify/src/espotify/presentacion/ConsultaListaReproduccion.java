@@ -65,7 +65,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private void cargarGenerosEnJTree() {
     
     DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
-    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); 
+    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGenerosjTree()); 
 
     // Mapa para relacionar nombres de generos con sus nodos
     Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
