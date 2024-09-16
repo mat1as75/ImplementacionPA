@@ -236,16 +236,14 @@ public class ControladoraPersistencia {
     }
     
     public boolean ExisteNombreLista(String nombreLista) {
-        List<ListaReproduccion> listaReproducciones = this.lreprodccJpa.findListaReproduccionEntities();
-        boolean retorno=false;
-        for (ListaReproduccion l : listaReproducciones) {
+        List<ListaReproduccion> listasReproduccion = this.lreprodccJpa.findListaReproduccionEntities();
+        for (ListaReproduccion l : listasReproduccion) {
             String nombreList = l.getNombreLista();
-            if(nombreList.equals(nombreLista)){
-                retorno=true;
+            if(nombreList.equalsIgnoreCase(nombreLista)){
+                return true;
             }
         }        
-        return retorno;
-                
+        return false;        
     }
 
     /* A partir del Nickname de un Artista, se retorna 
@@ -403,19 +401,6 @@ public class ControladoraPersistencia {
     // Buscar el genero por su nombre
     Genero genero = this.genJpa.findGenero(nombreGenero);
 
-    // Verificar si el genero existe
-    if (genero == null) {
-        throw new RuntimeException("No se encontró el género con nombre: " + nombreGenero);
-    }
-
-    // Verificar si ya existe una lista por defecto con el mismo nombre
-    List<ListaPorDefecto> listasPorDefecto = genero.getMisListasReproduccion();
-    for (ListaPorDefecto lista : listasPorDefecto) {
-        if (lista.getNombreLista().equals(nombreLista)) {
-            throw new RuntimeException("Ya existe una lista por defecto con el nombre: " + nombreLista);
-        }
-    }
-
     // Crear la nueva lista por defecto
     ListaPorDefecto nuevaLista = new ListaPorDefecto(nombreLista, fotoLista, genero);
     try {
@@ -431,19 +416,6 @@ public class ControladoraPersistencia {
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
     // Buscar al cliente por su nickname
     Cliente cli = this.cliJpa.findCliente(nicknameCliente);
-    
-    // Verificar si el cliente existe
-    if (cli == null) {
-        throw new RuntimeException("No se encontró el cliente con nickname: " + nicknameCliente);
-    }
-
-    // Verificar si el cliente ya tiene una lista con el mismo nombre
-    List<ListaParticular> listasDelCliente = cli.getMisListasReproduccionCreadas();
-    for (ListaParticular l : listasDelCliente) {
-        if (l.getNombreLista().equals(nombreLista)) {
-            throw new RuntimeException("Este cliente ya tiene una lista con el nombre: " + nombreLista);
-        }
-    }
 
     // Crear la nueva lista particular
     ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, esPrivada);

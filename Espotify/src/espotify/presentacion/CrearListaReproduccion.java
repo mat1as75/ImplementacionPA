@@ -1,13 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package espotify.presentacion;
-
-/**
- *
- * @author ms
- */
 
 import espotify.DataTypes.DTGenero;
 import espotify.logica.Fabrica;
@@ -29,6 +20,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+/**
+ *
+ * @author ms
+ */
+
 public class CrearListaReproduccion extends javax.swing.JInternalFrame {
     
     private IControlador controlador;
@@ -40,14 +36,15 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
          
-        //* Cargo el jList con los Nicknames de los Clientes del Sistema */
+        // Cargar el jList con los Nicknames de los Clientes del Sistema 
         DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
         ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
 
         nicknamesClientes.forEach(listaNicknamesClientes::addElement);
         jListC.setModel(listaNicknamesClientes);
         
-        cargarGenerosEnJTree(); // Cargar los generos en el JTree
+        // Cargar los generos en el JTree
+        cargarGenerosEnJTree(); 
         
         jLabelGenero.setVisible(true);
         jTreeGeneros.setVisible(true);
@@ -59,61 +56,41 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
     
       
     private void cargarGenerosEnJTree() {
-    DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
-    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGenerosjTree()); // Obtener generos
+    
+        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
+        ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGenerosjTree()); 
 
-    // Mapa para relacionar nombres de generos con sus nodos
-    Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
+        // Mapa para relacionar nombres de generos con sus nodos
+        Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
 
-    // Primera pasada: Crear nodos para todos los generos y agregarlos al mapa
-    for (DTGenero genero : generos) {
+        // Primera pasada: Crear nodos para todos los generos y agregarlos al mapa
+        for (DTGenero genero : generos) {
         DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombreGenero());
         nodosGeneros.put(genero.getNombreGenero(), nodoGenero);
         
-        // Si el genero no tiene padre, agregarlo a la raiz
-        if (genero.getMiPadre() == null) {
-            raiz.add(nodoGenero);
-        }
-    }
-
-    // Segunda pasada: Establecer relaciones de padre-hijo basadas en el mapa
-    for (DTGenero genero : generos) {
-        if (genero.getMiPadre() != null) {
-            DefaultMutableTreeNode nodoGenero = nodosGeneros.get(genero.getNombreGenero());
-            DefaultMutableTreeNode nodoPadre = nodosGeneros.get(genero.getMiPadre().getNombreGenero());
-
-            // Verificar que ambos nodos existan antes de establecer la relacion
-            if (nodoPadre != null && nodoGenero != null) {
-                nodoPadre.add(nodoGenero);
+            // Si el genero no tiene padre agregarlo a la raiz
+            if (genero.getMiPadre() == null) {
+                raiz.add(nodoGenero);
             }
         }
-    }
 
-    // Establecer el modelo del arbol
-    jTreeGeneros.setModel(new DefaultTreeModel(raiz));
-    }
+        // Segunda pasada: Establecer relaciones padre-hijo basadas en el mapa
+        for (DTGenero genero : generos) {
+            if (genero.getMiPadre() != null) {
+                DefaultMutableTreeNode nodoGenero = nodosGeneros.get(genero.getNombreGenero());
+                DefaultMutableTreeNode nodoPadre = nodosGeneros.get(genero.getMiPadre().getNombreGenero());
 
-    private DefaultMutableTreeNode buscarNodo(DefaultMutableTreeNode nodo, String nombreGenero) {
-    for (int i = 0; i < nodo.getChildCount(); i++) {
-        DefaultMutableTreeNode hijo = (DefaultMutableTreeNode) nodo.getChildAt(i);
-        if (hijo.getUserObject().toString().equals(nombreGenero)) {
-            return hijo;
-        } else {
-            DefaultMutableTreeNode resultado = buscarNodo(hijo, nombreGenero);
-            if (resultado != null) {
-                return resultado;
+                // Comprobar que ambos nodos existan antes de establecer la relacion
+                if (nodoPadre != null && nodoGenero != null) {
+                    nodoPadre.add(nodoGenero);
+                }
             }
         }
-    }
-    return null;
+
+        // Establecer el modelo del arbol
+        jTreeGeneros.setModel(new DefaultTreeModel(raiz));
     }
 
-      
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -149,12 +126,6 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         });
 
         jLabelNombre.setText("Nombre:");
-
-        jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNombreActionPerformed(evt);
-            }
-        });
 
         jLabelGenero.setText("Seleccione el Género:");
 
@@ -266,8 +237,8 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-
     private void jComboBoxTipodeListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipodeListaActionPerformed
+        
         String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
         if("Por defecto".equals(opcion)){
             jLabelGenero.setVisible(true);
@@ -284,14 +255,11 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             jLabelClientePropietario.setVisible(true);
             jListC.setVisible(true);
             jScrollPaneClientes.setVisible(true);
-        }            // TODO add your handling code here:
+        }           
     }//GEN-LAST:event_jComboBoxTipodeListaActionPerformed
 
-    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNombreActionPerformed
-
     private void openButtonImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonImagenActionPerformed
+        
         JFileChooser buscar = new JFileChooser();
         FileNameExtensionFilter extension = new FileNameExtensionFilter("Seleccionar imagen", "jpg", "png");
         buscar.setFileFilter(extension);
@@ -301,12 +269,11 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
             String ruta = selectedFile.getAbsolutePath();
             // Configura la carpeta de destino
             File destinoCarpeta = new File("./src/imagenesPerfil");
+            // Crea la carpeta si no existe
             if (!destinoCarpeta.exists()) {
-                destinoCarpeta.mkdirs(); // Crea la carpeta si no existe
+                destinoCarpeta.mkdirs(); 
             }
-
             // Define el nuevo archivo en la carpeta de destino
-            //esto es lo que se guarda en la base de datos
             File destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
             imgLista = destinoArchivo.getPath();
 
@@ -320,9 +287,9 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
                 imageLabel.setIcon(new ImageIcon(imagen.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_AREA_AVERAGING)));
 
             } catch (IOException e) {
-                e.printStackTrace(); // Manejo de excepciones en caso de error al copiar
-            };
-        };
+                e.printStackTrace(); 
+            }
+        }
     }//GEN-LAST:event_openButtonImagenActionPerformed
 
     private void jButtonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearActionPerformed
@@ -332,29 +299,32 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
         String opcion=(String)jComboBoxTipodeLista.getSelectedItem();
         DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
         String generoSeleccionado = nodoSeleccionado != null ? nodoSeleccionado.getUserObject().toString() : null;
+        
         Fabrica fb = Fabrica.getInstance();
         IControlador i = fb.getControlador();
         
-        
         if (nombreLista.isEmpty()){
-            JOptionPane.showMessageDialog(null, "El nombre de la lista esta vacio", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El nombre de la lista está vacio", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
         try {
-            if ("Por defecto".equals(opcion)) {
-            i.CrearListaPorDefecto(nombreLista, imgLista, generoSeleccionado);
-            JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            jButtonCrear.setVisible(false);
-        } else if ("Particular".equals(opcion)) {
-                boolean soyPrivada = true; // 
-                i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado, soyPrivada);
+            if ("Por defecto".equals(opcion) && !i.existeNombreLista(nombreLista)) {
+                i.CrearListaPorDefecto(nombreLista, imgLista, generoSeleccionado);
                 JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                jButtonCrear.setVisible(false);
-          }
+            }else if ("Particular".equals(opcion) && !i.existeNombreLista(nombreLista)) {
+                    boolean soyPrivada = true; // 
+                    i.CrearListaParticular(nombreLista, imgLista, nicknameClienteSeleccionado, soyPrivada);
+                    JOptionPane.showMessageDialog(null, "Lista Creada con Éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else{
+                JOptionPane.showMessageDialog(null, "El nombre de la lista ya existe", "--", JOptionPane.INFORMATION_MESSAGE);
+            }    
         } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-          }               
+          }
+        
+          //Limpio el campo del nombre
+          jTextFieldNombre.setText("");
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
 

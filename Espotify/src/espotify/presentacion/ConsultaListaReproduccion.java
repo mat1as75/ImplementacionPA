@@ -544,28 +544,28 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private void jButtonVerDireccionWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerDireccionWebActionPerformed
     
         // Obtener la fila seleccionada en la tabla
-        int selectedRow = jTableTemas.getSelectedRow();
+        int fila = jTableTemas.getSelectedRow();
         
         // Comprobar que hay una fila seleccionada
-        if (selectedRow == -1) {
+        if (fila == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un tema de la tabla en caso de tener", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
+        String op = jComboBoxConsultarPor.getSelectedItem().toString();
         String nombreLista = (String) jListListaDeReproduccion.getSelectedValue();
         String tipoDeLista = (String) jComboBoxConsultarPor.getSelectedItem().toString();
-        String nombreTema = (String) jTableTemas.getValueAt(selectedRow, 0);
+        String nombreTema = (String) jTableTemas.getValueAt(fila, 0);
                 
-        Tema temaSeleccionado = null;
-        if (opcionSeleccionada.equals("Género")) {
-            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
-        } else if (opcionSeleccionada.equals("Cliente")) {
-            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
+        Tema tema = null;
+        if (op.equals("Género")) {
+            tema = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
+        } else if (op.equals("Cliente")) {
+            tema = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
         }
         
         //Comprobar si tiene URL
-        if (temaSeleccionado instanceof TemaConURL temaConURL) {
+        if (tema instanceof TemaConURL temaConURL) {
             String urlTema = temaConURL.getUrlTema();
             if (urlTema != null && !urlTema.isEmpty()) {
                 // JTextArea para mostrar la URL y que se pueda copiar
@@ -583,28 +583,28 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private void jButtonDescargarArchivosDeMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarArchivosDeMusicaActionPerformed
           
         // Obtener la fila seleccionada en la tabla
-        int selectedRow = jTableTemas.getSelectedRow();
+        int fila = jTableTemas.getSelectedRow();
     
         // Comprobar que hay una fila seleccionada
-        if (selectedRow == -1) {
+        if (fila == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un tema de la tabla en caso de tener", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
+        String op = jComboBoxConsultarPor.getSelectedItem().toString();
         String nombreLista = (String) jListListaDeReproduccion.getSelectedValue();
         String tipoDeLista = (String) jComboBoxConsultarPor.getSelectedItem().toString();
-        String nombreTema = (String) jTableTemas.getValueAt(selectedRow, 0);
+        String nombreTema = (String) jTableTemas.getValueAt(fila, 0);
         
-        Tema temaSeleccionado = null;
-        if (opcionSeleccionada.equals("Género")) {
-            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
-        } else if (opcionSeleccionada.equals("Cliente")) {
-            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
+        Tema tema = null;
+        if (op.equals("Género")) {
+            tema = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
+        } else if (op.equals("Cliente")) {
+            tema = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
         }
 
         // Comprobar si se encuentra disponible para descargar
-        if (temaSeleccionado instanceof TemaConRuta temaConRuta) {
+        if (tema instanceof TemaConRuta temaConRuta) {
             String rutaTema = temaConRuta.getRutaTema();
             if (rutaTema != null && !rutaTema.isEmpty()) {
                 // Descargar el archivo de musica desde la ruta
