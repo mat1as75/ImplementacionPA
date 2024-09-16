@@ -27,15 +27,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
-
 /**
  *
  * @author ms
  */
+
 public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     
     private IControlador controlador;
@@ -48,14 +44,15 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
         
-        /* Cargo el jList con los Nicknames de los Clientes del Sistema */
+        // Cargar el jList con los Nicknames de los Clientes del Sistema
         DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
         ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
 
         nicknamesClientes.forEach(listaNicknamesClientes::addElement);
         jListC.setModel(listaNicknamesClientes);
         
-        cargarGenerosEnJTree(); // Cargar los generos en el JTree
+        // Cargar los generos en el JTree
+        cargarGenerosEnJTree(); 
         
         jLabelListaDeGeneros.setVisible(true);
         jTreeGeneros.setVisible(true);
@@ -74,93 +71,89 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     
     private void cargarGenerosEnJTree() {
     
-    DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
-    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGenerosjTree()); 
+        DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
+        ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGenerosjTree());
 
-    // Mapa para relacionar nombres de generos con sus nodos
-    Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
+        // Mapa para relacionar nombres de generos con sus nodos
+        Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
 
-    // Primera pasada: Crear nodos para todos los generos y agregarlos al mapa
-    for (DTGenero genero : generos) {
-        DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombreGenero());
-        nodosGeneros.put(genero.getNombreGenero(), nodoGenero);
-        
-        // Si el genero no tiene padre agregarlo a la raiz
-        if (genero.getMiPadre() == null) {
-            raiz.add(nodoGenero);
-        }
-    }
+        // Primera pasada: Crear nodos para todos los generos y agregarlos al mapa
+        for (DTGenero genero : generos) {
+            DefaultMutableTreeNode nodoGenero = new DefaultMutableTreeNode(genero.getNombreGenero());
+            nodosGeneros.put(genero.getNombreGenero(), nodoGenero);
 
-    // Segunda pasada: Establecer relaciones de padre-hijo basadas en el mapa
-    for (DTGenero genero : generos) {
-        if (genero.getMiPadre() != null) {
-            DefaultMutableTreeNode nodoGenero = nodosGeneros.get(genero.getNombreGenero());
-            DefaultMutableTreeNode nodoPadre = nodosGeneros.get(genero.getMiPadre().getNombreGenero());
-
-            // Verificar que ambos nodos existan 
-            if (nodoPadre != null && nodoGenero != null) {
-                nodoPadre.add(nodoGenero);
+            // Si el genero no tiene padre agregarlo a la raiz
+            if (genero.getMiPadre() == null) {
+                raiz.add(nodoGenero);
             }
         }
-    }
 
-    // Establecer el modelo del arbol
-    jTreeGeneros.setModel(new DefaultTreeModel(raiz));
+        // Segunda pasada: Establecer relaciones padre-hijo basadas
+        for (DTGenero genero : generos) {
+            if (genero.getMiPadre() != null) {
+                DefaultMutableTreeNode nodoGenero = nodosGeneros.get(genero.getNombreGenero());
+                DefaultMutableTreeNode nodoPadre = nodosGeneros.get(genero.getMiPadre().getNombreGenero());
+
+                // Comprobar que ambos nodos existan 
+                if (nodoPadre != null && nodoGenero != null) {
+                    nodoPadre.add(nodoGenero);
+                }
+            }
+        }
+
+        // Establecer modelo del arbol
+        jTreeGeneros.setModel(new DefaultTreeModel(raiz));
     }
 
     private void mostrarTemasEnTabla(List<DTTemaSimple> temas) {
     
-    // Definir las columnas de la tabla
-    String[] columnas = {"Nombre Tema", "Duración (seg)", "Posición en Álbum", "Nombre del Álbum", "Artista"};
+        // Definir columnas de la tabla
+        String[] columnas = {"Nombre Tema", "Duración (seg)", "Posición en Álbum", "Nombre del Álbum", "Artista"};
 
-    // Convertir la lista de temas a formato para JTable
-    Object[][] datos = new Object[temas.size()][columnas.length];
-    for (int i = 0; i < temas.size(); i++) {
-        DTTemaSimple tema = temas.get(i);
-        datos[i][0] = tema.getNombreTema();
-        datos[i][1] = tema.getDuracionSegundos();
-        datos[i][2] = tema.getPosicionEnAlbum();
-        datos[i][3] = tema.getNombreAlbum();
-        datos[i][4] = tema.getNombreCompletoArtista();
-    }
-
-    // Crear y configurar el modelo de la tabla
-     DefaultTableModel modeloTabla;
-     modeloTabla = new DefaultTableModel(datos, columnas) {};
-     
-    // Asignar el modelo a la JTable y evitar que se edite
-    jTableTemas.setModel(modeloTabla);
-    jTableTemas.setDefaultEditor(Object.class, null); 
-    jTableTemas.getTableHeader().setReorderingAllowed(false);
-    }
-    
-    private void fotoLista(String rutaImagen) {
-    if (rutaImagen != null && !rutaImagen.isEmpty()) {
-        try {
-            ImageIcon iconoImagen = new ImageIcon(rutaImagen);
-            
-            // Escalar la imagen para ajustarla al JLabel 
-            Image imagenEscalada = iconoImagen.getImage().getScaledInstance(imageLabelFotoLista.getWidth(), imageLabelFotoLista.getHeight(), Image.SCALE_SMOOTH);
-            ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
-            
-            // Asignar la imagen al JLabel
-            imageLabelFotoLista.setIcon(iconoEscalado);
-        } catch (Exception e) {
-            System.out.println("Error al cargar la imagen: " + e.getMessage());
-            imageLabelFotoLista.setIcon(null); // Deja vacia la foto si hay error
+        // Convertir la lista de temas a formato para JTable
+        Object[][] datos = new Object[temas.size()][columnas.length];
+        for (int i = 0; i < temas.size(); i++) {
+            DTTemaSimple tema = temas.get(i);
+            datos[i][0] = tema.getNombreTema();
+            datos[i][1] = tema.getDuracionSegundos();
+            datos[i][2] = tema.getPosicionEnAlbum();
+            datos[i][3] = tema.getNombreAlbum();
+            datos[i][4] = tema.getNombreCompletoArtista();
         }
-    } else {
-        // Deja vacia la foto si no tiene
-        imageLabelFotoLista.setIcon(null);
-      }
+
+        // Crear y configurar modelo de la tabla
+        DefaultTableModel modeloTabla;
+        modeloTabla = new DefaultTableModel(datos, columnas) {
+        };
+
+        // Asignar modelo a la JTable y evitar que se edite
+        jTableTemas.setModel(modeloTabla);
+        jTableTemas.setDefaultEditor(Object.class, null);
+        jTableTemas.getTableHeader().setReorderingAllowed(false);
     }
 
+    private void fotoLista(String rutaImagen) {
+        
+        if (rutaImagen != null && !rutaImagen.isEmpty()) {
+            try {
+                ImageIcon iconoImagen = new ImageIcon(rutaImagen);
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+                // Escalar imagen para ajustarla al JLabel 
+                Image imagenEscalada = iconoImagen.getImage().getScaledInstance(imageLabelFotoLista.getWidth(), imageLabelFotoLista.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+
+                // Asignar imagen al JLabel
+                imageLabelFotoLista.setIcon(iconoEscalado);
+            } catch (Exception e) {
+                System.out.println("Error al cargar la imagen: " + e.getMessage());
+                imageLabelFotoLista.setIcon(null); // Deja vacia la foto si hay error
+            }
+        } else {
+            // Dejar vacia la foto si no tiene
+            imageLabelFotoLista.setIcon(null);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -226,18 +219,6 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         jLabelCliente.setText("Cliente:");
 
         jLabelInformacionDeLosTemas.setText("Información de los temas:");
-
-        jTextFieldCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldClienteActionPerformed(evt);
-            }
-        });
-
-        jTextFieldGenero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldGeneroActionPerformed(evt);
-            }
-        });
 
         imageLabelFotoLista.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -425,12 +406,13 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
     private void jComboBoxConsultarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxConsultarPorActionPerformed
         
         String opcion=(String)jComboBoxConsultarPor.getSelectedItem();
-        if("Género".equals(opcion)){
-            
+        if("Género".equals(opcion)){          
+            //Limpiar los campos
             jTextFieldNombreDeLaLista.setText("");
             jTextFieldGenero.setText("");
             jTextFieldCliente.setText("");
             imageLabelFotoLista.setIcon(null);
+            
             DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
             modeloTabla.setRowCount(0);
             jListListaDeReproduccion.setModel(new DefaultListModel<>());
@@ -445,15 +427,14 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             jListC.setVisible(false);
             JScrollPanelCliente.setVisible(false);
             jLabelCliente.setVisible(false);
-            jTextFieldCliente.setVisible(false);
-            
-        }
-        else{
-            
+            jTextFieldCliente.setVisible(false);          
+        } else{           
+            //Limpiar los campos
             jTextFieldNombreDeLaLista.setText("");
             jTextFieldGenero.setText("");
             jTextFieldCliente.setText("");
             imageLabelFotoLista.setIcon(null);
+            
             DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
             modeloTabla.setRowCount(0);
             jListListaDeReproduccion.setModel(new DefaultListModel<>());
@@ -473,86 +454,68 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jComboBoxConsultarPorActionPerformed
 
-    private void jTextFieldGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGeneroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldGeneroActionPerformed
-
-    private void jTextFieldClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldClienteActionPerformed
-
     private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
        
-      // Limpiar la lista de reproduccion antes de cargar los datos
       DefaultListModel<String> modeloLista = new DefaultListModel<>();
       jListListaDeReproduccion.setModel(modeloLista);
 
-    String opcionSeleccionada = (String) jComboBoxConsultarPor.getSelectedItem();
-
-    if (opcionSeleccionada.equals("Género")) {
-        
-        // Obtener el genero del JTree
-        DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
-        
-        if (nodoSeleccionado != null) {
-            String generoSeleccionado = nodoSeleccionado.toString();
-
-            // Obtener los nombres de las listas por defecto para el genero seleccionado 
-            List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Genero", generoSeleccionado);
-
-            if (nombresListas.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el género seleccionado", "--", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                // Mostrar las listas en el jListListaDeReproduccion
-                for (String nombreLista : nombresListas) {
-                    modeloLista.addElement(nombreLista);
+        String op = (String) jComboBoxConsultarPor.getSelectedItem();
+        if (op.equals("Género")) {
+            // Obtener genero del JTree
+            DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();  
+            if (nodoSeleccionado != null) {
+                String gen = nodoSeleccionado.toString();
+                // Obtener nombres de las listas por defecto para el genero seleccionado 
+                List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Genero", gen);
+                if (nombresListas.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el género seleccionado", "--", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Mostrar listas en el jList
+                    for (String nombreLista : nombresListas) {
+                        modeloLista.addElement(nombreLista);
+                    }
                 }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un género de la lista de generos", "Error", JOptionPane.WARNING_MESSAGE);
-        }
-    } else if (opcionSeleccionada.equals("Cliente")) {
-        
-        // Obtener el cliente del jListClientes
-        String clienteSeleccionado = jListC.getSelectedValue();
-        
-        if (clienteSeleccionado != null) {           
-            List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", clienteSeleccionado);
-
-            if (nombresListas.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el cliente seleccionado", "--", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                // Mostrar las listas en el jListListaDeReproduccion
-                for (String nombreLista : nombresListas) {
-                    modeloLista.addElement(nombreLista);
-                }
+                JOptionPane.showMessageDialog(this, "Seleccione un género de la lista de generos", "Error", JOptionPane.WARNING_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la lista de clientes", "Error", JOptionPane.WARNING_MESSAGE);
+        } else if (op.equals("Cliente")) {
+            // Obtener el cliente del jList
+            String cl = jListC.getSelectedValue();
+            if (cl != null) {
+                List<String> nombresListas = controlador.ConsultarNombresListasPorTipo("Cliente", cl);
+                if (nombresListas.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "No se encontraron listas de reproducción para el cliente seleccionado", "--", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Mostrar las listas en el jList
+                    for (String nombreLista : nombresListas) {
+                        modeloLista.addElement(nombreLista);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un cliente de la lista de clientes", "Error", JOptionPane.WARNING_MESSAGE);
+            }
         }
-    }
-      jTextFieldNombreDeLaLista.setText("");
-      jTextFieldGenero.setText("");
-      jTextFieldCliente.setText("");
-      imageLabelFotoLista.setIcon(null);
-      DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
-      modeloTabla.setRowCount(0);     
+        
+        //Limpiar los campos
+        jTextFieldNombreDeLaLista.setText("");
+        jTextFieldGenero.setText("");
+        jTextFieldCliente.setText("");
+        imageLabelFotoLista.setIcon(null);
+        DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
+        modeloTabla.setRowCount(0);
     }//GEN-LAST:event_jButtonSeleccionarActionPerformed
 
     private void jButtonConsultarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarListaActionPerformed
-        
-        // Verificar que hay una lista seleccionada
-        String nombreListaSeleccionada = jListListaDeReproduccion.getSelectedValue();
-
-        if (nombreListaSeleccionada != null) {
-            // Obtener la opcion seleccionada 
-            String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
-
-            if (opcionSeleccionada.equals("Género")) {
-                // Consultar datos de la lista asociada al genero
-                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Genero", nombreListaSeleccionada);
+           
+        String nombreLista = jListListaDeReproduccion.getSelectedValue();
+        // Comprobar que hay una lista seleccionada
+        if (nombreLista != null) { 
+            String op = jComboBoxConsultarPor.getSelectedItem().toString();
+            if (op.equals("Género")) {
+                // Obtener datos de la lista asociada al genero
+                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Genero", nombreLista);
                 if (datosLista != null) {
-                    // Mostrar datos de la lista por defecto
+                    // Mostrar datos de la lista 
                     jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
                     jTextFieldGenero.setText(datosLista.getGenero());
                     fotoLista(datosLista.getFotoLista());
@@ -561,11 +524,11 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
                     // Mostrar temas en el JTable
                     mostrarTemasEnTabla(datosLista.getTemas());
                 }
-            } else if (opcionSeleccionada.equals("Cliente")) {
-                // Consultar datos de la lista asociada al cliente
-                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Cliente", nombreListaSeleccionada);
+            } else if (op.equals("Cliente")) {
+                // Obtener datos de la lista asociada al cliente
+                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Cliente", nombreLista);
                 if (datosLista != null) {
-                    // Mostrar datos de la lista particular
+                    // Mostrar datos de la lista 
                     jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
                     jTextFieldCliente.setText(datosLista.getCliente());
                     fotoLista(datosLista.getFotoLista());
@@ -588,7 +551,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Seleccione un tema de la tabla en caso de tener", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
         String nombreLista = (String) jListListaDeReproduccion.getSelectedValue();
         String tipoDeLista = (String) jComboBoxConsultarPor.getSelectedItem().toString();
@@ -600,6 +563,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         } else if (opcionSeleccionada.equals("Cliente")) {
             temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
         }
+        
         //Comprobar si tiene URL
         if (temaSeleccionado instanceof TemaConURL temaConURL) {
             String urlTema = temaConURL.getUrlTema();

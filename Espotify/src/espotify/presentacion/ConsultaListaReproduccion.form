@@ -302,14 +302,8 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldCliente">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldClienteActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldGenero">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldGeneroActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="imageLabelFotoLista">
           <Properties>
