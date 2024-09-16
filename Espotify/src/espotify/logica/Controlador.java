@@ -34,17 +34,12 @@ public class Controlador implements IControlador{
     }
 
     @Override
-    public void AltaGenero(String nombreGenero) {
-       /* GeneroJpaController GJP = GeneroJpaController.getInstance();
-        Genero g = new Genero(nombreGenero);
-        
+    public void AltaGenero(String nombreGenero, String nomPadre) {
         try {
-            GJP.create(g);
+            this.contpersis.AltaGenero(nombreGenero, nomPadre);
         } catch (Exception ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        */
-       this.contpersis.AltaGenero(nombreGenero);
     }
     
     @Override
@@ -263,7 +258,9 @@ public class Controlador implements IControlador{
     public ArrayList<String> getNicknamesClientesListasPrivadas() {
         return this.contpersis.getNicknamesClientesListasPrivadas();
     }
+
     public boolean existeRelacion(String Seguidor, String Seguido){
         return this.contpersis.existeRelacion(Seguidor,Seguido);
     };
 }
+
