@@ -73,8 +73,8 @@ public class DTTemaSimple {
     }
     
     public String getDatosTemaToString() {
-        return ("(Id: " + this.getIdTema() 
-                + ") " + this.getNombreTema() + 
+        return ("[" + this.getIdTema() 
+                + "] " + this.getNombreTema() + 
                 ", Album: " + this.getNombreAlbum() + 
                 ", Artista: " + this.getNombreCompletoArtista());
     }

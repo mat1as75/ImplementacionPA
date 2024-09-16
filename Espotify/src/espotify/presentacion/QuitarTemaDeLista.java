@@ -1,19 +1,33 @@
 package espotify.presentacion;
 
+import espotify.DataTypes.DTTemaSimple;
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author mat
- */
 public class QuitarTemaDeLista extends javax.swing.JInternalFrame {
-
-    private DefaultListModel listaDeListasModel;
-    private DefaultListModel listaDeTemasModel;
+    
+    private final IControlador controlador;
+    private DefaultComboBoxModel comboBoxListasRepModel = new DefaultComboBoxModel();
+    private DefaultComboBoxModel comboBoxClientesModel = new DefaultComboBoxModel();
+    private DefaultListModel jlistTemasModel = new DefaultListModel();
+    private List<String> nicknamesClientes;
+    private List<String> nombresListasRep;
+    private Map<Long, DTTemaSimple> mapTemas = new HashMap();
     /**
      * Creates new form QuitarTemaDeLista
      */
     public QuitarTemaDeLista() {
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
         initComponents();
     }
 
@@ -29,79 +43,114 @@ public class QuitarTemaDeLista extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         comboBoxTipoDeLista = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listaDeListasModel = new DefaultListModel();
-        listaDeListas = new javax.swing.JList(listaDeListasModel);
-        jScrollPane2 = new javax.swing.JScrollPane();
-        listaDeTemasModel = new DefaultListModel();
-        listaDeTemas = new javax.swing.JList(listaDeTemasModel);
         jLabel5 = new javax.swing.JLabel();
-        btnCancelarQuitarTema = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        labelError = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
+        btnConfirmar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        comboBoxListasRep = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        comboBoxClientes = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlistTemas = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Quitar Tema de Lista");
+        setMinimumSize(new java.awt.Dimension(550, 450));
 
         jLabel1.setText("Seleccione la lista a la cual le desea remover un tema:");
 
         jLabel2.setText("Tipo de lista:");
 
         comboBoxTipoDeLista.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Lista por defecto", "Lista particular" }));
-
-        listaDeListas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(listaDeListas);
-
-        listaDeTemas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(listaDeTemas);
-
-        jLabel5.setText("Tema:");
-
-        btnCancelarQuitarTema.setText("Cancelar");
-        btnCancelarQuitarTema.addActionListener(new java.awt.event.ActionListener() {
+        comboBoxTipoDeLista.setMinimumSize(new java.awt.Dimension(300, 24));
+        comboBoxTipoDeLista.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboBoxTipoDeListaItemStateChanged(evt);
+            }
+        });
+        comboBoxTipoDeLista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarQuitarTemaActionPerformed(evt);
+                comboBoxTipoDeListaActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Confirmar");
+        jLabel5.setText("Seleccione el tema que desea remover:");
 
-        labelError.setForeground(new java.awt.Color(255, 0, 0));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Lista:");
+
+        comboBoxListasRep.setMaximumRowCount(50);
+        comboBoxListasRep.setEnabled(false);
+        comboBoxListasRep.setMinimumSize(new java.awt.Dimension(300, 24));
+        comboBoxListasRep.setPreferredSize(new java.awt.Dimension(387, 24));
+        comboBoxListasRep.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboBoxListasRepItemStateChanged(evt);
+            }
+        });
+
+        jLabel4.setText("Cliente:");
+
+        comboBoxClientes.setEnabled(false);
+        comboBoxClientes.setMinimumSize(new java.awt.Dimension(300, 24));
+        comboBoxClientes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboBoxClientesItemStateChanged(evt);
+            }
+        });
+        comboBoxClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxClientesActionPerformed(evt);
+            }
+        });
+
+        jlistTemas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jlistTemas.setEnabled(false);
+        jlistTemas.setMinimumSize(new java.awt.Dimension(500, 0));
+        jScrollPane1.setViewportView(jlistTemas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancelarQuitarTema, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(195, 195, 195))
             .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(147, 147, 147)
-                        .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(110, 110, 110)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 612, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(comboBoxTipoDeLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(comboBoxTipoDeLista, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboBoxClientes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboBoxListasRep, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1))
+                .addGap(43, 43, 43))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,40 +160,206 @@ public class QuitarTemaDeLista extends javax.swing.JInternalFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(comboBoxTipoDeLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(labelError)
+                    .addComponent(comboBoxTipoDeLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelarQuitarTema)
-                    .addComponent(jButton2))
+                    .addComponent(jLabel4)
+                    .addComponent(comboBoxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboBoxListasRep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancelar)
+                    .addComponent(btnConfirmar))
                 .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarQuitarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarQuitarTemaActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_btnCancelarQuitarTemaActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
+    
+    private void cargarTemas() {
+        jlistTemasModel.removeAllElements();
+        
+        if (comboBoxListasRep.getSelectedItem() != null) {
+            String tipoDeLista = comboBoxTipoDeLista.getSelectedItem().toString();
+            String nombreLista = comboBoxListasRep.getSelectedItem().toString();
+            
+            if (tipoDeLista.equals("Lista particular")) {
+                mapTemas = controlador.getDTTemasDeListaParticular(nombreLista);
+            } else if (tipoDeLista.equals("Lista por defecto")) {
+                mapTemas = controlador.getDTTemasDeListaPorDefecto(nombreLista);
+            } else {
+                if (mapTemas != null) mapTemas.clear();
+            }
+            
+            for (Entry<Long, DTTemaSimple> dataTema : mapTemas.entrySet()) {
+                jlistTemasModel.addElement(dataTema.getValue().getDatosTemaToString());
+            }
+            jlistTemas.setModel(jlistTemasModel);
+        }
+    }
+    
+    private void cargarClientes() {
+        nicknamesClientes = controlador.getNicknamesClientes();
+        comboBoxClientesModel.removeAllElements();
+        
+        for (String nickname : nicknamesClientes) {
+            comboBoxClientesModel.addElement(nickname);
+        }
+        comboBoxClientes.setModel(comboBoxClientesModel);
+    }
+    
+    private void cargarListasPorDefecto() {
+        nombresListasRep = controlador.getNombresListasPorDefecto();
+        comboBoxListasRepModel.removeAllElements();
+        
+        for (String nombreL : nombresListasRep) {
+            comboBoxListasRepModel.addElement(nombreL);
+        }
+        comboBoxListasRep.setModel(comboBoxListasRepModel);
+        cargarTemas();
+    }
+    
+    private void cargarListasParticulares() {
+        comboBoxListasRepModel.removeAllElements();
+     
+        if (comboBoxClientes.getSelectedItem() != null) {
+            String nickname = comboBoxClientes.getSelectedItem().toString();
+            try {
+                nombresListasRep = controlador.getNombresListasParticularesDeCliente(nickname);
+                for (String nombreL : nombresListasRep) {
+                    comboBoxListasRepModel.addElement(nombreL);
+                }
+                comboBoxListasRep.setModel(comboBoxListasRepModel);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                    null, 
+                    ex.getMessage(), 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        cargarTemas();
+    }
+    
+    private void comboBoxTipoDeListaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxTipoDeListaItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            if (comboBoxTipoDeLista.getSelectedItem() != null) {
+                String seleccion = comboBoxTipoDeLista.getSelectedItem().toString();
+                
+                if (seleccion.equals("Lista por defecto")) {
+                    comboBoxClientes.setEnabled(false);
+                    comboBoxListasRep.setEnabled(true);
+                    jlistTemas.setEnabled(true);
+                    cargarListasPorDefecto();
+                } else if (seleccion.equals("Lista particular")) {
+                    comboBoxClientes.setEnabled(true);
+                    comboBoxListasRep.setEnabled(true);
+                    jlistTemas.setEnabled(true);
+                    cargarClientes();
+                    cargarListasParticulares();
+                } else {
+                    comboBoxClientes.setEnabled(false);
+                    comboBoxListasRep.setEnabled(false);
+                    jlistTemas.setEnabled(false);
+                }
+            }
+        }
+    }//GEN-LAST:event_comboBoxTipoDeListaItemStateChanged
+
+    private void comboBoxClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxClientesActionPerformed
+
+    private void comboBoxTipoDeListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxTipoDeListaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxTipoDeListaActionPerformed
+
+    private void comboBoxClientesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxClientesItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            cargarListasParticulares();
+        }
+    }//GEN-LAST:event_comboBoxClientesItemStateChanged
+
+    private void comboBoxListasRepItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxListasRepItemStateChanged
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            cargarTemas();
+        }
+    }//GEN-LAST:event_comboBoxListasRepItemStateChanged
+
+    private Boolean validarSelecciones() {
+        
+        Boolean seleccionoTipoLista = (comboBoxTipoDeLista.getSelectedItem() != null);
+        Boolean seleccionoLista = (comboBoxListasRep.getSelectedItem() != null);
+        Boolean seleccionoTema = (jlistTemas.getSelectedValue() != null);
+        
+        if  (!seleccionoTipoLista || !seleccionoLista || !seleccionoTema) {
+            JOptionPane.showMessageDialog(
+                        null, 
+                        "Debe seleccionar la lista y el tema.", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }        
+    
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        
+        if (validarSelecciones()) {
+            String tipoDeLista = comboBoxTipoDeLista.getSelectedItem().toString();
+            String nombreLista = comboBoxListasRep.getSelectedItem().toString();
+            String datosTema = jlistTemas.getSelectedValue();
+            Long idTema = null;
+
+            for (Entry<Long, DTTemaSimple> dataTema : mapTemas.entrySet()) {
+                if (dataTema.getValue().getDatosTemaToString().equals(datosTema)) {
+                    idTema = dataTema.getKey();
+                    break;
+                }
+            }
+        
+            try {
+                controlador.quitarTemaDeLista(idTema, nombreLista);
+                JOptionPane.showMessageDialog(
+                            null, 
+                            "El tema [" + idTema + "] fue removido exitosamente de la lista [" + nombreLista + "].", 
+                            "Operación exitosa", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                cargarTemas();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                            null, 
+                            ex.getMessage(), 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelarQuitarTema;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnConfirmar;
+    private javax.swing.JComboBox<String> comboBoxClientes;
+    private javax.swing.JComboBox<String> comboBoxListasRep;
     private javax.swing.JComboBox<String> comboBoxTipoDeLista;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel labelError;
-    private javax.swing.JList<String> listaDeListas;
-    private javax.swing.JList<String> listaDeTemas;
+    private javax.swing.JList<String> jlistTemas;
     // End of variables declaration//GEN-END:variables
 }

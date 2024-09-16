@@ -1,6 +1,7 @@
 package espotify.logica;
 
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
@@ -32,9 +33,17 @@ public interface IControlador {
 
     public abstract Map<Long, String> getTemasDisponibles();
     public abstract Map<Long, DTTemaSimple> getDTTemasDisponibles();
+    public abstract Map<Long, DTTemaSimple> getDTTemasDeListaParticular(String nombreListaReproduccion);
+    public abstract Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion);
+    public abstract Map<Long, DTTemaSimple> getDTTemasDeAlbum(Long idAlbum);
     public abstract ArrayList<String> getListasReproduccionDisponibles();
+    public abstract ArrayList<String> getNombresListasPorDefecto();
+    public abstract ArrayList<String> getNombresListasParticulares();
+    public abstract ArrayList<String> getNombresListasParticularesPublicas();
+    public abstract ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception;
     public abstract Map<Long, String> getAlbumesDisponibles();
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
+    public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
     public abstract ArrayList<DTGenero_Simple> getListaDTGeneroSimple();
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
@@ -43,5 +52,10 @@ public interface IControlador {
     public abstract ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente);
 
     public abstract void setPrivadafalse(String cliente, String lista);
+    
+    public abstract void agregarTemaALista(Long idTema, String nombreLista) throws Exception;
+    public abstract void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception;
     public abstract ArrayList<String> getNicknamesClientesListasPrivadas();
+
+    public abstract boolean existeRelacion(String Seguidor, String Seguido);
 }
