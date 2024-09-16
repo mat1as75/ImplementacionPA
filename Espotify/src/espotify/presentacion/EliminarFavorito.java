@@ -304,12 +304,12 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
                 this.controlador.EliminarListaFavorito(nickIngresado, lista);
                 JOptionPane.showMessageDialog(null, "Lista de reproduccion eliminada de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
             }catch(Exception ex){
-                try {
-                    //JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    throw ex;
-                } catch (Exception ex1) {
-                    Logger.getLogger(EliminarFavorito.class.getName()).log(Level.SEVERE, null, ex1);
-                }
+               // try {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                   // throw ex;
+               // } catch (Exception ex1) {
+                 //   Logger.getLogger(EliminarFavorito.class.getName()).log(Level.SEVERE, null, ex1);
+                //}
             }
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione una Lista.", "Error", JOptionPane.ERROR_MESSAGE);

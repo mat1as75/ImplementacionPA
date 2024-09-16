@@ -733,6 +733,7 @@ public class ControladoraPersistencia {
         for (Tema t : temasFavoritosDelCliente) {
             if (t.getIdTema().equals(idTema)) {
                 temasFavoritosDelCliente.remove(t);
+                break;
                //c.setMisTemasFavLista(temasFavoritosDelCliente);
             }
         }
@@ -751,6 +752,7 @@ public class ControladoraPersistencia {
         for (ListaReproduccion lr : listasFavoritasDelCliente) {
             if (lr.getNombreLista().equals(nombreListaR)) {
                 listasFavoritasDelCliente.remove(lr);
+                break;
             }
         }
         try {
@@ -762,27 +764,19 @@ public class ControladoraPersistencia {
     
     public void EliminarAlbumFavorito(String nicknameCliente, long idAlbum)throws Exception {
         Cliente c = cliJpa.findCliente(nicknameCliente);
-       
-        ArrayList<Album> albumsFavoritosDelCliente = new ArrayList<>(c.getMisAlbumesFav());
-        
+        List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
+
         for (Album a : albumsFavoritosDelCliente) {
-            
             if (a.getIdAlbum().equals(idAlbum)) {
-               
                 albumsFavoritosDelCliente.remove(a);
-                }
-       
-        }
-  
-            try {
-       
-                cliJpa.edit(c);
-            } catch (Exception ex) {
-             
-                throw ex;
+                break;
             }
-        
-        
+        }
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
 
