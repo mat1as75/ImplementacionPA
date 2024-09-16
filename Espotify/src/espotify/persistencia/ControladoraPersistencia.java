@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -732,7 +733,7 @@ public class ControladoraPersistencia {
         for (Tema t : temasFavoritosDelCliente) {
             if (t.getIdTema().equals(idTema)) {
                 temasFavoritosDelCliente.remove(t);
-                c.setMisTemasFavLista(temasFavoritosDelCliente);
+               //c.setMisTemasFavLista(temasFavoritosDelCliente);
             }
         }
         
@@ -761,23 +762,29 @@ public class ControladoraPersistencia {
     
     public void EliminarAlbumFavorito(String nicknameCliente, long idAlbum)throws Exception {
         Cliente c = cliJpa.findCliente(nicknameCliente);
-        List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
+       
+        ArrayList<Album> albumsFavoritosDelCliente = new ArrayList<>(c.getMisAlbumesFav());
         
         for (Album a : albumsFavoritosDelCliente) {
+            
             if (a.getIdAlbum().equals(idAlbum)) {
+               
                 albumsFavoritosDelCliente.remove(a);
                 }
+       
         }
-        
-        try {
-            cliJpa.edit(c);
-        } catch (Exception ex) {
-            throw ex;
-        }
+  
+            try {
+       
+                cliJpa.edit(c);
+            } catch (Exception ex) {
+             
+                throw ex;
+            }
         
         
     }
-<<<<<<< Updated upstream
+
 
 
     public void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception {
@@ -792,7 +799,7 @@ public class ControladoraPersistencia {
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
         
         for (Tema t : temasDeListaRep) {
-            if (tema.getIdTema() == t.getIdTema()) {
+            if (Objects.equals(tema.getIdTema(), t.getIdTema())) {
                 temasDeListaRep.remove(temasDeListaRep.indexOf(t));
                 break;
             }
@@ -830,13 +837,12 @@ public class ControladoraPersistencia {
         }
         return retorno;
      }
-}
+
 
 
      
  
-=======
-    
+
     public DTAlbum ConsultaAlbum(int clasif, String buscador, Long idAlbum){
         DTAlbum dta = new DTAlbum();
         if(clasif ==1){//busco por genero
@@ -867,9 +873,9 @@ public class ControladoraPersistencia {
         return temasFavCliente;
     }
     
-    public List<String> getListasFavCliente(String nicknameCliente){
+    public ArrayList<String> getListasFavCliente(String nicknameCliente){
         Cliente c = this.cliJpa.findCliente(nicknameCliente);
-        List<String> listasFavCliente;
+        ArrayList<String> listasFavCliente = new ArrayList<>();
         listasFavCliente = c.getListasFavString();
         return listasFavCliente;
     }
@@ -882,4 +888,4 @@ public class ControladoraPersistencia {
     }
     
 }
->>>>>>> Stashed changes
+

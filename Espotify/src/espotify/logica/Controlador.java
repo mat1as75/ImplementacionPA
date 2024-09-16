@@ -231,8 +231,10 @@ public class Controlador implements IControlador{
     @Override
     public void EliminarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
         try {
+            
             this.contpersis.EliminarAlbumFavorito(nicknameCliente, idAlbum);
         } catch (Exception ex) {
+            
             throw ex;
         }
     }
@@ -284,17 +286,15 @@ public class Controlador implements IControlador{
     public ArrayList<String> getNicknamesClientesListasPrivadas() {
         return this.contpersis.getNicknamesClientesListasPrivadas();
     }
-<<<<<<< Updated upstream
+
 
 
 
     public boolean existeRelacion(String Seguidor, String Seguido){
         return this.contpersis.existeRelacion(Seguidor,Seguido);
     }
-}
 
-=======
-    
+
     @Override
     public DTAlbum ConsultaAlbum(int clas, String buscador, Long idAlbum){
         return this.contpersis.ConsultaAlbum(clas,buscador,idAlbum);
@@ -311,8 +311,8 @@ public class Controlador implements IControlador{
     }
     
      @Override
-    public List<String> getListasFavCliente(String nicknameCliente){
+    public ArrayList<String> getListasFavCliente(String nicknameCliente){
         return this.contpersis.getListasFavCliente(nicknameCliente);
     }
 }
->>>>>>> Stashed changes
+

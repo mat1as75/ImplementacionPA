@@ -6,9 +6,13 @@ package espotify.presentacion;
 
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 /**
@@ -18,9 +22,9 @@ import javax.swing.JOptionPane;
 public class EliminarFavorito extends javax.swing.JInternalFrame {
     private IControlador controlador;
     private String nickIngresado;
-    private Map<Long, String>  temasFavoritosDelCliente;
-    private List<String> listasFavoritasDelCliente;
-    private Map<Long, String> albumsFavoritosDelCliente;
+    private Map<Long, String>  temasFavoritosDelCliente = new HashMap<>();
+    private ArrayList<String> listasFavoritasDelCliente = new ArrayList<>();
+    private Map<Long, String> albumsFavoritosDelCliente = new HashMap<>();
     /**
      * Creates new form EliminarFavorito
      */
@@ -28,6 +32,7 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
         initComponents();
+        inicializarJLists();
     }
 
     /**
@@ -234,19 +239,22 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
         //este boton confirmaria eliminar tema de favoritos
         String tema = listaTemas.getSelectedValue();
         Long idtemaSeleccionado = null;
-        
         for (Entry<Long, String> entry : this.temasFavoritosDelCliente.entrySet()){
             if(entry.getValue().equals(tema)){
+                
                 idtemaSeleccionado = entry.getKey();
+                
                 break;
             }
         }
         //Verifica si se selecciono Tema
         if(tema !=null && idtemaSeleccionado != null){
             try{
+                System.out.println("ACA");
                 this.controlador.EliminarTemaFavorito(nickIngresado, idtemaSeleccionado);
                 JOptionPane.showMessageDialog(null, "Tema eliminado de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
             }catch(Exception ex){
+                System.out.println("ACA2");
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);  
             }
         }else{
@@ -287,7 +295,7 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
     private void deleteListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteListaActionPerformed
         // TODO add your handling code here:
         //este boton confirma eliminar list de favoritos
-        String lista = listaTemas.getSelectedValue();
+        String lista = listaLReproduccion.getSelectedValue();
         
        
         //Verifica si se selecciono Lista
@@ -296,7 +304,12 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
                 this.controlador.EliminarListaFavorito(nickIngresado, lista);
                 JOptionPane.showMessageDialog(null, "Lista de reproduccion eliminada de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
             }catch(Exception ex){
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);  
+                try {
+                    //JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    throw ex;
+                } catch (Exception ex1) {
+                    Logger.getLogger(EliminarFavorito.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             }
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione una Lista.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -305,9 +318,9 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_deleteListaActionPerformed
 
     private void botonNickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNickActionPerformed
-       
+        inicializarJLists();
         nickIngresado = nickname.getText();
-        if(nickIngresado != null){
+        if(!nickIngresado.equals("")){
             if(controlador.ExisteCliente(nickIngresado)){
                 //obtengo los temas favoritos del cliente
                 temasFavoritosDelCliente = controlador.getTemasFavCliente(nickIngresado);
@@ -318,27 +331,34 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
                 
                 //recorro la lista de temas favoritos del cliente mientras lo agrego al modelo.
                 //luego seteo el modelo a la jlist de temasfav
-                DefaultListModel<String> listaTemasF = new DefaultListModel<>();
-                for (String tema : temasFavoritosDelCliente.values()){
-                    listaTemasF.addElement(tema);
+                if (!temasFavoritosDelCliente.isEmpty()) {
+                    DefaultListModel<String> listaTemasF = new DefaultListModel<>();
+                    for (String tema : temasFavoritosDelCliente.values()) {
+                        listaTemasF.addElement(tema);
+                    }
+                    listaTemas.setModel(listaTemasF);
                 }
-                listaTemas.setModel(listaTemasF);
-                
+
                 //recorro la lista de albums favoritos del cliente mientras lo agrego al modelo.
                 //luego seteo el modelo a la jlist de albumesfav
-                DefaultListModel<String> listaAlbumsF = new DefaultListModel<>();
-                for (String album : albumsFavoritosDelCliente.values()){
-                    listaAlbumsF.addElement(album);
+                if (!albumsFavoritosDelCliente.isEmpty()) {
+                    DefaultListModel<String> listaAlbumsF = new DefaultListModel<>();
+                    for (String album : albumsFavoritosDelCliente.values()) {
+                        listaAlbumsF.addElement(album);
+                    }
+                    listaAlbumes.setModel(listaAlbumsF);
                 }
-                listaAlbumes.setModel(listaAlbumsF);
-                
                 //recorro la lista de listas de reproduccion favoritos del cliente mientras lo agrego al modelo.
                 //luego seteo el modelo a la jlist de listasRfav
-                DefaultListModel<String> listaListasRepF = new DefaultListModel<>();
-                for (String lista : listasFavoritasDelCliente){
-                    listaListasRepF.addElement(lista);
+                if (!listasFavoritasDelCliente.isEmpty()) {
+                    DefaultListModel<String> listaListasRepF = new DefaultListModel<>();
+                    for (String lista : listasFavoritasDelCliente) {
+                        listaListasRepF.addElement(lista);
+                    }
+                    listaLReproduccion.setModel(listaListasRepF);
                 }
-                listaLReproduccion.setModel(listaListasRepF);
+            }else{
+                 JOptionPane.showMessageDialog(this, "El nickname ingresado no pertenece a un cliente.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }else{
             JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -348,7 +368,12 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
     private void botonNickMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonNickMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_botonNickMouseClicked
-
+    private void inicializarJLists(){
+        DefaultListModel modelo = new DefaultListModel<>();
+        listaAlbumes.setModel(modelo);
+        listaTemas.setModel(modelo);
+        listaLReproduccion.setModel(modelo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonNick;

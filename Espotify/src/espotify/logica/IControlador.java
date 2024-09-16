@@ -60,14 +60,14 @@ public interface IControlador {
     public abstract void agregarTemaALista(Long idTema, String nombreLista) throws Exception;
     public abstract void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception;
     public abstract ArrayList<String> getNicknamesClientesListasPrivadas();
-<<<<<<< Updated upstream
+
 
     public abstract boolean existeRelacion(String Seguidor, String Seguido);
-=======
+
     
     public abstract DTAlbum ConsultaAlbum(int clas, String buscador, Long idAlbum);
     public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);
     public abstract Map<Long, String> getAlbumsFavCliente(String nicknameCliente);
-    public abstract List<String> getListasFavCliente(String nicknameCliente);
->>>>>>> Stashed changes
+    public abstract ArrayList<String> getListasFavCliente(String nicknameCliente);
+
 }

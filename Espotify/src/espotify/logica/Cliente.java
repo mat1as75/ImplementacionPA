@@ -108,8 +108,8 @@ public class Cliente extends Usuario{
         return this.misListasReproduccionFav;
     }
     
-    public List<String> getListasFavString(){
-        List<String> misListasFav = null;
+    public ArrayList<String> getListasFavString(){
+        ArrayList<String> misListasFav = new ArrayList<>();
         for(ListaReproduccion lr : this.misListasReproduccionFav){
             misListasFav.addLast(lr.getNombreLista());
         }
