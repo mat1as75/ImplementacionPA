@@ -5,21 +5,23 @@
 package espotify.persistencia;
 
 import espotify.logica.ListaReproduccion;
+import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import espotify.logica.Tema;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  *
- * @author tecnologo
+ * @author ms
  */
 public class ListaReproduccionJpaController implements Serializable {
 
@@ -36,11 +38,24 @@ public class ListaReproduccionJpaController implements Serializable {
     }
 
     public void create(ListaReproduccion listaReproduccion) throws PreexistingEntityException, Exception {
+        if (listaReproduccion.getMisTemas() == null) {
+            listaReproduccion.setMisTemas(new ArrayList<Tema>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<Tema> attachedMisTemas = new ArrayList<Tema>();
+            for (Tema misTemasTemaToAttach : listaReproduccion.getMisTemas()) {
+                misTemasTemaToAttach = em.getReference(misTemasTemaToAttach.getClass(), misTemasTemaToAttach.getIdTema());
+                attachedMisTemas.add(misTemasTemaToAttach);
+            }
+            listaReproduccion.setMisTemas(attachedMisTemas);
             em.persist(listaReproduccion);
+            for (Tema misTemasTema : listaReproduccion.getMisTemas()) {
+                misTemasTema.getMisReproducciones().add(listaReproduccion);
+                misTemasTema = em.merge(misTemasTema);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findListaReproduccion(listaReproduccion.getNombreLista()) != null) {
@@ -59,7 +74,29 @@ public class ListaReproduccionJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            ListaReproduccion persistentListaReproduccion = em.find(ListaReproduccion.class, listaReproduccion.getNombreLista());
+            List<Tema> misTemasOld = persistentListaReproduccion.getMisTemas();
+            List<Tema> misTemasNew = listaReproduccion.getMisTemas();
+            List<Tema> attachedMisTemasNew = new ArrayList<Tema>();
+            for (Tema misTemasNewTemaToAttach : misTemasNew) {
+                misTemasNewTemaToAttach = em.getReference(misTemasNewTemaToAttach.getClass(), misTemasNewTemaToAttach.getIdTema());
+                attachedMisTemasNew.add(misTemasNewTemaToAttach);
+            }
+            misTemasNew = attachedMisTemasNew;
+            listaReproduccion.setMisTemas(misTemasNew);
             listaReproduccion = em.merge(listaReproduccion);
+            for (Tema misTemasOldTema : misTemasOld) {
+                if (!misTemasNew.contains(misTemasOldTema)) {
+                    misTemasOldTema.getMisReproducciones().remove(listaReproduccion);
+                    misTemasOldTema = em.merge(misTemasOldTema);
+                }
+            }
+            for (Tema misTemasNewTema : misTemasNew) {
+                if (!misTemasOld.contains(misTemasNewTema)) {
+                    misTemasNewTema.getMisReproducciones().add(listaReproduccion);
+                    misTemasNewTema = em.merge(misTemasNewTema);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -88,6 +125,11 @@ public class ListaReproduccionJpaController implements Serializable {
                 listaReproduccion.getNombreLista();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The listaReproduccion with id " + id + " no longer exists.", enfe);
+            }
+            List<Tema> misTemas = listaReproduccion.getMisTemas();
+            for (Tema misTemasTema : misTemas) {
+                misTemasTema.getMisReproducciones().remove(listaReproduccion);
+                misTemasTema = em.merge(misTemasTema);
             }
             em.remove(listaReproduccion);
             em.getTransaction().commit();
