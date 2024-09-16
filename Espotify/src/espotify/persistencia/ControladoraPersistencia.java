@@ -1013,19 +1013,19 @@ public class ControladoraPersistencia {
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
         
         for (Tema t : temasDeListaRep) {
-            if (tema.getIdTema() == t.getIdTema()) {
-                temasDeListaRep.remove(temasDeListaRep.indexOf(t));
+            if (t.getIdTema().equals(idTema)) {
+                temasDeListaRep.remove(t);
                 break;
             }
         }
         
         //si el tema borrado era el unico tema en la lista, entonces remuevo el link del tema hacia la lista
-        if (temasDeListaRep.isEmpty()) {
-            List<ListaReproduccion> listasRepDeTema = tema.getMisReproducciones();
-            for (ListaReproduccion lrep : listasRepDeTema) {
-                listasRepDeTema.remove(listasRepDeTema.indexOf(lrep));
-                break;
+        List<ListaReproduccion> listasRepDeTema = tema.getMisReproducciones();
+        for (ListaReproduccion lrep : listasRepDeTema) {
+            if (lrep.getNombreLista().equals(listaRep.getNombreLista())) {
+                listasRepDeTema.remove(lrep);
             }
+            break;
         }
         
         try {

@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class Artista extends Usuario{
     
     // Atributos
+    @Lob
     private String biografia;
     private String dirSitioWeb;
     
