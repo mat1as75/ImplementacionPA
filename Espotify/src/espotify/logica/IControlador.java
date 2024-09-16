@@ -69,5 +69,7 @@ public interface IControlador {
     public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);
     public abstract Map<Long, String> getAlbumsFavCliente(String nicknameCliente);
     public abstract ArrayList<String> getListasFavCliente(String nicknameCliente);
-
+    
+    public abstract ArrayList<String> getNombresGenerosPadre();
+    public abstract ArrayList<String> getNombresGenerosHijos();
 }

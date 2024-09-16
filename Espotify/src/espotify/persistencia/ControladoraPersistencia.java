@@ -59,11 +59,14 @@ public class ControladoraPersistencia {
     public ControladoraPersistencia(){};
     
     public void AltaGenero(String nombreGenero, String nomPadre) {
+
+        Genero padre = this.genJpa.findGenero(nomPadre); // Busco GeneroPadre
+        Genero nuevoGenero = new Genero(nombreGenero, padre); // Creo NuevoGenero
+        padre.getMisGenerosHijos().add(nuevoGenero);
         
-        Genero padre = this.genJpa.findGenero(nomPadre);
-        Genero genero=new Genero(nombreGenero, padre);
         try {
-            genJpa.create(genero);//para que lo guarde en la BD
+            genJpa.edit(padre); // Agregar GeneroHijo
+            //genJpa.create(nuevoGenero); // Agragar a la BD
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -881,5 +884,38 @@ public class ControladoraPersistencia {
         return albumsFavCliente;
     }
     
+    public ArrayList<String> getNombresGenerosPadre() {
+        ArrayList<String> nombresGenerosPadre = new ArrayList<>();
+        List<Genero> generos = genJpa.findGeneroEntities();
+        
+        for (Genero g : generos) {
+            // Si no es GeneroRaiz
+            if (!g.getNombreGenero().toLowerCase().equals("genero")) {
+                // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
+                if (!g.getNombreGenero().isEmpty()) {
+                    // Si es GeneroPadre lo agrego
+                    if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                        nombresGenerosPadre.add(g.getNombreGenero());
+                    }
+                }
+            }
+        }
+        
+        return nombresGenerosPadre;
+    }
+    
+    public ArrayList<String> getNombresGenerosHijos() {
+        ArrayList<String> nombresGenerosHijos = new ArrayList<>();
+        List<Genero> generos = genJpa.findGeneroEntities();
+        
+        for (Genero g : generos) {
+            // Si Genero no tiene GenerosHijos, y además no tiene a GeneroPadre = "Genero"
+            if (g.getMisGenerosHijos().isEmpty() && !g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                nombresGenerosHijos.add(g.getNombreGenero());
+            }
+        }
+        
+        return nombresGenerosHijos;
+    }
 }
 

@@ -35,7 +35,6 @@ public class Genero implements Serializable{
     public Genero(String nombreGenero, Genero padre) {
         this.nombreGenero = nombreGenero;
         this.miPadre = padre;
-        this.miPadre.agregarGeneroHijo(this);
     }
     
     // Getters & Setters
@@ -90,5 +89,12 @@ public class Genero implements Serializable{
             listaSubgeneros.add(g.getNombreGenero());
         }
         return listaSubgeneros;
+    }
+    
+    public void setGeneroHijo(Genero generoHijo) {
+        this.misGenerosHijos.add(generoHijo);
+    }
+    public List<Genero> getMisGenerosHijos() {
+        return this.misGenerosHijos;
     }
 }

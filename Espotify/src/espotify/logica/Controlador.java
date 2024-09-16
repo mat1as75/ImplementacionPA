@@ -314,5 +314,15 @@ public class Controlador implements IControlador{
     public ArrayList<String> getListasFavCliente(String nicknameCliente){
         return this.contpersis.getListasFavCliente(nicknameCliente);
     }
+    
+    @Override
+    public ArrayList<String> getNombresGenerosPadre() {
+        return this.contpersis.getNombresGenerosPadre();
+    }
+    
+    @Override
+    public ArrayList<String> getNombresGenerosHijos() {
+        return this.contpersis.getNombresGenerosHijos();
+    }
 }
 
