@@ -201,6 +201,11 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema){
+        return this.contpersis.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
+    }
+    
+    @Override
     public Map<Long, DTTemaSimple> getDTTemasDeAlbum(Long idAlbum) {
         return this.contpersis.getDTTemasDeAlbum(idAlbum);
     }

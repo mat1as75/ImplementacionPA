@@ -5,14 +5,24 @@ import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import espotify.logica.Tema;
+import espotify.logica.TemaConRuta;
+import espotify.logica.TemaConURL;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -420,6 +430,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             jTextFieldNombreDeLaLista.setText("");
             jTextFieldGenero.setText("");
             jTextFieldCliente.setText("");
+            imageLabelFotoLista.setIcon(null);
             DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
             modeloTabla.setRowCount(0);
             jListListaDeReproduccion.setModel(new DefaultListModel<>());
@@ -442,6 +453,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
             jTextFieldNombreDeLaLista.setText("");
             jTextFieldGenero.setText("");
             jTextFieldCliente.setText("");
+            imageLabelFotoLista.setIcon(null);
             DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
             modeloTabla.setRowCount(0);
             jListListaDeReproduccion.setModel(new DefaultListModel<>());
@@ -522,55 +534,141 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
       jTextFieldNombreDeLaLista.setText("");
       jTextFieldGenero.setText("");
       jTextFieldCliente.setText("");
+      imageLabelFotoLista.setIcon(null);
       DefaultTableModel modeloTabla = (DefaultTableModel) jTableTemas.getModel();
       modeloTabla.setRowCount(0);     
     }//GEN-LAST:event_jButtonSeleccionarActionPerformed
 
     private void jButtonConsultarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarListaActionPerformed
         
-    // Verificar que hay una lista seleccionada
-    String nombreListaSeleccionada = jListListaDeReproduccion.getSelectedValue();
-    
-    if (nombreListaSeleccionada != null) {
-        // Obtener la opcion seleccionada 
-        String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
+        // Verificar que hay una lista seleccionada
+        String nombreListaSeleccionada = jListListaDeReproduccion.getSelectedValue();
 
-        if (opcionSeleccionada.equals("Género")) {
-            // Consultar datos de la lista asociada al genero
-            DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Genero", nombreListaSeleccionada);
-            if (datosLista != null) {
-                // Mostrar datos de la lista por defecto
-                jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
-                jTextFieldGenero.setText(datosLista.getGenero());
-                fotoLista(datosLista.getFotoLista());
-                jTextFieldCliente.setText(""); 
+        if (nombreListaSeleccionada != null) {
+            // Obtener la opcion seleccionada 
+            String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
 
-                // Mostrar temas en el JTable
-                mostrarTemasEnTabla(datosLista.getTemas());
-            } 
-        } else if (opcionSeleccionada.equals("Cliente")) {
-            // Consultar datos de la lista asociada al cliente
-            DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Cliente", nombreListaSeleccionada);
-            if (datosLista != null) {
-                // Mostrar datos de la lista particular
-                jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
-                jTextFieldCliente.setText(datosLista.getCliente());
-                fotoLista(datosLista.getFotoLista());
-                jTextFieldGenero.setText(""); 
+            if (opcionSeleccionada.equals("Género")) {
+                // Consultar datos de la lista asociada al genero
+                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Genero", nombreListaSeleccionada);
+                if (datosLista != null) {
+                    // Mostrar datos de la lista por defecto
+                    jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
+                    jTextFieldGenero.setText(datosLista.getGenero());
+                    fotoLista(datosLista.getFotoLista());
+                    jTextFieldCliente.setText("");
 
-                // Mostrar temas en el JTable
-                mostrarTemasEnTabla(datosLista.getTemas());
-            } 
+                    // Mostrar temas en el JTable
+                    mostrarTemasEnTabla(datosLista.getTemas());
+                }
+            } else if (opcionSeleccionada.equals("Cliente")) {
+                // Consultar datos de la lista asociada al cliente
+                DTDatosListaReproduccion datosLista = controlador.ConsultarListaReproduccion("Cliente", nombreListaSeleccionada);
+                if (datosLista != null) {
+                    // Mostrar datos de la lista particular
+                    jTextFieldNombreDeLaLista.setText(datosLista.getNombreLista());
+                    jTextFieldCliente.setText(datosLista.getCliente());
+                    fotoLista(datosLista.getFotoLista());
+                    jTextFieldGenero.setText("");
+
+                    // Mostrar temas en el JTable
+                    mostrarTemasEnTabla(datosLista.getTemas());
+                }
+            }
         }
-    }
     }//GEN-LAST:event_jButtonConsultarListaActionPerformed
 
     private void jButtonVerDireccionWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerDireccionWebActionPerformed
-        // TODO add your handling code here:
+    
+        // Obtener la fila seleccionada en la tabla
+        int selectedRow = jTableTemas.getSelectedRow();
+        
+        // Comprobar que hay una fila seleccionada
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un tema de la tabla en caso de tener", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
+        String nombreLista = (String) jListListaDeReproduccion.getSelectedValue();
+        String tipoDeLista = (String) jComboBoxConsultarPor.getSelectedItem().toString();
+        String nombreTema = (String) jTableTemas.getValueAt(selectedRow, 0);
+                
+        Tema temaSeleccionado = null;
+        if (opcionSeleccionada.equals("Género")) {
+            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
+        } else if (opcionSeleccionada.equals("Cliente")) {
+            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
+        }
+        //Comprobar si tiene URL
+        if (temaSeleccionado instanceof TemaConURL temaConURL) {
+            String urlTema = temaConURL.getUrlTema();
+            if (urlTema != null && !urlTema.isEmpty()) {
+                // JTextArea para mostrar la URL y que se pueda copiar
+                JTextArea textArea = new JTextArea(urlTema);
+                textArea.setEditable(false); 
+                JOptionPane.showMessageDialog(this, new JScrollPane(textArea), "URL del Tema", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "El tema seleccionado no tiene una URL disponible", "--", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El tema seleccionado no tiene una URL disponible", "--", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonVerDireccionWebActionPerformed
 
     private void jButtonDescargarArchivosDeMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarArchivosDeMusicaActionPerformed
-        // TODO add your handling code here:
+          
+        // Obtener la fila seleccionada en la tabla
+        int selectedRow = jTableTemas.getSelectedRow();
+    
+        // Comprobar que hay una fila seleccionada
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un tema de la tabla en caso de tener", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String opcionSeleccionada = jComboBoxConsultarPor.getSelectedItem().toString();
+        String nombreLista = (String) jListListaDeReproduccion.getSelectedValue();
+        String tipoDeLista = (String) jComboBoxConsultarPor.getSelectedItem().toString();
+        String nombreTema = (String) jTableTemas.getValueAt(selectedRow, 0);
+        
+        Tema temaSeleccionado = null;
+        if (opcionSeleccionada.equals("Género")) {
+            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
+        } else if (opcionSeleccionada.equals("Cliente")) {
+            temaSeleccionado = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
+        }
+
+        // Comprobar si se encuentra disponible para descargar
+        if (temaSeleccionado instanceof TemaConRuta temaConRuta) {
+            String rutaTema = temaConRuta.getRutaTema();
+            if (rutaTema != null && !rutaTema.isEmpty()) {
+                // Descargar el archivo de musica desde la ruta
+                File archivo = new File(rutaTema);
+                if (archivo.exists()) {
+                    try {
+                        // Logica para copiar el archivo 
+                        JFileChooser fileChooser = new JFileChooser();
+                        fileChooser.setDialogTitle("Guardar archivo de música");
+                        int userSelection = fileChooser.showSaveDialog(this);
+
+                        if (userSelection == JFileChooser.APPROVE_OPTION) {
+                            File destino = fileChooser.getSelectedFile();
+                            Files.copy(archivo.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            JOptionPane.showMessageDialog(this, "Archivo descargado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, "Ocurrió un error al descargar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "El archivo no existe en la ruta especificada", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "El tema seleccionado no se encuentra disponible para descargar", "--", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El tema seleccionado no se encuentra disponible para descargar", "--", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonDescargarArchivosDeMusicaActionPerformed
 
 

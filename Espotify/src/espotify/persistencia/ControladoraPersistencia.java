@@ -586,7 +586,7 @@ public class ControladoraPersistencia {
             dtGeneros.add(dtGenero);
         }
 
-        // Segunda pasada: establecer relaciones de padre-hijo
+        // Segunda pasada: establecer relaciones padre-hijo
         for (Genero g : generosAL) {
             DTGenero dtGenero = generosMap.get(g.getNombreGenero());
 
@@ -598,7 +598,7 @@ public class ControladoraPersistencia {
                 }
             }
 
-            // Establecer los hijos del genero si aplica
+            // Establecer los hijos del genero si tiene
             if (g.getMisSubgeneros() != null) {
                 for (Genero hijo : g.getMisSubgeneros()) {
                     if (hijo != null && hijo.getNombreGenero() != null) {
@@ -611,7 +611,6 @@ public class ControladoraPersistencia {
             }
         }
 
-        // Devolver la lista de DTGenero
         return dtGeneros;
     }
     
@@ -911,6 +910,28 @@ public class ControladoraPersistencia {
          
          return mapDataTemas;
      }
+     
+    public Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema) { 
+        
+        if (tipoDeLista.equals("Género")) {
+            ListaPorDefecto lista = this.lxdefcJpa.findListaPorDefecto(nombreLista);
+            // Buscar el tema por nombre en la lista de reproducción
+            for (Tema t : lista.getMisTemas()) {
+                if (t.getNombreTema().equals(nombreTema)) {
+                    return t;
+                }
+            }
+        }else if (tipoDeLista.equals("Cliente")) {
+            ListaParticular lista = this.lpartJpa.findListaParticular(nombreLista);
+            for (Tema t : lista.getMisTemas()) {
+                if (t.getNombreTema().equals(nombreTema)) {
+                    return t;  
+                }
+            }
+        }
+        throw new RuntimeException("Tema no encontrado: " + nombreTema);       
+    }
+
      
      public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
         Tema tema = this.temaJpa.findTema(idTema);

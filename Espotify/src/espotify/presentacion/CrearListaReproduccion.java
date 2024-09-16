@@ -60,7 +60,7 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
       
     private void cargarGenerosEnJTree() {
     DefaultMutableTreeNode raiz = new DefaultMutableTreeNode("Generos");
-    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGeneros()); // Obtener generos
+    ArrayList<DTGenero> generos = new ArrayList<>(controlador.getGenerosjTree()); // Obtener generos
 
     // Mapa para relacionar nombres de generos con sus nodos
     Map<String, DefaultMutableTreeNode> nodosGeneros = new HashMap<>();
