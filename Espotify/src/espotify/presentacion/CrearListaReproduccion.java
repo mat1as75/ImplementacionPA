@@ -308,14 +308,14 @@ public class CrearListaReproduccion extends javax.swing.JInternalFrame {
 
         // Comprobar si el nombre de la lista ya existe
         if (i.existeNombreLista(nombreLista)) {
-            JOptionPane.showMessageDialog(null, "El nombre de la lista ya existe", "--", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El nombre de la lista ya existe", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
             if ("Por defecto".equalsIgnoreCase(op)) {
                 DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) jTreeGeneros.getLastSelectedPathComponent();
-                if (nodoSeleccionado == null) {
+                if (nodoSeleccionado == null || "Generos".equalsIgnoreCase(nodoSeleccionado.toString())) {
                     JOptionPane.showMessageDialog(null, "Seleccione un género de la lista", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
