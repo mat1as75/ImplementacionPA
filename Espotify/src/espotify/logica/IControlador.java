@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IControlador {
-    public abstract List<String>getNicknamesArtistas();
+    public abstract ArrayList<String>getNicknamesArtistas();
     public abstract List<String>getNicknamesClientes();
-    public abstract void AltaGenero(String nombreGenero);
+    public abstract void AltaGenero(String nombreGenero, String nomPadre);
     public abstract void AltaArtista(Artista a);
     public abstract void AltaCliente(Cliente c);
     public abstract void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception;
@@ -70,7 +70,15 @@ public interface IControlador {
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
     public abstract void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception;
+
+    public abstract void EliminarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
+    public abstract void EliminarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;
+    public abstract void EliminarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception;
+
+
+
     public abstract boolean clienteSigueAUsuario(String C, String U);
+
     public abstract ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente);
 
     public abstract void setPrivadafalse(String cliente, String lista);
@@ -82,5 +90,18 @@ public interface IControlador {
 
 
     public abstract boolean existeRelacion(String Seguidor, String Seguido);
+
+
+    
+    public abstract DTAlbum ConsultaAlbum(Long idAlbum);
+    public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);
+    public abstract Map<Long, String> getAlbumsFavCliente(String nicknameCliente);
+    public abstract ArrayList<String> getListasFavCliente(String nicknameCliente);
+    
+    public abstract ArrayList<String> getNombresGenerosPadre();
+    public abstract ArrayList<String> getNombresGenerosHijos();
+    
+    public abstract Map<Long,String>  getMapAlbumesGenero(String genero);
+    public abstract Map<Long,String>  getMapAlbumesArtista(String artista);
 
 }

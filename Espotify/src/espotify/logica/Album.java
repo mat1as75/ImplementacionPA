@@ -5,7 +5,12 @@
 package espotify.logica;
 
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaConRuta;
+import espotify.DataTypes.DTTemaConURL;
+import espotify.DataTypes.DTTemaGenerico;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -113,11 +118,36 @@ public class Album implements Serializable {
     }
 
     public DTAlbum getDataAlbum() {
-        return new DTAlbum(
+        ArrayList<DTGenero> auxDTG = new ArrayList<>();
+        ArrayList<DTTemaGenerico> auxDTTG = new ArrayList<>();
+        DTTemaConRuta dttcr;
+        DTTemaConURL dttcu;
+        DTAlbum dta = new DTAlbum(
                 this.getIdAlbum(),
                 this.getNombreAlbum(),
                 this.getAnioCreacion(),
-                this.getFotoAlbum()
+                this.getFotoAlbum(),
+                ((Artista)this.getMiArtista()).getDTArtista()
         );
+        for(Genero g: this.getMisGeneros()){
+            DTGenero dtg = new DTGenero(g.getNombreGenero());
+            auxDTG.add(dtg);
+            
+        }
+        dta.setMisgeneros(auxDTG);
+        
+        for(Tema t: this.getMisTemas()){
+            
+            if(t.getClass().equals(TemaConURL.class)){
+                 dttcu = new DTTemaConURL(t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum(),((TemaConURL)t).getUrlTema());
+                auxDTTG.add(dttcu);
+            }else{
+                dttcr = new DTTemaConRuta(((TemaConRuta)t).getRutaTema(),t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum());
+                auxDTTG.add(dttcr);
+            }
+           
+        }
+        dta.setMisTemas(auxDTTG);
+        return dta;
     }
 }

@@ -4,17 +4,35 @@
  */
 package espotify.presentacion;
 
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author brisa
  */
 public class EliminarFavorito extends javax.swing.JInternalFrame {
-
+    private IControlador controlador;
+    private String nickIngresado;
+    private Map<Long, String>  temasFavoritosDelCliente = new HashMap<>();
+    private ArrayList<String> listasFavoritasDelCliente = new ArrayList<>();
+    private Map<Long, String> albumsFavoritosDelCliente = new HashMap<>();
     /**
      * Creates new form EliminarFavorito
      */
     public EliminarFavorito() {
+        Fabrica fb = Fabrica.getInstance();
+        controlador = fb.getControlador();
         initComponents();
+        inicializarJLists();
     }
 
     /**
@@ -26,21 +44,22 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        nickLabel = new javax.swing.JLabel();
+        nickname = new javax.swing.JTextField();
+        pestañas = new javax.swing.JTabbedPane();
+        pesTema = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        listaTemas = new javax.swing.JList<>();
+        deleteTema = new javax.swing.JButton();
+        pesLista = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
-        jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        listaLReproduccion = new javax.swing.JList<>();
+        deleteLista = new javax.swing.JButton();
+        pesAlbum = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
-        jButton3 = new javax.swing.JButton();
+        listaAlbumes = new javax.swing.JList<>();
+        deleteAlbum = new javax.swing.JButton();
+        botonNick = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -48,124 +67,139 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Eliminar Tema/Lista/Album");
 
-        jLabel1.setText("Nickname cliente:");
+        nickLabel.setText("Nickname cliente:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        nickname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                nicknameActionPerformed(evt);
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listaTemas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listaTemas);
 
-        jButton1.setText("Eliminar de favoritos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        deleteTema.setText("Eliminar de favoritos");
+        deleteTema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                deleteTemaActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pesTemaLayout = new javax.swing.GroupLayout(pesTema);
+        pesTema.setLayout(pesTemaLayout);
+        pesTemaLayout.setHorizontalGroup(
+            pesTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pesTemaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(51, 51, 51))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(deleteTema)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pesTemaLayout.setVerticalGroup(
+            pesTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pesTemaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                .addGroup(pesTemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(deleteTema)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Temas", jPanel1);
+        pestañas.addTab("Temas", pesTema);
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+        listaLReproduccion.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane2.setViewportView(listaLReproduccion);
 
-        jButton2.setText("Eliminar de favoritos");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        deleteLista.setText("Eliminar de favoritos");
+        deleteLista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                deleteListaActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pesListaLayout = new javax.swing.GroupLayout(pesLista);
+        pesLista.setLayout(pesListaLayout);
+        pesListaLayout.setHorizontalGroup(
+            pesListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pesListaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jButton2)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(deleteLista)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pesListaLayout.setVerticalGroup(
+            pesListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pesListaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
+                .addGroup(pesListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(deleteLista)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 46, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Listas", jPanel2);
+        pestañas.addTab("Listas", pesLista);
 
-        jList3.setModel(new javax.swing.AbstractListModel<String>() {
+        listaAlbumes.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane3.setViewportView(jList3);
+        jScrollPane3.setViewportView(listaAlbumes);
 
-        jButton3.setText("Eliminar de favoritos");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        deleteAlbum.setText("Eliminar de favoritos");
+        deleteAlbum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                deleteAlbumActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout pesAlbumLayout = new javax.swing.GroupLayout(pesAlbum);
+        pesAlbum.setLayout(pesAlbumLayout);
+        pesAlbumLayout.setHorizontalGroup(
+            pesAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pesAlbumLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jButton3)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(deleteAlbum)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+        pesAlbumLayout.setVerticalGroup(
+            pesAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pesAlbumLayout.createSequentialGroup()
+                .addGroup(pesAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pesAlbumLayout.createSequentialGroup()
+                        .addGap(211, 211, 211)
+                        .addComponent(deleteAlbum))
+                    .addGroup(pesAlbumLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Albumes", jPanel3);
+        pestañas.addTab("Albumes", pesAlbum);
+
+        botonNick.setText("Buscar");
+        botonNick.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonNickMouseClicked(evt);
+            }
+        });
+        botonNick.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonNickActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,62 +207,210 @@ public class EliminarFavorito extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addComponent(jLabel1)
+                .addComponent(nickLabel)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nickname, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(botonNick)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(pestañas, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nickLabel)
+                    .addComponent(nickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonNick))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pestañas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void nicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nicknameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_nicknameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //este boton confirmaria eliminar tema de favoritos
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void deleteTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteTemaActionPerformed
+        String tema = listaTemas.getSelectedValue();
+        Long idtemaSeleccionado = null;
+        for (Entry<Long, String> entry : this.temasFavoritosDelCliente.entrySet()){
+            if(entry.getValue().equals(tema)){
+                idtemaSeleccionado = entry.getKey();
+                break;
+            }
+        }
+        //Verifica si se selecciono Tema
+        if(tema !=null && idtemaSeleccionado != null){
+            try{
+                this.controlador.EliminarTemaFavorito(nickIngresado, idtemaSeleccionado);
+                actualizarJListTemas();
+                JOptionPane.showMessageDialog(null, "Tema eliminado de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);  
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione un Tema.", "Error", JOptionPane.ERROR_MESSAGE);
+        }   
+    }//GEN-LAST:event_deleteTemaActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        //este boton confirma eliminar album de favorito
+    private void deleteAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAlbumActionPerformed
+        String album = listaAlbumes.getSelectedValue();
+        Long idalbumSeleccionado = null;
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+        for (Entry<Long, String> entry : this.albumsFavoritosDelCliente.entrySet()){
+            if(entry.getValue().equals(album)){
+                idalbumSeleccionado = entry.getKey();
+                break;
+            }
+        }
+        //Verifica si se selecciono Album
+        if(album !=null && idalbumSeleccionado != null){
+            try{
+                this.controlador.EliminarAlbumFavorito(nickIngresado, idalbumSeleccionado);
+                actualizarJListAlbumes();
+                JOptionPane.showMessageDialog(null, "Album eliminado de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);  
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione un Album.", "Error", JOptionPane.ERROR_MESSAGE);
+        }   
+    }//GEN-LAST:event_deleteAlbumActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void deleteListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteListaActionPerformed
+        String lista = listaLReproduccion.getSelectedValue();
+        
+        //Verifica si se selecciono Lista
+        if(lista != null){
+            try{
+                this.controlador.EliminarListaFavorito(nickIngresado, lista);
+                actualizarJListListasReproduccion();
+                JOptionPane.showMessageDialog(null, "Lista de reproduccion eliminada de favoritos", "Operacion Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione una Lista.", "Error", JOptionPane.ERROR_MESSAGE);
+        }   
+    }//GEN-LAST:event_deleteListaActionPerformed
+
+    private void botonNickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNickActionPerformed
+        inicializarJLists();
+        nickIngresado = nickname.getText();
+        if(!nickIngresado.equals("")){
+            if(controlador.ExisteCliente(nickIngresado)){
+                //obtengo los temas favoritos del cliente
+                temasFavoritosDelCliente = controlador.getTemasFavCliente(nickIngresado);
+                //obtengo las listas favoritas del cliente
+                listasFavoritasDelCliente = controlador.getListasFavCliente(nickIngresado);
+                //obtengo los albums favoritos del cliente
+                albumsFavoritosDelCliente = controlador.getAlbumsFavCliente(nickIngresado);
+                
+                //recorro la lista de temas favoritos del cliente mientras lo agrego al modelo.
+                //luego seteo el modelo a la jlist de temasfav
+                if (!temasFavoritosDelCliente.isEmpty()) {
+                    DefaultListModel<String> listaTemasF = new DefaultListModel<>();
+                    for (String tema : temasFavoritosDelCliente.values()) {
+                        listaTemasF.addElement(tema);
+                    }
+                    listaTemas.setModel(listaTemasF);
+                }
+
+                //recorro la lista de albums favoritos del cliente mientras lo agrego al modelo.
+                //luego seteo el modelo a la jlist de albumesfav
+                if (!albumsFavoritosDelCliente.isEmpty()) {
+                    DefaultListModel<String> listaAlbumsF = new DefaultListModel<>();
+                    for (String album : albumsFavoritosDelCliente.values()) {
+                        listaAlbumsF.addElement(album);
+                    }
+                    listaAlbumes.setModel(listaAlbumsF);
+                }
+                //recorro la lista de listas de reproduccion favoritos del cliente mientras lo agrego al modelo.
+                //luego seteo el modelo a la jlist de listasRfav
+                if (!listasFavoritasDelCliente.isEmpty()) {
+                    DefaultListModel<String> listaListasRepF = new DefaultListModel<>();
+                    for (String lista : listasFavoritasDelCliente) {
+                        listaListasRepF.addElement(lista);
+                    }
+                    listaLReproduccion.setModel(listaListasRepF);
+                }
+            }else{
+                 JOptionPane.showMessageDialog(this, "El nickname ingresado no pertenece a un cliente.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Ingrese nickname del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_botonNickActionPerformed
+
+    private void botonNickMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonNickMouseClicked
         // TODO add your handling code here:
-        //este boton confirma eliminar list de favoritos
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }//GEN-LAST:event_botonNickMouseClicked
+    private void inicializarJLists(){
+        DefaultListModel modelo = new DefaultListModel<>();
+        listaAlbumes.setModel(modelo);
+        listaTemas.setModel(modelo);
+        listaLReproduccion.setModel(modelo);
+    }
+    private void actualizarJListTemas() {
+        String temaSeleccionado = listaTemas.getSelectedValue();
+        DefaultListModel modelActualizado = new DefaultListModel<>();
+        
+        // Recorro los elementos de ListaTemas
+        for (int i = 0; i < listaTemas.getModel().getSize(); i++) {
+            // Si NombreTemaActual != temaSeleccionado
+            if (!(listaTemas.getModel().getElementAt(i).equals(temaSeleccionado))) {
+                modelActualizado.addElement(listaTemas.getModel().getElementAt(i));
+            }
+        }
+        listaTemas.setModel(modelActualizado);
+    }
+    private void actualizarJListListasReproduccion() {
+        String listaRSeleccionada = listaLReproduccion.getSelectedValue();
+        DefaultListModel modelActualizado = new DefaultListModel<>();
+        
+        // Recorro los elementos de ListaListasReproduccion
+        for (int i = 0; i < listaLReproduccion.getModel().getSize(); i++) {
+            // Si NombreListaRActual != listaRSeleccionado
+            if (!(listaLReproduccion.getModel().getElementAt(i).equals(listaRSeleccionada))) {
+                modelActualizado.addElement(listaLReproduccion.getModel().getElementAt(i));
+            }
+        }
+        listaLReproduccion.setModel(modelActualizado);
+    }
+    private void actualizarJListAlbumes() {
+        String albumSeleccionado = listaAlbumes.getSelectedValue();
+        DefaultListModel modelActualizado = new DefaultListModel<>();
+        
+        // Recorro los elementos de ListaAlbumes
+        for (int i = 0; i < listaAlbumes.getModel().getSize(); i++) {
+            // Si NombreAlbumActual != albumSeleccionado
+            if (!(listaAlbumes.getModel().getElementAt(i).equals(albumSeleccionado))) {
+                modelActualizado.addElement(listaAlbumes.getModel().getElementAt(i));
+            }
+        }
+        listaAlbumes.setModel(modelActualizado);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton botonNick;
+    private javax.swing.JButton deleteAlbum;
+    private javax.swing.JButton deleteLista;
+    private javax.swing.JButton deleteTema;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JList<String> listaAlbumes;
+    private javax.swing.JList<String> listaLReproduccion;
+    private javax.swing.JList<String> listaTemas;
+    private javax.swing.JLabel nickLabel;
+    private javax.swing.JTextField nickname;
+    private javax.swing.JPanel pesAlbum;
+    private javax.swing.JPanel pesLista;
+    private javax.swing.JPanel pesTema;
+    private javax.swing.JTabbedPane pestañas;
     // End of variables declaration//GEN-END:variables
 }
