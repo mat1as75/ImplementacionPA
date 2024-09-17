@@ -355,17 +355,25 @@ public class ControladoraPersistencia {
     }
     
     public void dejarDeSeguir(String C, String U) {
-        Usuario c = this.usuJpa.findUsuario(C);
-        Usuario u = this.usuJpa.findUsuario(U);
+        Cliente cliente = this.cliJpa.findCliente(C);
+        Usuario usuario = this.usuJpa.findUsuario(U);
 
-        ((Cliente) c).getMisSeguidos().remove(u);
-        ((Cliente) u).getMisSeguidos().remove(c);
-        
         try {
             // Actualizar
+            cliente.getMisSeguidos().remove(usuario);
             
-            this.usuJpa.edit(c);
-            this.usuJpa.edit(u);
+            if (usuario.getClass().equals(Cliente.class)) {
+                ((Cliente) usuario).getMisSeguidores().remove(cliente);
+                this.cliJpa.edit(cliente);
+                this.cliJpa.edit((Cliente) usuario);
+            } else { // Es Artista
+                ((Artista) usuario).getMisSeguidores().remove(cliente);
+                this.cliJpa.edit(cliente);
+                this.artJpa.edit((Artista) usuario);
+            }
+            
+            this.cliJpa.edit(cliente);
+            this.usuJpa.edit(usuario);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }

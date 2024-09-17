@@ -312,6 +312,7 @@ public class Controlador implements IControlador{
         return this.contpersis.getNicknamesClientesListasPrivadas();
     }
 
+    @Override
     public boolean existeRelacion(String Seguidor, String Seguido){
         return this.contpersis.existeRelacion(Seguidor,Seguido);
     };

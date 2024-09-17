@@ -120,17 +120,18 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
         String U = (String) jComboBoxCyA.getSelectedItem();  // Usuario (Cliente/Artista) al que desea dejar de seguir
 
         if (!C.equals(U)) {
-            try {
-                // Comprobar si el cliente sigue al usuario
-                if (!this.controlador.clienteSigueAUsuario(C, U)) {
-                    JOptionPane.showMessageDialog(this, "El cliente no sigue a este usuario.", "Error", JOptionPane.ERROR_MESSAGE);  
-                }else{
-                    // Si lo sigue
+            // Comprobar si el cliente sigue al usuario
+            if (this.controlador.clienteSigueAUsuario(C, U)) {
+                try {
                     this.controlador.dejarDeSeguir(C, U);
                     JOptionPane.showMessageDialog(null, "Se ha dejado de seguir al usuario", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } catch (HeadlessException ex) {
+                    throw ex;
+                    //JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (HeadlessException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    
+            } else { // No lo sigue
+                JOptionPane.showMessageDialog(this, "El cliente no sigue a este usuario.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a sí mismo", "Error", JOptionPane.ERROR_MESSAGE);
