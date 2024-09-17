@@ -8,6 +8,7 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
@@ -192,7 +193,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema){
+    public DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema){
         return this.contpersis.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
     }
     
