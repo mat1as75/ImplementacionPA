@@ -38,7 +38,7 @@ public class UsuarioJpaController implements Serializable {
 
     public void create(Usuario usuario) throws PreexistingEntityException, Exception {
         if (usuario.getMisSeguidores() == null) {
-            usuario.setListaMisSeguidores(new ArrayList<Usuario>());
+            usuario.setMisSeguidoresCompletos(new ArrayList<Usuario>());
         }
         EntityManager em = null;
         try {
@@ -49,7 +49,7 @@ public class UsuarioJpaController implements Serializable {
                 misSeguidoresUsuarioToAttach = em.getReference(misSeguidoresUsuarioToAttach.getClass(), misSeguidoresUsuarioToAttach.getNickname());
                 attachedMisSeguidores.add(misSeguidoresUsuarioToAttach);
             }
-            usuario.setListaMisSeguidores(attachedMisSeguidores);
+            usuario.setMisSeguidoresCompletos(attachedMisSeguidores);
             em.persist(usuario);
             for (Usuario misSeguidoresUsuario : usuario.getMisSeguidores()) {
                 misSeguidoresUsuario.getMisSeguidores().add(usuario);
@@ -82,7 +82,7 @@ public class UsuarioJpaController implements Serializable {
                 attachedMisSeguidoresNew.add(misSeguidoresNewUsuarioToAttach);
             }
             misSeguidoresNew = attachedMisSeguidoresNew;
-            usuario.setListaMisSeguidores(misSeguidoresNew);
+            usuario.setMisSeguidoresCompletos(misSeguidoresNew);
             usuario = em.merge(usuario);
             for (Usuario misSeguidoresOldUsuario : misSeguidoresOld) {
                 if (!misSeguidoresNew.contains(misSeguidoresOldUsuario)) {

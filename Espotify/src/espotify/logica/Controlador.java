@@ -6,14 +6,13 @@ import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaSimple;
-import espotify.persistencia.ArtistaJpaController;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Controlador implements IControlador{
     ControladoraPersistencia contpersis = new ControladoraPersistencia();
@@ -64,6 +63,11 @@ public class Controlador implements IControlador{
     };
     
     @Override
+    public List<DTGenero> getGenerosjTree(){
+        return this.contpersis.getGenerosjTree();
+    }
+
+    @Override
     public List<String>getNicknamesClientes() {
         ArrayList<Cliente> clientes = contpersis.getClientes();
         ArrayList<String> nicknames = new ArrayList<String>();
@@ -91,6 +95,12 @@ public class Controlador implements IControlador{
     }
     
     @Override
+
+    public boolean existeNombreLista(String nombreLista){
+        return this.contpersis.ExisteNombreLista(nombreLista);
+    }
+    
+    @Override
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
         try {
             this.contpersis.AltaAlbum(dataAlbum);
@@ -101,6 +111,7 @@ public class Controlador implements IControlador{
     
     @Override
     public void cargarDatosDePrueba() {}
+
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
@@ -115,6 +126,27 @@ public class Controlador implements IControlador{
     }
 
     @Override
+    public void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero) {
+        this.contpersis.CrearListaPorDefecto(nombreLista, fotoLista, nombreGenero);
+    }
+
+    @Override
+    public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
+    }
+    
+    @Override
+    public DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String nombreLista) {
+        return this.contpersis.getDatosListaReproduccion(tipoDeLista, nombreLista);
+    }
+    
+    @Override
+    public List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen) {
+        return this.contpersis.getNombresListasPorTipo(tipoDeLista, nickOgen);
+    }
+
+
+    @Override
     public void setSeguidorSeguido(String Seguidor, String Seguido){
         try {
             this.contpersis.setSeguidorSeguido(Seguidor,Seguido);
@@ -122,6 +154,16 @@ public class Controlador implements IControlador{
             throw ex;
         }
             
+    }
+    
+    @Override
+    public void dejarDeSeguir(String C, String U){
+        this.contpersis.dejarDeSeguir(C,U);
+    }
+    
+    @Override
+    public boolean clienteSigueAUsuario(String C, String U){
+        return this.contpersis.clienteSigueAUsuario(C, U);
     }
     
     @Override
@@ -142,6 +184,11 @@ public class Controlador implements IControlador{
     @Override
     public Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion) {
         return this.contpersis.getDTTemasDeListaPorDefecto(nombreListaReproduccion);
+    }
+    
+    @Override
+    public Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema){
+        return this.contpersis.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
     }
     
     @Override
@@ -254,6 +301,7 @@ public class Controlador implements IControlador{
         return this.contpersis.getListaDTGeneroSimple();
     }
 
+
     @Override
     public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
         try {
@@ -290,6 +338,7 @@ public class Controlador implements IControlador{
 
 
 
+    @Override
     public boolean existeRelacion(String Seguidor, String Seguido){
         return this.contpersis.existeRelacion(Seguidor,Seguido);
     }
@@ -334,5 +383,8 @@ public class Controlador implements IControlador{
     public Map<Long,String>  getMapAlbumesArtista(String artista){
         return this.contpersis.getMapAlbumesArtista(artista);
     }
+
+   
+
 }
 

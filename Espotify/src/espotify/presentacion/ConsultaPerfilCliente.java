@@ -31,6 +31,8 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
         
+        InicializarJLists();
+        
         /* Cargo el jList con los Nicknames de Clientes del Sistema */
         DefaultListModel<String> listaNicknamesClientes = new DefaultListModel<>();
         ArrayList<String> nicknamesClientes = new ArrayList<>(controlador.getNicknamesClientes());
@@ -519,6 +521,15 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
+    private void InicializarJLists() {
+        DefaultListModel<String> emptyModel = new DefaultListModel<>();
+        jListSeguidores.setModel(emptyModel);
+        jListSeguidos.setModel(emptyModel);
+        jListListasRCreadas.setModel(emptyModel);
+        jListListasRFavoritas.setModel(emptyModel);
+        jListTemasFavoritos.setModel(emptyModel);
+        jListAlbumesFavoritos.setModel(emptyModel);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageClienteLabel;

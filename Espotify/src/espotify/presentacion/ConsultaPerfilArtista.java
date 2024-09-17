@@ -34,6 +34,8 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
         
+        InicializarJLists();
+        
         /* Cargo el jList con los Nicknames de Artistas del Sistema */
         DefaultListModel<String> listaNicknamesArtistas = new DefaultListModel<>();
         ArrayList<String> nicknamesArtistas = new ArrayList<>(controlador.getNicknamesArtistas());
@@ -398,7 +400,11 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
-    
+    private void InicializarJLists() {
+        DefaultListModel<String> emptyModel = new DefaultListModel<>();
+        jListSeguidores.setModel(emptyModel);
+        jListAlbumesPublicados.setModel(emptyModel);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImageArtistaLabel;

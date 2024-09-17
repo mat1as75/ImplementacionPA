@@ -71,6 +71,7 @@ public class Genero implements Serializable{
     public void setMisAlbumes(Album a) {
         this.misAlbumes.addFirst(a);
     }
+
     public void setListaMisAlbumes(List<Album> albumes) {
         this.misAlbumes = albumes;
     }
