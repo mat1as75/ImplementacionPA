@@ -6,12 +6,21 @@ package espotify.presentacion;
 
 import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaConRuta;
+import espotify.DataTypes.DTTemaConURL;
+import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import espotify.logica.Tema;
+import espotify.logica.TemaConRuta;
+import espotify.logica.TemaConURL;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +29,11 @@ import java.util.Map.Entry;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -38,11 +51,9 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
     public ConsultaAlbum() {
         Fabrica fb = Fabrica.getInstance();
         controlador = fb.getControlador();
-        //inicializarJLists();
-        
         
         initComponents();
-        
+        inicializarJLists();
     }
 
     /**
@@ -78,8 +89,8 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
         jLabelInformacionDeLosTemas = new javax.swing.JLabel();
         jButtonDescargarArchivosDeMusica = new javax.swing.JButton();
         jButtonVerDireccionWeb = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextAreaInformacionDeLosTemas = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTableTemas = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
@@ -160,7 +171,7 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(cargarAlbumesBoton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(etiquetaAlbumes))
@@ -193,14 +204,33 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
         jButtonDescargarArchivosDeMusica.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jButtonDescargarArchivosDeMusica.setText("Descargar Archivo de Música");
         jButtonDescargarArchivosDeMusica.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonDescargarArchivosDeMusica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDescargarArchivosDeMusicaActionPerformed(evt);
+            }
+        });
 
         jButtonVerDireccionWeb.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jButtonVerDireccionWeb.setText("Ver Dirección Web");
         jButtonVerDireccionWeb.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonVerDireccionWeb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVerDireccionWebActionPerformed(evt);
+            }
+        });
 
-        jTextAreaInformacionDeLosTemas.setColumns(20);
-        jTextAreaInformacionDeLosTemas.setRows(5);
-        jScrollPane2.setViewportView(jTextAreaInformacionDeLosTemas);
+        jTableTemas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane5.setViewportView(jTableTemas);
 
         javax.swing.GroupLayout panelInfoAlbumLayout = new javax.swing.GroupLayout(panelInfoAlbum);
         panelInfoAlbum.setLayout(panelInfoAlbumLayout);
@@ -209,29 +239,28 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
             .addGroup(panelInfoAlbumLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+                    .addComponent(jLabelInformacionDeLosTemas)
                     .addGroup(panelInfoAlbumLayout.createSequentialGroup()
                         .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelInformacionDeLosTemas)
                             .addGroup(panelInfoAlbumLayout.createSequentialGroup()
-                                .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelInfoAlbumLayout.createSequentialGroup()
-                                        .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(EtiquetaConsulta3)
-                                            .addComponent(EtiquetaConsulta2)
-                                            .addComponent(EtiquetaConsulta1)))
-                                    .addComponent(jButtonDescargarArchivosDeMusica))
+                                .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonVerDireccionWeb)
-                                    .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(nombreAlbumtextField, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-                                        .addComponent(jScrollPane1)
-                                        .addComponent(nombreArtistatextField)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                    .addComponent(EtiquetaConsulta3)
+                                    .addComponent(EtiquetaConsulta2)
+                                    .addComponent(EtiquetaConsulta1)))
+                            .addComponent(jButtonDescargarArchivosDeMusica))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonVerDireccionWeb)
+                            .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(nombreAlbumtextField, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1)
+                                .addComponent(nombreArtistatextField)))))
+                .addContainerGap(66, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoAlbumLayout.createSequentialGroup()
+                .addGap(0, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelInfoAlbumLayout.setVerticalGroup(
             panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,8 +282,8 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
                     .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addComponent(jLabelInformacionDeLosTemas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(panelInfoAlbumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDescargarArchivosDeMusica)
@@ -278,8 +307,8 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
                         .addComponent(GoAComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelInfoAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -353,48 +382,43 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
             }
         }
         
-        if(!seleccion.equals("") && idAlbumSeleccionado != null){//SI SE SELECCIONO ALGO
-                
-                albumAMostrar = this.controlador.ConsultaAlbum( idAlbumSeleccionado);
-               
-                
-                
-                //el nombre del album
-               this.nombreAlbumtextField.setText(albumAMostrar.getNombreAlbum());
-               
-               //el artista
-               this.nombreArtistatextField.setText(albumAMostrar.getMiArtista().getNickname());
-               
-               //para los generos
-               
-               DefaultListModel<String> generosA = new DefaultListModel<>();
-               for(DTGenero g : albumAMostrar.getMisgeneros()){
-                   generosA.addElement(g.getNombreGenero());
-               }
-               this.generosAlbum.setModel(generosA);
-               
+        if (!seleccion.equals("") && idAlbumSeleccionado != null) {//SI SE SELECCIONO ALGO
+            
+            albumAMostrar = this.controlador.ConsultaAlbum(idAlbumSeleccionado);
 
+            //el nombre del album
+            this.nombreAlbumtextField.setText(albumAMostrar.getNombreAlbum());
 
-                //para la imagen
-               try {
+            //el artista
+            this.nombreArtistatextField.setText(albumAMostrar.getMiArtista().getNickname());
+
+            //para los generos
+            DefaultListModel<String> generosA = new DefaultListModel<>();
+            for (DTGenero g : albumAMostrar.getMisgeneros()) {
+                generosA.addElement(g.getNombreGenero());
+            }
+            this.generosAlbum.setModel(generosA);
+
+            //para la imagen
+            try {
                 
                 BufferedImage archivoAlmacenado;
                 ImageIcon imagen;
-                
+
                 // Definir el tamaño deseado de la imagen
                 int sizeHorizontal = 156;
                 int sizeVertical = 163;
                 Image escalaImagen;
-                
+
                 // Verificar si tiene foto perfil
                 if (albumAMostrar.getFotoAlbum() != null) {
-                    
+
                     // Lee la imagen desde el archivo(ruta)
                     archivoAlmacenado = ImageIO.read(new File(albumAMostrar.getFotoAlbum()));
-                    
+
                     // Verifica si la imagen se ha cargado correctamente
                     if (archivoAlmacenado != null) {
-                        
+
                         // Redimensionar la imagen
                         escalaImagen = archivoAlmacenado.getScaledInstance(sizeHorizontal, sizeVertical, Image.SCALE_SMOOTH);
 
@@ -407,13 +431,13 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
                 } else { // Asignar foto de perfil predeterminada
                     
                     archivoAlmacenado = ImageIO.read(new File("./Resource/ImagenesPerfil/Default-Photo-Profile.jpg"));
-                    
+
                     // Verifica si la imagen se ha cargado correctamente
                     if (archivoAlmacenado != null) {
-                        
+
                         // Redimensionar la imagen
                         escalaImagen = archivoAlmacenado.getScaledInstance(sizeHorizontal, sizeVertical, Image.SCALE_SMOOTH);
-                        
+
                         // Convierte archivoAlmacenado a ImageIcon
                         imagen = new ImageIcon(escalaImagen);
                         
@@ -422,10 +446,33 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
                     }
                 }
                 
-            } catch(IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-               
+
+            //TABLA DE TEMAS
+            // Definir columnas de la tabla
+            String[] columnas = {"Nombre Tema", "Duración (seg)", "Posición en Álbum"};
+
+            // Convertir la lista de temas a formato para JTable
+            Object[][] datos = new Object[albumAMostrar.getMisTemas().size()][columnas.length];
+            for (int i = 0; i < albumAMostrar.getMisTemas().size(); i++) {
+                DTTemaGenerico tema = albumAMostrar.getMisTemas().get(i);
+                datos[i][0] = tema.getNombreTema();
+                datos[i][1] = tema.getDuracionSegundos();
+                datos[i][2] = tema.getPosicionEnAlbum();
+            }
+
+            // Crear y configurar modelo de la tabla
+            DefaultTableModel modeloTabla;
+            modeloTabla = new DefaultTableModel(datos, columnas) {
+            };
+
+            // Asignar modelo a la JTable y evitar que se edite
+            jTableTemas.setModel(modeloTabla);
+            jTableTemas.setDefaultEditor(Object.class, null);
+            jTableTemas.getTableHeader().setReorderingAllowed(false);
+            
         }
     }//GEN-LAST:event_mostrarInfoAlbumBotonActionPerformed
 
@@ -458,6 +505,89 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
         }
         
     }//GEN-LAST:event_cargarAlbumesBotonActionPerformed
+
+    private void jButtonDescargarArchivosDeMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDescargarArchivosDeMusicaActionPerformed
+        // TODO add your handling code here:
+          // Obtener la fila seleccionada en la tabla
+        int fila = jTableTemas.getSelectedRow();
+    
+        // Comprobar que hay una fila seleccionada
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un tema de la tabla en caso de tener", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+       
+        
+        DTTemaGenerico tema = albumAMostrar.getMisTemas().get(fila);
+        
+        // Comprobar si se encuentra disponible para descargar
+        if (tema instanceof DTTemaConRuta temaConRuta) {
+            String rutaTema = temaConRuta.getRutaTema();
+            if (rutaTema != null && !rutaTema.isEmpty()) {
+                // Descargar el archivo de musica desde la ruta
+                File archivo = new File(rutaTema);
+                if (archivo.exists()) {
+                    try {
+                        // Logica para copiar el archivo 
+                        JFileChooser fileChooser = new JFileChooser();
+                        fileChooser.setDialogTitle("Guardar archivo de música");
+                        int userSelection = fileChooser.showSaveDialog(this);
+
+                        if (userSelection == JFileChooser.APPROVE_OPTION) {
+                            File destino = fileChooser.getSelectedFile();
+                            Files.copy(archivo.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            JOptionPane.showMessageDialog(this, "Archivo descargado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, "Ocurrió un error al descargar el archivo", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "El archivo no existe en la ruta especificada", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "El tema seleccionado no se encuentra disponible para descargar", "--", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El tema seleccionado no se encuentra disponible para descargar", "--", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_jButtonDescargarArchivosDeMusicaActionPerformed
+
+    private void jButtonVerDireccionWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerDireccionWebActionPerformed
+        // TODO add your handling code here:
+        
+        // Obtener la fila seleccionada en la tabla
+        int fila = jTableTemas.getSelectedRow();
+        
+        // Comprobar que hay una fila seleccionada
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un tema de la tabla en caso de tener", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+      
+        //String nombreTema = (String) jTableTemas.getValueAt(fila, 0);
+              
+        DTTemaGenerico tema = albumAMostrar.getMisTemas().get(fila);
+        
+        
+        //Comprobar si tiene URL
+        if (tema instanceof DTTemaConURL temaConURL) {
+            System.out.println(((DTTemaConURL) tema).getUrlTema());
+            String urlTema = ((DTTemaConURL)temaConURL).getUrlTema();
+            if (!urlTema.equals("") ) {
+                // JTextArea para mostrar la URL y que se pueda copiar
+                JTextArea textArea = new JTextArea(urlTema);
+                textArea.setEditable(false); 
+                JOptionPane.showMessageDialog(this, new JScrollPane(textArea), "URL del Tema", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "El tema seleccionado no tiene una URL disponible", "--", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El tema seleccionado no tiene una URL disponible", "--", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonVerDireccionWebActionPerformed
     private void inicializarJLists(){
         DefaultListModel modelo = new DefaultListModel<>();
         listaAlbumes.setModel(modelo);
@@ -481,11 +611,11 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelInformacionDeLosTemas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextAreaInformacionDeLosTemas;
+    private javax.swing.JTable jTableTemas;
     private javax.swing.JList<String> listaAlbumes;
     private javax.swing.JList<String> listaAoG;
     private javax.swing.JButton mostrarInfoAlbumBoton;

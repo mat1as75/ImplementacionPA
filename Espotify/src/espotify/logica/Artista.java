@@ -4,6 +4,7 @@
  */
 package espotify.logica;
 
+import espotify.DataTypes.DTArtista;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -53,6 +54,20 @@ public class Artista extends Usuario{
     }
     public void setMisAlbumesPublicados(Album a) {
         this.misAlbumesPublicados.addFirst(a);
+    }
+    public DTArtista getDTArtista(){
+        DTArtista aux = new DTArtista();
+        aux.setApellidoUsuario(this.getApellidoUsuario());
+        aux.setBiografia(this.getBiografia());
+        aux.setDirSitioWeb(this.getDirSitioWeb());
+        aux.setEmail(this.getEmail());
+        aux.setFecNac(this.getFecNac());
+        aux.setFotoPerfil(this.getFotoPerfil());
+        aux.setNombreUsuario(this.getNombreUsuario());
+        aux.setNickname(this.getNickname());
+        
+        
+        return aux;
     }
     
     
