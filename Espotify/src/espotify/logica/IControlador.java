@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IControlador {
-    public abstract List<String>getNicknamesArtistas();
+    public abstract ArrayList<String>getNicknamesArtistas();
     public abstract List<String>getNicknamesClientes();
     public abstract void AltaGenero(String nombreGenero, String nomPadre);
     public abstract void AltaArtista(Artista a);
@@ -65,11 +65,14 @@ public interface IControlador {
     public abstract boolean existeRelacion(String Seguidor, String Seguido);
 
     
-    public abstract DTAlbum ConsultaAlbum(int clas, String buscador, Long idAlbum);
+    public abstract DTAlbum ConsultaAlbum(Long idAlbum);
     public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);
     public abstract Map<Long, String> getAlbumsFavCliente(String nicknameCliente);
     public abstract ArrayList<String> getListasFavCliente(String nicknameCliente);
     
     public abstract ArrayList<String> getNombresGenerosPadre();
     public abstract ArrayList<String> getNombresGenerosHijos();
+    
+    public abstract Map<Long,String>  getMapAlbumesGenero(String genero);
+    public abstract Map<Long,String>  getMapAlbumesArtista(String artista);
 }

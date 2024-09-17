@@ -53,7 +53,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public List<String>getNicknamesArtistas(){
+    public ArrayList<String>getNicknamesArtistas(){
         ArrayList<Artista> artistas = contpersis.getArtistas();
         ArrayList<String> nicknames = new ArrayList<>();
         for (Artista a : artistas) {
@@ -296,8 +296,8 @@ public class Controlador implements IControlador{
 
 
     @Override
-    public DTAlbum ConsultaAlbum(int clas, String buscador, Long idAlbum){
-        return this.contpersis.ConsultaAlbum(clas,buscador,idAlbum);
+    public DTAlbum ConsultaAlbum(Long idAlbum){
+        return this.contpersis.ConsultaAlbum(idAlbum);
     }
     
     @Override
@@ -323,6 +323,16 @@ public class Controlador implements IControlador{
     @Override
     public ArrayList<String> getNombresGenerosHijos() {
         return this.contpersis.getNombresGenerosHijos();
+    }
+    
+    @Override
+    public Map<Long,String>  getMapAlbumesGenero(String genero){
+        return this.contpersis.getMapAlbumesGenero(genero);
+    }
+    
+    @Override
+    public Map<Long,String>  getMapAlbumesArtista(String artista){
+        return this.contpersis.getMapAlbumesArtista(artista);
     }
 }
 

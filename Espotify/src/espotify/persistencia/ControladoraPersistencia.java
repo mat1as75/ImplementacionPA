@@ -840,25 +840,11 @@ public class ControladoraPersistencia {
      
  
 
-    public DTAlbum ConsultaAlbum(int clasif, String buscador, Long idAlbum){
-        DTAlbum dta = new DTAlbum();
-        if(clasif ==1){//busco por genero
-            Genero genero = this.genJpa.findGenero(buscador);
-            List<Album> albums = genero.getMisAlbumes();
-            for (Album a : albums) {
-                if (a.getIdAlbum().equals(idAlbum)) {
-                    dta = a.getDataAlbum();
-
-                }
-            }
-        }else{ //busco por artista
-            Artista artista = this.artJpa.findArtista(buscador);
-            List<Album> albums = artista.getMisAlbumesPublicados();
-            for (Album a : albums) {
-                if (a.getIdAlbum().equals(idAlbum)) {
-                   dta = a.getDataAlbum();
-                }
-            }       
+    public DTAlbum ConsultaAlbum(Long idAlbum){
+        DTAlbum dta = null;
+        Album a = this.albJpa.findAlbum(idAlbum);
+        if(a != null){
+            dta = a.getDataAlbum();
         }
         return dta;    
     }
@@ -916,6 +902,42 @@ public class ControladoraPersistencia {
         }
         
         return nombresGenerosHijos;
+    }
+    
+    public Map<Long,String> getMapAlbumesGenero(String genero){
+        Map<Long, String> Albums = new HashMap<>();
+        List<Album> albumes = this.albJpa.findAlbumEntities();
+        
+        for(Album a : albumes){
+            for(Genero g: a.getMisGeneros()){
+                if(g.getNombreGenero().equals(genero)){
+                    Albums.put(a.getIdAlbum(), a.getNombreAlbum());
+                }
+            }
+            
+        }
+        
+        
+        
+        return Albums;    
+    }
+    
+    public Map<Long,String> getMapAlbumesArtista(String artista){
+        Map<Long, String> Albums = new HashMap<>();
+        List<Album> albumes = this.albJpa.findAlbumEntities();
+        
+        for(Album a : albumes){
+            
+                if(a.getMiArtista().getNickname().equals(artista)){
+                    Albums.put(a.getIdAlbum(), a.getNombreAlbum());
+                }
+            
+            
+        }
+        
+        
+        
+        return Albums;    
     }
 }
 
