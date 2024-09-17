@@ -38,6 +38,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 public class ControladoraPersistencia {
     
@@ -292,7 +296,6 @@ public class ControladoraPersistencia {
         
         // Nicknames de Seguidores del Cliente
         List<Usuario> listaSeguidores = c.getMisSeguidores();
-        System.out.println("Seguidores: " + c.getMisSeguidores().size());
         ArrayList<String> nicknamesSeguidores = new ArrayList<>();
         for (Usuario lSeg: listaSeguidores) {
             String nickname;
@@ -352,29 +355,19 @@ public class ControladoraPersistencia {
     }
     
     public void dejarDeSeguir(String C, String U) {
+        Usuario c = this.usuJpa.findUsuario(C);
+        Usuario u = this.usuJpa.findUsuario(U);
+
+        ((Cliente) c).getMisSeguidos().remove(u);
+        ((Cliente) u).getMisSeguidos().remove(c);
         
         try {
-            Cliente c = this.cliJpa.findCliente(C);         
-            Usuario u = this.usuJpa.findUsuario(U);
-
-                // Encontrar el indice del usuario en la lista de seguidos del cliente
-                int indexSeguido = c.getMisSeguidos().indexOf(u);
-                if (indexSeguido != -1) {
-                    // Eliminar al usuario de la lista de seguidos del cliente 
-                    c.getMisSeguidos().remove(indexSeguido);
-                }
-                // Encontrar el indice del cliente en la lista de seguidores del usuario
-                int indexSeguidor = u.getMisSeguidores().indexOf(c);
-                if (indexSeguidor != -1) {
-                    // Eliminar al cliente de la lista de seguidores del usuario 
-                    u.getMisSeguidores().remove(indexSeguidor);
-                }
-                // Actualizar 
-                this.cliJpa.edit(c);
-                this.usuJpa.edit(u);           
+            // Actualizar
+            
+            this.usuJpa.edit(c);
+            this.usuJpa.edit(u);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException("Error al intentar dejar de seguir al usuario: " + ex.getMessage(), ex);
         }
     }
     
