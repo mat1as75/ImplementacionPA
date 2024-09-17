@@ -2,6 +2,9 @@ package espotify.presentacion;
 
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaConRuta;
+import espotify.DataTypes.DTTemaConURL;
+import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
@@ -557,7 +560,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         String tipoDeLista = (String) jComboBoxConsultarPor.getSelectedItem().toString();
         String nombreTema = (String) jTableTemas.getValueAt(fila, 0);
                 
-        Tema tema = null;
+        DTTemaGenerico tema = null;
         if (op.equals("Género")) {
             tema = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema); 
         } else if (op.equals("Cliente")) {
@@ -565,7 +568,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         }
         
         //Comprobar si tiene URL
-        if (tema instanceof TemaConURL temaConURL) {
+        if (tema instanceof DTTemaConURL temaConURL) {
             String urlTema = temaConURL.getUrlTema();
             if (urlTema != null && !urlTema.isEmpty()) {
                 // JTextArea para mostrar la URL y que se pueda copiar
@@ -596,7 +599,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         String tipoDeLista = (String) jComboBoxConsultarPor.getSelectedItem().toString();
         String nombreTema = (String) jTableTemas.getValueAt(fila, 0);
         
-        Tema tema = null;
+        DTTemaGenerico tema = null;
         if (op.equals("Género")) {
             tema = controlador.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
         } else if (op.equals("Cliente")) {
@@ -604,7 +607,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
         }
 
         // Comprobar si se encuentra disponible para descargar
-        if (tema instanceof TemaConRuta temaConRuta) {
+        if (tema instanceof DTTemaConRuta temaConRuta) {
             String rutaTema = temaConRuta.getRutaTema();
             if (rutaTema != null && !rutaTema.isEmpty()) {
                 // Descargar el archivo de musica desde la ruta

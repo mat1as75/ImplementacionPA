@@ -14,6 +14,7 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTGenero_Simple;
+import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public interface IControlador {
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
     public abstract ArrayList<DTGenero_Simple> getListaDTGeneroSimple();
-    public abstract Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema);
+    public abstract DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema);
     public abstract List<DTGenero> getGenerosjTree();
     public abstract void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception;
     public abstract void GuardarListaFavorito(String nicknameCliente, String nombreLista) throws Exception;

@@ -869,28 +869,57 @@ public class ControladoraPersistencia {
          return mapDataTemas;
      }
      
-    public Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema) { 
-        
+    public DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema) { 
         if (tipoDeLista.equals("Género")) {
             ListaPorDefecto lista = this.lxdefcJpa.findListaPorDefecto(nombreLista);
-            // Buscar el tema por nombre en la lista de reproducción
             for (Tema t : lista.getMisTemas()) {
                 if (t.getNombreTema().equals(nombreTema)) {
-                    return t;
+                    // Comprobar si es TemaConURL o TemaConRuta y devolver el DTO 
+                    if (t instanceof TemaConURL temaConURL) {
+                        return new DTTemaConURL(
+                                temaConURL.getNombreTema(),
+                                temaConURL.getDuracionSegundos(),
+                                temaConURL.getPosicionEnAlbum(),
+                                temaConURL.getUrlTema()
+                        );
+                    } else if (t instanceof TemaConRuta temaConRuta) {
+                        return new DTTemaConRuta(
+                                temaConRuta.getRutaTema(),
+                                temaConRuta.getNombreTema(),
+                                temaConRuta.getDuracionSegundos(),
+                                temaConRuta.getPosicionEnAlbum()
+                        );
+                    } 
                 }
             }
-        }else if (tipoDeLista.equals("Cliente")) {
+        } else if (tipoDeLista.equals("Cliente")) {
             ListaParticular lista = this.lpartJpa.findListaParticular(nombreLista);
             for (Tema t : lista.getMisTemas()) {
                 if (t.getNombreTema().equals(nombreTema)) {
-                    return t;  
+                    if (t instanceof TemaConURL) {
+                        TemaConURL temaConURL = (TemaConURL) t;
+                        return new DTTemaConURL(
+                                temaConURL.getNombreTema(),
+                                temaConURL.getDuracionSegundos(),
+                                temaConURL.getPosicionEnAlbum(),
+                                temaConURL.getUrlTema()
+                        );
+                    } else if (t instanceof TemaConRuta) {
+                        TemaConRuta temaConRuta = (TemaConRuta) t;
+                        return new DTTemaConRuta(
+                                temaConRuta.getRutaTema(),
+                                temaConRuta.getNombreTema(),
+                                temaConRuta.getDuracionSegundos(),
+                                temaConRuta.getPosicionEnAlbum()
+                        );
+                    } 
                 }
             }
         }
-        throw new RuntimeException("Tema no encontrado: " + nombreTema);       
+        throw new RuntimeException("Tema no encontrado: " + nombreTema);
     }
 
-     
+    
      public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
         Tema tema = this.temaJpa.findTema(idTema);
         ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
