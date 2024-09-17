@@ -293,25 +293,25 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         IControlador i=f.getControlador();
         boolean existeNicName= i.ExisteNickName(nickname);
         boolean existeEmail= i.ExisteEmail(email);
-        
+        boolean escorrectoEmail=EMAIL_PATTERN.matcher(email).matches();
         
         if (nickname.isEmpty()){
             JOptionPane.showMessageDialog(null, "El nickname esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
-        }else if(existeNicName){
+        }
+        if(existeNicName){
             JOptionPane.showMessageDialog(null, "El nickname ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
             jTextFieldnickname.setText("");
         }
         if (email.isEmpty()){
             JOptionPane.showMessageDialog(null, "El email esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
-        }else if(existeEmail){
+        }
+        if(existeEmail){
             JOptionPane.showMessageDialog(null, "El email ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
             jTextFieldemail.setText("");
-        }else{
-            boolean escorrecto=EMAIL_PATTERN.matcher(email).matches();
-            if(!escorrecto){
+        }
+        if(!escorrectoEmail){
                 JOptionPane.showMessageDialog(null, "El mail no es correcto.", "Error", JOptionPane.ERROR_MESSAGE);
                 jTextFieldemail.setText("");
-            }
         }
 
         if (nombre.isEmpty()){
@@ -324,7 +324,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "La fecha de nacimiento esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null)&&(!existeNicName)&&(!existeEmail) );
+        boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null)&&(!existeNicName)&&(!existeEmail)&&(escorrectoEmail));
         if (borrar) {
             if (opcion == "artista") {
                 biografia = jTextAreaBiografia.getText();
