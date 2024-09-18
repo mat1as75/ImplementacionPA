@@ -26,6 +26,9 @@ public abstract class Usuario implements Serializable{
     
     // Referencias
     @OneToMany /* Hace referencia a una relacion Unidireccional de 1 a N ( 1 -> N ) */
+    @JoinTable(name = "usuario_seguidores",
+            joinColumns = @JoinColumn(name = "nickname_Usuario"),
+            inverseJoinColumns = @JoinColumn(name = "nickname_Seguidor"))
     protected List<Usuario> misSeguidores;
     
     // Contructores

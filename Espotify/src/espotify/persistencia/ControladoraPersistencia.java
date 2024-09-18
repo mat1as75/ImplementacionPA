@@ -354,28 +354,47 @@ public class ControladoraPersistencia {
 
     }
     
-    public void dejarDeSeguir(String C, String U) {
+    public ArrayList<String> getSeguidosDeCliente(String nickname) {
+        Cliente c = cliJpa.findCliente(nickname);
+        ArrayList<String> listaSeguidos = new ArrayList<>();
+        
+        for (Usuario u : c.getMisSeguidos()) {
+            listaSeguidos.add(u.getNickname());
+        }
+        return listaSeguidos;
+    }
+    
+    public void dejarDeSeguir(String C, String U) throws Exception {
+   
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction t = em.getTransaction();
+        
+        t.begin();
         Cliente cliente = this.cliJpa.findCliente(C);
         Usuario usuario = this.usuJpa.findUsuario(U);
-
+        
+        cliente.getMisSeguidos().remove(usuario);
+        usuario.getMisSeguidores().remove(cliente);
+        this.cliJpa.edit(cliente);
+        t.commit();
+        em.close();
+        //this.cliJpa.edit(cliente);
+        
+        
+    }
+    
+    public void DejarDeSeguirPrueba() throws Exception {
+        Cliente cliente = cliJpa.findCliente("Eleven11");
+        Usuario usuario = usuJpa.findUsuario("lachiqui");
+        
         try {
-            // Actualizar
+            //usuario.getMisSeguidores().remove(cliente);
             cliente.getMisSeguidos().remove(usuario);
-            
-            if (usuario.getClass().equals(Cliente.class)) {
-                ((Cliente) usuario).getMisSeguidores().remove(cliente);
-                this.cliJpa.edit(cliente);
-                this.cliJpa.edit((Cliente) usuario);
-            } else { // Es Artista
-                ((Artista) usuario).getMisSeguidores().remove(cliente);
-                this.cliJpa.edit(cliente);
-                this.artJpa.edit((Artista) usuario);
-            }
-            
-            this.cliJpa.edit(cliente);
-            this.usuJpa.edit(usuario);
+            //usuJpa.edit(usuario);
+            cliJpa.edit(cliente);
         } catch (Exception ex) {
-            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
     }
     
@@ -386,13 +405,14 @@ public class ControladoraPersistencia {
         // Obtener lista de seguidos del cliente
         List<Usuario> listaSeguidos = c.getMisSeguidos();
 
+        boolean Sigue = false;
         // Recorrer la lista y comprobar si lo sigue
         for (Usuario lSeg : listaSeguidos) {
-            if (lSeg.getNickname().equalsIgnoreCase(U)) {
-                return true; // Si lo sigue retorna true
+            if (lSeg.getNickname().equals(U)) {
+                Sigue = true; // Si lo sigue retorna true
             }
         }
-        return false;  // Caso contrario retorna false
+        return Sigue;  // Caso contrario retorna false
     }
 
    

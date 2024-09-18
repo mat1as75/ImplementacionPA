@@ -13,6 +13,8 @@ import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controlador implements IControlador{
     ControladoraPersistencia contpersis = new ControladoraPersistencia();
@@ -162,8 +164,26 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public ArrayList<String> getSeguidosDeCliente(String nickname) {
+        return this.contpersis.getSeguidosDeCliente(nickname);
+    }
+    
+    @Override
     public void dejarDeSeguir(String C, String U){
-        this.contpersis.dejarDeSeguir(C,U);
+        try {
+            this.contpersis.dejarDeSeguir(C,U);
+        } catch (Exception ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void DejarDeSeguirPrueba() {
+        try {
+            this.contpersis.DejarDeSeguirPrueba();
+        } catch (Exception ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override

@@ -5,6 +5,7 @@ import espotify.logica.IControlador;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,11 +30,11 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
         jComboBoxC.setModel(comboBoxModelClientes);
 
         // Cargar el ComboBoxCyA con los Nicknames de Clientes y Artistas
-        DefaultComboBoxModel<String> comboBoxModelCyA = new DefaultComboBoxModel<>();
-        ArrayList<String> nicknamesCya = new ArrayList<>(nicknamesClientes);
-        nicknamesCya.addAll(controlador.getNicknamesArtistas());
-        nicknamesCya.forEach(comboBoxModelCyA::addElement);
-        jComboBoxCyA.setModel(comboBoxModelCyA);
+        String nicknameCliente = jComboBoxC.getSelectedItem().toString();
+        ArrayList<String> listaSeguidos = new ArrayList<>(controlador.getSeguidosDeCliente(nicknameCliente));
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        listaSeguidos.forEach(modelo::addElement);
+        jComboBoxCyA.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,8 +68,18 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
         });
 
         jComboBoxC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCActionPerformed(evt);
+            }
+        });
 
         jComboBoxCyA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxCyA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCyAActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -120,24 +131,39 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
         String U = (String) jComboBoxCyA.getSelectedItem();  // Usuario (Cliente/Artista) al que desea dejar de seguir
 
         if (!C.equals(U)) {
-            // Comprobar si el cliente sigue al usuario
-            if (this.controlador.clienteSigueAUsuario(C, U)) {
-                try {
-                    this.controlador.dejarDeSeguir(C, U);
-                    JOptionPane.showMessageDialog(null, "Se ha dejado de seguir al usuario", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                } catch (HeadlessException ex) {
-                    throw ex;
-                    //JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                    
-            } else { // No lo sigue
-                JOptionPane.showMessageDialog(this, "El cliente no sigue a este usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+            try {
+                this.controlador.dejarDeSeguir(C, U);
+                JOptionPane.showMessageDialog(null, "Se ha dejado de seguir al usuario", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (HeadlessException ex) {
+                throw ex;
+                //JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a sí mismo", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
+    private void jComboBoxCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCActionPerformed
+        String nicknameCliente = jComboBoxC.getSelectedItem().toString();
+        
+        ArrayList<String> listaSeguidos = new ArrayList<>(controlador.getSeguidosDeCliente(nicknameCliente));
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        listaSeguidos.forEach(modelo::addElement);
+        jComboBoxCyA.setModel(modelo);
+        System.out.println("Cantidad de Seguidos: " + listaSeguidos.size());
+    }//GEN-LAST:event_jComboBoxCActionPerformed
+
+    private void jComboBoxCyAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCyAActionPerformed
+        
+    }//GEN-LAST:event_jComboBoxCyAActionPerformed
+
+    /*private void ActualizoSeguidos() {
+        String nicknameUsuario = jComboBoxCyA.getSelectedItem().toString();
+        for (String nickname : ) {
+            
+        }
+        jComboBoxCyA.setModel(modelo);
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConfirmar;

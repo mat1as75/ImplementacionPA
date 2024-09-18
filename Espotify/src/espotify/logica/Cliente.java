@@ -14,6 +14,9 @@ public class Cliente extends Usuario{
     
     // Referencias
     @OneToMany /* Hace referencia a una relacion Unidireccional de 1 a N ( 1 -> N ) */
+    @JoinTable(name = "cliente_seguidos",
+            joinColumns = @JoinColumn(name = "nickname_Cliente"),
+            inverseJoinColumns = @JoinColumn(name = "nickname_usuario"))
     private List<Usuario> misSeguidos;
     
     @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
