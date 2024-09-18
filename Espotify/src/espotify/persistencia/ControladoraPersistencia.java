@@ -343,8 +343,8 @@ public class ControladoraPersistencia {
     public void setSeguidorSeguido(String Seguidor, String Seguido) {
         Cliente c=this.cliJpa.findCliente(Seguidor);
         Usuario u=this.usuJpa.findUsuario(Seguido);
-        c.setMisSeguidos(u);
-        u.setMisSeguidores(c);
+        c.setMisSeguidos(c);
+        u.setMisSeguidores(u);
         try {
             usuJpa.edit(c);
             usuJpa.edit(u);

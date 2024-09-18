@@ -6,6 +6,7 @@ package espotify.logica;
 
 import java.util.List;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -38,7 +39,8 @@ public abstract class Usuario implements Serializable{
         this.apellidoUsuario = apellidoUsuario;
         this.email = email;
         this.fecNac = fecNac;
-        this.fotoPerfil = fotoPerfil;
+        this.fotoPerfil = fotoPerfil; 
+        this.misSeguidores = new ArrayList<Usuario>();
     }
     
     // Getters & Setters
