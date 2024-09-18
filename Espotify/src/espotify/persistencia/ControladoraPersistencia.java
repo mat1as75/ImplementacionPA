@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -59,10 +60,15 @@ public class ControladoraPersistencia {
 
     public ControladoraPersistencia(){};
     
-    public void AltaGenero(String nombreGenero) {
-        Genero genero=new Genero(nombreGenero);
+    public void AltaGenero(String nombreGenero, String nomPadre) {
+
+        Genero padre = this.genJpa.findGenero(nomPadre); // Busco GeneroPadre
+        Genero nuevoGenero = new Genero(nombreGenero, padre); // Creo NuevoGenero
+        padre.getMisGenerosHijos().add(nuevoGenero);
+        
         try {
-            genJpa.create(genero);//para que lo guarde en la BD
+            genJpa.edit(padre); // Agregar GeneroHijo
+            //genJpa.create(nuevoGenero); // Agragar a la BD
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -897,28 +903,57 @@ public class ControladoraPersistencia {
          return mapDataTemas;
      }
      
-    public Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema) { 
-        
+    public DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema) { 
         if (tipoDeLista.equals("Género")) {
             ListaPorDefecto lista = this.lxdefcJpa.findListaPorDefecto(nombreLista);
-            // Buscar el tema por nombre en la lista de reproducción
             for (Tema t : lista.getMisTemas()) {
                 if (t.getNombreTema().equals(nombreTema)) {
-                    return t;
+                    // Comprobar si es TemaConURL o TemaConRuta y devolver el DTO 
+                    if (t instanceof TemaConURL temaConURL) {
+                        return new DTTemaConURL(
+                                temaConURL.getNombreTema(),
+                                temaConURL.getDuracionSegundos(),
+                                temaConURL.getPosicionEnAlbum(),
+                                temaConURL.getUrlTema()
+                        );
+                    } else if (t instanceof TemaConRuta temaConRuta) {
+                        return new DTTemaConRuta(
+                                temaConRuta.getRutaTema(),
+                                temaConRuta.getNombreTema(),
+                                temaConRuta.getDuracionSegundos(),
+                                temaConRuta.getPosicionEnAlbum()
+                        );
+                    } 
                 }
             }
-        }else if (tipoDeLista.equals("Cliente")) {
+        } else if (tipoDeLista.equals("Cliente")) {
             ListaParticular lista = this.lpartJpa.findListaParticular(nombreLista);
             for (Tema t : lista.getMisTemas()) {
                 if (t.getNombreTema().equals(nombreTema)) {
-                    return t;  
+                    if (t instanceof TemaConURL) {
+                        TemaConURL temaConURL = (TemaConURL) t;
+                        return new DTTemaConURL(
+                                temaConURL.getNombreTema(),
+                                temaConURL.getDuracionSegundos(),
+                                temaConURL.getPosicionEnAlbum(),
+                                temaConURL.getUrlTema()
+                        );
+                    } else if (t instanceof TemaConRuta) {
+                        TemaConRuta temaConRuta = (TemaConRuta) t;
+                        return new DTTemaConRuta(
+                                temaConRuta.getRutaTema(),
+                                temaConRuta.getNombreTema(),
+                                temaConRuta.getDuracionSegundos(),
+                                temaConRuta.getPosicionEnAlbum()
+                        );
+                    } 
                 }
             }
         }
-        throw new RuntimeException("Tema no encontrado: " + nombreTema);       
+        throw new RuntimeException("Tema no encontrado: " + nombreTema);
     }
 
-     
+    
      public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
         Tema tema = this.temaJpa.findTema(idTema);
         ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
@@ -1015,6 +1050,60 @@ public class ControladoraPersistencia {
         return nicknamesClientesLPrivadas;
     }
 
+    public void EliminarTemaFavorito(String nicknameCliente, long idTema)throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
+        for (Tema t : temasFavoritosDelCliente) {
+            if (t.getIdTema().equals(idTema)) {
+                temasFavoritosDelCliente.remove(t);
+                break;
+               //c.setMisTemasFavLista(temasFavoritosDelCliente);
+            }
+        }
+        
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public void EliminarListaFavorito(String nicknameCliente, String nombreListaR)throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<ListaReproduccion> listasFavoritasDelCliente = c.getMisListasReproduccionFav();
+        
+        for (ListaReproduccion lr : listasFavoritasDelCliente) {
+            if (lr.getNombreLista().equals(nombreListaR)) {
+                listasFavoritasDelCliente.remove(lr);
+                break;
+            }
+        }
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public void EliminarAlbumFavorito(String nicknameCliente, long idAlbum)throws Exception {
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
+
+        for (Album a : albumsFavoritosDelCliente) {
+            if (a.getIdAlbum().equals(idAlbum)) {
+                albumsFavoritosDelCliente.remove(a);
+                break;
+            }
+        }
+        try {
+            cliJpa.edit(c);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+
+
     public void quitarTemaDeLista(Long idTema, String nombreLista) throws Exception {
         
         Tema tema = this.temaJpa.findTema(idTema);
@@ -1027,29 +1116,44 @@ public class ControladoraPersistencia {
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
         
         for (Tema t : temasDeListaRep) {
+
+            /*if (Objects.equals(tema.getIdTema(), t.getIdTema())) {
+                temasDeListaRep.remove(temasDeListaRep.indexOf(t));
+*/
             if (t.getIdTema().equals(idTema)) {
                 temasDeListaRep.remove(t);
+
                 break;
             }
         }
         
         //si el tema borrado era el unico tema en la lista, entonces remuevo el link del tema hacia la lista
+
+        if (temasDeListaRep.isEmpty()) {
+            List<ListaReproduccion> listasRepDeTema = tema.getMisReproducciones();
+            for (ListaReproduccion lrep : listasRepDeTema) {
+                listasRepDeTema.remove(listasRepDeTema.indexOf(lrep));
+                break;
+            }    
+        }
+
         List<ListaReproduccion> listasRepDeTema = tema.getMisReproducciones();
         for (ListaReproduccion lrep : listasRepDeTema) {
             if (lrep.getNombreLista().equals(listaRep.getNombreLista())) {
                 listasRepDeTema.remove(lrep);
+
             }
             break;
         }
         
         try {
-            this.temaJpa.edit(tema);
+             this.temaJpa.edit(tema);
             this.lreprodccJpa.edit(listaRep);
         } catch (Exception ex) {
             throw ex;
         }
-    }
 
+    }
     public boolean existeRelacion(String Seguidor, String Seguido) {
         Cliente c = cliJpa.findCliente(Seguidor);
         boolean retorno=false;
@@ -1064,6 +1168,111 @@ public class ControladoraPersistencia {
         return retorno;
      }
 
-}
 
+
+
+     
+ 
+
+    public DTAlbum ConsultaAlbum(Long idAlbum){
+        DTAlbum dta = null;
+        Album a = this.albJpa.findAlbum(idAlbum);
+        if(a != null){
+            dta = a.getDataAlbum();
+        }
+        return dta;    
+    }
+    
+    public Map<Long, String>  getTemasFavCliente(String nicknameCliente){
+        Cliente c = this.cliJpa.findCliente(nicknameCliente);
+        Map<Long, String>  temasFavCliente;
+        temasFavCliente = c.getTemasFavMap();
+        return temasFavCliente;
+    }
+    
+    public ArrayList<String> getListasFavCliente(String nicknameCliente){
+        Cliente c = this.cliJpa.findCliente(nicknameCliente);
+        ArrayList<String> listasFavCliente = new ArrayList<>();
+        listasFavCliente = c.getListasFavString();
+        return listasFavCliente;
+    }
+    
+    public Map<Long, String> getAlbumsFavCliente(String nicknameCliente){
+        Cliente c = this.cliJpa.findCliente(nicknameCliente);
+        Map<Long, String> albumsFavCliente;
+        albumsFavCliente = c.getAlbumsFavMap();
+        return albumsFavCliente;
+    }
+    
+    public ArrayList<String> getNombresGenerosPadre() {
+        ArrayList<String> nombresGenerosPadre = new ArrayList<>();
+        List<Genero> generos = genJpa.findGeneroEntities();
+        
+        for (Genero g : generos) {
+            // Si no es GeneroRaiz
+            if (!g.getNombreGenero().toLowerCase().equals("genero")) {
+                // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
+                if (!g.getNombreGenero().isEmpty()) {
+                    // Si es GeneroPadre lo agrego
+                    if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                        nombresGenerosPadre.add(g.getNombreGenero());
+                    }
+                }
+            }
+        }
+        
+        return nombresGenerosPadre;
+    }
+    
+    public ArrayList<String> getNombresGenerosHijos() {
+        ArrayList<String> nombresGenerosHijos = new ArrayList<>();
+        List<Genero> generos = genJpa.findGeneroEntities();
+        
+        for (Genero g : generos) {
+            // Si Genero no tiene GenerosHijos, y además no tiene a GeneroPadre = "Genero"
+            if (g.getMisGenerosHijos().isEmpty() && !g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                nombresGenerosHijos.add(g.getNombreGenero());
+            }
+        }
+        
+        return nombresGenerosHijos;
+    }
+    
+    public Map<Long,String> getMapAlbumesGenero(String genero){
+        Map<Long, String> Albums = new HashMap<>();
+        List<Album> albumes = this.albJpa.findAlbumEntities();
+        
+        for(Album a : albumes){
+            for(Genero g: a.getMisGeneros()){
+                if(g.getNombreGenero().equals(genero)){
+                    Albums.put(a.getIdAlbum(), a.getNombreAlbum());
+                }
+            }
+            
+        }
+        
+        
+        
+        return Albums;    
+    }
+    
+    public Map<Long,String> getMapAlbumesArtista(String artista){
+        Map<Long, String> Albums = new HashMap<>();
+        List<Album> albumes = this.albJpa.findAlbumEntities();
+        
+        for(Album a : albumes){
+            
+                if(a.getMiArtista().getNickname().equals(artista)){
+                    Albums.put(a.getIdAlbum(), a.getNombreAlbum());
+                }
+            
+            
+        }
+        
+        
+        
+        return Albums;    
+    }
+
+}
 
