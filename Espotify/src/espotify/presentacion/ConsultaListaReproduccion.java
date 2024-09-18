@@ -123,8 +123,7 @@ public class ConsultaListaReproduccion extends javax.swing.JInternalFrame {
 
         // Crear y configurar modelo de la tabla
         DefaultTableModel modeloTabla;
-        modeloTabla = new DefaultTableModel(datos, columnas) {
-        };
+        modeloTabla = new DefaultTableModel(datos, columnas);
 
         // Asignar modelo a la JTable y evitar que se edite
         jTableTemas.setModel(modeloTabla);

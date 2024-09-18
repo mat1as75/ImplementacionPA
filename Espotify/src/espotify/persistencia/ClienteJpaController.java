@@ -20,6 +20,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import javax.persistence.PersistenceContext;
+
+
 /**
  *
  * @author tecnologo
@@ -32,12 +35,26 @@ public class ClienteJpaController implements Serializable {
     public ClienteJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
+    @PersistenceContext
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
+    public void dejarDeSeguir(String nicknameCliente, String nicknameUsuario) {
+        Cliente c = this.getEntityManager().find(Cliente.class, nicknameCliente);
+        Usuario u = this.getEntityManager().find(Usuario.class, nicknameUsuario);
+        
+        if (c != null && u != null) {
+            c.getMisSeguidos().remove(u);
+            u.getMisSeguidores().remove(c);
+            this.getEntityManager().merge(c);
+        } else {
+            throw new IllegalArgumentException("Cliente o Usuario no encontrados");
+        }
+    }
+    
     public void create(Cliente cliente) throws PreexistingEntityException, Exception {
         if (cliente.getMisListasReproduccionCreadas() == null) {
             cliente.setMisListasReproduccionCreadasCompleta(new ArrayList<ListaParticular>());
