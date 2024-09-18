@@ -21,17 +21,24 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
     public SeguirUsuario() {
         initComponents();
         Fabrica f=Fabrica.getInstance();
-        controlador = f.getControlador();
-        List<String> nicknamesArtistas = controlador.getNicknamesArtistas();
-        List<String> nicknamesClientes = controlador.getNicknamesClientes();
+        IControlador i=f.getControlador();
+        List<String> nicknamesArtistas = i.getNicknamesArtistas();
+        List<String> nicknamesClientes = i.getNicknamesClientes();
+        jComboBoxSeguidor.removeAllItems();
         for (String c : nicknamesClientes) {
             jComboBoxSeguidor.addItem(c);
         }
+        String Seguidor = (String) jComboBoxSeguidor.getSelectedItem();
+        jComboBoxSeguido.removeAllItems();
         for (String c : nicknamesClientes) {
-            jComboBoxSeguido.addItem(c);
+            if (!(Seguidor.equals(c))){
+                jComboBoxSeguido.addItem(c);
+            }
         }
         for (String a : nicknamesArtistas) {
-            jComboBoxSeguido.addItem(a);
+            if (!(Seguidor.equals(a))){
+                jComboBoxSeguido.addItem(a);
+            }
         }
     }
 
