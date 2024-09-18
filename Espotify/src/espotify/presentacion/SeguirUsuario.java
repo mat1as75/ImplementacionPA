@@ -58,6 +58,12 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
 
         jLabel1.setText("nickname del cliente que desea realizar el seguimiento");
 
+        jComboBoxSeguidor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxSeguidorActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("nickname del usuario (cliente/artista) al que desea seguir");
 
         jButtonAceptar.setText("Aceptar");
@@ -167,6 +173,25 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_jButtonAceptarActionPerformed
+
+    private void jComboBoxSeguidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSeguidorActionPerformed
+        String Seguidor = (String) jComboBoxSeguidor.getSelectedItem();
+        jComboBoxSeguido.removeAllItems();
+        Fabrica f=Fabrica.getInstance();
+        IControlador i=f.getControlador();
+        List<String> nicknamesArtistas = i.getNicknamesArtistas();
+        List<String> nicknamesClientes = i.getNicknamesClientes();
+        for (String c : nicknamesClientes) {
+            if (!(Seguidor.equals(c))){
+                jComboBoxSeguido.addItem(c);
+            }
+        }
+        for (String a : nicknamesArtistas) {
+            if (!(Seguidor.equals(a))){
+                jComboBoxSeguido.addItem(a);
+            }
+        }
+    }//GEN-LAST:event_jComboBoxSeguidorActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

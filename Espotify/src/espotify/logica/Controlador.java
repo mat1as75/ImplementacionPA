@@ -8,6 +8,7 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
@@ -35,17 +36,12 @@ public class Controlador implements IControlador{
     }
 
     @Override
-    public void AltaGenero(String nombreGenero) {
-       /* GeneroJpaController GJP = GeneroJpaController.getInstance();
-        Genero g = new Genero(nombreGenero);
-        
+    public void AltaGenero(String nombreGenero, String nomPadre) {
         try {
-            GJP.create(g);
+            this.contpersis.AltaGenero(nombreGenero, nomPadre);
         } catch (Exception ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-        */
-       this.contpersis.AltaGenero(nombreGenero);
     }
     
     @Override
@@ -59,9 +55,9 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public List<String>getNicknamesArtistas(){
+    public ArrayList<String>getNicknamesArtistas(){
         ArrayList<Artista> artistas = contpersis.getArtistas();
-        ArrayList<String> nicknames = new ArrayList<String>();
+        ArrayList<String> nicknames = new ArrayList<>();
         for (Artista a : artistas) {
             nicknames.add(a.getNickname());
         }
@@ -212,7 +208,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public Tema getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema){
+    public DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema){
         return this.contpersis.getTemaPorLista(nombreLista, tipoDeLista, nombreTema);
     }
     
@@ -282,6 +278,34 @@ public class Controlador implements IControlador{
             throw ex;
         }
     }
+    @Override
+    public void EliminarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
+        try {
+            this.contpersis.EliminarTemaFavorito(nicknameCliente, idTema);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public void EliminarListaFavorito(String nicknameCliente, String nombreLista) throws Exception {
+        try {
+            this.contpersis.EliminarListaFavorito(nicknameCliente, nombreLista);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public void EliminarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        try {
+            
+            this.contpersis.EliminarAlbumFavorito(nicknameCliente, idAlbum);
+        } catch (Exception ex) {
+            
+            throw ex;
+        }
+    }
 
     @Override
     public ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente){
@@ -332,9 +356,54 @@ public class Controlador implements IControlador{
         return this.contpersis.getNicknamesClientesListasPrivadas();
     }
 
+
     @Override
     public boolean existeRelacion(String Seguidor, String Seguido){
         return this.contpersis.existeRelacion(Seguidor,Seguido);
-    };
+    }
+
+
+    @Override
+    public DTAlbum ConsultaAlbum(Long idAlbum){
+        return this.contpersis.ConsultaAlbum(idAlbum);
+    }
+    
+    @Override
+    public Map<Long, String>  getTemasFavCliente(String nicknameCliente){
+        return this.contpersis.getTemasFavCliente(nicknameCliente);
+    }
+    
+     @Override
+    public Map<Long, String> getAlbumsFavCliente(String nicknameCliente){
+        return this.contpersis.getAlbumsFavCliente(nicknameCliente);
+    }
+    
+     @Override
+    public ArrayList<String> getListasFavCliente(String nicknameCliente){
+        return this.contpersis.getListasFavCliente(nicknameCliente);
+    }
+    
+    @Override
+    public ArrayList<String> getNombresGenerosPadre() {
+        return this.contpersis.getNombresGenerosPadre();
+    }
+    
+    @Override
+    public ArrayList<String> getNombresGenerosHijos() {
+        return this.contpersis.getNombresGenerosHijos();
+    }
+    
+    @Override
+    public Map<Long,String>  getMapAlbumesGenero(String genero){
+        return this.contpersis.getMapAlbumesGenero(genero);
+    }
+    
+    @Override
+    public Map<Long,String>  getMapAlbumesArtista(String artista){
+        return this.contpersis.getMapAlbumesArtista(artista);
+    }
+
+   
 
 }
+

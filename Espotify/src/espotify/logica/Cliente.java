@@ -6,7 +6,9 @@ package espotify.logica;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.*;
 
 @Entity
@@ -72,6 +74,15 @@ public class Cliente extends Usuario{
     public List<Album> getMisAlbumesFav() {
         return this.misAlbumesFav;
     }
+    
+    public Map<Long, String> getAlbumsFavMap(){
+        Map<Long, String> misAlbumsFav = new HashMap<>();
+        for(Album a : this.misAlbumesFav){
+            misAlbumsFav.put(a.getIdAlbum(), a.getNombreAlbum());
+        }
+        return misAlbumsFav;
+    }
+    
     public void setMisAlbumesFav(Album a) {
         this.misAlbumesFav.addFirst(a);
     }
@@ -79,13 +90,35 @@ public class Cliente extends Usuario{
     public List<Tema> getMisTemasFav() {
         return this.misTemasFav;
     }
+    
+    public Map<Long, String>  getTemasFavMap(){
+        Map<Long, String>  misTemasF = new HashMap<>();
+        for(Tema t : this.misTemasFav){
+            misTemasF.put(t.getIdTema(), t.getNombreTema());
+        }
+        return misTemasF;
+    }
+    
     public void setMisTemasFav(Tema t) {
         this.misTemasFav.addFirst(t);
+    }
+    
+    public void setMisTemasFavLista(List<Tema> temas){
+        this.misTemasFav = temas;
     }
     
     public List<ListaReproduccion> getMisListasReproduccionFav() {
         return this.misListasReproduccionFav;
     }
+    
+    public ArrayList<String> getListasFavString(){
+        ArrayList<String> misListasFav = new ArrayList<>();
+        for(ListaReproduccion lr : this.misListasReproduccionFav){
+            misListasFav.addLast(lr.getNombreLista());
+        }
+        return misListasFav;
+    }
+    
     public void setMisListasReproduccionFav(ListaReproduccion lrf) {
         this.misListasReproduccionFav.addFirst(lrf);
     }
