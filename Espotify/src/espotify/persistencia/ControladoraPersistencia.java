@@ -380,14 +380,31 @@ public class ControladoraPersistencia {
         Cliente cliente = this.cliJpa.findCliente(C);
         Usuario usuario = this.usuJpa.findUsuario(U);
         
-        cliente.getMisSeguidos().remove(usuario);
-        usuario.getMisSeguidores().remove(cliente);
-        this.cliJpa.edit(cliente);
+        ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
+        
+        for (Usuario seg : seguidosCliente) {
+            if (seg.getNickname().equals(usuario.getNickname())) {
+                cliente.getMisSeguidos().remove(seg);
+                break;
+            }
+        }
+        
+        ArrayList<Usuario> seguidoresUsuario = new ArrayList<>(usuario.getMisSeguidores());
+        
+        for (Usuario seg : seguidoresUsuario) {
+            if (seg.getNickname().equals(cliente.getNickname())) {
+                usuario.getMisSeguidores().remove(seg);
+                break;
+            }
+        }
         t.commit();
         em.close();
-        //this.cliJpa.edit(cliente);
-        
-        
+        try {
+            this.cliJpa.edit(cliente);
+            this.usuJpa.edit(usuario);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
     
     public void DejarDeSeguirPrueba() throws Exception {
@@ -1209,14 +1226,11 @@ public class ControladoraPersistencia {
         List<Genero> generos = genJpa.findGeneroEntities();
         
         for (Genero g : generos) {
-            // Si no es GeneroRaiz
-            if (!g.getNombreGenero().toLowerCase().equals("genero")) {
-                // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
-                if (!g.getNombreGenero().isEmpty()) {
-                    // Si es GeneroPadre lo agrego
-                    if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
-                        nombresGenerosPadre.add(g.getNombreGenero());
-                    }
+            // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
+            if (!g.getNombreGenero().isEmpty()) {
+                // Si es GeneroPadre lo agrego
+                if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                    nombresGenerosPadre.add(g.getNombreGenero());
                 }
             }
         }

@@ -130,17 +130,23 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
         String C = (String) jComboBoxC.getSelectedItem();  // Cliente que desea finalizar el seguimiento
         String U = (String) jComboBoxCyA.getSelectedItem();  // Usuario (Cliente/Artista) al que desea dejar de seguir
 
-        if (!C.equals(U)) {
-            try {
-                this.controlador.dejarDeSeguir(C, U);
-                JOptionPane.showMessageDialog(null, "Se ha dejado de seguir al usuario", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            } catch (HeadlessException ex) {
-                throw ex;
-                //JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        if (!controlador.getSeguidosDeCliente(C).isEmpty()) {
+            if (!C.equals(U)) {
+                try {
+                    this.controlador.dejarDeSeguir(C, U);
+                    JOptionPane.showMessageDialog(null, "Se ha dejado de seguir al usuario", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } catch (HeadlessException ex) {
+                    throw ex;
+                    //JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a sí mismo", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Un cliente no puede dejar de seguirse a sí mismo", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El cliente no tiene seguidos", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
+        ActualizoListaSeguidos();
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
     private void jComboBoxCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCActionPerformed
@@ -150,20 +156,31 @@ public class DejarSeguirAUsuario extends javax.swing.JInternalFrame {
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
         listaSeguidos.forEach(modelo::addElement);
         jComboBoxCyA.setModel(modelo);
-        System.out.println("Cantidad de Seguidos: " + listaSeguidos.size());
     }//GEN-LAST:event_jComboBoxCActionPerformed
 
     private void jComboBoxCyAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCyAActionPerformed
         
     }//GEN-LAST:event_jComboBoxCyAActionPerformed
 
-    /*private void ActualizoSeguidos() {
-        String nicknameUsuario = jComboBoxCyA.getSelectedItem().toString();
-        for (String nickname : ) {
+    private void ActualizoListaSeguidos() {
+        String nicknameCliente = jComboBoxC.getSelectedItem().toString();
+
+        if (jComboBoxCyA.getItemAt(0) != null) {
+            String nicknameUsuario = jComboBoxCyA.getItemAt(0);
+            nicknameUsuario = jComboBoxCyA.getSelectedItem().toString();
             
+            ArrayList<String> listaSeguidos = controlador.getSeguidosDeCliente(nicknameCliente);
+            // Recorre ListaSeguidos del Cliente
+            for (String nickname : listaSeguidos) {
+                if (nickname.equals(nicknameUsuario)) {
+                    listaSeguidos.remove(nickname);
+                }
+            }
+            DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+            listaSeguidos.forEach(modelo::addElement);
+            jComboBoxCyA.setModel(modelo);
         }
-        jComboBoxCyA.setModel(modelo);
-    }*/
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConfirmar;
