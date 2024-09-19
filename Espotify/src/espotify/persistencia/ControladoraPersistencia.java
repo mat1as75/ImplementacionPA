@@ -349,10 +349,10 @@ public class ControladoraPersistencia {
     public void setSeguidorSeguido(String Seguidor, String Seguido) {
         Cliente c=this.cliJpa.findCliente(Seguidor);
         Usuario u=this.usuJpa.findUsuario(Seguido);
-        c.setMisSeguidos(c);
-        u.setMisSeguidores(u);
+        c.setMisSeguidos(u);
+        u.setMisSeguidores(c);
         try {
-            usuJpa.edit(c);
+            cliJpa.edit(c);
             usuJpa.edit(u);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
