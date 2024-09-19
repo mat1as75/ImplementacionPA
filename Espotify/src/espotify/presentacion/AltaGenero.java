@@ -175,7 +175,7 @@ public class AltaGenero extends javax.swing.JInternalFrame {
         String nombreGeneroIngresado = nombreTextField.getText();
         ArrayList<String> generos = new ArrayList<>(controlador.getNombresGenerosPadre());
         generos.addAll(controlador.getNombresGenerosHijos());
-        
+
         boolean Existe = false;
         // Recorro lista GenerosTotales
         for (String g : generos) {
@@ -184,64 +184,83 @@ public class AltaGenero extends javax.swing.JInternalFrame {
                 Existe = true;
             }
         }
-        
+
         // NombreIngresado != Empty
         if (!nombreGeneroIngresado.isEmpty()) {
-            // Sin GeneroPadre
-            if (padreNo.isSelected()) { 
-                // GeneroIngresado no existe
-                if (!Existe) { 
-                    controlador.AltaGenero(nombreGeneroIngresado, "Genero");
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Genero creado exitosamente.",
-                            "Operacion exitosa",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else { 
-                    // GeneroPadre ya existe
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Genero ya existe.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            } else if (padreSi.isSelected()) { // Con GeneroPadre
+            //el nombre ingresado es genero
+            if (!nombreGeneroIngresado.equalsIgnoreCase("genero")) {
+                // Sin GeneroPadre
+                if (padreNo.isSelected()) {
+                    // GeneroIngresado no existe
+                    if (!Existe) {
+                        controlador.AltaGenero(nombreGeneroIngresado, "Genero");
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Genero creado exitosamente.",
+                                "Operacion exitosa",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // GeneroPadre ya existe
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Genero ya existe.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else if (padreSi.isSelected()) { // Con GeneroPadre
 
-                // GeneroIngresado no existe
-                if (!Existe) {
-              
-                    String generoPadreSeleccionado = (String) generosPadreComboBox.getSelectedItem();
+                    // GeneroIngresado no existe
+                    if (!Existe) {
 
-                    // Si GeneroIngresado no existe en GenerosHijos
-                    controlador.AltaGenero(nombreGeneroIngresado, generoPadreSeleccionado);
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Genero creado exitosamente.",
-                            "Operacion exitosa",
-                            JOptionPane.INFORMATION_MESSAGE);
+                        String generoPadreSeleccionado = (String) generosPadreComboBox.getSelectedItem();
+                        if (!generoPadreSeleccionado.isEmpty()) {
+                            controlador.AltaGenero(nombreGeneroIngresado, generoPadreSeleccionado);
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "Genero creado exitosamente.",
+                                    "Operacion exitosa",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    "Debe seleccionar un genero padre.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                        // Si GeneroIngresado no existe en GenerosHijos
+
+                    } else {
+                        // GeneroSeleccionado == GeneroPadre
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Genero ya existe.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    // GeneroSeleccionado == GeneroPadre
+                    // No seleccionó opcion de Padre
                     JOptionPane.showMessageDialog(
                             null,
-                            "Genero ya existe.",
+                            "Seleccione opción de padre SI/NO.",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
-            } else { 
-                // No seleccionó opcion de Padre
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Seleccione opción de padre SI/NO.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+            }else{
+                // GeneroSeleccionado == GeneroPadre
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Ingrese un nombre valido",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
             }
+
         } else {
             // No ingresó nombre de Genero
             JOptionPane.showMessageDialog(
-                        null,
-                        "Ingrese nombre de genero.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    null,
+                    "Ingrese nombre de genero.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_confirmarBotonActionPerformed
 
