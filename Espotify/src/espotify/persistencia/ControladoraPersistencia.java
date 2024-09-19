@@ -352,7 +352,7 @@ public class ControladoraPersistencia {
         c.setMisSeguidos(u);
         u.setMisSeguidores(c);
         try {
-            usuJpa.edit(c);
+            cliJpa.edit(c);
             usuJpa.edit(u);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
@@ -360,20 +360,64 @@ public class ControladoraPersistencia {
 
     }
     
-    public void dejarDeSeguir(String C, String U) {
-        Usuario c = this.usuJpa.findUsuario(C);
-        Usuario u = this.usuJpa.findUsuario(U);
-
-        ((Cliente) c).getMisSeguidos().remove(u);
-        ((Cliente) u).getMisSeguidos().remove(c);
+    public ArrayList<String> getSeguidosDeCliente(String nickname) {
+        Cliente c = cliJpa.findCliente(nickname);
+        ArrayList<String> listaSeguidos = new ArrayList<>();
+        
+        for (Usuario u : c.getMisSeguidos()) {
+            listaSeguidos.add(u.getNickname());
+        }
+        return listaSeguidos;
+    }
+    
+    public void dejarDeSeguir(String C, String U) throws Exception {
+   
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction t = em.getTransaction();
+        
+        t.begin();
+        Cliente cliente = this.cliJpa.findCliente(C);
+        Usuario usuario = this.usuJpa.findUsuario(U);
+        
+        ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
+        
+        for (Usuario seg : seguidosCliente) {
+            if (seg.getNickname().equals(usuario.getNickname())) {
+                cliente.getMisSeguidos().remove(seg);
+                break;
+            }
+        }
+        
+        ArrayList<Usuario> seguidoresUsuario = new ArrayList<>(usuario.getMisSeguidores());
+        
+        for (Usuario seg : seguidoresUsuario) {
+            if (seg.getNickname().equals(cliente.getNickname())) {
+                usuario.getMisSeguidores().remove(seg);
+                break;
+            }
+        }
+        t.commit();
+        em.close();
+        try {
+            this.cliJpa.edit(cliente);
+            this.usuJpa.edit(usuario);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    public void DejarDeSeguirPrueba() throws Exception {
+        Cliente cliente = cliJpa.findCliente("Eleven11");
+        Usuario usuario = usuJpa.findUsuario("lachiqui");
         
         try {
-            // Actualizar
-            
-            this.usuJpa.edit(c);
-            this.usuJpa.edit(u);
+            //usuario.getMisSeguidores().remove(cliente);
+            cliente.getMisSeguidos().remove(usuario);
+            //usuJpa.edit(usuario);
+            cliJpa.edit(cliente);
         } catch (Exception ex) {
-            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
     }
     
@@ -384,13 +428,14 @@ public class ControladoraPersistencia {
         // Obtener lista de seguidos del cliente
         List<Usuario> listaSeguidos = c.getMisSeguidos();
 
+        boolean Sigue = false;
         // Recorrer la lista y comprobar si lo sigue
         for (Usuario lSeg : listaSeguidos) {
-            if (lSeg.getNickname().equalsIgnoreCase(U)) {
-                return true; // Si lo sigue retorna true
+            if (lSeg.getNickname().equals(U)) {
+                Sigue = true; // Si lo sigue retorna true
             }
         }
-        return false;  // Caso contrario retorna false
+        return Sigue;  // Caso contrario retorna false
     }
 
    
@@ -1181,14 +1226,11 @@ public class ControladoraPersistencia {
         List<Genero> generos = genJpa.findGeneroEntities();
         
         for (Genero g : generos) {
-            // Si no es GeneroRaiz
-            if (!g.getNombreGenero().toLowerCase().equals("genero")) {
-                // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
-                if (!g.getNombreGenero().isEmpty()) {
-                    // Si es GeneroPadre lo agrego
-                    if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
-                        nombresGenerosPadre.add(g.getNombreGenero());
-                    }
+            // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
+            if (!g.getNombreGenero().isEmpty()) {
+                // Si es GeneroPadre lo agrego
+                if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                    nombresGenerosPadre.add(g.getNombreGenero());
                 }
             }
         }
