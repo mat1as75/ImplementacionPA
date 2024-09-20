@@ -19,6 +19,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -604,7 +605,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         if (rutaTema.isBlank() || rutaTema.isEmpty()) {
             JOptionPane.showMessageDialog(
                         null, 
-                        "La ruta no es válida.", 
+                        "No se ha seleccionado un archivo. La ruta está vacía.", 
                         "Error", 
                         JOptionPane.ERROR_MESSAGE); 
             return false;
@@ -666,7 +667,9 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 nuevoDataTema = new DTTemaConRuta(ruta, nombre, duracionTotalSegundos, intPosicionTema);
             }
             dataTemas.add(nuevoDataTema);
-            copiarArchivoTema(); //hago la copia del archivo seleccionado a la carpeta temas
+            if (temaSeleccionado != null) {
+                copiarArchivoTema(); //hago la copia del archivo seleccionado a la carpeta temas
+            }
             String datos = nuevoDataTema.toString();
             listaTemasAgregadosModel.addElement(datos); //agrego tema a la lista de temas agregados
             btnRemoverTema.setEnabled(true);
@@ -776,7 +779,9 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             for (DTTemaGenerico dataTema : dataTemas) {
                 if (datosTemaSeleccionado.contains(dataTema.getNombreTema())) {
                     dataTemas.remove(dataTema);
-                    removerArchivoTema(dataTema.getNombreTema());
+                    if (dataTema instanceof DTTemaConRuta) {
+                        removerArchivoTema(dataTema.getNombreTema());
+                    }
                     break;
                 }
             }
@@ -887,18 +892,41 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         return true;
     }
     
+    private Boolean validarAnioAlbum(int a) {
+        Year anioActual = Year.now();
+        if (a > anioActual.getValue()) {
+            JOptionPane.showMessageDialog(
+                        null, 
+                        "El año de creación no puede ser mayor al año actual.", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else if (a < 1900) {
+            JOptionPane.showMessageDialog(
+                        null, 
+                        "El año de creación no puede ser menor a 1900.", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
+        
+    }
+    
     private void btnConfirmarAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAltaAlbumActionPerformed
         String nombre = nombreAlbum.getText().trim();
         int anioAlb = anioAlbum.getValue();
         String fotoAlb = this.rutaImagenAlbum;
         String nombreArt = String.valueOf(comboBoxArtistasRegistrados.getSelectedItem());
         
-        if (validarPosicionesDeTemas() 
-                && !tieneNombreAlbumVacio(nombre) 
-                && !nombreArt.isBlank() 
-                && !nombreArt.isEmpty()
-                && albumTieneAlMenosUnGenero()
-                && albumTieneAlMenosUnTema()) {
+        if (!nombreArt.isBlank() 
+            && !nombreArt.isEmpty()
+            && !tieneNombreAlbumVacio(nombre)
+            && validarAnioAlbum(anioAlb)
+            && albumTieneAlMenosUnGenero()
+            && albumTieneAlMenosUnTema()
+            && validarPosicionesDeTemas()) {
             DTAlbum_SinDTArtista dataAlbum = new DTAlbum_SinDTArtista(
                 nombre, anioAlb, fotoAlb, 
                 dataTemas, dataGeneros, nombreArt
