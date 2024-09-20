@@ -172,24 +172,31 @@ public class AltaGenero extends javax.swing.JInternalFrame {
  
     private void confirmarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBotonActionPerformed
         
-        String nombreGeneroIngresado = nombreTextField.getText();
-        ArrayList<String> generos = new ArrayList<>(controlador.getNombresGenerosPadre());
-        generos.addAll(controlador.getNombresGenerosHijos());
-
-        boolean Existe = false;
-        // Recorro lista GenerosTotales
-        for (String g : generos) {
-            // Si GeneroIngresado == GenerosActual, genero existe
-            if (g.toLowerCase().equals(nombreGeneroIngresado.toLowerCase())) {
-                Existe = true;
-            }
+        
+        if(controlador.NoHayGeneros()){
+            controlador.SetGenero();
         }
+        
+        String nombreGeneroIngresado = nombreTextField.getText();
+        
+        
 
         // NombreIngresado != Empty
         if (!nombreGeneroIngresado.isEmpty()) {
             //el nombre ingresado es genero
             if (!nombreGeneroIngresado.equalsIgnoreCase("genero")) {
-                // Sin GeneroPadre
+
+                ArrayList<String> generos = new ArrayList<>(controlador.getNombresGenerosPadre());
+                generos.addAll(controlador.getNombresGenerosHijos());
+                boolean Existe = false;
+                // Recorro lista GenerosTotales
+                for (String g : generos) {
+                    // Si GeneroIngresado == GenerosActual, genero existe
+                    if (g.toLowerCase().equals(nombreGeneroIngresado.toLowerCase())) {
+                        Existe = true;
+                    }
+                }
+                // Sin GeneroPadre    
                 if (padreNo.isSelected()) {
                     // GeneroIngresado no existe
                     if (!Existe) {
@@ -208,7 +215,7 @@ public class AltaGenero extends javax.swing.JInternalFrame {
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } else if (padreSi.isSelected()) { // Con GeneroPadre
-
+                    
                     // GeneroIngresado no existe
                     if (!Existe) {
 

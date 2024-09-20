@@ -1226,13 +1226,17 @@ public class ControladoraPersistencia {
         List<Genero> generos = genJpa.findGeneroEntities();
         
         for (Genero g : generos) {
-            // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
-            if (!g.getNombreGenero().isEmpty()) {
+            
+            if(!g.getNombreGenero().equalsIgnoreCase("genero")){
+                // Si no es un GeneroPadre vacío (Genero->miPadre == Empty)
+                if (!g.getNombreGenero().isEmpty()) {
                 // Si es GeneroPadre lo agrego
-                if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                    if (g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
                     nombresGenerosPadre.add(g.getNombreGenero());
+                    }
                 }
             }
+            
         }
         
         return nombresGenerosPadre;
@@ -1243,10 +1247,13 @@ public class ControladoraPersistencia {
         List<Genero> generos = genJpa.findGeneroEntities();
         
         for (Genero g : generos) {
-            // Si Genero no tiene GenerosHijos, y además no tiene a GeneroPadre = "Genero"
-            if (g.getMisGenerosHijos().isEmpty() && !g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
-                nombresGenerosHijos.add(g.getNombreGenero());
+            if (!g.getNombreGenero().equalsIgnoreCase("genero")) {
+                // Si Genero no tiene GenerosHijos, y además no tiene a GeneroPadre = "Genero"
+                if (g.getMisGenerosHijos().isEmpty() && !g.getMiPadre().getNombreGenero().toLowerCase().equals("genero")) {
+                    nombresGenerosHijos.add(g.getNombreGenero());
+                }
             }
+           
         }
         
         return nombresGenerosHijos;
@@ -1286,6 +1293,15 @@ public class ControladoraPersistencia {
         
         
         return Albums;    
+    }
+    
+    public boolean NoHayGeneros(){
+        return this.genJpa.findGeneroEntities().isEmpty();
+    }
+    
+    public void SetGenero( ) throws Exception{
+        Genero gen = new Genero("Genero",null);
+        this.genJpa.create(gen);
     }
 
 }

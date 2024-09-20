@@ -106,5 +106,8 @@ public interface IControlador {
     
     public abstract Map<Long,String>  getMapAlbumesGenero(String genero);
     public abstract Map<Long,String>  getMapAlbumesArtista(String artista);
+    
+    public abstract boolean NoHayGeneros();
+    public abstract void SetGenero();
 
 }

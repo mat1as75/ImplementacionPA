@@ -402,7 +402,18 @@ public class Controlador implements IControlador{
         return this.contpersis.getMapAlbumesArtista(artista);
     }
 
-   
+    @Override
+    public boolean NoHayGeneros(){
+        return this.contpersis.NoHayGeneros();
+    }
 
+    @Override
+    public void SetGenero(){
+        try {
+            this.contpersis.SetGenero();
+        } catch (Exception ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
 
