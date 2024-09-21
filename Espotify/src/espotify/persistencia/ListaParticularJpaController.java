@@ -4,8 +4,6 @@
  */
 package espotify.persistencia;
 
-import espotify.DataTypes.exceptions.NonexistentEntityException;
-import espotify.DataTypes.exceptions.PreexistingEntityException;
 import espotify.logica.ListaParticular;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -13,6 +11,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import espotify.logica.Tema;
+import espotify.persistencia.exceptions.NonexistentEntityException;
+import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -28,9 +28,9 @@ public class ListaParticularJpaController implements Serializable {
     public ListaParticularJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-     public ListaParticularJpaController() {
+    public ListaParticularJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
-    } 
+    }
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

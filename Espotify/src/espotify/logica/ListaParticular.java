@@ -39,4 +39,8 @@ public class ListaParticular extends ListaReproduccion{
     public void setsoyPrivada(boolean soyPrivada) {
         this.soyPrivada = soyPrivada;
     }
+    
+    public void setMiClienteNull() {
+        this.miCliente = null;
+    }
 }

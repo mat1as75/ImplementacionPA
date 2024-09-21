@@ -20,9 +20,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import javax.persistence.PersistenceContext;
-
-
 /**
  *
  * @author tecnologo
@@ -35,26 +32,12 @@ public class ClienteJpaController implements Serializable {
     public ClienteJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
-    @PersistenceContext
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void dejarDeSeguir(String nicknameCliente, String nicknameUsuario) {
-        Cliente c = this.getEntityManager().find(Cliente.class, nicknameCliente);
-        Usuario u = this.getEntityManager().find(Usuario.class, nicknameUsuario);
-        
-        if (c != null && u != null) {
-            c.getMisSeguidos().remove(u);
-            u.getMisSeguidores().remove(c);
-            this.getEntityManager().merge(c);
-        } else {
-            throw new IllegalArgumentException("Cliente o Usuario no encontrados");
-        }
-    }
-    
     public void create(Cliente cliente) throws PreexistingEntityException, Exception {
         if (cliente.getMisListasReproduccionCreadas() == null) {
             cliente.setMisListasReproduccionCreadasCompleta(new ArrayList<ListaParticular>());
@@ -80,7 +63,7 @@ public class ClienteJpaController implements Serializable {
             cliente.setMisSeguidoresCompletos(attachedMisSeguidores);
             em.persist(cliente);
             for (ListaParticular misListasReproduccionCreadasListaParticular : cliente.getMisListasReproduccionCreadas()) {
-                misListasReproduccionCreadasListaParticular.getCliente().add(cliente);
+                misListasReproduccionCreadasListaParticular.setMiCliente(cliente);
                 misListasReproduccionCreadasListaParticular = em.merge(misListasReproduccionCreadasListaParticular);
             }
             for (Usuario misSeguidoresUsuario : cliente.getMisSeguidores()) {
@@ -127,13 +110,13 @@ public class ClienteJpaController implements Serializable {
             cliente = em.merge(cliente);
             for (ListaParticular misListasReproduccionCreadasOldListaParticular : misListasReproduccionCreadasOld) {
                 if (!misListasReproduccionCreadasNew.contains(misListasReproduccionCreadasOldListaParticular)) {
-                    misListasReproduccionCreadasOldListaParticular.getCliente().remove(cliente);
+                    misListasReproduccionCreadasOldListaParticular.setMiClienteNull();
                     misListasReproduccionCreadasOldListaParticular = em.merge(misListasReproduccionCreadasOldListaParticular);
                 }
             }
             for (ListaParticular misListasReproduccionCreadasNewListaParticular : misListasReproduccionCreadasNew) {
                 if (!misListasReproduccionCreadasOld.contains(misListasReproduccionCreadasNewListaParticular)) {
-                    misListasReproduccionCreadasNewListaParticular.getCliente().add(cliente);
+                    misListasReproduccionCreadasNewListaParticular.setMiCliente(cliente);
                     misListasReproduccionCreadasNewListaParticular = em.merge(misListasReproduccionCreadasNewListaParticular);
                 }
             }
@@ -180,7 +163,7 @@ public class ClienteJpaController implements Serializable {
             }
             List<ListaParticular> misListasReproduccionCreadas = cliente.getMisListasReproduccionCreadas();
             for (ListaParticular misListasReproduccionCreadasListaParticular : misListasReproduccionCreadas) {
-                misListasReproduccionCreadasListaParticular.getCliente().remove(cliente);
+                misListasReproduccionCreadasListaParticular.setMiClienteNull();
                 misListasReproduccionCreadasListaParticular = em.merge(misListasReproduccionCreadasListaParticular);
             }
             List<Usuario> misSeguidores = cliente.getMisSeguidores();
