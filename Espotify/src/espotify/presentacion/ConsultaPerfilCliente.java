@@ -517,7 +517,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             jListTemasFavoritos.setModel(listaTemasFavoritos);
             
             // Quito la podibilidad de volver a Consultar
-            jButtonAceptar.setVisible(false);
+            //jButtonAceptar.setVisible(false);
         }
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 

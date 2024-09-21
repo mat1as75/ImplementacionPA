@@ -368,10 +368,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             } catch(IOException e) {
                 e.printStackTrace();
             }
-            
-            
-            
-            
+
             /* Recorro lista Nicknames de Seguidores del Artista, 
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nicknames a la JList*/
@@ -395,7 +392,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             jListAlbumesPublicados.setModel(listaAlbumesPublicados);
             
             // Quito la posibilidad de volver a Consultar
-            jButtonAceptar.setVisible(false);
+            //jButtonAceptar.setVisible(false);
         }
         
     }//GEN-LAST:event_jButtonAceptarActionPerformed

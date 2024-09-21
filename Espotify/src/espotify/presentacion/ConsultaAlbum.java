@@ -428,23 +428,7 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
                         imageLabel.setIcon(imagen);
                         imageLabel.setVisible(true);
                     }
-                } else { // Asignar foto de perfil predeterminada
-                    
-                    archivoAlmacenado = ImageIO.read(new File("./Resource/ImagenesPerfil/Default-Photo-Profile.jpg"));
-
-                    // Verifica si la imagen se ha cargado correctamente
-                    if (archivoAlmacenado != null) {
-
-                        // Redimensionar la imagen
-                        escalaImagen = archivoAlmacenado.getScaledInstance(sizeHorizontal, sizeVertical, Image.SCALE_SMOOTH);
-
-                        // Convierte archivoAlmacenado a ImageIcon
-                        imagen = new ImageIcon(escalaImagen);
-                        
-                        imageLabel.setIcon(imagen);
-                        imageLabel.setVisible(true);
-                    }
-                }
+                } 
                 
             } catch (IOException e) {
                 e.printStackTrace();

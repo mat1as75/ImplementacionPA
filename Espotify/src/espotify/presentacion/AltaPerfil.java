@@ -257,8 +257,8 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
 
             } catch (IOException e) {
                 e.printStackTrace(); // Manejo de excepciones en caso de error al copiar
-            };
-        };
+            }
+        }
             }//GEN-LAST:event_openButtonActionPerformed
 
     private void jComboBoxusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxusuarioActionPerformed
@@ -326,15 +326,25 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
 
         boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null)&&(!existeNicName)&&(!existeEmail)&&(escorrectoEmail));
         if (borrar) {
-            if (opcion == "artista") {
+            if (opcion.equals("artista")) {
                 biografia = jTextAreaBiografia.getText();
                 webPromocion = jTextFieldwebpromocion.getText();
                 Artista a = new Artista(nickname, nombre, apellido, email, fecNac, fotoPerfil, biografia,webPromocion );
                 i.AltaArtista(a);
+                
+                JOptionPane.showMessageDialog(this, 
+                        "Artista creado exitosamente.",
+                        "Operacion exitosa",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
-            if (opcion == "cliente") {
+            if (opcion.equals("cliente")) {
                 Cliente c = new Cliente(nickname, nombre, apellido, email, fecNac, fotoPerfil);
                 i.AltaCliente(c);
+                
+                JOptionPane.showMessageDialog(this, 
+                        "Cliente creado exitosamente.",
+                        "Operacion exitosa",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
             jTextFieldnickname.setText("");
             jTextFieldnombre.setText("");
