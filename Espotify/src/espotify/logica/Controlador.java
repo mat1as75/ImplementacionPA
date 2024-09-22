@@ -111,10 +111,6 @@ public class Controlador implements IControlador{
             throw ex;
         }
     }
-    
-    @Override
-    public void cargarDatosDePrueba() {}
-
 
     @Override
     public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
