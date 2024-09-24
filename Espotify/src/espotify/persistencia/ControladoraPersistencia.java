@@ -1,16 +1,10 @@
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package espotify.persistencia;
-
-
-
 
 import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTArtista;
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
@@ -74,17 +68,36 @@ public class ControladoraPersistencia {
         }
     }
 
-    public void AltaArtista(Artista u) {
+    public void AltaArtista(DTArtista dtArtista) {
         try {
-            this.artJpa.create(u);
+            Artista art = new Artista(
+                    dtArtista.getNickname(),
+                    dtArtista.getNombreUsuario(),
+                    dtArtista.getApellidoUsuario(),
+                    dtArtista.getEmail(),
+                    dtArtista.getFecNac(),
+                    dtArtista.getFotoPerfil(),
+                    dtArtista.getBiografia(),
+                    dtArtista.getDirSitioWeb()
+                    
+            );
+            this.artJpa.create(art);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void AltaCliente(Cliente c) {
+    public void AltaCliente(DTCliente dtCliente) {
         try {
-            this.cliJpa.create(c);
+            Cliente cli = new Cliente(
+                    dtCliente.getNickname(),
+                    dtCliente.getNombreUsuario(),
+                    dtCliente.getApellidoUsuario(),
+                    dtCliente.getEmail(),
+                    dtCliente.getFecNac(),
+                    dtCliente.getFotoPerfil()
+            );
+            this.cliJpa.create(cli);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }

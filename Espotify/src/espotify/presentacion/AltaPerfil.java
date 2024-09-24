@@ -1,8 +1,9 @@
 package espotify.presentacion;
 
+import espotify.DataTypes.DTArtista;
+import espotify.DataTypes.DTCliente;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
-import espotify.logica.Controlador;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.awt.Image;
@@ -14,7 +15,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -297,31 +297,45 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         
         if (nickname.isEmpty()){
             JOptionPane.showMessageDialog(null, "El nickname esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        
         if(existeNicName){
             JOptionPane.showMessageDialog(null, "El nickname ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
             jTextFieldnickname.setText("");
+            return;
         }
+        
         if (email.isEmpty()){
             JOptionPane.showMessageDialog(null, "El email esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        
         if(existeEmail){
             JOptionPane.showMessageDialog(null, "El email ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
             jTextFieldemail.setText("");
+            return;
         }
+        
         if(!escorrectoEmail){
-                JOptionPane.showMessageDialog(null, "El mail no es correcto.", "Error", JOptionPane.ERROR_MESSAGE);
-                jTextFieldemail.setText("");
+            JOptionPane.showMessageDialog(null, "El mail no es correcto.", "Error", JOptionPane.ERROR_MESSAGE);
+            jTextFieldemail.setText("");
+            return;
         }
 
         if (nombre.isEmpty()){
             JOptionPane.showMessageDialog(null, "El nombre esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        
         if (apellido.isEmpty()){
             JOptionPane.showMessageDialog(null, "El apellido esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        
         if (fecNac == null) {
             JOptionPane.showMessageDialog(null, "La fecha de nacimiento esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null)&&(!existeNicName)&&(!existeEmail)&&(escorrectoEmail));
@@ -329,8 +343,19 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             if (opcion.equals("artista")) {
                 biografia = jTextAreaBiografia.getText();
                 webPromocion = jTextFieldwebpromocion.getText();
-                Artista a = new Artista(nickname, nombre, apellido, email, fecNac, fotoPerfil, biografia,webPromocion );
-                i.AltaArtista(a);
+                DTArtista dtArtista = new DTArtista(
+                        nickname, 
+                        nombre, 
+                        apellido, 
+                        email, 
+                        fecNac, 
+                        fotoPerfil,
+                        null,
+                        biografia, 
+                        webPromocion,
+                        null
+                );
+                i.AltaArtista(dtArtista);
                 
                 JOptionPane.showMessageDialog(this, 
                         "Artista creado exitosamente.",
@@ -338,8 +363,15 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                         JOptionPane.INFORMATION_MESSAGE);
             }
             if (opcion.equals("cliente")) {
-                Cliente c = new Cliente(nickname, nombre, apellido, email, fecNac, fotoPerfil);
-                i.AltaCliente(c);
+                DTCliente dtCliente = new DTCliente(
+                        nickname,
+                        nombre,
+                        apellido,
+                        email,
+                        fecNac,
+                        fotoPerfil
+                );
+                i.AltaCliente(dtCliente);
                 
                 JOptionPane.showMessageDialog(this, 
                         "Cliente creado exitosamente.",
