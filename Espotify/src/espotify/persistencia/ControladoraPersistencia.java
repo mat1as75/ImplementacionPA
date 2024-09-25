@@ -1,26 +1,20 @@
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package espotify.persistencia;
-
-
-
 
 import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTArtista;
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
-
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaSimple;
+
 import espotify.logica.Album;
 import espotify.logica.Artista;
 import espotify.logica.Cliente;
@@ -32,11 +26,12 @@ import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
 import espotify.logica.Usuario;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -74,17 +69,36 @@ public class ControladoraPersistencia {
         }
     }
 
-    public void AltaArtista(Artista u) {
+    public void AltaArtista(DTArtista dtArtista) {
         try {
-            this.artJpa.create(u);
+            Artista art = new Artista(
+                    dtArtista.getNickname(),
+                    dtArtista.getNombreUsuario(),
+                    dtArtista.getApellidoUsuario(),
+                    dtArtista.getEmail(),
+                    dtArtista.getFecNac(),
+                    dtArtista.getFotoPerfil(),
+                    dtArtista.getBiografia(),
+                    dtArtista.getDirSitioWeb()
+                    
+            );
+            this.artJpa.create(art);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void AltaCliente(Cliente c) {
+    public void AltaCliente(DTCliente dtCliente) {
         try {
-            this.cliJpa.create(c);
+            Cliente cli = new Cliente(
+                    dtCliente.getNickname(),
+                    dtCliente.getNombreUsuario(),
+                    dtCliente.getApellidoUsuario(),
+                    dtCliente.getEmail(),
+                    dtCliente.getFecNac(),
+                    dtCliente.getFotoPerfil()
+            );
+            this.cliJpa.create(cli);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -523,14 +537,7 @@ public class ControladoraPersistencia {
                 // Convertir los temas a DTTemaSimple
                 List<DTTemaSimple> temas = new ArrayList<>();
                 for (Tema tema : listaPorDefecto.getMisTemas()) {
-                    temas.add(new DTTemaSimple(
-                            tema.getIdTema(),
-                            tema.getNombreTema(),
-                            tema.getDuracionSegundos(),
-                            tema.getPosicionEnAlbum(),
-                            tema.getMiAlbum().getNombreAlbum(),
-                            tema.getMiAlbum().getMiArtista().getNombreCompletoToString()
-                    ));
+                    temas.add(tema.getDTTemaSimple());
                 }
                 // Crear el DTO para la lista por defecto
                 datosLista = new DTDatosListaReproduccion(
@@ -555,14 +562,7 @@ public class ControladoraPersistencia {
                 List<DTTemaSimple> temas = new ArrayList<>();
                 for (Tema tema : listaParticular.getMisTemas()) {
 
-                    temas.add(new DTTemaSimple(
-                            tema.getIdTema(),
-                            tema.getNombreTema(),
-                            tema.getDuracionSegundos(),
-                            tema.getPosicionEnAlbum(),
-                            tema.getMiAlbum().getNombreAlbum(),
-                            tema.getMiAlbum().getMiArtista().getNombreCompletoToString()
-                    ));
+                    temas.add(tema.getDTTemaSimple());
                 }
 
                 // Crear el DTO para la lista particular
@@ -654,14 +654,7 @@ public class ControladoraPersistencia {
             
             mapDtTemas.put(
                     t.getIdTema(), 
-                    new DTTemaSimple(
-                            t.getIdTema(),
-                            t.getNombreTema(),
-                            t.getDuracionSegundos(),
-                            t.getPosicionEnAlbum(),
-                            t.getMiAlbum().getNombreAlbum(),
-                            t.getMiAlbum().getMiArtista().getNombreCompletoToString()
-                    )
+                    t.getDTTemaSimple()
             );
         }
         
@@ -754,14 +747,20 @@ public class ControladoraPersistencia {
         ArrayList<DTAlbum_Simple> dataAlbums = new ArrayList<>();
         
         for (Album album: listaAlbumes) {
+            dataAlbums.add(album.getDTAlbumSimple());
+        }
+        return dataAlbums;
+    }
+    
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
+        ArrayList<DTAlbum_Simple> dataAlbums = new ArrayList<>();
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+        
+        for (Album album: listaAlbumes) {
 
-            dataAlbums.add(new DTAlbum_Simple(
-                    album.getIdAlbum(),
-                    album.getNombreAlbum(),
-                    album.getAnioCreacion(),
-                    album.getMiArtista().getNombreCompletoToString()
-                )
-            );
+            if (album.getMisGenerosString().contains(genero)) {
+                dataAlbums.add(album.getDTAlbumSimple());
+            }
         }
         return dataAlbums;
     }
@@ -1131,34 +1130,18 @@ public class ControladoraPersistencia {
         }
         
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
-        
+        //remuevo el tema de la lista
         for (Tema t : temasDeListaRep) {
-
-            /*if (Objects.equals(tema.getIdTema(), t.getIdTema())) {
-                temasDeListaRep.remove(temasDeListaRep.indexOf(t));
-*/
             if (t.getIdTema().equals(idTema)) {
                 temasDeListaRep.remove(t);
-
                 break;
             }
         }
-        
-        //si el tema borrado era el unico tema en la lista, entonces remuevo el link del tema hacia la lista
-
-        if (temasDeListaRep.isEmpty()) {
-            List<ListaReproduccion> listasRepDeTema = tema.getMisReproducciones();
-            for (ListaReproduccion lrep : listasRepDeTema) {
-                listasRepDeTema.remove(listasRepDeTema.indexOf(lrep));
-                break;
-            }    
-        }
-
+        //remuevo la lista de reproduccion de las listas asociadas al tema
         List<ListaReproduccion> listasRepDeTema = tema.getMisReproducciones();
         for (ListaReproduccion lrep : listasRepDeTema) {
             if (lrep.getNombreLista().equals(listaRep.getNombreLista())) {
                 listasRepDeTema.remove(lrep);
-
             }
             break;
         }
@@ -1169,8 +1152,8 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             throw ex;
         }
-
     }
+    
     public boolean existeRelacion(String Seguidor, String Seguido) {
         Cliente c = cliJpa.findCliente(Seguidor);
         boolean retorno=false;
@@ -1183,13 +1166,7 @@ public class ControladoraPersistencia {
             }
         }
         return retorno;
-     }
-
-
-
-
-     
- 
+    }
 
     public DTAlbum ConsultaAlbum(Long idAlbum){
         DTAlbum dta = null;
@@ -1304,5 +1281,19 @@ public class ControladoraPersistencia {
         this.genJpa.create(gen);
     }
 
+    public String getGeneroDeListaPorDefecto(String nombreListaRep) throws Exception {
+        ListaPorDefecto listaRep = this.lxdefcJpa.findListaPorDefecto(nombreListaRep);
+        
+        if (listaRep == null) {
+            throw new Exception("No se encontró la lista de reproducción nombreListaRep");
+        }
+        
+        if (listaRep.getGenero() == null) {
+            throw new Exception("La lista " + nombreListaRep + "no tiene un género asociado.");
+        }
+        
+        return listaRep.getGenero().getNombreGenero();
+    }
+    
 }
 

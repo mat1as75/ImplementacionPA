@@ -79,14 +79,14 @@ public class QuitarTemaDeLista extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Seleccione el tema que desea remover:");
 
-        btnCancelar.setText("Cancelar");
+        btnCancelar.setText("Salir");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
 
-        btnConfirmar.setText("Confirmar");
+        btnConfirmar.setText("Remover tema");
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarActionPerformed(evt);

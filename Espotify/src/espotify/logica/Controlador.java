@@ -4,6 +4,8 @@ import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTArtista;
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
@@ -45,13 +47,13 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public void AltaArtista(Artista a){
-        this.contpersis.AltaArtista(a);
+    public void AltaArtista(DTArtista dtArtista){
+        this.contpersis.AltaArtista(dtArtista);
     }
   
     @Override
-    public void AltaCliente(Cliente c){
-        this.contpersis.AltaCliente(c);
+    public void AltaCliente(DTCliente dtCliente){
+        this.contpersis.AltaCliente(dtCliente);
     }
     
     @Override
@@ -164,15 +166,6 @@ public class Controlador implements IControlador{
     public void dejarDeSeguir(String C, String U){
         try {
             this.contpersis.dejarDeSeguir(C,U);
-        } catch (Exception ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Override
-    public void DejarDeSeguirPrueba() {
-        try {
-            this.contpersis.DejarDeSeguirPrueba();
         } catch (Exception ex) {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -411,5 +404,20 @@ public class Controlador implements IControlador{
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Override
+    public String getGeneroDeListaPorDefecto(String nombreListaRep) throws Exception {
+        try {
+            return this.contpersis.getGeneroDeListaPorDefecto(nombreListaRep);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
+        return this.contpersis.getDTAlbumesSimplePorGenero(genero);
+    }
+
 }
 
