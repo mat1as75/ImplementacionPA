@@ -404,5 +404,20 @@ public class Controlador implements IControlador{
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Override
+    public String getGeneroDeListaPorDefecto(String nombreListaRep) throws Exception {
+        try {
+            return this.contpersis.getGeneroDeListaPorDefecto(nombreListaRep);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    @Override
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
+        return this.contpersis.getDTAlbumesSimplePorGenero(genero);
+    }
+
 }
 

@@ -1,5 +1,7 @@
 package espotify.DataTypes;
 
+import java.util.List;
+
 public class DTTemaSimple {
     
     private Long idTema;
@@ -8,7 +10,8 @@ public class DTTemaSimple {
     private int posicionEnAlbum;
     private String nombreAlbum;
     private String nombreCompletoArtista;
-
+    private List<String> generosDeTema;
+    
     public DTTemaSimple() {};
     
     public DTTemaSimple(Long idTema, String nombreTema, int duracionSegundos, int posicionEnAlbum, String nombreAlbum, String nombreCompletoArtista) {
@@ -20,6 +23,24 @@ public class DTTemaSimple {
         this.nombreCompletoArtista = nombreCompletoArtista;
     }
 
+    public DTTemaSimple(
+            Long idTema, 
+            String nombreTema, 
+            int duracionSegundos, 
+            int posicionEnAlbum, 
+            String nombreAlbum, 
+            String nombreCompletoArtista,
+            List<String> generosDeTema
+            ) {
+        this.idTema = idTema;
+        this.nombreTema = nombreTema;
+        this.duracionSegundos = duracionSegundos;
+        this.posicionEnAlbum = posicionEnAlbum;
+        this.nombreAlbum = nombreAlbum;
+        this.nombreCompletoArtista = nombreCompletoArtista;
+        this.generosDeTema = generosDeTema;
+    }
+    
     public Long getIdTema() {
         return idTema;
     }
@@ -77,5 +98,13 @@ public class DTTemaSimple {
                 + "] " + this.getNombreTema() + 
                 ", Album: " + this.getNombreAlbum() + 
                 ", Artista: " + this.getNombreCompletoArtista());
+    }
+
+    public List<String> getGenerosDeTema() {
+        return generosDeTema;
+    }
+
+    public void setGenerosDeTema(List<String> generosDeTema) {
+        this.generosDeTema = generosDeTema;
     }
 }

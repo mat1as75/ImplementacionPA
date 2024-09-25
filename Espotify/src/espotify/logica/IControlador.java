@@ -13,7 +13,6 @@ import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
 
@@ -51,10 +50,12 @@ public interface IControlador {
     public abstract ArrayList<String> getNombresListasParticulares();
     public abstract ArrayList<String> getNombresListasParticularesPublicas();
     public abstract ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception;
+    public abstract String getGeneroDeListaPorDefecto(String nombreListaRep) throws Exception;
     public abstract List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen);
     public abstract Map<Long, String> getAlbumesDisponibles();
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
+    public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero);
     public abstract ArrayList<DTGenero_Simple> getListaDTGeneroSimple();
     public abstract DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema);
     public abstract List<DTGenero> getGenerosjTree();

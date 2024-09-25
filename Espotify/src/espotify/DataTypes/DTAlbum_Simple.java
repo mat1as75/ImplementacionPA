@@ -9,6 +9,7 @@ private Long idAlbum;
 private String nombreAlbum;
 private int anioCreacion;
 private String nombreCompletoArtista;
+private List<String> generosDeAlbum;
 
     public DTAlbum_Simple() {
     }
@@ -20,6 +21,26 @@ private String nombreCompletoArtista;
         this.nombreCompletoArtista = nombreCompletoArtista;
     }
 
+    public DTAlbum_Simple(Long idAlbum, String nombreAlbum, int anioCreacion, String nombreCompletoArtista, List<String>generosDeAlbum) {
+        this.idAlbum = idAlbum;
+        this.nombreAlbum = nombreAlbum;
+        this.anioCreacion = anioCreacion;
+        this.nombreCompletoArtista = nombreCompletoArtista;
+        this.generosDeAlbum = generosDeAlbum;
+    } 
+
+    public List<String> getGenerosDeAlbum() {
+        return generosDeAlbum;
+    }
+
+    public void setGenerosDeAlbum(List<String> generosDeAlbum) {
+        this.generosDeAlbum = generosDeAlbum;
+    }
+    
+    public void setNuevoGeneroDeAlbum(String nombreGenero) {
+        this.generosDeAlbum.add(nombreAlbum);
+    }
+    
     public Long getIdAlbum() {
         return this.idAlbum;
     }

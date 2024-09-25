@@ -221,7 +221,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             }
         });
 
-        btnCancelarAltaAlbum.setText("Cancelar");
+        btnCancelarAltaAlbum.setText("Salir");
         btnCancelarAltaAlbum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarAltaAlbumActionPerformed(evt);
@@ -591,7 +591,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         } catch (MalformedURLException | IllegalArgumentException e) {
             JOptionPane.showMessageDialog(
                         null, 
-                        "La url no es válida.", 
+                        "La url no es válida. Debe indicar el esquema (http/https) y el dominio.", 
                         "Error", 
                         JOptionPane.ERROR_MESSAGE); 
             return false;
