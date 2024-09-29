@@ -1294,6 +1294,17 @@ public class ControladoraPersistencia {
         
         return listaRep.getGenero().getNombreGenero();
     }
+
+    public List<String> getUsuariosSinEste(String nickname) {
+        List<Usuario>listaU=this.usuJpa.findUsuarioEntities();
+        List<String>retorno=new ArrayList<String>();
+        for(Usuario u:listaU){
+            if(!u.getNickname().equals(nickname)){
+                retorno.add(u.getNickname());
+            }
+        }
+        return retorno;
+    }
     
 }
 
