@@ -16,6 +16,7 @@ public abstract class Usuario implements Serializable{
     protected String nickname;
     protected String nombreUsuario;
     protected String apellidoUsuario;
+    protected String contrasena;
     protected String email;
     @Temporal(TemporalType.DATE)
     protected Date fecNac;
