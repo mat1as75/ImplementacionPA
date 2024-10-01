@@ -418,8 +418,11 @@ public class Controlador implements IControlador{
     public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
         return this.contpersis.getDTAlbumesSimplePorGenero(genero);
     }
+
+    @Override
     public List<String> getUsuariosSinEste(String nickname){
         return this.contpersis.getUsuariosSinEste(nickname);
-    };
+    }
+
 }
 
