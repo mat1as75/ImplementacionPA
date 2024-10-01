@@ -1,14 +1,10 @@
 package espotify.logica;
 
-
-import espotify.DataTypes.DTCliente;
-import espotify.DataTypes.DTDatosArtista;
-import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTListaReproduccion;
-
 import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTArtista;
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
@@ -17,8 +13,6 @@ import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +20,8 @@ public interface IControlador {
     public abstract ArrayList<String>getNicknamesArtistas();
     public abstract List<String>getNicknamesClientes();
     public abstract void AltaGenero(String nombreGenero, String nomPadre);
-    public abstract void AltaArtista(Artista a);
-    public abstract void AltaCliente(Cliente c);
+    public abstract void AltaArtista(DTArtista dtArtista);
+    public abstract void AltaCliente(DTCliente dtCliente);
     public abstract void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception;
 
     public abstract DTDatosArtista ConsultarPerfilArtista(String nicknameArtista);
@@ -41,7 +35,6 @@ public interface IControlador {
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
     public abstract ArrayList<String> getSeguidosDeCliente(String nickname);
     public abstract void dejarDeSeguir(String C, String U);
-    public abstract void DejarDeSeguirPrueba();
     
     public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero);
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
@@ -57,10 +50,12 @@ public interface IControlador {
     public abstract ArrayList<String> getNombresListasParticulares();
     public abstract ArrayList<String> getNombresListasParticularesPublicas();
     public abstract ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception;
+    public abstract String getGeneroDeListaPorDefecto(String nombreListaRep) throws Exception;
     public abstract List<String> ConsultarNombresListasPorTipo(String tipoDeLista, String nickOgen);
     public abstract Map<Long, String> getAlbumesDisponibles();
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
+    public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero);
     public abstract ArrayList<DTGenero_Simple> getListaDTGeneroSimple();
     public abstract DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema);
     public abstract List<DTGenero> getGenerosjTree();

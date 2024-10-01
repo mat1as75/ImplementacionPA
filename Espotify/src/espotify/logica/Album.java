@@ -5,6 +5,7 @@
 package espotify.logica;
 
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTAlbum_Simple;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
@@ -82,6 +83,14 @@ public class Album implements Serializable {
         return misGeneros;
     }
 
+    public List<String> getMisGenerosString() {
+        List<String> generos = new ArrayList();
+        for (Genero g : this.getMisGeneros()) {
+            generos.add(g.getNombreGenero());
+        }
+        return generos;
+    }
+    
     public Usuario getMiArtista() {
         return miArtista;
     }
@@ -149,5 +158,15 @@ public class Album implements Serializable {
         }
         dta.setMisTemas(auxDTTG);
         return dta;
+    }
+    
+    public DTAlbum_Simple getDTAlbumSimple() {
+        return new DTAlbum_Simple(
+                this.getIdAlbum(),
+                this.getNombreAlbum(),
+                this.getAnioCreacion(),
+                this.getMiArtista().getNombreCompletoToString(),
+                this.getMisGenerosString()
+        );
     }
 }

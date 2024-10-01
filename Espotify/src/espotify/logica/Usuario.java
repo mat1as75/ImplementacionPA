@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package espotify.logica;
 
 import java.util.List;
@@ -106,5 +102,5 @@ public abstract class Usuario implements Serializable{
     public String getNombreCompletoToString() {
         return (this.getNombreUsuario() + " " + this.getApellidoUsuario());
     }
-    
+
 }

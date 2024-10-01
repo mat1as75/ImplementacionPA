@@ -1,6 +1,5 @@
 package espotify.DataTypes;
 
-import espotify.logica.Usuario;
 import java.util.Date;
 import java.util.List;
 

@@ -4,6 +4,7 @@
  */
 package espotify.logica;
 
+import espotify.DataTypes.DTCliente;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -126,19 +127,31 @@ public class Cliente extends Usuario{
     public List<ListaParticular> getMisListasReproduccionCreadas() {
         return this.misListasReproduccionCreadas;
     }
+    
     public void setMisListasReproduccionCreadas(ListaParticular lrc) {
         this.misListasReproduccionCreadas.addFirst(lrc);
     }
+    
     public void setMisListasReproduccionCreadasCompleta(List<ListaParticular> lrc) {
         this.misListasReproduccionCreadas = lrc;
     }
+    
     public void setPrivadafalse(String lista){ 
        for(ListaParticular lp:misListasReproduccionCreadas){
            if(lp.getNombreLista().equals(lista)){
                lp.setsoyPrivada(false);
            }
-       
        }
     }
 
+    public DTCliente getDTCliente() {
+        return new DTCliente(
+                this.getNickname(),
+                this.getNombreUsuario(),
+                this.getApellidoUsuario(),
+                this.getEmail(),
+                this.getFecNac(),
+                this.getFotoPerfil()
+        );
+    }
 }
