@@ -419,5 +419,10 @@ public class Controlador implements IControlador{
         return this.contpersis.getDTAlbumesSimplePorGenero(genero);
     }
 
+    @Override
+    public List<String> getUsuariosSinEste(String nickname){
+        return this.contpersis.getUsuariosSinEste(nickname);
+    }
+
 }
 

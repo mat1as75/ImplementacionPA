@@ -98,5 +98,6 @@ public interface IControlador {
     
     public abstract boolean NoHayGeneros();
     public abstract void SetGenero();
+    public abstract List<String> getUsuariosSinEste(String nickname);
 
 }
