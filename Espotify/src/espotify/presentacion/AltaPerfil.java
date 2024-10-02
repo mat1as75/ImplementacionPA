@@ -57,6 +57,8 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         jComboBoxusuario = new javax.swing.JComboBox<>();
         buttonAceptar = new java.awt.Button();
         buttonCancelar = new java.awt.Button();
+        jLabelcontrasena = new javax.swing.JLabel();
+        jTextFieldcontrasena = new javax.swing.JTextField();
 
         jComboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -120,6 +122,14 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabelcontrasena.setText("contraseña");
+
+        jTextFieldcontrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldcontrasenaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -134,17 +144,19 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                     .addComponent(jLabelfechanacimiento)
                     .addComponent(openButton)
                     .addComponent(jLabelBiografia)
-                    .addComponent(jLabelwebpromocion))
+                    .addComponent(jLabelwebpromocion)
+                    .addComponent(jLabelcontrasena))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldemail)
-                            .addComponent(jTextFieldapellido, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(jTextFieldapellido, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                             .addComponent(jTextFieldnombre)
                             .addComponent(jTextFieldnickname)
                             .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDateChooserfechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jDateChooserfechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldemail)
+                            .addComponent(jTextFieldcontrasena))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jComboBoxusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(92, 92, 92))
@@ -172,15 +184,19 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelnombre)
                             .addComponent(jTextFieldnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelapellido)
-                            .addComponent(jTextFieldapellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jTextFieldapellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelapellido))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelcontrasena)
+                            .addComponent(jTextFieldcontrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelemail)
                             .addComponent(jTextFieldemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabelfechanacimiento)
                             .addComponent(jDateChooserfechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -198,7 +214,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldwebpromocion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                         .addComponent(buttonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -264,7 +280,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     private void jComboBoxusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxusuarioActionPerformed
         
         String opcion=(String)jComboBoxusuario.getSelectedItem();
-        if(opcion=="cliente"){
+        if(opcion.equals("cliente")){
             jLabelBiografia.setVisible(false);
             jTextAreaBiografia.setVisible(false);
             jScrollPane2.setVisible(false);
@@ -284,6 +300,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         String nickname=jTextFieldnickname.getText();
         String nombre=jTextFieldnombre.getText();
         String apellido=jTextFieldapellido.getText();
+        String contrasena=jTextFieldcontrasena.getText();
         String email=jTextFieldemail.getText();
         Date fecNac=jDateChooserfechaNacimiento.getDate();
         String opcion=(String)jComboBoxusuario.getSelectedItem();
@@ -347,6 +364,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                         nickname, 
                         nombre, 
                         apellido, 
+                        contrasena, 
                         email, 
                         fecNac, 
                         fotoPerfil,
@@ -367,6 +385,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                         nickname,
                         nombre,
                         apellido,
+                        contrasena,
                         email,
                         fecNac,
                         fotoPerfil
@@ -401,6 +420,10 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
    
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
+    private void jTextFieldcontrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldcontrasenaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldcontrasenaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button buttonAceptar;
@@ -411,6 +434,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser jDateChooserfechaNacimiento;
     private javax.swing.JLabel jLabelBiografia;
     private javax.swing.JLabel jLabelapellido;
+    private javax.swing.JLabel jLabelcontrasena;
     private javax.swing.JLabel jLabelemail;
     private javax.swing.JLabel jLabelfechanacimiento;
     private javax.swing.JLabel jLabelnickname;
@@ -420,6 +444,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextAreaBiografia;
     private javax.swing.JTextField jTextFieldapellido;
+    private javax.swing.JTextField jTextFieldcontrasena;
     private javax.swing.JTextField jTextFieldemail;
     private javax.swing.JTextField jTextFieldnickname;
     private javax.swing.JTextField jTextFieldnombre;

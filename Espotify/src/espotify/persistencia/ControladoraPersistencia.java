@@ -75,6 +75,7 @@ public class ControladoraPersistencia {
                     dtArtista.getNickname(),
                     dtArtista.getNombreUsuario(),
                     dtArtista.getApellidoUsuario(),
+                    dtArtista.getContrasenaUsuario(),
                     dtArtista.getEmail(),
                     dtArtista.getFecNac(),
                     dtArtista.getFotoPerfil(),
@@ -94,6 +95,7 @@ public class ControladoraPersistencia {
                     dtCliente.getNickname(),
                     dtCliente.getNombreUsuario(),
                     dtCliente.getApellidoUsuario(),
+                    dtCliente.getContrasenaUsuario(),
                     dtCliente.getEmail(),
                     dtCliente.getFecNac(),
                     dtCliente.getFotoPerfil()

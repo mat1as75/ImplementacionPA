@@ -8,6 +8,7 @@ public abstract class DTUsuario{
     private String nickname;
     private String nombreUsuario;
     private String apellidoUsuario;
+    private String contrasenaUsuario;
     private String email;
     private Date fecNac;
     private String fotoPerfil;
@@ -17,7 +18,7 @@ public abstract class DTUsuario{
     public DTUsuario() {
     }
 
-    public DTUsuario(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil) {
+    public DTUsuario(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email, Date fecNac, String fotoPerfil) {
         this.nickname = nickname;
         this.nombreUsuario = nombreUsuario;
         this.apellidoUsuario = apellidoUsuario;
@@ -37,7 +38,11 @@ public abstract class DTUsuario{
     public String getApellidoUsuario() {
         return apellidoUsuario;
     }
-
+    
+    public String getContrasenaUsuario() {
+        return contrasenaUsuario;
+    }
+    
     public String getEmail() {
         return email;
     }
@@ -64,6 +69,10 @@ public abstract class DTUsuario{
 
     public void setApellidoUsuario(String apellidoUsuario) {
         this.apellidoUsuario = apellidoUsuario;
+    }
+    
+    public void setContrasenaUsuario(String contrasenaUsuario) {
+        this.contrasenaUsuario = contrasenaUsuario;
     }
 
     public void setEmail(String email) {

@@ -16,7 +16,7 @@ public abstract class Usuario implements Serializable{
     protected String nickname;
     protected String nombreUsuario;
     protected String apellidoUsuario;
-    protected String contrasena;
+    protected String contrasenaUsuario;
     protected String email;
     @Temporal(TemporalType.DATE)
     protected Date fecNac;
@@ -33,10 +33,11 @@ public abstract class Usuario implements Serializable{
     public Usuario() {
         
     }
-    public Usuario(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil) {
+    public Usuario(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email, Date fecNac, String fotoPerfil) {
         this.nickname = nickname;
         this.nombreUsuario = nombreUsuario;
         this.apellidoUsuario = apellidoUsuario;
+        this.contrasenaUsuario = contrasenaUsuario;
         this.email = email;
         this.fecNac = fecNac;
         this.fotoPerfil = fotoPerfil; 
@@ -64,6 +65,13 @@ public abstract class Usuario implements Serializable{
     }
     public void setApellidoUsuario(String apellidoUsuario) {
         this.apellidoUsuario = apellidoUsuario;
+    }
+    
+    public String getContrasenaUsuario() {
+        return this.contrasenaUsuario;
+    }
+    public void setContrasenaUsuario(String contrasenaUsuario) {
+        this.contrasenaUsuario = contrasenaUsuario;
     }
 
     public String getEmail() {

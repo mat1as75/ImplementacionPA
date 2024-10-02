@@ -17,8 +17,8 @@ public class DTCliente extends DTUsuario{
     public DTCliente() {
         
     }
-    public DTCliente(String nickname, String nombreUsuario, String apellidoUsuario, String email,Date fecNac, String fotoPerfil) {
-        super( nickname, nombreUsuario, apellidoUsuario, email, fecNac, fotoPerfil );
+    public DTCliente(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email,Date fecNac, String fotoPerfil) {
+        super( nickname, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil );
     }
     
     public List<DTUsuario> getMisSeguidos() {

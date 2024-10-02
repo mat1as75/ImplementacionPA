@@ -58,8 +58,8 @@ public class Cliente extends Usuario{
     public Cliente() {
         
     }
-    public Cliente(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil) {
-        super( nickname, nombreUsuario, apellidoUsuario, email, fecNac, fotoPerfil );
+    public Cliente(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email, Date fecNac, String fotoPerfil) {
+        super( nickname, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil );
         misSeguidos=new ArrayList<Usuario>();
         misListasReproduccionCreadas=new ArrayList<ListaParticular>();
     }
@@ -149,6 +149,7 @@ public class Cliente extends Usuario{
                 this.getNickname(),
                 this.getNombreUsuario(),
                 this.getApellidoUsuario(),
+                this.getContrasenaUsuario(), 
                 this.getEmail(),
                 this.getFecNac(),
                 this.getFotoPerfil()

@@ -25,8 +25,8 @@ public class Artista extends Usuario{
     public Artista() {
         
     }
-    public Artista(String nickname, String nombreUsuario, String apellidoUsuario, String email, Date fecNac, String fotoPerfil, String biografia, String dirSitioWeb) {
-        super( nickname, nombreUsuario, apellidoUsuario, email, fecNac, fotoPerfil );
+    public Artista(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email, Date fecNac, String fotoPerfil, String biografia, String dirSitioWeb) {
+        super( nickname, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil );
         this.biografia = biografia;
         this.dirSitioWeb = dirSitioWeb;
     }

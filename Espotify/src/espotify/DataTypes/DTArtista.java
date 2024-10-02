@@ -19,6 +19,7 @@ public class DTArtista extends DTUsuario{
             String nickname, 
             String nombreUsuario, 
             String apellidoUsuario, 
+            String contrasenaUsuario, 
             String email, 
             Date fecNac, 
             String fotoPerfil, 
@@ -26,7 +27,7 @@ public class DTArtista extends DTUsuario{
             String biografia, 
             String dirSitioWeb, 
             List<DTAlbum> misAlbumesPublicados) {
-        super(nickname,nombreUsuario,apellidoUsuario,email,fecNac,fotoPerfil);
+        super(nickname,nombreUsuario,apellidoUsuario,contrasenaUsuario,email,fecNac,fotoPerfil);
         this.biografia = biografia;
         this.dirSitioWeb = dirSitioWeb;
         this.misAlbumesPublicados = misAlbumesPublicados;
