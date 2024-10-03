@@ -273,16 +273,16 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             if (!destinoCarpeta.exists()) {
                 destinoCarpeta.mkdirs();
             }
-            
+
             /* Define el nuevo archivo en la carpeta de destino
                esto es lo que se guarda en la base de datos */
             File destinoArchivo;
             destinoArchivo = new File(destinoCarpeta, selectedFile.getName());
-            fotoPerfil=destinoArchivo.getPath();
+            fotoPerfil = destinoArchivo.getPath();
             try {
                 // Copia el archivo a la carpeta de destino
                 Files.copy(selectedFile.toPath(), destinoArchivo.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                
+
                 // Cargar la imagen para mostrarla en el JLabel
                 Toolkit tool = Toolkit.getDefaultToolkit();
                 Image imagen = tool.createImage(ruta);
@@ -293,22 +293,6 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             }
         }
             }//GEN-LAST:event_openButtonActionPerformed
-
-    private void borrarFotoSubida() {
-        Path ruta = archivoFotoPerfil.toPath();
-        Boolean borradoExitosamente = false;
-        try {
-            borradoExitosamente = Files.deleteIfExists(ruta);
-        } catch(Exception ex) {
-            if (!borradoExitosamente) {
-                JOptionPane.showMessageDialog(
-                        null, 
-                        ex.getMessage(), 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
     
     private void jComboBoxusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxusuarioActionPerformed
         
@@ -383,6 +367,11 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             return;
         }
         
+        if (contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "La contraseña esta vacia.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         if (fecNac == null) {
             JOptionPane.showMessageDialog(null, "La fecha de nacimiento esta vacio.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -433,6 +422,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             jTextFieldnickname.setText("");
             jTextFieldnombre.setText("");
             jTextFieldapellido.setText("");
+            jTextFieldcontrasena.setText("");
             jTextFieldemail.setText("");
             jDateChooserfechaNacimiento.setDate(null);
             imageLabel.setIcon(null);
@@ -442,15 +432,15 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_buttonAceptarActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
-             jTextFieldnickname.setText("");
+        jTextFieldnickname.setText("");
         jTextFieldnombre.setText("");
         jTextFieldapellido.setText("");
+        jTextFieldcontrasena.setText("");
         jTextFieldemail.setText("");
         jDateChooserfechaNacimiento.setDate(null);
         this.imageLabel.setIcon(null);
         jTextAreaBiografia.setText("");
         jTextFieldwebpromocion.setText("");
-        borrarFotoSubida();
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void jTextFieldcontrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldcontrasenaActionPerformed
@@ -458,7 +448,6 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextFieldcontrasenaActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        borrarFotoSubida();
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
