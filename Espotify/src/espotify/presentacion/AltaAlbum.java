@@ -34,7 +34,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class AltaAlbum extends javax.swing.JInternalFrame {
 
     private IControlador controlador;
-    private String rutaImagenAlbum;
+    private String rutaImagenAlbum = "";
     private List<DTGenero_Simple> generosRegistrados;
     private List<String> nicknamesArtistasRegistrados;
     private List<DTGenero> dataGeneros = new ArrayList<DTGenero>();
@@ -42,7 +42,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private DefaultListModel listaGenerosAgregadosModel;
     private List<DTTemaGenerico> dataTemas = new ArrayList<DTTemaGenerico>();
     private Map<String, Path> mapRutasDeTemasAgregados = new HashMap();
-    
+    private File archivoImagenAlbum = null;
+    private List<File> directoriosCreados = new ArrayList<File>();
     private File temaSeleccionado;
     private File temaDestino;
     private String nombreTemaASubir;
@@ -624,6 +625,30 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         return true;
     }
     
+    private Boolean avisoConfirmacionDeArtistaYAlbum() {
+        String mensaje = "Los temas serán agregados al album " 
+                + nombreAlbum.getText() 
+                + " del artista " 
+                + comboBoxArtistasRegistrados.getSelectedItem().toString() 
+                + ".\n\nSi desea modificar el artista o el nombre del album presione cancelar."
+                + "\nSi confirma los datos no podrá modificar el nombre del album \nni el artista hasta remover todos los temas.";
+
+        Object[] opciones = {"Confirmar", "Cancelar"};
+        int seleccion = JOptionPane.showOptionDialog(
+                null, 
+                mensaje,
+                "Confirme los datos",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]);
+        
+        if (seleccion == 0) return true;
+        
+        return false;
+    }
+    
     private void btnAgregarTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTemaActionPerformed
         // capturo los datos del tema ingresados y lo agrego a la lista
         String nombre = nombreTema.getText().trim();
@@ -646,6 +671,10 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 && validarDuracion(duracion)
                 && validarNombreTemaVacio(nombre)
                 && tipoDeAccesoValido) {
+            
+            if (listaTemasAgregadosModel.getSize() == 0 && checkboxAccesoURL.isSelected()) {
+                if (!avisoConfirmacionDeArtistaYAlbum()) return;
+            }
             
             //convierto a int la posicion
             intPosicionTema = Integer.valueOf(stringPosicion);
@@ -673,6 +702,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             String datos = nuevoDataTema.toString();
             listaTemasAgregadosModel.addElement(datos); //agrego tema a la lista de temas agregados
             btnRemoverTema.setEnabled(true);
+            comboBoxArtistasRegistrados.setEnabled(false);
+            nombreAlbum.setEnabled(false);
             resetCamposTema();
         }
     }//GEN-LAST:event_btnAgregarTemaActionPerformed
@@ -751,6 +782,27 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnRemoverGeneroDeAlbumActionPerformed
 
+    private void borrarArchivoFoto() {
+        
+        if (archivoImagenAlbum == null) return;
+        
+        Boolean borradoExitosamente = false;
+        
+        try {
+            borradoExitosamente = Files.deleteIfExists(archivoImagenAlbum.toPath());
+            archivoImagenAlbum = null;
+            rutaImagenAlbum = "";
+        } catch(Exception ex) {
+            if (!borradoExitosamente) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
     private void removerArchivoTema(String nombreTema) {
         
         Path rutaTema = this.mapRutasDeTemasAgregados.get(nombreTema);
@@ -787,21 +839,24 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             }
 
             if (listaTemasAgregadosModel.getSize() == 0) {
+                borrarDirectoriosCreados();
                 btnRemoverTema.setEnabled(false);
+                comboBoxArtistasRegistrados.setEnabled(true);
+                nombreAlbum.setEnabled(true);
             }
         }
     }//GEN-LAST:event_btnRemoverTemaActionPerformed
 
     private void btnSeleccionarImagenAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarImagenAlbumActionPerformed
         JFileChooser buscarArchivo = new JFileChooser();
-        FileNameExtensionFilter extension = new FileNameExtensionFilter("Seleccionar imagen", "jpg", "png");
+        FileNameExtensionFilter extension = new FileNameExtensionFilter("Seleccionar imagen", "jpg", "png", "jpeg", "webp");
         buscarArchivo.setFileFilter(extension);
 
         if (buscarArchivo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File selectedFile = buscarArchivo.getSelectedFile();
             String ruta = selectedFile.getAbsolutePath();
             
-            File destino = new File("./Resource/portadasAlbum");
+            File destino = new File("./Resource/Albums/portadasAlbum");
             if (!destino.exists()) {
                 destino.mkdirs();
             }
@@ -813,7 +868,8 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 Toolkit tool = Toolkit.getDefaultToolkit();
                 Image imagen = tool.createImage(ruta);
                 labelImagenAlbum.setIcon(new ImageIcon(imagen.getScaledInstance(labelImagenAlbum.getWidth(), labelImagenAlbum.getHeight(), Image.SCALE_AREA_AVERAGING)));
-                this.rutaImagenAlbum = ruta;
+                archivoImagenAlbum = destinoArchivo;
+                rutaImagenAlbum = destinoArchivo.getPath();
                 
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(
@@ -841,9 +897,24 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         }
     }
     
+    private void borrarDirectoriosCreados() {
+        for (File f : directoriosCreados) {
+            if (f.exists() && f.isDirectory()) {
+                if (!f.delete()) {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "No se pudo borrar el directorio: " + f.getPath(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                }   
+            }
+        }
+    }
+    
     private void btnCancelarAltaAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAltaAlbumActionPerformed
-        
+        borrarArchivoFoto();
         eliminarTemasSubidos();
+        borrarDirectoriosCreados();
         this.dispose();
     }//GEN-LAST:event_btnCancelarAltaAlbumActionPerformed
 
@@ -964,36 +1035,51 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         return true;
     }
     
+    private Boolean artistaEsNull() {
+        if(comboBoxArtistasRegistrados.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(
+                        null, 
+                        "El artista no puede estar vacío.", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            return true;
+        };
+        return false;
+    }
+    
     private void btnSubirTemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirTemaActionPerformed
         
         String nombre = nombreTema.getText().trim();
         String album = nombreAlbum.getText().trim();
         
-        if (validarNombreTemaVacio(nombre) && validarNombreTemaRepetido(nombre) && !tieneNombreAlbumVacio(album)) {
+        if (validarNombreTemaVacio(nombre) 
+                && validarNombreTemaRepetido(nombre) 
+                && !tieneNombreAlbumVacio(album)
+                && !artistaEsNull()) {
+            
+            if (listaTemasAgregadosModel.getSize() == 0) {
+                if (!avisoConfirmacionDeArtistaYAlbum()) return;
+            }
+            comboBoxArtistasRegistrados.setEnabled(false);
+            nombreAlbum.setEnabled(false);
+            
             JFileChooser buscarArchivo = new JFileChooser();
             FileNameExtensionFilter extension = new FileNameExtensionFilter("Seleccionar tema", "mp3", "wav");
             buscarArchivo.setFileFilter(extension);
 
             if (buscarArchivo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File archivoSeleccionado = buscarArchivo.getSelectedFile();
-                String ruta = archivoSeleccionado.getAbsolutePath();
-
-                File destino = new File("./Resource/temas");
+                String artista = comboBoxArtistasRegistrados.getSelectedItem().toString();
+                String nombreCarpeta = artista + "-" + album;
+                
+                File destino = new File("./Resource/Albums/" + nombreCarpeta);
                 if (!destino.exists()) {
                     destino.mkdirs();
-                }
-                
-                String nombreArchivoSeleccionado = archivoSeleccionado.getName();
-                
-                Path potencialRutaDestino = Paths.get(destino.getPath(), nombreArchivoSeleccionado);
-                
-                //si un archivo con el mismo nombre ya existe entonces le doy otro nombre
-                if (Files.exists(potencialRutaDestino)) {
-                    nombreArchivoSeleccionado = nombre + " - " + album + " - "+ nombreArchivoSeleccionado;
+                    directoriosCreados.add(destino);
                 }
                 
                 //creo un nuevo archivo a partir del archivo seleccionado que sera copiado a la ruta destino
-                File archivoDestino = new File(destino, nombreArchivoSeleccionado);
+                File archivoDestino = new File(destino, nombre);
                 temaSeleccionado = archivoSeleccionado;
                 temaDestino = archivoDestino;
                 nombreTemaASubir = nombre;
