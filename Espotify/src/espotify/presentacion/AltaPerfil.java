@@ -294,6 +294,22 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         }
             }//GEN-LAST:event_openButtonActionPerformed
     
+    private void borrarFotoSubida() {
+        Path ruta = archivoFotoPerfil.toPath();
+        Boolean borradoExitosamente = false;
+        try {
+            borradoExitosamente = Files.deleteIfExists(ruta);
+        } catch(Exception ex) {
+            if (!borradoExitosamente) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
     private void jComboBoxusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxusuarioActionPerformed
         
         String opcion=(String)jComboBoxusuario.getSelectedItem();
@@ -430,7 +446,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             jTextFieldwebpromocion.setText("");
         }    
     }//GEN-LAST:event_buttonAceptarActionPerformed
-
+    
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
         jTextFieldnickname.setText("");
         jTextFieldnombre.setText("");
@@ -441,6 +457,9 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         this.imageLabel.setIcon(null);
         jTextAreaBiografia.setText("");
         jTextFieldwebpromocion.setText("");
+        if (archivoFotoPerfil != null) {
+            borrarFotoSubida();
+        }
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void jTextFieldcontrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldcontrasenaActionPerformed
@@ -448,6 +467,9 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextFieldcontrasenaActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        if (archivoFotoPerfil != null) {
+            borrarFotoSubida();
+        }
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
