@@ -22,6 +22,7 @@ public abstract class DTUsuario{
         this.nickname = nickname;
         this.nombreUsuario = nombreUsuario;
         this.apellidoUsuario = apellidoUsuario;
+        this.contrasenaUsuario = contrasenaUsuario;
         this.email = email;
         this.fecNac = fecNac;
         this.fotoPerfil = fotoPerfil;

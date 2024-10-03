@@ -377,7 +377,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             return;
         }
 
-        boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!email.isEmpty()) && (fecNac != null)&&(!existeNicName)&&(!existeEmail)&&(escorrectoEmail));
+        boolean borrar = ((!nickname.isEmpty()) && (!nombre.isEmpty()) && (!apellido.isEmpty()) && (!contrasena.isEmpty()) && (!email.isEmpty()) && (fecNac != null)&&(!existeNicName)&&(!existeEmail)&&(escorrectoEmail));
         if (borrar) {
             if (opcion.equals("artista")) {
                 biografia = jTextAreaBiografia.getText();
