@@ -2,8 +2,6 @@ package espotify.presentacion;
 
 import espotify.DataTypes.DTArtista;
 import espotify.DataTypes.DTCliente;
-import espotify.logica.Artista;
-import espotify.logica.Cliente;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.awt.Image;
@@ -11,6 +9,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -21,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class AltaPerfil extends javax.swing.JInternalFrame {
     private String fotoPerfil;
+    private File archivoFotoPerfil;
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     public AltaPerfil() {
@@ -59,6 +59,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         buttonCancelar = new java.awt.Button();
         jLabelcontrasena = new javax.swing.JLabel();
         jTextFieldcontrasena = new javax.swing.JTextField();
+        btnSalir = new java.awt.Button();
 
         jComboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -115,7 +116,7 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             }
         });
 
-        buttonCancelar.setLabel("Cancelar");
+        buttonCancelar.setLabel("Limpiar Formulario");
         buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonCancelarActionPerformed(evt);
@@ -127,6 +128,13 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         jTextFieldcontrasena.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldcontrasenaActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setLabel("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
             }
         });
 
@@ -145,7 +153,8 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                     .addComponent(openButton)
                     .addComponent(jLabelBiografia)
                     .addComponent(jLabelwebpromocion)
-                    .addComponent(jLabelcontrasena))
+                    .addComponent(jLabelcontrasena)
+                    .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -161,15 +170,17 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                         .addComponent(jComboBoxusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(92, 92, 92))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(buttonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(155, 155, 155)
-                                .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(76, 76, 76)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTextFieldwebpromocion, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(161, Short.MAX_VALUE))))
+                        .addContainerGap(102, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,7 +226,9 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldwebpromocion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                        .addComponent(buttonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buttonAceptar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -257,6 +270,10 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
             // Configura la carpeta de destino
             File destinoCarpeta = new File("./Resource/ImagenesPerfil");
 
+            if (!destinoCarpeta.exists()) {
+                destinoCarpeta.mkdirs();
+            }
+            
             /* Define el nuevo archivo en la carpeta de destino
                esto es lo que se guarda en la base de datos */
             File destinoArchivo;
@@ -270,13 +287,29 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                 Toolkit tool = Toolkit.getDefaultToolkit();
                 Image imagen = tool.createImage(ruta);
                 imageLabel.setIcon(new ImageIcon(imagen.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_AREA_AVERAGING)));
-
+                archivoFotoPerfil = destinoArchivo;
             } catch (IOException e) {
                 e.printStackTrace(); // Manejo de excepciones en caso de error al copiar
             }
         }
             }//GEN-LAST:event_openButtonActionPerformed
 
+    private void borrarFotoSubida() {
+        Path ruta = archivoFotoPerfil.toPath();
+        Boolean borradoExitosamente = false;
+        try {
+            borradoExitosamente = Files.deleteIfExists(ruta);
+        } catch(Exception ex) {
+            if (!borradoExitosamente) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
     private void jComboBoxusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxusuarioActionPerformed
         
         String opcion=(String)jComboBoxusuario.getSelectedItem();
@@ -417,15 +450,21 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
         this.imageLabel.setIcon(null);
         jTextAreaBiografia.setText("");
         jTextFieldwebpromocion.setText("");
-   
+        borrarFotoSubida();
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void jTextFieldcontrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldcontrasenaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldcontrasenaActionPerformed
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        borrarFotoSubida();
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Button btnSalir;
     private java.awt.Button buttonAceptar;
     private java.awt.Button buttonCancelar;
     private javax.swing.JLabel imageLabel;
