@@ -53,6 +53,9 @@ public class Cliente extends Usuario{
             inverseJoinColumns = @JoinColumn(name = "nombre_ListaReproduccion")
     )
     private List<ListaParticular> misListasReproduccionCreadas;
+    
+    @OneToMany (mappedBy="miCliente")
+    private List<Suscripcion> misSuscripciones;
 
     // Constructores
     public Cliente() {
