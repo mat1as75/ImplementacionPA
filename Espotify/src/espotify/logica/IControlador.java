@@ -12,6 +12,7 @@ import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
+import espotify.DataTypes.DTUsuario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -99,5 +100,7 @@ public interface IControlador {
     public abstract boolean NoHayGeneros();
     public abstract void SetGenero();
     public abstract List<String> getUsuariosSinEste(String nickname);
+    
+    public abstract DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario);
 
 }

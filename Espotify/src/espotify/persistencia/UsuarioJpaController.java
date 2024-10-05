@@ -14,8 +14,10 @@ import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 /**
@@ -171,7 +173,43 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public Usuario findUsuarioByEmail(String email) {
+        EntityManager em = getEntityManager();
+        try {
+            return (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
+                    .setParameter("email", email)
+                    .getSingleResult(); /* Aunq el sistema esta diseña para que no se repitan Emails, 
+                                            este atributo no es parte de la clase primaria */
+        } catch (NoResultException e) {
+            return null; /* Retorna null si no se encuentra */
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Usuario findUsuarioByIdentifier(String identificador) { 
+        EntityManager em = getEntityManager();
+        try {
+            if (identificador == null)
+                return null;
 
+            if (esEmail(identificador))
+                return findUsuarioByEmail(identificador);
+            else 
+                return findUsuario(identificador);
+        } finally {
+            em.close();
+        }
+    }
+
+    public boolean esEmail(String identificador) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        
+        return pattern.matcher(identificador).matches();
+    }
+    
     public int getUsuarioCount() {
         EntityManager em = getEntityManager();
         try {

@@ -12,6 +12,7 @@ import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
+import espotify.DataTypes.DTUsuario;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
 import java.util.List;
@@ -424,5 +425,9 @@ public class Controlador implements IControlador{
         return this.contpersis.getUsuariosSinEste(nickname);
     }
 
+    @Override
+    public DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario) {
+        return this.contpersis.getUsuarioAutentificado(identificador, contrasenaUsuario);
+    }
 }
 

@@ -14,6 +14,7 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaSimple;
+import espotify.DataTypes.DTUsuario;
 
 import espotify.logica.Album;
 import espotify.logica.Artista;
@@ -1306,6 +1307,36 @@ public class ControladoraPersistencia {
             }
         }
         return retorno;
+    }
+    
+    public DTUsuario getUsuarioAutentificado(String identificadorUsuario, String contrasenaUsuario) {
+        Usuario user = this.usuJpa.findUsuarioByIdentifier(identificadorUsuario);
+        
+        /* Si no encuentra al usuario, retorna null */
+        if (user == null) {
+            return null;
+        }
+        
+        DTUsuario dtUser;
+        /* Crea el DTUsuario segun el tipo de usuario */
+        if (user instanceof Cliente) {
+            dtUser = new DTCliente(
+                    user.getNickname(),
+                    user.getContrasenaUsuario()
+            );
+        } else {
+            dtUser = new DTArtista(
+                    user.getNickname(),
+                    user.getContrasenaUsuario()
+            );
+        }
+        
+        /* Verifica la contrasena */
+        if (!dtUser.getContrasenaUsuario().equals(contrasenaUsuario)) {
+            return null;
+        }
+        
+        return dtUser; /* Retorna al usuario autentificado */
     }
     
 }

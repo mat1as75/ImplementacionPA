@@ -17,6 +17,10 @@ public class DTCliente extends DTUsuario{
     public DTCliente() {
         
     }
+    public DTCliente(String nickname, String contrasenaUsuario) {
+        this.nickname = nickname;
+        this.contrasenaUsuario = contrasenaUsuario;
+    }
     public DTCliente(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email,Date fecNac, String fotoPerfil) {
         super( nickname, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil );
     }

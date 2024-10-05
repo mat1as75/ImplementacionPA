@@ -5,13 +5,13 @@ import java.util.List;
 
 public abstract class DTUsuario{
  // Atributos
-    private String nickname;
-    private String nombreUsuario;
-    private String apellidoUsuario;
-    private String contrasenaUsuario;
-    private String email;
-    private Date fecNac;
-    private String fotoPerfil;
+    protected String nickname;
+    protected String nombreUsuario;
+    protected String apellidoUsuario;
+    protected String contrasenaUsuario;
+    protected String email;
+    protected Date fecNac;
+    protected String fotoPerfil;
     // Referencia
     protected List<DTUsuario> misSeguidores;
 
