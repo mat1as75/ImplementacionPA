@@ -82,8 +82,7 @@ public interface IControlador {
 
 
     public abstract boolean existeRelacion(String Seguidor, String Seguido);
-
-
+    public abstract Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb);
     
     public abstract DTAlbum ConsultaAlbum(Long idAlbum);
     public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);

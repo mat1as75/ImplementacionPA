@@ -100,7 +100,6 @@ public class Controlador implements IControlador{
     }
     
     @Override
-
     public boolean existeNombreLista(String nombreLista){
         return this.contpersis.ExisteNombreLista(nombreLista);
     }
@@ -423,6 +422,10 @@ public class Controlador implements IControlador{
     public List<String> getUsuariosSinEste(String nickname){
         return this.contpersis.getUsuariosSinEste(nickname);
     }
-
+    
+    @Override
+    public Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb) {
+        return this.contpersis.buscarAlbumPorNombreYArtista(nombreArt, nombreAlb);
+    }
 }
 
