@@ -429,5 +429,10 @@ public class Controlador implements IControlador{
     public DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario) {
         return this.contpersis.getUsuarioAutentificado(identificador, contrasenaUsuario);
     }
+    
+    @Override
+    public Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb) {
+        return this.contpersis.buscarAlbumPorNombreYArtista(nombreArt, nombreAlb);
+    }
 }
 
