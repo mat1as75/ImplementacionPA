@@ -93,7 +93,7 @@ public class Suscripcion implements Serializable {
         Pendiente, 
         Vigente, 
         Cancelada, 
-        VencidSuscripciona
+        Vencida
     }
     
     /* Actualizar EstadoSuscripcion basado en la fecha actual */
@@ -113,7 +113,7 @@ public class Suscripcion implements Serializable {
             /* Si la fecha actual es mayor que la fecha de 
             vencimiento calculada, la Suscripcion pasa a "VencidSuscripciona" */
             if (fechaActual.after(calendar.getTime())) {
-                estadoSuscripcion = EstadoSuscripcion.VencidSuscripciona;
+                estadoSuscripcion = EstadoSuscripcion.Vencida;
             }
         }
     }
