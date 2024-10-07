@@ -27,6 +27,8 @@ import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
 import espotify.logica.Usuario;
+import espotify.persistencia.exceptions.InvalidDataException;
+import espotify.persistencia.exceptions.NonexistentEntityException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,17 +44,17 @@ import javax.persistence.Persistence;
 
 public class ControladoraPersistencia {
     
-    UsuarioJpaController usuJpa = new UsuarioJpaController();
-    ArtistaJpaController artJpa = new ArtistaJpaController();
-    ClienteJpaController cliJpa = new ClienteJpaController();
-    GeneroJpaController genJpa = new GeneroJpaController();
-    AlbumJpaController albJpa = new AlbumJpaController();
-    ListaParticularJpaController lpartJpa = new ListaParticularJpaController();
-    ListaPorDefectoJpaController lxdefcJpa = new ListaPorDefectoJpaController();
-    ListaReproduccionJpaController lreprodccJpa = new ListaReproduccionJpaController();
-    TemaJpaController temaJpa = new TemaJpaController();
-    TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
-    TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
+    public UsuarioJpaController usuJpa = new UsuarioJpaController();
+    public ArtistaJpaController artJpa = new ArtistaJpaController();
+    public ClienteJpaController cliJpa = new ClienteJpaController();
+    public GeneroJpaController genJpa = new GeneroJpaController();
+    public AlbumJpaController albJpa = new AlbumJpaController();
+    public ListaParticularJpaController lpartJpa = new ListaParticularJpaController();
+    public ListaPorDefectoJpaController lxdefcJpa = new ListaPorDefectoJpaController();
+    public ListaReproduccionJpaController lreprodccJpa = new ListaReproduccionJpaController();
+    public TemaJpaController temaJpa = new TemaJpaController();
+    public TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
+    public TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
 
     public ControladoraPersistencia(){};
     
@@ -108,6 +110,17 @@ public class ControladoraPersistencia {
     }
     
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
+        
+        if (dataAlbum.getNombreAlbum() == null
+                || dataAlbum.getMiArtista() == null
+                || dataAlbum.getMisTemas() == null
+                || dataAlbum.getMisTemas().isEmpty()
+                || dataAlbum.getMisgeneros() == null
+                || dataAlbum.getMisgeneros().isEmpty()
+            ) {
+            throw new InvalidDataException("Existen campos requeridos nulos o vacíos.");
+        } 
+        
          //creo el album vacio
         Album nuevoAlbum = new Album();
         this.albJpa.create(nuevoAlbum);
@@ -116,7 +129,7 @@ public class ControladoraPersistencia {
         Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
         if (art == null) {
             this.albJpa.destroy(nuevoAlbum.getIdAlbum());
-            throw new Exception("No se encontro el artista: " +  dataAlbum.getMiArtista());
+            throw new NonexistentEntityException("No se encontro el artista: " +  dataAlbum.getMiArtista());
         }
         
         //verifico que no tenga un album con el mismo nombre
@@ -129,7 +142,7 @@ public class ControladoraPersistencia {
         }
         art.setMisAlbumesPublicados(nuevoAlbum);
         
-        //busco los generos para agregarlos al album y agregar el album a la lista de albums que tiene genero
+        //verifico que todos los generos recibidos existan
         List<Genero> generosDeAlbum = new ArrayList();
         for (DTGenero dataG : dataAlbum.getMisgeneros()) {
             Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
@@ -137,17 +150,16 @@ public class ControladoraPersistencia {
                 this.albJpa.destroy(nuevoAlbum.getIdAlbum());
                 throw new Exception("No se encontro el genero: " + dataG.getNombreGenero());
             }
-            
+        }
+        
+        //busco los generos para agregarlos al album y agregar el album a la lista de albums que tiene genero
+        for (DTGenero dataG : dataAlbum.getMisgeneros()) {
+            Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
             generosDeAlbum.add(gen);
             //agrego el nuevo album en la lista de albums del genero
             gen.setMisAlbumes(nuevoAlbum);
             //guardo los cambios a cada genero modificado
-            try {
-                this.genJpa.edit(gen);
-            } catch(Exception ex) {
-                this.albJpa.destroy(nuevoAlbum.getIdAlbum());
-                throw new Exception("Ocurrio un error al actualizar el genero " + gen.getNombreGenero());
-            }
+            this.genJpa.edit(gen);
         }
         
         //creo los temas y los agrego a una lista
@@ -1339,5 +1351,20 @@ public class ControladoraPersistencia {
         return dtUser; /* Retorna al usuario autentificado */
     }
     
+    public Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb) {
+        Long idAlbum = null;
+        Artista art = this.artJpa.findArtista(nombreArt);
+        
+        if (art != null) {
+            List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
+            for (Album a : albumsDeArtista) {
+                if (a.getNombreAlbum().equals(nombreAlb)) {
+                    idAlbum = a.getIdAlbum();
+                }
+            }
+        }
+        
+        return idAlbum;
+    }
 }
 
