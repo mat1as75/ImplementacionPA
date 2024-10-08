@@ -1,0 +1,39 @@
+
+
+/* Estilos de flexbox para asegurarse de que las listas tengan la misma altura */
+.contenedor-listas {
+    display: flex;
+    gap: 20px; /* Espacio entre las listas */
+}
+
+.lista-contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1; /* Hace que todas las listas crezcan uniformemente */
+    border: 1px solid black;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Añadir estilo para mostrar que es interactivo */
+.selectable {
+    cursor: pointer;
+    padding: 5px;
+    list-style-type: none;
+}
+
+.selectable:hover {
+    background-color: #ddd;
+}
+
+/* Estilo para los elementos seleccionados */
+.selected {
+    background-color: #b3d9ff;
+}
+
