@@ -15,6 +15,7 @@ import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -134,6 +135,11 @@ public class Controlador implements IControlador{
 
     @Override
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
+    }
+    
+    @Override
+    public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
         this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
     }
     

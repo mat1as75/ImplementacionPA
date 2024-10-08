@@ -29,6 +29,7 @@ import espotify.logica.ListaReproduccion;
 import espotify.logica.Usuario;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -480,6 +481,23 @@ public class ControladoraPersistencia {
 
         // Crear la nueva lista particular
         ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, esPrivada);
+        try {
+            lpartJpa.create(lista);
+            cli.getMisListasReproduccionCreadas().add(lista);
+            cliJpa.edit(cli);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista particular", ex);
+            throw new RuntimeException("Error al crear la lista particular: " + ex.getMessage());
+        }
+    }
+    
+    public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
+    
+        // Buscar cliente por su nickname
+        Cliente cli = this.cliJpa.findCliente(nicknameCliente);
+
+        // Crear la nueva lista particular
+        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion, esPrivada);
         try {
             lpartJpa.create(lista);
             cli.getMisListasReproduccionCreadas().add(lista);

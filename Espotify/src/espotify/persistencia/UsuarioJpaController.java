@@ -22,14 +22,14 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author tecnologo
+ * @author ms
  */
 public class UsuarioJpaController implements Serializable {
 
     public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public UsuarioJpaController() {
+     public UsuarioJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
     private EntityManagerFactory emf = null;
@@ -179,7 +179,7 @@ public class UsuarioJpaController implements Serializable {
         try {
             return (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
                     .setParameter("email", email)
-                    .getSingleResult(); /* Aunq el sistema esta diseña para que no se repitan Emails, 
+                    .getSingleResult(); /* Aunq el sistema esta diseÃ±a para que no se repitan Emails, 
                                             este atributo no es parte de la clase primaria */
         } catch (NoResultException e) {
             return null; /* Retorna null si no se encuentra */
@@ -209,7 +209,7 @@ public class UsuarioJpaController implements Serializable {
         
         return pattern.matcher(identificador).matches();
     }
-    
+
     public int getUsuarioCount() {
         EntityManager em = getEntityManager();
         try {

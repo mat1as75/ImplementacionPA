@@ -21,7 +21,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author tecnologo
+ * @author ms
  */
 public class ListaReproduccionJpaController implements Serializable {
 
