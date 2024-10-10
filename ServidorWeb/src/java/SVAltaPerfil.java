@@ -70,7 +70,6 @@ public class SVAltaPerfil extends HttpServlet {
 
         // Construir la ruta de carga usando el contexto de la aplicación
         String uploadPath =getServletContext().getRealPath("")+UPLOAD_DIR;
-        System.out.println("//////////////////////////////////" + uploadPath);
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdir(); // Crear el directorio si no existe
@@ -93,7 +92,7 @@ public class SVAltaPerfil extends HttpServlet {
             Files.copy(input, file.toPath());
         }
 
-        String fotoPerfil = file.toPath().toString();
+        String fotoPerfil = UPLOAD_DIR+"/"+fileName;
     
         String fechaNacimientoStr = request.getParameter("fechaNacimiento");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
