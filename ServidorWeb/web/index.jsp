@@ -20,14 +20,9 @@
                 crossorigin="anonymous">
         </script>
         
-        <!-- CUSTOM JS -->
-        <script src="../${pageContext.request.contextPath}/js/altaAlbum.js"></script>
-        
     </head>
     <body>
         <h1>Index</h1>
         <a href="/ServidorWeb/AltaAlbum">Ir a alta album</a>
-        <button onClick="dostuff()">log</button>
-
     </body>
 </html>
