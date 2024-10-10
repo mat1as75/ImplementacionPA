@@ -26,8 +26,6 @@ import com.google.gson.Gson;
 @WebServlet("/SVAltaPerfil")
 @MultipartConfig
 public class SVAltaPerfil extends HttpServlet {
-    // Carpeta de destino donde se guardarán las imágenes
-    private static final String DESTINO_CARPETA = "/Resource/ImagenesPerfil/";
     
  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,49 +48,53 @@ public class SVAltaPerfil extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
     }
+      private String extractFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        for (String token : contentDisposition.split(";")) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf('=') + 2, token.length() - 1);
+            }
+        }
+        return null;
+    }
+    private static final String UPLOAD_DIR = "../../Resource/ImagenesPerfil/"; // Directorio donde guardar las imágenes  
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Obtenemos el archivo del formulario
-        Part filePart = request.getPart("imagen"); // "imagen" es el nombre del campo en el formulario HTML
-        String fotoPerfil="";
-        if (filePart != null && filePart.getSize() > 0) {
-            // Nombre del archivo
-            String header = filePart.getHeader("content-disposition");
-            String nombreArchivo = header.substring(header.indexOf("filename=\"") + 10, header.lastIndexOf("\""));
-            // Obtener la ruta relativa a la carpeta raíz de la aplicación web
-            String destinoCarpetaPath = getServletContext().getRealPath(DESTINO_CARPETA); // Define una carpeta "Resource" dentro de la aplicación
-            File destinoCarpeta = new File(destinoCarpetaPath);
+        // Obtener el archivo de la solicitud
+        Part filePart = request.getPart("imagen");
 
-            // Crear carpeta si no existe
-            if (!destinoCarpeta.exists()) {
-                try {
-                    boolean creada = destinoCarpeta.mkdirs(); // Intentar crear la carpeta
-                    if (!creada) {
-                        response.getWriter().println("Error: no se pudo crear la carpeta. Verifica los permisos.");
-                        return; // Salir si no se pudo crear la carpeta
-                    }
-                } catch (Exception e) {
-                    response.getWriter().println("Excepción al intentar crear la carpeta: " + e.getMessage());
-                    return; // Salir si hay una excepción
-                }
-            }
+        // Obtener el nombre del archivo desde el header "content-disposition"
+        String fileName = extractFileName(filePart);
 
-            // Ruta donde se guardará el archivo
-            File archivoDestino = new File(destinoCarpeta, nombreArchivo);
-
-            // Guardar el archivo
-            try (InputStream input = filePart.getInputStream()) {
-                Files.copy(input, archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);      
-                fotoPerfil=archivoDestino.toPath().toString();
-            } catch (Exception e) {
-                response.getWriter().println("Error al guardar el archivo: " + e.getMessage());
-                return; // Salir si hay un error al guardar el archivo
-            }
-        } else {
-            System.out.println("Error al recibir la imagen.");
+        // Construir la ruta de carga usando el contexto de la aplicación
+        String uploadPath =getServletContext().getRealPath("")+UPLOAD_DIR;
+        System.out.println("//////////////////////////////////" + uploadPath);
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir(); // Crear el directorio si no existe
         }
+
+        // Verificar si el archivo ya existe y generar un nuevo nombre si es necesario
+        File file = new File(uploadDir, fileName);
+        int count = 1;
+        String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+        String extension = fileName.substring(fileName.lastIndexOf('.'));
+
+        while (file.exists()) {
+            fileName = baseName + "_" + count + extension; // Cambiar el nombre
+            file = new File(uploadDir, fileName);
+            count++;
+        }
+
+        // Guardar el archivo en el directorio
+        try (InputStream input = filePart.getInputStream()) {
+            Files.copy(input, file.toPath());
+        }
+
+        String fotoPerfil = file.toPath().toString();
+    
         String fechaNacimientoStr = request.getParameter("fechaNacimiento");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaNacimiento = null;
@@ -130,7 +132,7 @@ public class SVAltaPerfil extends HttpServlet {
         request.setAttribute("mensaje", mensaje);
         
         // Redirigir al JSP
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("AltaPerfil.jsp").forward(request, response);
         
     } 
     @Override

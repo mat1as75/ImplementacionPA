@@ -2,11 +2,14 @@ import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
 @WebServlet(urlPatterns = {"/SVValidarNickyEmail"})
 public class SVValidarNickyEmail extends HttpServlet {
 
@@ -46,6 +49,11 @@ public class SVValidarNickyEmail extends HttpServlet {
         }
         if((Email!=null)&&(i.ExisteEmail(Email))){
             resultado="El email "+Email+" ya existe";
+            
+        }
+        String patron = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        if ((Email!=null)&&(!Pattern.matches(patron, Email)) ){
+            resultado="El email "+Email+" no es correcto";
         }
         // Envía la respuesta de vuelta a la solicitud AJAX
         response.setContentType("text/plain");
