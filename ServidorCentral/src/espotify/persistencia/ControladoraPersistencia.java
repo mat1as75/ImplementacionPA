@@ -1260,12 +1260,8 @@ public class ControladoraPersistencia {
                 if(g.getNombreGenero().equals(genero)){
                     Albums.put(a.getIdAlbum(), a.getNombreAlbum());
                 }
-            }
-            
+            }   
         }
-        
-        
-        
         return Albums;    
     }
     
@@ -1273,17 +1269,11 @@ public class ControladoraPersistencia {
         Map<Long, String> Albums = new HashMap<>();
         List<Album> albumes = this.albJpa.findAlbumEntities();
         
-        for(Album a : albumes){
-            
+        for(Album a : albumes){   
                 if(a.getMiArtista().getNickname().equals(artista)){
                     Albums.put(a.getIdAlbum(), a.getNombreAlbum());
-                }
-            
-            
+                }    
         }
-        
-        
-        
         return Albums;    
     }
     

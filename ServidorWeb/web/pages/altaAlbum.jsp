@@ -1,3 +1,10 @@
+<%@page import="espotify.DataTypes.DTGenero_Simple"%>
+<%@page import="java.util.List"%>
+<%@page import="espotify.DataTypes.DTGenero"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="espotify.logica.IControlador"%>
+<%@page import="espotify.logica.Fabrica"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -31,44 +38,121 @@
         
     </head>
     <body>
-        <h1>Alta album</h1>
-        <h3>Usuario: <%=(String)request.getAttribute("usuario")%></h3>
-        <section class="sectionFormAlbum">
-            <form id="formAlbum" method="POST">
-                <div>
-                    
-                </div>
-                <div class="temasContainer">
-                    <div class="inputTemaContainer">
-                        <label for="nombreTema">Nombre de tema: </label>
-                        <input type="text" id="nombreTema"/>
-                    </div>
-
-                    <div class="inputTemaContainer">
-                        <label for="duracionTema">Duracion: </label>
-                        <input type="number" id="duracionTema">
-                    </div>
-
-                    <ol class="list-group listaTemas" id="olTemasCreados">
-                    </ol>
-
-                    <div class="btnsTemasContainer">
-                        <button type="button" class="btn btn-primary" onClick="addLiItem()">Agregar tema</button>
-                        <button type="button" class="btn btn-danger" onClick="removeLiItem()">Remover tema</button>
-                    </div>
-                    
-                    <div class="btnsTemasContainer">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                    </div>
-                    
-                        
-                </div>
-            </form>
-            
-            <a href="/ServidorWeb">Volver</a>
-
-        </section>
+        <% 
+        Fabrica fb = Fabrica.getInstance();
+        IControlador ictrl = fb.getControlador();
+        ArrayList<DTGenero_Simple> generos = ictrl.getListaDTGeneroSimple();
+        %>
         
+        <h1>Alta album</h1>
+        <form class="container-lg" id="formAlbum" method="POST">
+            <h2>Datos del Album</h2>
+            <div class="inputsContainer">
+                <label for="nombreAlbum">Nombre del album: </label>
+                <input type="text" id="nombreAlbum" required/>
+            </div>
+            <div class="errorDiv">                
+                <span class="spanError" id="errorNombreAlbum"></span>
+            </div>
+            <div class="inputsContainer">
+                <label for="anioAlbum">Año: </label>
+                <input type="number" id="anioAlbum" required/>
+            </div>
+            <div class="errorDiv">                
+                <span class="spanError" id="errorAnioAlbum"></span>
+            </div>
+            
+            <div class="inputsContainer">
+                <label for="inputPortadaAlbum">Portada: </label>
+                <input class="d-block" type="file" id="inputPortadaAlbum" accept="image/*" name="inputPortadaAlbum"/>
+            </div>
+
+            <h2>Géneros</h2>
+            <div class="inputsContainer">
+                <ul class="treeGeneros">
+                    <li>
+                        <details open>
+                            <summary>Géneros</summary>
+                            <ul>
+                                <%
+                                for (DTGenero_Simple dg : generos) {
+                                    if (dg.getNombreGeneroPadre().equals("Genero")) { 
+                                %>
+                                <li>
+                                    <details>
+                                        <summary><%=dg.getNombreGenero()%>
+                                            <input type="checkbox" name="cboxGeneros" id="cbox-gen-<%=dg.getNombreGenero() %>"/>
+                                        </summary>
+                                        <%if (!dg.getSubgeneros().isEmpty()) { %>
+                                        <ul>
+                                            <% for (String subGenero : dg.getSubgeneros()) { %>
+                                            <li id="li-subgen-<%=subGenero%>">
+                                                <%=subGenero%>
+                                                <input type="checkbox" name="cboxGeneros" id="cbox-gen-<%=subGenero%>"/>
+                                            </li>
+                                            <%}%>
+                                        </ul>
+                                        <%}%>
+                                    </details>
+                                </li>
+                                <% }}%>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </div>
+            
+            <h2>Temas</h2>
+            <div class="inputsContainer">
+                <label for="nombreTema">Nombre de tema: </label>
+                <input type="text" id="nombreTema"/>
+            </div>
+            <div class="errorDiv">                
+                <span class="spanError" id="errorNombreTema"></span>
+            </div>
+
+            <div class="inputsContainer">
+                <label for="duracionTema">Duracion: </label>
+                <input type="text" id="duracionTema">
+            </div>
+            <div class="errorDiv">                
+                <span class="spanError" id="errorDuracionTema"></span>
+            </div>
+
+            <div class="inputsContainer">
+                <label for="tipoDeAcceso">Tipo de acceso: </label>
+                <input type="text" id="tipoDeAcceso" disabled>
+                <label for="radioRuta">Subir</label>
+                <input type="radio" name="tipoDeAcceso" id="radioRuta" value="ruta">
+                <label for="radioUrl">URL</label>
+                <input type="radio" name="tipoDeAcceso" id="radioUrl" value="url" checked>
+            </div>
+            <div class="errorDiv">                
+                <span class="spanError" id="errorUrlTema"></span>
+            </div>
+
+            <div id="inputFileTemaContainer" class="inputsContainer d-none">
+                <label for="inputTema">Seleccione el archivo: </label>
+                <input id="inputTema" name="inputTema" type="file" accept=".mp3, .wav"/>
+            </div>
+
+            <h3>Temas agregados</h3>
+            <div class="temasContainer">
+                <ol class="list-group listaTemas" id="olTemasCreados">
+                </ol>
+            </div>            
+
+            <div class="btnsTemasContainer">
+                <button type="button" class="btn btn-primary" onClick="addLiTema()">Agregar tema</button>
+                <button type="button" class="btn btn-danger" onClick="removeLiTema()">Remover tema</button>
+            </div>
+
+            <div class="btnsTemasContainer">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </form>
+
+        <a href="/ServidorWeb">Volver</a>        
         
     </body>
 </html>

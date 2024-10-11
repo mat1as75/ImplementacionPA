@@ -1,3 +1,5 @@
+const mapTemas = new Map();
+
 /*
  * inicializa el <ol> con drag&drop para los temas
  */
@@ -11,30 +13,59 @@ Sortable.create(document.getElementById("olTemasCreados"), {
                 chosenClass: 'active' }
 ); 
 
-document.getElementById("formAlbum").addEventListener("submit", evt => {
-    evt.preventDefault();
-    console.log("submitted");
+$('input[type=radio][name=tipoDeAcceso]').on('change', function() {
+  switch ($(this).val()) {
+        case 'ruta':
+            $("#tipoDeAcceso").attr("disabled", true);
+            $("#inputFileTemaContainer").removeClass("d-none");
+            break;
+        case 'url':
+            $("#tipoDeAcceso").attr("disabled", false);
+            $("#inputFileTemaContainer").addClass("d-none");
+            break;
+  }
 });
 
-function addLiItem() {
+function validarNombreTema(nombre) {
+    if (mapTemas.has(nombre)) {
+        return false;
+    }
+}
+
+function addLiTema() { 
+    const nombre = $("#nombreTema").val();
+    const duracion = $("#duracionTema").val();
+    const tipoDeAcceso = $("input[type=radio][name=tipoDeAcceso]:checked").val();
+    let url, archivo;
     
-    const name = $("#nombreTema").val();
-    const duration = $("#duracionTema").val();
+    if (tipoDeAcceso === "url") {
+        url = $("#tipoDeAcceso").val();
+    } else {
+        const ruta = $("#inputTema").val();
+        archivo = ruta.substring(ruta.lastIndexOf("\\")+1);
+    }
     
     const ol = document.getElementById("olTemasCreados");
     const li = document.createElement("li"); 
     const span = document.createElement("span");
     
-    span.innerText = `${name} - ${duration}`;
+    const content = `${nombre}  [${duracion}]  -  ${archivo || url}`;
+    span.innerText = content;
     li.setAttribute("class", "list-group-item");
-    li.setAttribute("id", `tema-${name}`);
+    li.setAttribute("id", `tema-${nombre}`);
     li.appendChild(span);
-    li.appendChild(createRadioInput(name));
-   
+    li.appendChild(createRadioInputTema(nombre));
+    //aca
+    const tema = {
+        nombreTema: nombre, 
+        duracionTema: duracion, 
+        tipoDeAccesoTema: tipoDeAcceso, 
+        posicionTema: 0
+    };
     ol.appendChild(li);
 }
 
-function createRadioInput(id) {
+function createRadioInputTema(id) {
     const radioInput = document.createElement("input");
     radioInput.setAttribute("type", "radio");
     radioInput.setAttribute("id", `radio-${id}`);
@@ -45,7 +76,7 @@ function createRadioInput(id) {
     return radioInput;
 }
 
-function removeLiItem(){
+function removeLiTema(){
     const id = $("input[type='radio']:checked").val();
     const li = document.getElementById(`tema-${id}`);
     
@@ -54,7 +85,4 @@ function removeLiItem(){
     }
 }
 
-function submitAltaAlbum() {
-    const form = document.getElementById("formAlbum");
-    form.addEventListener(evt);
-}
+
