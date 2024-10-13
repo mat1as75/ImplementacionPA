@@ -51,14 +51,14 @@
                 <label for="nombreAlbum">Nombre del album: </label>
                 <input type="text" id="nombreAlbum" required/>
             </div>
-            <div class="errorDiv">                
+            <div class="errorDiv d-none">                
                 <span class="spanError" id="errorNombreAlbum"></span>
             </div>
             <div class="inputsContainer">
                 <label for="anioAlbum">Año: </label>
                 <input type="number" id="anioAlbum" required/>
             </div>
-            <div class="errorDiv">                
+            <div class="errorDiv d-none">                
                 <span class="spanError" id="errorAnioAlbum"></span>
             </div>
             
@@ -107,7 +107,7 @@
                 <label for="nombreTema">Nombre de tema: </label>
                 <input type="text" id="nombreTema"/>
             </div>
-            <div class="errorDiv">                
+            <div class="errorDiv d-none">                
                 <span class="spanError" id="errorNombreTema"></span>
             </div>
 
@@ -115,19 +115,19 @@
                 <label for="duracionTema">Duracion: </label>
                 <input type="text" id="duracionTema">
             </div>
-            <div class="errorDiv">                
+            <div class="errorDiv d-none">                
                 <span class="spanError" id="errorDuracionTema"></span>
             </div>
 
             <div class="inputsContainer">
                 <label for="tipoDeAcceso">Tipo de acceso: </label>
-                <input type="text" id="tipoDeAcceso" disabled>
+                <input type="text" id="tipoDeAcceso">
                 <label for="radioRuta">Subir</label>
                 <input type="radio" name="tipoDeAcceso" id="radioRuta" value="ruta">
                 <label for="radioUrl">URL</label>
                 <input type="radio" name="tipoDeAcceso" id="radioUrl" value="url" checked>
             </div>
-            <div class="errorDiv">                
+            <div class="errorDiv d-none">                
                 <span class="spanError" id="errorUrlTema"></span>
             </div>
 
