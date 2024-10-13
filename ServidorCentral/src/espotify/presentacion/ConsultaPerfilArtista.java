@@ -304,7 +304,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
         // Verifica si hay una selección
         if (nicknameArtistaSeleccionado != null) {
             
-            jLabelNicknameInfo.setText(datosArtista.getNickname());
+            jLabelNicknameInfo.setText(datosArtista.getNicknameUsuario());
             jLabelNombreInfo.setText(datosArtista.getNombreUsuario());
             jLabelApellidoInfo.setText(datosArtista.getApellidoUsuario());
             

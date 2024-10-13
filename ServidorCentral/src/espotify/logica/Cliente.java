@@ -54,8 +54,8 @@ public class Cliente extends Usuario{
     )
     private List<ListaParticular> misListasReproduccionCreadas;
     
-    @OneToMany (mappedBy="miCliente")
-    private List<Suscripcion> misSuscripciones;
+    @OneToOne (mappedBy="miCliente")
+    private Suscripcion miSuscripcion;
 
     // Constructores
     public Cliente() {
@@ -145,6 +145,14 @@ public class Cliente extends Usuario{
                lp.setsoyPrivada(false);
            }
        }
+    }
+
+    public Suscripcion getMiSuscripcion() {
+        return miSuscripcion;
+    }
+
+    public void setMiSuscripcion(Suscripcion miSuscripcion) {
+        this.miSuscripcion = miSuscripcion;
     }
 
     public DTCliente getDTCliente() {

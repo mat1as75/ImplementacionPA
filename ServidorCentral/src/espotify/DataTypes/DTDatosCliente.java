@@ -7,67 +7,43 @@ package espotify.DataTypes;
 import java.util.Date;
 import java.util.ArrayList;
 
-/**
- *
- * @author tecnologo
- */
-public class DTDatosCliente {
-    
-    private String nickname;
-    private String nombreUsuario;
-    private String apellidoUsuario;
-    private String email;
-    private Date fecNac;
-    private String fotoPerfil;
+public class DTDatosCliente extends DTDatosUsuario {
     
     private ArrayList<String> nicknamesSeguidos;
-    private ArrayList<String> nicknamesSeguidores;
     private ArrayList<String> nombresListasRCreadas;
+    private ArrayList<String> nombresListasRCreadasPublicas;
     private ArrayList<String> nombresListasRFavoritas;
     private ArrayList<String> nombresAlbumesFavoritos;
     private ArrayList<String> nombresTemasFavoritos;
+    private DTSuscripcion suscripcion;
     
     public DTDatosCliente() {
         
     }
     
-    public DTDatosCliente(String nickname, String nombre, String apellido, 
-            String email, Date fecNac, String fotoPerfil, 
+    public DTDatosCliente(String nicknameUsuario, String nombreUsuario, String apellidoUsuario, 
+            String contrasenaUsuario, String email, Date fecNac, String fotoPerfil, 
             ArrayList<String> nicknamesSeguidos, ArrayList<String> nicknamesSeguidores, 
-            ArrayList<String> nombresListasRCreadas, ArrayList<String> nombresListasRFavoritas, 
-            ArrayList<String> nombresAlbumesFavoritos, ArrayList<String> nombresTemasFavoritos) {
-        
-        this.nickname = nickname;
-        this.nombreUsuario = nombre;
-        this.apellidoUsuario = apellido;
-        this.email = email;
-        this.fecNac = fecNac;
-        this.fotoPerfil = fotoPerfil;
+            ArrayList<String> nombresListasRCreadas, ArrayList<String> nombresListasRCreadasPublicas, 
+            ArrayList<String> nombresListasRFavoritas, ArrayList<String> nombresAlbumesFavoritos, 
+            ArrayList<String> nombresTemasFavoritos, 
+            DTSuscripcion suscripcion) {
+        super( nicknameUsuario, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil, nicknamesSeguidores );
+
         this.nicknamesSeguidos = nicknamesSeguidos;
-        this.nicknamesSeguidores = nicknamesSeguidores;
         this.nombresListasRCreadas = nombresListasRCreadas;
+        this.nombresListasRCreadasPublicas = nombresListasRCreadasPublicas;
         this.nombresListasRFavoritas = nombresListasRFavoritas;
         this.nombresAlbumesFavoritos = nombresAlbumesFavoritos;
         this.nombresTemasFavoritos = nombresTemasFavoritos;
+        this.suscripcion = suscripcion;
     }
-    
-    public String getNickname() { return nickname; }
-    
-    public String getNombreUsuario() { return nombreUsuario; }
-    
-    public String getApellidoUsuario() { return apellidoUsuario; }
-    
-    public String getEmail() { return email; }
-    
-    public Date getFecNac() { return fecNac; }
-    
-    public String getFotoPerfil() { return fotoPerfil; }
     
     public ArrayList<String> getNicknamesSeguidos() { return nicknamesSeguidos; }
     
-    public ArrayList<String> getNicknamesSeguidores() { return nicknamesSeguidores; }
-    
     public ArrayList<String> getNombresListasRCreadas() { return nombresListasRCreadas; }
+    
+    public ArrayList<String> getNombresListasRCreadasPublicas() { return nombresListasRCreadasPublicas; }
     
     public ArrayList<String> getNombresListasRFavoritas() { return nombresListasRFavoritas; }
     
@@ -75,7 +51,6 @@ public class DTDatosCliente {
     
     public ArrayList<String> getNombresTemasFavoritos() { return nombresTemasFavoritos; }
    
-    
-    
+    public DTSuscripcion getSuscripcion() { return suscripcion; }
     
 }

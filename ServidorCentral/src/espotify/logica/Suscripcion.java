@@ -13,7 +13,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,18 +28,22 @@ public class Suscripcion implements Serializable {
     /* Semanal, Mensual, Anual */
     @Enumerated(EnumType.STRING)
     private TipoSuscripcion tipoSuscripcion;
-    /* Pendiente, Vigente, Cancelada, VencidSuscripciona */
+    /* Pendiente, Vigente, Cancelada, Vencida */
     @Enumerated(EnumType.STRING)
     private EstadoSuscripcion estadoSuscripcion;
     @Temporal(TemporalType.DATE)
     private Date fechaSuscripcion;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @OneToOne
+    @JoinTable(name="Cliente_Suscripcion")
     private Cliente miCliente;
 
     public Suscripcion() {
     }
 
-    public Suscripcion(EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion, Cliente miCliente) {
+    public Suscripcion(Long idSuscripcion, TipoSuscripcion tipoSuscripcion, 
+            EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion, Cliente miCliente) {
+        this.idSuscripcion = idSuscripcion;
+        this.tipoSuscripcion = tipoSuscripcion;
         this.estadoSuscripcion = estadoSuscripcion;
         this.fechaSuscripcion = fechaSuscripcion;
         this.miCliente = miCliente;

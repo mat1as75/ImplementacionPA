@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class DTUsuario{
- // Atributos
+    // Atributos
     protected String nickname;
     protected String nombreUsuario;
     protected String apellidoUsuario;
@@ -26,6 +26,17 @@ public abstract class DTUsuario{
         this.email = email;
         this.fecNac = fecNac;
         this.fotoPerfil = fotoPerfil;
+    }
+    public DTUsuario(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email, Date fecNac, String fotoPerfil,
+            List<DTUsuario> misSeguidores) {
+        this.nickname = nickname;
+        this.nombreUsuario = nombreUsuario;
+        this.apellidoUsuario = apellidoUsuario;
+        this.contrasenaUsuario = contrasenaUsuario;
+        this.email = email;
+        this.fecNac = fecNac;
+        this.fotoPerfil = fotoPerfil;
+        this.misSeguidores = misSeguidores;
     }
 
     public String getNickname() {

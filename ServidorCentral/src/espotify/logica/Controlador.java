@@ -9,6 +9,7 @@ import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
@@ -428,6 +429,11 @@ public class Controlador implements IControlador{
     @Override
     public DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario) {
         return this.contpersis.getUsuarioAutentificado(identificador, contrasenaUsuario);
+    }
+    
+    @Override
+    public DTDatosUsuario getDatosUsuario(String identificadorUsuario) {
+        return this.contpersis.getDatosUsuario(identificadorUsuario);
     }
     
     @Override

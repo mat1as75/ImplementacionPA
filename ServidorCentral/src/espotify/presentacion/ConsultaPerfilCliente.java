@@ -385,7 +385,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
         // Verificar si hay una selección
         if (nicknameClienteSeleccionado != null) {
             
-            jLabelNicknameInfo.setText(datosCliente.getNickname());
+            jLabelNicknameInfo.setText(datosCliente.getNicknameUsuario());
             jLabelNombreInfo.setText(datosCliente.getNombreUsuario());
             jLabelApellidoInfo.setText(datosCliente.getApellidoUsuario());
             

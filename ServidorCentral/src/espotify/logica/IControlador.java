@@ -8,6 +8,7 @@ import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaGenerico;
@@ -96,5 +97,6 @@ public interface IControlador {
     public abstract List<String> getUsuariosSinEste(String nickname);
     
     public abstract DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario);
+    public abstract DTDatosUsuario getDatosUsuario(String identificadorUsuario);
 
 }
