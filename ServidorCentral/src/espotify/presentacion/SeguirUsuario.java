@@ -22,7 +22,6 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
         initComponents();
         Fabrica f=Fabrica.getInstance();
         IControlador i=f.getControlador();
-        List<String> nicknamesArtistas = i.getNicknamesArtistas();
         List<String> nicknamesClientes = i.getNicknamesClientes();
         jComboBoxSeguidor.removeAllItems();
         for (String c : nicknamesClientes) {
@@ -30,15 +29,9 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
         }
         String Seguidor = (String) jComboBoxSeguidor.getSelectedItem();
         jComboBoxSeguido.removeAllItems();
-        for (String c : nicknamesClientes) {
-            if (!(Seguidor.equals(c))){
-                jComboBoxSeguido.addItem(c);
-            }
-        }
-        for (String a : nicknamesArtistas) {
-            if (!(Seguidor.equals(a))){
-                jComboBoxSeguido.addItem(a);
-            }
+        List<String>usuarios=i.getUsuariosSinEste(Seguidor);
+        for (String u : usuarios) {
+                jComboBoxSeguido.addItem(u);
         }
     }
 
@@ -186,18 +179,11 @@ public class SeguirUsuario extends javax.swing.JInternalFrame {
         jComboBoxSeguido.removeAllItems();
         Fabrica f=Fabrica.getInstance();
         IControlador i=f.getControlador();
-        List<String> nicknamesArtistas = i.getNicknamesArtistas();
-        List<String> nicknamesClientes = i.getNicknamesClientes();
-        for (String c : nicknamesClientes) {
-            if (!(Seguidor.equals(c))){
-                jComboBoxSeguido.addItem(c);
-            }
+        List<String>usuarios=i.getUsuariosSinEste(Seguidor);
+        for (String u : usuarios) {
+                jComboBoxSeguido.addItem(u);
         }
-        for (String a : nicknamesArtistas) {
-            if (!(Seguidor.equals(a))){
-                jComboBoxSeguido.addItem(a);
-            }
-        }
+    
     }//GEN-LAST:event_jComboBoxSeguidorActionPerformed
 
 
