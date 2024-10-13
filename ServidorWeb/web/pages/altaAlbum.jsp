@@ -1,3 +1,4 @@
+<%@page import="java.time.Year"%>
 <%@page import="espotify.DataTypes.DTGenero_Simple"%>
 <%@page import="java.util.List"%>
 <%@page import="espotify.DataTypes.DTGenero"%>
@@ -17,6 +18,10 @@
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
               crossorigin="anonymous"
               >
+        
+        <!-- BOOTSTRAP ICONS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        
         <!-- CUSTOM CSS -->
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/styles.css"/>
 
@@ -49,14 +54,14 @@
             <h2>Datos del Album</h2>
             <div class="inputsContainer">
                 <label for="nombreAlbum">Nombre del album: </label>
-                <input type="text" id="nombreAlbum" required/>
+                <input type="text" id="nombreAlbum" minlength="1" maxlength="255" required/>
             </div>
             <div class="errorDiv d-none">                
                 <span class="spanError" id="errorNombreAlbum"></span>
             </div>
             <div class="inputsContainer">
                 <label for="anioAlbum">Año: </label>
-                <input type="number" id="anioAlbum" required/>
+                <input type="number" id="anioAlbum" min="1900" max="<%=Year.now()%>" required/>
             </div>
             <div class="errorDiv d-none">                
                 <span class="spanError" id="errorAnioAlbum"></span>
@@ -113,7 +118,7 @@
 
             <div class="inputsContainer">
                 <label for="duracionTema">Duracion: </label>
-                <input type="text" id="duracionTema">
+                <input type="text" id="duracionTema" placeholder="3:45">
             </div>
             <div class="errorDiv d-none">                
                 <span class="spanError" id="errorDuracionTema"></span>
@@ -121,7 +126,7 @@
 
             <div class="inputsContainer">
                 <label for="tipoDeAcceso">Tipo de acceso: </label>
-                <input type="text" id="tipoDeAcceso">
+                <input type="text" id="tipoDeAcceso" placeholder="https://dominio.com/tema">
                 <label for="radioRuta">Subir</label>
                 <input type="radio" name="tipoDeAcceso" id="radioRuta" value="ruta">
                 <label for="radioUrl">URL</label>
@@ -135,17 +140,16 @@
                 <label for="inputTema">Seleccione el archivo: </label>
                 <input id="inputTema" name="inputTema" type="file" accept=".mp3, .wav"/>
             </div>
+            
+            <div class="btnsTemasContainer">
+                <button type="button" class="btn btn-primary" onClick="addLiTema()">Agregar tema</button>
+            </div>
 
             <h3>Temas agregados</h3>
             <div class="temasContainer">
                 <ol class="list-group listaTemas" id="olTemasCreados">
                 </ol>
             </div>            
-
-            <div class="btnsTemasContainer">
-                <button type="button" class="btn btn-primary" onClick="addLiTema()">Agregar tema</button>
-                <button type="button" class="btn btn-danger" onClick="removeLiTema()">Remover tema</button>
-            </div>
 
             <div class="btnsTemasContainer">
                 <button type="submit" class="btn btn-success">Submit</button>

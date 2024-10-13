@@ -4,7 +4,8 @@ const errorMsgs = {
     anioAlbumInvalido: "El año de creación no es válido.",
     nombreTemaInvalido: "El nombre del tema elegido no es válido.",
     nombreTemaRepetido: "Ya existe un tema con el mismo nombre.",
-    duracionTemaInvalida: "La duración ingresada no tiene el formato correcto."
+    duracionTemaInvalida: "La duración ingresada no tiene el formato correcto.",
+    urlTemaInvalido: "La URL ingresada no es valida."
 }
 const mapTemasAgregados = new Map();
 
@@ -21,6 +22,13 @@ const sortableList = Sortable.create(document.getElementById("olTemasCreados"), 
                 chosenClass: 'active'
             }
 ); 
+
+document.querySelector("body").addEventListener("click", evt => {
+   if (evt.target && evt.target.getAttribute("data-name") === "iconRemoverTema") {
+       li = evt.target.closest("li");
+       removeLiTema(li);
+   } 
+});
 
 $('input[type=radio][name=tipoDeAcceso]').on('change', function() {
   switch ($(this).val()) {
@@ -68,6 +76,22 @@ function validarDuracionTema(duracion) {
     return true;
 }
 
+function validarUrl(url) {
+    const errorSpan = $("#errorUrlTema");
+    const spanContainer = errorSpan.closest("div");
+    
+    try {
+        new URL(url);
+        errorSpan.text("");
+        spanContainer.addClass("d-none");
+        return true;
+    } catch (err) {
+        errorSpan.text(errorMsgs.urlTemaInvalido);
+        spanContainer.removeClass("d-none");
+        return false;
+    }
+}
+
 function addLiTema() { 
     const nombre = $("#nombreTema").val();
     if (!validarNombreTema(nombre)) return; 
@@ -80,6 +104,7 @@ function addLiTema() {
     
     if (tipoDeAcceso === "url") {
         url = $("#tipoDeAcceso").val();
+        if (!validarUrl(url)) return;
     } else {
         const ruta = $("#inputTema").val();
         archivo = ruta.substring(ruta.lastIndexOf("\\")+1);
@@ -87,15 +112,17 @@ function addLiTema() {
     
     const ol = document.getElementById("olTemasCreados");
     const li = document.createElement("li"); 
-    const span = document.createElement("span");
+    const trashIcon = document.createElement("i");
+    
+    trashIcon.setAttribute("data-name", "iconRemoverTema");
+    trashIcon.setAttribute("class", "bi bi-trash3");    
     
     const content = `${nombre}  [${duracion}]  -  ${archivo || url}`;
-    span.innerText = content;
+    li.innerText = content;
     li.setAttribute("class", "list-group-item");
     li.setAttribute("id", `tema-${nombre}`);
     li.setAttribute("data-name", nombre);
-    li.appendChild(span);
-    li.appendChild(createRadioInputTema(nombre));
+    li.appendChild(trashIcon);
     
     //los temas siempre se agregan al final de la lista, 
     //entonces la posicon del ultimo tema agregado es la cantidad de elementos
@@ -110,24 +137,11 @@ function addLiTema() {
     ol.appendChild(li);
 }
 
-function createRadioInputTema(id) {
-    const radioInput = document.createElement("input");
-    radioInput.setAttribute("type", "radio");
-    radioInput.setAttribute("id", `radio-${id}`);
-    radioInput.setAttribute("name", "temas");
-    radioInput.setAttribute("class", "radioTema");
-    radioInput.setAttribute("value", id);
-    
-    return radioInput;
-}
-
-function removeLiTema(){
-    const selectedRadio = $("input[type='radio'][name='temas']:checked");
-    const li = selectedRadio.closest("li");
-    const nombre = li.attr("data-name");
+function removeLiTema(liElement){
+    const nombre = liElement.getAttribute("data-name");
         
-    if (li != null) {
-        li.remove();
+    if (liElement != null) {
+        liElement.remove();
         mapTemasAgregados.delete(nombre);
     }
 }
