@@ -34,7 +34,7 @@ const sortableList = Sortable.create(document.getElementById("olTemasCreados"), 
 ); 
 
 //datos del album, generos seleccionados y temas agregados en forma de objeto para luego pasar a JSON
-let data;
+let GLOBAL_data;
 
 /* 
  * -----------------------------------------------------------
@@ -59,7 +59,7 @@ $("#olTemasCreados").on("change", "input[type='file'][data-type='file-tema']", e
     const tema = mapTemasAgregados.get(nombreTema);
     
     tema.urlORuta = fileName;
-    mapTemasAgregados.set(tema);
+    mapTemasAgregados.set(nombreTema, tema);
 });
 
 //Cuando se selecciona el radio input de url se oculta el input de archivos y viceversa
@@ -100,20 +100,28 @@ function convertFormDataToJSON(formData) {
 
 async function handleSubmit(evt) {
     evt.preventDefault();
-    if (!data) return;
+    if (!GLOBAL_data) return;
     
+    const data = GLOBAL_data;
     const form = document.getElementById("formAlbum");    
     const formObject = new FormData(form);
-    const jsonData = convertFormDataToJSON(data);
-    
-    formObject.append("dataAlbum", jsonData);
+            
     formObject.append("nombreAlbum", data.Album);
     formObject.append("anioAlbum", data.Anio);
+    formObject.append("nombrePortada", data.Portada);
+    
     for (let i=0; i<data.Generos.length; i++) {
         formObject.append("generos", data.Generos[i]);
     }
+    
+    formObject.append("cantidadTemas", data.Temas.length);
+    
     for (let i=0; i<data.Temas.length; i++) {
-        formObject.append("temas", data.Temas[i]);
+        formObject.append(`tema-${i}-nombre`, data.Temas[i][1].nombreTema);
+        formObject.append(`tema-${i}-duracion`, data.Temas[i][1].duracionTema);
+        formObject.append(`tema-${i}-tipoDeAcceso`, data.Temas[i][1].tipoDeAccesoTema);
+        formObject.append(`tema-${i}-urlOruta`, data.Temas[i][1].urlORuta);
+        formObject.append(`tema-${i}-posicion`, data.Temas[i][1].posicion);
     }
     
     const request = new Request("/ServidorWeb/AltaAlbum", {
@@ -123,8 +131,8 @@ async function handleSubmit(evt) {
     
     try {
         const response = await fetch(request);
-        const result = await response.json();
-        console.log("result: ",  result);
+        const result = await response;
+        console.log("Result: ",  result);
     } catch (e) {
         console.error("Error:" , e);
     }
@@ -155,7 +163,7 @@ function validateForm() {
     };
     
     $("#btnSubmit").removeAttr("disabled");
-    data = formData;
+    GLOBAL_data = formData;
 }
 
 function resetInputs() {
@@ -390,10 +398,11 @@ function getGenerosSeleccionados() {
 
 //Obtiene los li con los datos de los temas y actualiza el valor posicion de cada tema basado en su orden
 function actualizarValorPosicionDeTemas() {
+    
     const elements = document.querySelectorAll("li[data-group='temas-agregados']");
     //no deberia pasar pero por si acaso no se creo el li con el tema
     if (elements.length !== mapTemasAgregados.size) return;
-   
+      
     for (let i = 0; i < elements.length; i++) {
         const nombre = elements[i].getAttribute("data-name");
         const tema = mapTemasAgregados.get(nombre);
