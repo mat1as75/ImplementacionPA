@@ -31,6 +31,10 @@ div {
     margin: 1rem;
 }
 
+.listaTemas li {
+    overflow: scroll;
+}
+
 .temasContainer {
     display: flex;
     flex-direction: column;
@@ -52,7 +56,6 @@ div {
 }
 
 .spanError {
-    border: 1px solid red;
     color: red;
 }
 
@@ -154,7 +157,7 @@ input[type=file] {
   left: calc(var(--spacing) - var(--radius) - 1px);
   width: calc(2 * var(--radius));
   height: calc(2 * var(--radius));
-  border-radius: 25%;
+  border-radius: 50%;
   background-color: cornflowerblue;
 }
 
@@ -165,4 +168,5 @@ input[type=file] {
 
 .treeGeneros details[open] > summary::before {
   background-color: navy;
+  border-radius: 10%;
 }

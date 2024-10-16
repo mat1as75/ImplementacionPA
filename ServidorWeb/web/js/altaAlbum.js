@@ -1,3 +1,10 @@
+/*  
+ * -----------------------------------------------------------
+ *  CONST
+ *  -----------------------------------------------------------
+ */
+
+//mensajes de error para mostrarle al usuario
 const errorMsgs = {
     nombreAlbumVacio: "El nombre del album no puede estar vacío.",
     nombreAlbumRepetido: "Ya existe un album con el mismo nombre.",
@@ -5,13 +12,16 @@ const errorMsgs = {
     nombreTemaInvalido: "El nombre del tema elegido no es válido.",
     nombreTemaRepetido: "Ya existe un tema con el mismo nombre.",
     duracionTemaInvalida: "La duración ingresada no tiene el formato correcto.",
-    urlTemaInvalido: "La URL ingresada no es valida."
-}
+    urlTemaInvalido: "La URL ingresada no es valida.",
+    nombreArchivoRepetido: "Ya se seleccionó un archivo con el mismo nombre.",
+    temaSinArchivo: "Todos los temas que requieran subir un archivo deben tener uno seleccionado.",
+    sinGeneros: "Debe seleccionar al menos un género.",
+    sinTemas: "Debe agregar al menos un tema al álbum."
+};
+//datos de los temas agregados
 const mapTemasAgregados = new Map();
 
-/*
- * inicializa el <ol> con drag&drop para los temas
- */
+//inicializa el <ol> con drag&drop para los temas 
 const sortableList = Sortable.create(document.getElementById("olTemasCreados"), { 
                 animation: 100, 
                 group: 'list-1', 
@@ -23,6 +33,17 @@ const sortableList = Sortable.create(document.getElementById("olTemasCreados"), 
             }
 ); 
 
+//datos del album, generos seleccionados y temas agregados en forma de objeto para luego pasar a JSON
+let data;
+
+/* 
+ * -----------------------------------------------------------
+ * EVENT LISTENERS
+ * -----------------------------------------------------------
+ */
+
+//Remueve el tema agregado al hacer click sobre el icono
+//Uso Event Delegation para agregar el evento a los elementos creados dinamicamente
 document.querySelector("body").addEventListener("click", evt => {
    if (evt.target && evt.target.getAttribute("data-name") === "iconRemoverTema") {
        li = evt.target.closest("li");
@@ -30,19 +51,206 @@ document.querySelector("body").addEventListener("click", evt => {
    } 
 });
 
+//Agrego el nombre del archivo subido al tema
+$("#olTemasCreados").on("change", "input[type='file'][data-type='file-tema']", evt => {
+    const selectedFile = evt.target.value;
+    const fileName = selectedFile.substring(selectedFile.lastIndexOf("\\")+1);
+    const nombreTema = evt.target.getAttribute("data-name");
+    const tema = mapTemasAgregados.get(nombreTema);
+    
+    tema.urlORuta = fileName;
+    mapTemasAgregados.set(tema);
+});
+
+//Cuando se selecciona el radio input de url se oculta el input de archivos y viceversa
+//Cuando se selecciona el radio input de ruta el input de url se deshabilita
 $('input[type=radio][name=tipoDeAcceso]').on('change', function() {
-  switch ($(this).val()) {
+    switch ($(this).val()) {
         case 'ruta':
             $("#tipoDeAcceso").attr("disabled", true);
-            $("#inputFileTemaContainer").removeClass("d-none");
             break;
         case 'url':
             $("#tipoDeAcceso").attr("disabled", false);
-            $("#inputFileTemaContainer").addClass("d-none");
             break;
   }
 });
+//Valido los datos del form antes de habilitar el boton de submit
+document.getElementById("btnCrear").addEventListener("click", validateForm);
 
+document.getElementById("formAlbum").addEventListener("submit", handleSubmit);
+
+//window.onload = resetInputs;
+
+/* 
+ * -----------------------------------------------------------
+ * FUNCTIONS
+ * -----------------------------------------------------------
+ */
+
+function convertFormDataToJSON(formData) {
+    try {
+        const jsonData = JSON.stringify(formData);
+        return jsonData;
+    } catch(e) {
+        alert("No se pudo convertir los datos a json.")
+        return null;
+    }
+    
+}
+
+async function handleSubmit(evt) {
+    evt.preventDefault();
+    if (!data) return;
+    
+    const form = document.getElementById("formAlbum");    
+    const formObject = new FormData(form);
+    const jsonData = convertFormDataToJSON(data);
+    
+    formObject.append("dataAlbum", jsonData);
+    formObject.append("nombreAlbum", data.Album);
+    formObject.append("anioAlbum", data.Anio);
+    for (let i=0; i<data.Generos.length; i++) {
+        formObject.append("generos", data.Generos[i]);
+    }
+    for (let i=0; i<data.Temas.length; i++) {
+        formObject.append("temas", data.Temas[i]);
+    }
+    
+    const request = new Request("/ServidorWeb/AltaAlbum", {
+        method: "POST",
+        body: formObject
+    });
+    
+    try {
+        const response = await fetch(request);
+        const result = await response.json();
+        console.log("result: ",  result);
+    } catch (e) {
+        console.error("Error:" , e);
+    }
+    
+}
+
+//Validar datos del form antes de habilitar el submit
+function validateForm() {
+    const arrGeneros = getGenerosSeleccionados();
+    const nombreAlbum = $("#nombreAlbum").val();
+    const anioAlbum = $("#anioAlbum").val();
+    const rutaPortada = $("#inputPortadaAlbum").val();
+    const nombrePortada = rutaPortada.substring(rutaPortada.lastIndexOf("\\")+1);
+    
+    if (!validarDatosAlbum(nombreAlbum, anioAlbum)) return;
+    if (!validarSeleccionGeneros(arrGeneros)) return;
+    if (!validarCreacionDeTemas(mapTemasAgregados)) return;
+    if (!validarArchivosDeTemaVacio()) return;
+    
+    actualizarValorPosicionDeTemas();
+    
+    const formData = {
+        Album: nombreAlbum,
+        Anio: anioAlbum,
+        Portada: nombrePortada || "",
+        Generos: [...arrGeneros],
+        Temas: [...mapTemasAgregados]
+    };
+    
+    $("#btnSubmit").removeAttr("disabled");
+    data = formData;
+}
+
+function resetInputs() {
+    const inputs = document.querySelectorAll("input");
+    const typesToReset = ["text", "file", "number"];
+    
+    for (let i = 0; i< inputs.length; i++) {
+        const type = inputs[i].getAttribute("type");
+        
+        if (typesToReset.includes(type)) {
+            inputs[i].value = "";
+        }
+        
+        if (type === "checkbox") {
+            inputs[i].checked = false;
+        }
+    }
+    document.querySelector("#radioUrl").checked = true;
+    document.querySelector("#btnSubmit").disabled = true;
+}
+
+function validarDatosAlbum(nombre, anio) {
+    const errorSpanNombre = $("#errorNombreAlbum");
+    const errorSpanAnio = $("#errorAnioAlbum");
+    const spanNombreContainer = errorSpanNombre.closest("div");
+    const spanAnioContainer = errorSpanAnio.closest("div");
+    
+    if (!nombre) {
+        errorSpanNombre.text(errorMsgs.nombreAlbumVacio);
+        spanNombreContainer.removeClass("d-none");
+        return false;
+    }
+    errorSpanNombre.text("");
+    spanNombreContainer.addClass("d-none");
+    
+    if (!anio) {
+        errorSpanAnio.text(errorMsgs.anioAlbumInvalido);
+        spanAnioContainer.removeClass("d-none");
+        return false;
+    }
+    errorSpanAnio.text("");
+    spanAnioContainer.addClass("d-none")
+    
+    return true;
+}
+
+//Verifica que todos los temas de tipo ruta tengan seleccionado un archivo
+function validarArchivosDeTemaVacio() {
+    const errorSpan = $("#errorTemasVacios");
+    const spanContainer = errorSpan.closest("div");
+    const fileInputs =  document.querySelectorAll("input[data-type='file-tema'");
+    
+    for (let i = 0; i < fileInputs.length; i++) {
+        if (!fileInputs[i].value) {
+            errorSpan.text(errorMsgs.temaSinArchivo);
+            spanContainer.removeClass("d-none");
+            return false;
+        }
+    }
+    errorSpan.text("");
+    spanContainer.addClass("d-none");
+    return true;
+}
+
+//Valida que se haya creado al menos un tema
+function validarCreacionDeTemas(mapTemas) {
+    const errorSpan = $("#errorTemasVacios");
+    const spanContainer = errorSpan.closest("div");
+    
+    if (mapTemas.size < 1) {
+        errorSpan.text(errorMsgs.sinTemas);
+        spanContainer.removeClass("d-none");
+        return false;
+    }
+    errorSpan.text("");
+    spanContainer.addClass("d-none");
+    return true;
+}
+
+//Valida que se haya seleccionado al menos 1 genero
+function validarSeleccionGeneros(generos) {
+    const errorSpan = $("#errorGeneros");
+    const spanContainer = errorSpan.closest("div");
+    
+    if (generos.length < 1) {
+        errorSpan.text(errorMsgs.sinGeneros);
+        spanContainer.removeClass("d-none");
+        return false;
+    }
+    errorSpan.text("");
+    spanContainer.addClass("d-none");
+    return true;
+}
+
+//Verifica que el nombre de tema ingresado no se repita
 function validarNombreTema(nombre) {
     const errorSpan = $("#errorNombreTema");
     const spanContainer = errorSpan.closest("div");
@@ -59,6 +267,7 @@ function validarNombreTema(nombre) {
     return true;
 }
 
+//Verifica que la duracion del tema tenga el formato correcto mm:ss o m:s
 function validarDuracionTema(duracion) {
     const regex =  /(?<!\S)(([0-5]?\d):)([0-5]?\d)(?!\S)/;
     const errorSpan = $("#errorDuracionTema");
@@ -76,6 +285,8 @@ function validarDuracionTema(duracion) {
     return true;
 }
 
+//Verifica que la url ingresada para el tema sea valida, 
+//Intenta crear un url con el constructor new URL, capturando el error si no es valida
 function validarUrl(url) {
     const errorSpan = $("#errorUrlTema");
     const spanContainer = errorSpan.closest("div");
@@ -92,6 +303,24 @@ function validarUrl(url) {
     }
 }
 
+//Crea un label e input tipo file para subir el archivo de musica del tema agregado
+function createFileInput(nombreTema) {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    
+    input.setAttribute("name", `file-${nombreTema}`);
+    input.setAttribute("data-name", nombreTema);
+    input.setAttribute("data-type", "file-tema");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", ".mp3, .wav");
+    
+    label.setAttribute("for", `file-${nombreTema}`);
+    label.innerText = "Seleccione el archivo: ";
+        
+    return {label, input};
+}
+
+//Crea un nuevo <li> con la informacion del tema 
 function addLiTema() { 
     const nombre = $("#nombreTema").val();
     if (!validarNombreTema(nombre)) return; 
@@ -100,43 +329,46 @@ function addLiTema() {
     if (!validarDuracionTema(duracion)) return;
     
     const tipoDeAcceso = $("input[type=radio][name=tipoDeAcceso]:checked").val();
-    let url, archivo;
+    let url;
+    let fileInput;
     
     if (tipoDeAcceso === "url") {
         url = $("#tipoDeAcceso").val();
         if (!validarUrl(url)) return;
-    } else {
-        const ruta = $("#inputTema").val();
-        archivo = ruta.substring(ruta.lastIndexOf("\\")+1);
+    } else { //si se selecciono la opcion de subir archivo creo un input type file para el tema
+        fileInput = createFileInput(nombre);
     }
-    
+    //creo los elementos a agregar al DOM
     const ol = document.getElementById("olTemasCreados");
     const li = document.createElement("li"); 
     const trashIcon = document.createElement("i");
-    
     trashIcon.setAttribute("data-name", "iconRemoverTema");
     trashIcon.setAttribute("class", "bi bi-trash3");    
     
-    const content = `${nombre}  [${duracion}]  -  ${archivo || url}`;
+    const content = `${nombre}  [${duracion}]  ${url || ""}`;
     li.innerText = content;
     li.setAttribute("class", "list-group-item");
-    li.setAttribute("id", `tema-${nombre}`);
     li.setAttribute("data-name", nombre);
+    li.setAttribute("data-group", "temas-agregados");
+    if (fileInput) {
+        li.appendChild(fileInput.label);
+        li.appendChild(fileInput.input);
+    }
     li.appendChild(trashIcon);
     
-    //los temas siempre se agregan al final de la lista, 
-    //entonces la posicon del ultimo tema agregado es la cantidad de elementos
-    const cantTemasAgregados = $("#olTemasCreados").children().length + 1;
-    
+    //los creo con posicion 0 y antes del submit verifico el orden elegido por el usuario
     const tema = {
         nombreTema: nombre, 
         duracionTema: duracion, 
-        tipoDeAccesoTema: tipoDeAcceso
+        tipoDeAccesoTema: tipoDeAcceso,
+        urlORuta: url || "",
+        posicion: 0
     };
     mapTemasAgregados.set(nombre, tema);
     ol.appendChild(li);
 }
 
+//Remueve el <li> del tema seleccionado y lo borra del map
 function removeLiTema(liElement){
     const nombre = liElement.getAttribute("data-name");
         
@@ -146,4 +378,29 @@ function removeLiTema(liElement){
     }
 }
 
+//Obtiene una lista con los nombres de los generos seleccionados
+function getGenerosSeleccionados() {
+    const elements = document.querySelectorAll("input[type='checkbox'][data-group='cboxGeneros']:checked");
+    const values = [];
+    for (let i = 0; i < elements.length; i++) {
+        values.push(elements[i].getAttribute("data-name"));
+    }
+    return values;
+}
 
+//Obtiene los li con los datos de los temas y actualiza el valor posicion de cada tema basado en su orden
+function actualizarValorPosicionDeTemas() {
+    const elements = document.querySelectorAll("li[data-group='temas-agregados']");
+    //no deberia pasar pero por si acaso no se creo el li con el tema
+    if (elements.length !== mapTemasAgregados.size) return;
+   
+    for (let i = 0; i < elements.length; i++) {
+        const nombre = elements[i].getAttribute("data-name");
+        const tema = mapTemasAgregados.get(nombre);
+ 
+        if (!tema) return;
+        
+        tema.posicion = i+1;
+        mapTemasAgregados.set(nombre, tema);       
+    }
+}
