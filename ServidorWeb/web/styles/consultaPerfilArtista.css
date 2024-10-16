@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
+@import "consultaPerfilUsuario.css";
+
+body {
+    margin: 0;
+}
+
+.container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    margin: auto;
+    margin-top: 1.5%;
+    border-radius: 10px;
+    height: 700px;
+    width: 800px;
+    border: 1px solid #ccc;
+}
+
+.container .top-info {
+    padding: 20px;
+    background-color: #fff;
+    margin: auto;
+    margin-top: 15px;
+    width: 90%;
+    height: 100px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow:-1px 1px 1px rgba(0,0,0,0.20);
+}
+
+.top-info .perfil-imagen {
+    width: 100px;         /* Ajusta el ancho de la imagen */
+    height: 100px;        /* Ajusta la altura de la imagen */
+    border-radius: 50%;   /* Convierte la imagen en circular */
+    object-fit: cover;    /* Asegura que la imagen se ajuste bien dentro del contenedor circular */
+    border: 1px solid #000;
+    margin-left: -600px;
+}
+
+.usuario-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 500px;
+    margin-left: 150px;
+    margin-top: -100px
+}
+
+.rol {
+    margin: 0;
+    padding: 0;
+    margin-top: -5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+/*    margin-top: -100px;
+    margin-left: -150px;*/
+}
+
+.nombre-usuario {
+    margin: 0;
+    margin-top: 5px;
+    position: relative;
+    padding: 0;
+    font-family: 'Montserrat',monospace;
+    font-size: 24px;
+/*    margin-top: -10px;
+    margin-left: -36px;*/
+}
+
+.btn-webPage {
+    margin: 0;
+    margin-top: 5px;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    font-family: 'Montserrat',monospace;
+    font-size: 14px;
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.btn-webPage:hover {
+    text-decoration: underline;
+}
+
+.tabs {
+   margin-top: 15px;
+}
+
+h3{
+    font-family: 'Montserrat', monospace;
+    font-style: italic;
+    font-size: 16px;
+    padding: 0;
+    margin-left: 20px;
+}
+
+p {
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+    color: #202020;
+    padding: 10px;
+    margin-top: -20px;
+    margin-left: 70px;
+}
+
+/*-----Followers List-----*/
+.followers-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.followers-list .followers-info {
+    margin-top: 50px;
+    margin-left: 120px;
+    font-style: normal;
+}
+
+.followers-list table {
+    margin-top: 0px;
+    margin-left: 120px;
+}
+
+.followers-list th, .followers-list td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+}
+
+.followers-list th {
+    background-color: #f4f4f4;
+}
+
+/*-----Albumes Publicados-----*/
+
+.lista-albumesP {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.registros {
+    margin-top: -30px;
+}
+
+.lista-albumesP .albumes-info {
+    margin-top: 30px;
+    margin-left: 300px;
+    font-style: normal;
+}
+
+.lista-albumesP table {
+    margin-top: 0px;
+    margin-left: 270px;
+}
+
+.lista-albumesP th, .lista-albumesP td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+}
+
+.tab .divisor {
+    border-top: 1px solid #ccc;
+    width: 100%;
+    margin: 40px 0;
+}
+
+
+
+

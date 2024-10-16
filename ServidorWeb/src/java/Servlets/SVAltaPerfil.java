@@ -1,3 +1,5 @@
+package Servlets;
+
 import espotify.DataTypes.DTArtista;
 import espotify.DataTypes.DTCliente;
 import espotify.logica.Fabrica;
@@ -57,7 +59,7 @@ public class SVAltaPerfil extends HttpServlet {
         }
         return null;
     }
-    private static final String UPLOAD_DIR = "../../Resource/ImagenesPerfil/"; // Directorio donde guardar las imágenes  
+    private static final String UPLOAD_DIR = "Resource/ImagenesPerfil/"; // Directorio donde guardar las imágenes  
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

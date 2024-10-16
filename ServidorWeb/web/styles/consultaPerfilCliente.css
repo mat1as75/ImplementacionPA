@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
+@import "consultaPerfilUsuario.css";
+
+body {
+    margin: 0;
+}
+
+.container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    margin: auto;
+    margin-top: 1.5%;
+    border-radius: 10px;
+    height: 700px;
+    width: 800px;
+    border: 1px solid #ccc;
+}
+
+.container .top-info {
+    padding: 20px;
+    background-color: #fff;
+    margin: auto;
+    margin-top: 15px;
+    width: 90%;
+    height: 100px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow:-1px 1px 1px rgba(0,0,0,0.20);
+}
+
+.top-info .perfil-imagen {
+    width: 100px;         /* Ajusta el ancho de la imagen */
+    height: 100px;        /* Ajusta la altura de la imagen */
+    border-radius: 50%;   /* Convierte la imagen en circular */
+    object-fit: cover;    /* Asegura que la imagen se ajuste bien dentro del contenedor circular */
+    border: 1px solid #000;
+    margin-left: -600px;
+}
+
+.usuario-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 500px;
+    margin-left: 150px;
+    margin-top: -100px
+}
+
+.rol {
+    margin: 0;
+    padding: 0;
+    margin-top: -5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+/*    margin-top: -100px;
+    margin-left: -150px;*/
+}
+
+.nombre-usuario {
+    margin: 0;
+    margin-top: 5px;
+    position: relative;
+    padding: 0;
+    font-family: 'Montserrat',monospace;
+    font-size: 24px;
+/*    margin-top: -10px;
+    margin-left: -36px;*/
+}
+
+.tabs {
+   margin-top: 15px;
+}
+
+h3{
+    font-family: 'Montserrat', monospace;
+    font-style: italic;
+    font-size: 16px;
+    padding: 0;
+    margin-left: 20px;
+}
+
+p {
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+    color: #202020;
+    padding: 10px;
+    margin-top: -20px;
+    margin-left: 70px;
+}
+
+/*-----Followers List-----*/
+.followers-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.followers-list .followers-info {
+    margin-top: 50px;
+    margin-left: 120px;
+    font-style: normal;
+}
+
+.followers-list table {
+    margin-top: 0px;
+    margin-left: 120px;
+}
+
+.followers-list th, .followers-list td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+}
+
+.followers-list th {
+    background-color: #f4f4f4;
+}
+
+/*-----Followed List-----*/
+.followed-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.followed-list .followed-info {
+    margin-top: -220px;
+    margin-left: 420px;
+    font-style: normal;
+}
+
+.followed-list table {
+    margin-top: 0px;
+    margin-left: 380px;
+}
+
+.followed-list th, .followed-list td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+}
+
+.followed-list th {
+    background-color: #f4f4f4;
+}
+
+/*-----ListasParticular Creadas-----*/
+.lista-listasRCreados {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.registros {
+    margin-top: -30px;
+}
+
+.lista-listasRCreados .listasR-info {
+    margin-top: 30px;
+    margin-left: 250px;
+    font-style: normal;
+}
+
+.lista-listasRCreados table {
+    margin-top: 0px;
+    margin-left: 270px;
+}
+
+.lista-listasRCreados th, .lista-listasRCreados td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+}
+
+.tab .divisor {
+    border-top: 1px solid #ccc;
+    width: 100%;
+    margin: 40px 0;
+}
+
+.tab .preferencias {
+    margin-top: -30px;
+}
+
+/*-----Tabla Preferencias-----*/
+.tabla-preferencias {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-preferencias table {
+    margin-top: 30px;
+    margin: auto;
+}
+
+.tabla-preferencias td {
+    cursor: pointer;
+}
+
+.tabla-preferencias th, .tabla-preferencias td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+}
+
+.tabla-preferencias th {
+    background-color: #f4f4f4;
+}
+
+.sin-suscripcion {
+    margin: 0 auto;
+    margin-top: 150px;
+    text-align: center;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+}
