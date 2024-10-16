@@ -25,6 +25,15 @@ public class DTSuscripcion {
         this.estadoSuscripcion = estadoSuscripcion;
         this.fechaSuscripcion = fechaSuscripcion;
     }
+    
+    public DTSuscripcion(Long idSuscripcion, String tipoSuscripcion, 
+            String estadoSuscripcion, Date fechaSuscripcion, DTCliente miCliente) {
+        this.idSuscripcion = idSuscripcion;
+        this.tipoSuscripcion = tipoSuscripcion;
+        this.estadoSuscripcion = estadoSuscripcion;
+        this.fechaSuscripcion = fechaSuscripcion;
+        this.miCliente = miCliente;
+    }
 
     public Long getIdSuscripcion() {
         return idSuscripcion;

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package espotify.logica;
+import espotify.DataTypes.DTSuscripcion;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -122,5 +123,15 @@ public class Suscripcion implements Serializable {
                 estadoSuscripcion = EstadoSuscripcion.Vencida;
             }
         }
+    }
+    
+    public DTSuscripcion getDataSuscripcion() {
+        
+        return new DTSuscripcion(
+        this.getIdSuscripcion(),
+        this.getTipoSuscripcion().toString(),
+        this.getEstadoSuscripcion().toString(),
+        this.getFechaSuscripcion(),
+        this.miCliente.getDTCliente());
     }
 }

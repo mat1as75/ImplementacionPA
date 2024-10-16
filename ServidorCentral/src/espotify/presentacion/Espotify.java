@@ -24,12 +24,13 @@ public class Espotify extends javax.swing.JFrame {
 
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuUsuarios = new javax.swing.JMenu();
+        jMenuActualizarEstadoSuscripcion = new javax.swing.JMenu();
         jMenuItemRegistrarUsuario = new javax.swing.JMenuItem();
         jMenuItemSeguirUsuario = new javax.swing.JMenuItem();
         jMenuItemlDejarSeguirUsuario = new javax.swing.JMenuItem();
         jMenuItemConsultaPerfilCliente = new javax.swing.JMenuItem();
         jMenuItemConsultaPerfilArtista = new javax.swing.JMenuItem();
+        jMenuItemActualizarEstadoSuscripcion = new javax.swing.JMenuItem();
         jMenuMultimedia = new javax.swing.JMenu();
         jMenuItemAltaGenero = new javax.swing.JMenuItem();
         jMenuItemAltaAlbum = new javax.swing.JMenuItem();
@@ -67,9 +68,9 @@ public class Espotify extends javax.swing.JFrame {
         jMenuBar1.setBackground(new java.awt.Color(0, 0, 0));
         jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jMenuUsuarios.setBackground(new java.awt.Color(0, 0, 0));
-        jMenuUsuarios.setForeground(new java.awt.Color(255, 255, 255));
-        jMenuUsuarios.setText("Usuario");
+        jMenuActualizarEstadoSuscripcion.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuActualizarEstadoSuscripcion.setForeground(new java.awt.Color(255, 255, 255));
+        jMenuActualizarEstadoSuscripcion.setText("Usuario");
 
         jMenuItemRegistrarUsuario.setText("Alta Perfil");
         jMenuItemRegistrarUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -77,7 +78,7 @@ public class Espotify extends javax.swing.JFrame {
                 jMenuItemRegistrarUsuarioActionPerformed(evt);
             }
         });
-        jMenuUsuarios.add(jMenuItemRegistrarUsuario);
+        jMenuActualizarEstadoSuscripcion.add(jMenuItemRegistrarUsuario);
 
         jMenuItemSeguirUsuario.setText("Seguir Usuario");
         jMenuItemSeguirUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -85,7 +86,7 @@ public class Espotify extends javax.swing.JFrame {
                 jMenuItemSeguirUsuarioActionPerformed(evt);
             }
         });
-        jMenuUsuarios.add(jMenuItemSeguirUsuario);
+        jMenuActualizarEstadoSuscripcion.add(jMenuItemSeguirUsuario);
 
         jMenuItemlDejarSeguirUsuario.setText("Dejar de Seguir a Usuario");
         jMenuItemlDejarSeguirUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -93,7 +94,7 @@ public class Espotify extends javax.swing.JFrame {
                 jMenuItemlDejarSeguirUsuarioActionPerformed(evt);
             }
         });
-        jMenuUsuarios.add(jMenuItemlDejarSeguirUsuario);
+        jMenuActualizarEstadoSuscripcion.add(jMenuItemlDejarSeguirUsuario);
 
         jMenuItemConsultaPerfilCliente.setText("Consulta Perfil Cliente");
         jMenuItemConsultaPerfilCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -101,7 +102,7 @@ public class Espotify extends javax.swing.JFrame {
                 jMenuItemConsultaPerfilClienteActionPerformed(evt);
             }
         });
-        jMenuUsuarios.add(jMenuItemConsultaPerfilCliente);
+        jMenuActualizarEstadoSuscripcion.add(jMenuItemConsultaPerfilCliente);
 
         jMenuItemConsultaPerfilArtista.setText("Consulta Perfil Artista");
         jMenuItemConsultaPerfilArtista.addActionListener(new java.awt.event.ActionListener() {
@@ -109,9 +110,17 @@ public class Espotify extends javax.swing.JFrame {
                 jMenuItemConsultaPerfilArtistaActionPerformed(evt);
             }
         });
-        jMenuUsuarios.add(jMenuItemConsultaPerfilArtista);
+        jMenuActualizarEstadoSuscripcion.add(jMenuItemConsultaPerfilArtista);
 
-        jMenuBar1.add(jMenuUsuarios);
+        jMenuItemActualizarEstadoSuscripcion.setText("Actualizar Estado de Suscripcion");
+        jMenuItemActualizarEstadoSuscripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemActualizarEstadoSuscripcionActionPerformed(evt);
+            }
+        });
+        jMenuActualizarEstadoSuscripcion.add(jMenuItemActualizarEstadoSuscripcion);
+
+        jMenuBar1.add(jMenuActualizarEstadoSuscripcion);
 
         jMenuMultimedia.setForeground(new java.awt.Color(255, 255, 255));
         jMenuMultimedia.setText("Multimedia");
@@ -293,6 +302,15 @@ public class Espotify extends javax.swing.JFrame {
         escritorio.add(ag);
         ag.show();
     }//GEN-LAST:event_jMenuItemAltaGeneroActionPerformed
+
+    private void jMenuItemActualizarEstadoSuscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActualizarEstadoSuscripcionActionPerformed
+        ActualizarEstadoSuscripcion aes = new ActualizarEstadoSuscripcion();
+        escritorio.add(aes);
+        aes.show();
+    }//GEN-LAST:event_jMenuItemActualizarEstadoSuscripcionActionPerformed
+    
+    
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             
@@ -307,7 +325,9 @@ public class Espotify extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorio;
+    private javax.swing.JMenu jMenuActualizarEstadoSuscripcion;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItemActualizarEstadoSuscripcion;
     private javax.swing.JMenuItem jMenuItemAgregarTemaLista;
     private javax.swing.JMenuItem jMenuItemAltaAlbum;
     private javax.swing.JMenuItem jMenuItemAltaGenero;
@@ -324,6 +344,5 @@ public class Espotify extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSeguirUsuario;
     private javax.swing.JMenuItem jMenuItemlDejarSeguirUsuario;
     private javax.swing.JMenu jMenuMultimedia;
-    private javax.swing.JMenu jMenuUsuarios;
     // End of variables declaration//GEN-END:variables
 }

@@ -29,11 +29,13 @@ import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
 import espotify.logica.Suscripcion;
+import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.logica.Usuario;
 import espotify.persistencia.exceptions.InvalidDataException;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +60,7 @@ public class ControladoraPersistencia {
     public TemaJpaController temaJpa = new TemaJpaController();
     public TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     public TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
+    public SuscripcionJpaController suscripcionJpa = new SuscripcionJpaController();
 
     public ControladoraPersistencia() {
     }
@@ -306,8 +309,8 @@ public class ControladoraPersistencia {
         }
 
         DTDatosArtista DTDatosA = new DTDatosArtista(a.getNickname(),
-                a.getNombreUsuario(), a.getApellidoUsuario(), 
-                a.getContrasenaUsuario(), a.getEmail(), a.getFecNac(), 
+                a.getNombreUsuario(), a.getApellidoUsuario(),
+                a.getContrasenaUsuario(), a.getEmail(), a.getFecNac(),
                 a.getFotoPerfil(), a.getBiografia(), a.getDirSitioWeb(),
                 cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
 
@@ -375,10 +378,10 @@ public class ControladoraPersistencia {
         DTSuscripcion suscripcion = null;
         if (suscripcionC != null) {
             suscripcion = new DTSuscripcion(
-                suscripcionC.getIdSuscripcion(),
-                suscripcionC.getTipoSuscripcion().toString(),
-                suscripcionC.getEstadoSuscripcion().toString(),
-                suscripcionC.getFechaSuscripcion());
+                    suscripcionC.getIdSuscripcion(),
+                    suscripcionC.getTipoSuscripcion().toString(),
+                    suscripcionC.getEstadoSuscripcion().toString(),
+                    suscripcionC.getFechaSuscripcion());
         }
 
         DTDatosCliente datosCliente = new DTDatosCliente(c.getNickname(),
@@ -1409,7 +1412,7 @@ public class ControladoraPersistencia {
             for (ListaParticular lPCreada : listaListasRCreadas) {
                 nombresListasRCreadas.add(lPCreada.getNombreLista());
             }
-            
+
             // Nombres de ListasR Creadas Publicas del Cliente
             ArrayList<String> nombresListasRCreadasPublicas = new ArrayList<>();
             for (ListaParticular lPCreada : listaListasRCreadas) {
@@ -1443,12 +1446,11 @@ public class ControladoraPersistencia {
             DTSuscripcion dtSuscripcion = null;
             if (suscripcionC != null) {
                 dtSuscripcion = new DTSuscripcion(
-                    suscripcionC.getIdSuscripcion(),
-                    suscripcionC.getTipoSuscripcion().toString(),
-                    suscripcionC.getEstadoSuscripcion().toString(),
-                    suscripcionC.getFechaSuscripcion());
+                        suscripcionC.getIdSuscripcion(),
+                        suscripcionC.getTipoSuscripcion().toString(),
+                        suscripcionC.getEstadoSuscripcion().toString(),
+                        suscripcionC.getFechaSuscripcion());
             }
-            
 
             datosUsuario = new DTDatosCliente(((Cliente) u).getNickname(),
                     ((Cliente) u).getNombreUsuario(), ((Cliente) u).getApellidoUsuario(),
@@ -1457,7 +1459,8 @@ public class ControladoraPersistencia {
                     nicknamesSeguidores, nombresListasRCreadas, nombresListasRCreadasPublicas, nombresListasRFavoritas,
                     nombresAlbumesFavoritos, nombresTemasFavoritos, dtSuscripcion);
 
-        } else { /* Es Artista */
+        } else {
+            /* Es Artista */
 
             // Nicknames de Seguidores del Artista
             List<Usuario> listaSeguidores = ((Artista) u).getMisSeguidores();
@@ -1477,13 +1480,47 @@ public class ControladoraPersistencia {
 
             datosUsuario = new DTDatosArtista(((Artista) u).getNickname(),
                     ((Artista) u).getNombreUsuario(), ((Artista) u).getApellidoUsuario(),
-                    ((Artista) u).getContrasenaUsuario(), ((Artista) u).getEmail(), 
+                    ((Artista) u).getContrasenaUsuario(), ((Artista) u).getEmail(),
                     ((Artista) u).getFecNac(), ((Artista) u).getFotoPerfil(),
                     ((Artista) u).getBiografia(), ((Artista) u).getDirSitioWeb(),
                     cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
 
         }
-        
+
         return datosUsuario;
+    }
+
+    public ArrayList<DTSuscripcion> getDTSuscripciones() {
+
+        List<Suscripcion> listaSuscripciones = suscripcionJpa.findSuscripcionEntities();
+        ArrayList<DTSuscripcion> dataSuscripciones = new ArrayList<>();
+        // Recorro todos los Temas del Sistema
+        for (Suscripcion s : listaSuscripciones) {
+            dataSuscripciones.add(s.getDataSuscripcion());
+        }
+
+        return dataSuscripciones;
+    }
+
+    public DTSuscripcion getDTSuscripcion(Long id) {
+        Suscripcion s = suscripcionJpa.findSuscripcion(id);
+
+        return new DTSuscripcion(s.getIdSuscripcion(),
+                s.getTipoSuscripcion().toString(),
+                s.getEstadoSuscripcion().toString(),
+                s.getFechaSuscripcion(),
+                s.getMiCliente().getDTCliente());
+    }
+
+    public void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion) throws Exception {
+        try {
+            Suscripcion s = suscripcionJpa.findSuscripcion(idSuscripcion);
+            s.setEstadoSuscripcion(estadoSuscripcion);
+            s.setFechaSuscripcion(fechaSuscripcion);
+            suscripcionJpa.edit(s);
+        } catch (Exception ex) {
+            throw ex;
+        }
+
     }
 }
