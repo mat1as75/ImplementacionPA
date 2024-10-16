@@ -1,0 +1,172 @@
+h1, h2, h3 {
+    color: navy;
+    text-align: center;
+}
+
+div {
+    border:1px solid green;
+}
+
+.btn {
+    max-height: 70px;
+}
+
+.bi-trash3 {
+    padding-left: 1em;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.bi-trash3:hover {
+    color: red;
+}
+
+
+.radioTema {
+    display: inline-block;
+    margin: 0 2rem;
+}
+
+.listaTemas {
+    margin: 1rem;
+}
+
+.listaTemas li {
+    overflow: scroll;
+}
+
+.temasContainer {
+    display: flex;
+    flex-direction: column;
+    margin: .25rem 1rem;
+    padding: .25rem;
+}
+
+.inputsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: .25rem 1rem;
+    padding: .25rem;
+}
+
+.errorDiv {
+    margin: .25rem 1rem;
+    padding: .25rem;
+}
+
+.spanError {
+    color: red;
+}
+
+.btnsTemasContainer {
+    margin: .25rem 1rem;
+    padding: .25rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.btnsTemasContainer .btn {
+    margin: 0 1rem;
+}
+
+.imgPortada {
+    max-width: 150px;
+    margin: .25rem 0;
+}
+
+.formPortada {
+    display: flex;
+    flex-direction: column;
+}
+
+.formPortada div {
+    display: inline-block;
+}
+
+input[type=file] {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 70%;
+}
+
+.treeGeneros {
+  --spacing: 2rem;
+  --radius: 10px;
+}
+
+.treeGeneros li {
+  display: block;
+  position: relative;
+  padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);
+  padding-top: .2em;
+  padding-bottom: .2em;
+}
+
+.treeGeneros ul {
+  margin-left: calc(var(--radius) - var(--spacing));
+  padding-left: 0;
+}
+
+.treeGeneros ul li {
+  border-left: 2px solid #ddd;
+}
+
+.treeGeneros ul li:last-child {
+  border-color: transparent;
+}
+
+.treeGeneros ul li::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: calc(var(--spacing) / -2);
+  left: -2px;
+  width: calc(var(--spacing) + 2px);
+  height: calc(var(--spacing) + 1px);
+  border: solid #ddd;
+  border-width: 0 0 2px 2px;
+}
+
+.treeGeneros summary {
+  padding: .2em .4em;
+  display: block;
+  cursor: pointer;
+}
+
+.treeGeneros summary::marker,
+.treeGeneros summary::-webkit-details-marker {
+  display: none;
+}
+
+.treeGeneros summary:focus {
+  outline: none;
+}
+
+.treeGeneros summary:focus-visible {
+  outline: 1px dotted #000;
+}
+
+.treeGeneros li::after,
+.treeGeneros summary::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: calc(var(--spacing) / 2 - var(--radius));
+  left: calc(var(--spacing) - var(--radius) - 1px);
+  width: calc(2 * var(--radius));
+  height: calc(2 * var(--radius));
+  border-radius: 50%;
+  background-color: cornflowerblue;
+}
+
+.treeGeneros summary::before {
+  z-index: 1;
+  background-color: cornflowerblue;
+}
+
+.treeGeneros details[open] > summary::before {
+  background-color: navy;
+  border-radius: 10%;
+}
