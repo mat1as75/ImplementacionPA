@@ -59,8 +59,8 @@ public class SVAltaPerfil extends HttpServlet {
         }
         return null;
     }
-    private static final String UPLOAD_DIR = "Resource/ImagenesPerfil/"; // Directorio donde guardar las imágenes  
-
+    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
+    private static final String DIRECCION_BASE = "Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,6 +71,8 @@ public class SVAltaPerfil extends HttpServlet {
         String fileName = extractFileName(filePart);
 
         // Construir la ruta de carga usando el contexto de la aplicación
+        
+        ///home/usuario/Documentos/GitHub/ImplementacionPA/ServidorWeb/web/index.jsp
         String uploadPath =getServletContext().getRealPath("")+UPLOAD_DIR;
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
@@ -94,7 +96,7 @@ public class SVAltaPerfil extends HttpServlet {
             Files.copy(input, file.toPath());
         }
 
-        String fotoPerfil = UPLOAD_DIR+"/"+fileName;
+        String fotoPerfil = DIRECCION_BASE+"/"+fileName;
     
         String fechaNacimientoStr = request.getParameter("fechaNacimiento");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
