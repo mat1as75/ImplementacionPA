@@ -17,6 +17,16 @@ import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.persistencia.ControladoraPersistencia;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -461,6 +471,47 @@ public class Controlador implements IControlador{
         } catch (Exception ex) {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static void findDirectory(Path startDir, String targetSubDir) throws IOException {
+      
+        Files.walkFileTree(startDir, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+                // Resolve the target subdirectory from the current directory
+                Path resolvedPath = dir.resolve(targetSubDir);
+                
+                // Check if the resolved path exists and is a directory
+                if (Files.isDirectory(resolvedPath)) {
+                    System.out.println("Subdirectory found: " + resolvedPath.toAbsolutePath());
+                    return FileVisitResult.TERMINATE; // Stop searching
+                }
+                return FileVisitResult.CONTINUE; // Continue searching
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) {
+                System.err.println("Error accessing file: " + file.toString() + " (" + exc.getMessage() + ")");
+                return FileVisitResult.CONTINUE; // Continue even if there's an error
+            }
+        });
+    }
+    
+    @Override
+    public Boolean existeArtista(String nicknameArtista) {
+        return this.contpersis.existeArtista(nicknameArtista);
+    }
+    
+    @Override
+    public String getDirectorio(String start, String nombreDirectorio, String systemUser) {
+        
+        try {
+            Path startDir = Paths.get(start); // directorio desde donde empieza la busqueda
+            findDirectory(startDir, nombreDirectorio);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
 

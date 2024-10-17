@@ -105,5 +105,7 @@ public interface IControlador {
     public abstract ArrayList<DTSuscripcion> getDTSuscripciones();
     public abstract DTSuscripcion getDTSuscripcion(Long id);
     public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
-
+    
+    public abstract Boolean existeArtista(String nicknameArtista);
+    public abstract String getDirectorio(String startDir, String nombreDirectorio, String systemUser);
 }

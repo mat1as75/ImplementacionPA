@@ -155,12 +155,16 @@ public class SVAltaAlbum extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("pages/altaAlbum.jsp").forward(request, response);
+        request.getRequestDispatcher("altaAlbum.jsp").forward(request, response);
     }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Fabrica fb = Fabrica.getInstance();
+        IControlador ictrl = fb.getControlador();
+        
         processRequest(request, response);
     }
     
