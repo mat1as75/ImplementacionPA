@@ -1,3 +1,5 @@
+package Servlets;
+
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
@@ -28,7 +30,7 @@ import javax.servlet.http.Part;
 )
 public class SVAltaAlbum extends HttpServlet {
     
-    private static final String UPLOAD_DIR = "../../Resource/Albums/";
+    private static final String UPLOAD_DIR = "../Resource/Albums/";
     
     boolean deleteDir(File directorioABorrar) {
         File[] contenido = directorioABorrar.listFiles();
@@ -160,7 +162,6 @@ public class SVAltaAlbum extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
     }
     
     @Override
