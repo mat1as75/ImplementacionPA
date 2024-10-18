@@ -241,8 +241,10 @@ public class ControladoraPersistencia {
         boolean retorno = false;
         for (Cliente c : clientes) {
             String cliente = c.getNickname();
-            if (cliente.equals(nicknameCliente)) {
-                retorno = true;
+            if(cliente!=null){
+                if (cliente.equals(nicknameCliente)) {
+                    retorno = true;
+                }
             }
         }
         return retorno;
@@ -268,8 +270,10 @@ public class ControladoraPersistencia {
         boolean retorno = false;
         for (Usuario u : usuarios) {
             String mail = u.getEmail();
-            if (mail.equals(email)) {
-                retorno = true;
+            if(mail!=null){
+                if (mail.equals(email)) {
+                    retorno = true;
+                }
             }
         }
         return retorno;
