@@ -253,8 +253,10 @@ public class ControladoraPersistencia {
         boolean retorno = false;
         for (Usuario u : usuarios) {
             String usuario = u.getNickname();
-            if (usuario.equals(nickname)) {
-                retorno = true;
+            if(usuario!=null){
+                if (usuario.equals(nickname)) {
+                    retorno = true;
+                }
             }
         }
         return retorno;
