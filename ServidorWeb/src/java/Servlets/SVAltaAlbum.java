@@ -8,20 +8,18 @@ import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import espotify.persistencia.exceptions.InvalidDataException;
+import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 
 @WebServlet(urlPatterns = {"/AltaAlbum"})
 @MultipartConfig(
@@ -161,7 +158,14 @@ public class SVAltaAlbum extends HttpServlet {
         return dataGeneros;
     }
     
-    
+    /*
+    El form tiene el Content-Type multipart/form-data por tener que subir archivos multimedia y texto.
+    Por esta razon es que no se puede setear el charset del texto a UTF-8.
+    Los datos de Strings llegan al servidor con formato ISO-8859-1, que lee de forma distinta los tildes,
+    mientras que los datos almacenados en la BD estan en formato UTF-8.
+    Para evitar problemas en la comparacion de Strings con tildes u otros caracteres especiales 
+    hay que convertir los strings al mismo formato que utiliza la BD.
+    */
     private String convertToUTF8(String str) {
         
         byte[] bytes = str.getBytes(StandardCharsets.ISO_8859_1);
@@ -229,7 +233,7 @@ public class SVAltaAlbum extends HttpServlet {
         String cantidadTemasString = convertToUTF8(request.getParameter("cantidadTemas"));
         int cantidadTemas = Integer.valueOf(cantidadTemasString);
         
-        //Extraigo los archivos
+        //Extraigo los archivos de audio e imagen de portada
         List<Part> parts = (List<Part>) request.getParts();
         Map<String, Part> archivosDeTemas = new HashMap();
         Part partPortada = null;
@@ -283,7 +287,11 @@ public class SVAltaAlbum extends HttpServlet {
             response.setStatus(201);
         } catch (Exception e) {
             response.setStatus(500);
-            response.getWriter().write(e.getMessage());
+            if (e instanceof NonexistentEntityException || e instanceof InvalidDataException) {
+                response.getWriter().write(e.getMessage());
+            } else {
+                response.getWriter().write("Internal Server Error");
+            }
             return;
         }
         

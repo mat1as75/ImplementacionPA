@@ -171,7 +171,7 @@ input[type=file] {
   border-radius: 10%;
 }
 
-.modalResultado {
+.customModal {
   position: fixed;
   z-index: 1;
   left: 0;
@@ -189,4 +189,11 @@ input[type=file] {
   padding: 1rem;
   border: 1px solid #888;
   width: 80%;
+}
+
+.closeSpan {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }

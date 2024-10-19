@@ -33,7 +33,7 @@ const sortableList = Sortable.create(document.getElementById("olTemasCreados"), 
             }
 ); 
 
-//datos del album, generos seleccionados y temas agregados en forma de objeto para luego pasar a JSON
+//datos del album, generos seleccionados y temas agregados en forma de objeto
 let GLOBAL_data;
 
 /* 
@@ -75,18 +75,23 @@ $('input[type=radio][name=tipoDeAcceso]').on('change', function() {
   }
 });
 
-//
-document.getElementById("btnCloseModal").addEventListener("click", () => {
-    $("#modal").addClass("d-none");
-    //window.location.href = "/ServidorWeb";
+//cierro el modal al clickear la X
+document.getElementById("spanCloseModal").addEventListener("click", (evt) => {
+    $("#modalDataVerification").addClass("d-none"); 
+});
+
+//redirecciono a la pagina principal luego de enviarse la solicitud de alta al cerrar el modal de confirmacion
+document.getElementById("btnCloseModalResultado").addEventListener("click", (evt) => {
+    $("#modalResultado").addClass("d-none");
+    window.location.href = "/ServidorWeb";
 });
 
 //Valido los datos del form antes de habilitar el boton de submit
-document.getElementById("btnCrear").addEventListener("click", validateForm);
+document.getElementById("btnValidar").addEventListener("click", validateForm);
 
+//submit del form
 document.getElementById("formAlbum").addEventListener("submit", handleSubmit);
 
-//window.onload = resetInputs;
 
 /* 
  * -----------------------------------------------------------
@@ -101,9 +106,7 @@ async function handleSubmit(evt) {
     const data = GLOBAL_data;
     const form = document.getElementById("formAlbum");    
     const formObject = new FormData(form);
-            
-    formObject.append("test", convertDataToJSON(data.Generos));
-    
+                
     formObject.append("nombreAlbum", data.Album);
     formObject.append("anioAlbum", data.Anio);
     formObject.append("nombrePortada", data.Portada);
@@ -121,9 +124,7 @@ async function handleSubmit(evt) {
         formObject.append(`tema-${i}-urlOruta`, data.Temas[i][1].urlORuta);
         formObject.append(`tema-${i}-posicion`, data.Temas[i][1].posicion);
     }
-    
-    console.log("pre request v12");
-    
+        
     const request = new Request("/ServidorWeb/AltaAlbum", {
         method: "POST",
         body: formObject
@@ -137,23 +138,10 @@ async function handleSubmit(evt) {
         console.error("Error: " , e);
     }
     
-    
-    const modal = $("#modal");
+    const modal = $("#modalResultado");
     const modalText = $("#modalText");
     modalText.text(result);
     modal.removeClass("d-none");
-    console.log(result);
-}
-
-function convertDataToJSON(data) {
-    try {
-        const jsonData = JSON.stringify(data);
-        return jsonData;
-    } catch(e) {
-        alert("No se pudo convertir los datos a json.")
-        return null;
-    }
-    
 }
 
 //Validar datos del form antes de habilitar el submit
@@ -179,6 +167,7 @@ function validateForm() {
         Temas: [...mapTemasAgregados]
     };
     
+    $("#modalDataVerification").removeClass("d-none");
     $("#btnSubmit").removeAttr("disabled");
     GLOBAL_data = formData;
 }
@@ -280,10 +269,15 @@ function validarNombreTema(nombre) {
     const errorSpan = $("#errorNombreTema");
     const spanContainer = errorSpan.closest("div");
 
+    if (nombre.trim() === "") {
+        errorSpan.text(errorMsgs.nombreTemaInvalido);
+        spanContainer.removeClass("d-none");
+        return false;
+    }
+
     if (mapTemasAgregados.has(nombre)) {        
         errorSpan.text(errorMsgs.nombreTemaRepetido);
         spanContainer.removeClass("d-none");
-        
         return false;
     }
     errorSpan.text("");

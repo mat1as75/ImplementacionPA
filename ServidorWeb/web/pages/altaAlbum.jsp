@@ -153,20 +153,25 @@
             </div>            
 
             <div class="btnsTemasContainer">
-                <button type="button" class="btn btn-primary" id="btnCrear">Validar Datos</button>
+                <button type="button" class="btn btn-primary" id="btnValidar">Validar Datos</button>
             </div>
             
-            <div class="btnsTemasContainer">
-                <button type="submit" class="btn btn-success" id="btnSubmit" disabled>Confirmar</button>
+            <div id="modalDataVerification" class="customModal d-none">
+                <div class="modalContainer">
+                    <span class="closeSpan" id="spanCloseModal">&times;</span
+                    <button type="submit" class="btn btn-success" id="btnSubmit" disabled>Confirmar</button>
+                </div>
             </div>
         </form>
 
-        <div id="modal" class="modalResultado d-none">
+        <div id="modalResultado" class="customModal d-none">
             <div class="modalContainer">
                 <p id="modalText"></p>
-                <button id="btnCloseModal" type="button" class="btn btn-primary">Aceptar</button>  
+                <button id="btnCloseModalResultado" type="button" class="btn btn-primary">Aceptar</button>  
             </div>
         </div>
+                            
+        
                             
         <a href="/ServidorWeb">Volver</a>        
         

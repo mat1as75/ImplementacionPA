@@ -144,7 +144,7 @@ public class ControladoraPersistencia {
         for (Album al : albumsDelArtista) {
             if (al.getNombreAlbum().equals(dataAlbum.getNombreAlbum())) {
                 this.albJpa.destroy(nuevoAlbum.getIdAlbum());
-                throw new Exception("Este artista ya tiene un album con el nombre: " + dataAlbum.getNombreAlbum());
+                throw new InvalidDataException("Este artista ya tiene un album con el nombre: " + dataAlbum.getNombreAlbum());
             }
         }
         art.setMisAlbumesPublicados(nuevoAlbum);
@@ -155,7 +155,7 @@ public class ControladoraPersistencia {
             Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
             if (gen == null) {
                 this.albJpa.destroy(nuevoAlbum.getIdAlbum());
-                throw new Exception("No se encontro el genero: " + dataG.getNombreGenero());
+                throw new NonexistentEntityException("No se encontro el genero: " + dataG.getNombreGenero());
             }
         }
 
