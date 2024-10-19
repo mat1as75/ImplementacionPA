@@ -462,5 +462,10 @@ public class Controlador implements IControlador{
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Override
+    public boolean existeArtista(String nicknameArtista) {
+        return this.contpersis.existeArtista(nicknameArtista);
+    }
 }
 

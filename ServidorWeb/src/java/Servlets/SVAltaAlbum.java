@@ -1,15 +1,19 @@
 package Servlets;
 
 import espotify.DataTypes.DTAlbum_SinDTArtista;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import espotify.persistencia.exceptions.InvalidDataException;
+import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +26,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 @WebServlet(urlPatterns = {"/AltaAlbum"})
@@ -109,17 +114,17 @@ public class SVAltaAlbum extends HttpServlet {
         List<DTTemaGenerico> dataTemas = new ArrayList();
         for (int i=0; i<cantidadTemas; i++) {
             String parameterPrefix = "tema-" + i + "-";
-            String nombreTema = request.getParameter(parameterPrefix + "nombre");
-            String duracionTemaString = request.getParameter(parameterPrefix + "duracion");
+            String nombreTema = convertToUTF8(request.getParameter(parameterPrefix + "nombre"));
+            String duracionTemaString = convertToUTF8(request.getParameter(parameterPrefix + "duracion"));
             int duracionMinutos = Integer.valueOf(
                     duracionTemaString.substring(0,duracionTemaString.indexOf(":")));
             int duracionSegundos = Integer.valueOf(
                     duracionTemaString.substring(duracionTemaString.indexOf(":")+1));
             
             int duracionTotalSegundos = duracionMinutos * 60 + duracionSegundos;
-            String tipoDeAcceso = request.getParameter(parameterPrefix + "tipoDeAcceso");
-            String archivoOurl = request.getParameter(parameterPrefix + "urlOruta");
-            String posicionString = request.getParameter(parameterPrefix + "posicion");
+            String tipoDeAcceso = convertToUTF8(request.getParameter(parameterPrefix + "tipoDeAcceso"));
+            String archivoOurl = convertToUTF8(request.getParameter(parameterPrefix + "urlOruta"));
+            String posicionString = convertToUTF8(request.getParameter(parameterPrefix + "posicion"));
             int posicionTema = Integer.valueOf(posicionString);
             
             if (tipoDeAcceso.equals("ruta")) {
@@ -147,48 +152,88 @@ public class SVAltaAlbum extends HttpServlet {
         List<DTGenero> dataGeneros = new ArrayList();
         
         for (String gen : generos) {
-            dataGeneros.add(new DTGenero(gen));
+            dataGeneros.add(new DTGenero(convertToUTF8(gen)));
         }
         
         return dataGeneros;
     }
     
+    /*
+    El form tiene el Content-Type multipart/form-data por tener que subir archivos multimedia y texto.
+    Por esta razon es que no se puede setear el charset del texto a UTF-8.
+    Los datos de Strings llegan al servidor con formato ISO-8859-1, que lee de forma distinta los tildes,
+    mientras que los datos almacenados en la BD estan en formato UTF-8.
+    Para evitar problemas en la comparacion de Strings con tildes u otros caracteres especiales 
+    hay que convertir los strings al mismo formato que utiliza la BD.
+    */
+    private String convertToUTF8(String str) {
+        
+        byte[] bytes = str.getBytes(StandardCharsets.ISO_8859_1);
+        String encoded = new String(bytes, StandardCharsets.UTF_8);
+        
+        return encoded;
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("pages/altaAlbum.jsp").forward(request, response);
+        Fabrica fb = Fabrica.getInstance();
+        IControlador ictrl = fb.getControlador();
+        
+        HttpSession sesion = request.getSession(false);
+        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
+        
+        if (datosUsuario == null) {
+            request.setAttribute("errorCode", "401");
+            request.setAttribute("errorName", "Unauthorized");
+            request.setAttribute("errorMsg", "Usuario no autorizado.");
+            request.getRequestDispatcher("/Error").forward(request, response);
+            return;
+        }
+        
+        String nickname = datosUsuario.getNicknameUsuario();
+        Boolean existeArtista = ictrl.existeArtista(nickname);
+        
+        if (!existeArtista) {
+            request.setAttribute("errorCode", "401");
+            request.setAttribute("errorName", "Unauthorized");
+            request.setAttribute("errorMsg", "Usuario no autorizado. El usuario no es artista.");
+            request.getRequestDispatcher("/Error").forward(request, response);
+            return;
+        }
+        
+        request.setAttribute("nicknameArtista", nickname);
     }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         processRequest(request, response);
+        request.getRequestDispatcher("pages/altaAlbum.jsp").forward(request, response);
+
     }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        processRequest(request, response);
+        
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
         
-        String artista = "alcides";
-        if (!ictrl.ExisteNickName(artista)) {
-            System.out.println("El artista no existe.");
-            response.setStatus(500);
-            response.setContentType("text/plain");
-            response.getWriter().write("El artista no existe.");
-        }
+        String artista = (String) request.getAttribute("nicknameArtista");
         
         //Obtengo los datos generales del album
-        String nombreAlbum = request.getParameter("nombreAlbum");
-        String anioAlbumString = request.getParameter("anioAlbum");
+        String nombreAlbum = convertToUTF8(request.getParameter("nombreAlbum"));
+        String anioAlbumString = convertToUTF8(request.getParameter("anioAlbum"));
         int anioAlbum = Integer.valueOf(anioAlbumString);
-        String nombrePortada = request.getParameter("nombrePortada");
+        String nombrePortada = convertToUTF8(request.getParameter("nombrePortada"));
         String[] generosAlbum = request.getParameterMap().get("generos");
-        String cantidadTemasString = request.getParameter("cantidadTemas");
+        String cantidadTemasString = convertToUTF8(request.getParameter("cantidadTemas"));
         int cantidadTemas = Integer.valueOf(cantidadTemasString);
         
-        //Extraigo los archivos
+        //Extraigo los archivos de audio e imagen de portada
         List<Part> parts = (List<Part>) request.getParts();
         Map<String, Part> archivosDeTemas = new HashMap();
         Part partPortada = null;
@@ -196,7 +241,7 @@ public class SVAltaAlbum extends HttpServlet {
             if (p.getContentType() != null) {
                 String partName = p.getName();
                 if (partName.startsWith("file")) {
-                    String nombreTema = partName.substring(partName.indexOf("-")+1);
+                    String nombreTema = convertToUTF8(partName.substring(partName.indexOf("-")+1));
                     archivosDeTemas.put(nombreTema, p);
                 }
                 if (partName.equals("inputPortadaAlbum")) {
@@ -208,10 +253,10 @@ public class SVAltaAlbum extends HttpServlet {
         //Subo los temas recibidos en el request y creo un map con el nombre del tema y la ruta del archivo subido
         Map<String, String> mapTemasConRutas = uploadTemas(archivosDeTemas, artista, nombreAlbum);
         if (mapTemasConRutas == null) {
-            System.out.println("Error al subir los temas.");
-            response.setStatus(500);
+            response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("text/plain");
             response.getWriter().write("Error al subir los temas.");
+            return;
         }
         //Creo los DTTema con los datos del request y con las rutas de los archivos subidos en los que son con ruta
         List<DTTemaGenerico> dataTemas = crearListaDTTemas(mapTemasConRutas, cantidadTemas, request);
@@ -219,10 +264,10 @@ public class SVAltaAlbum extends HttpServlet {
         //Subo la imagen de portada
         String rutaPortada = uploadPortada(partPortada, artista, nombreAlbum);
         if (rutaPortada == null) {
-            System.out.println("Error al copiar la imagen de portada.");
-            response.setStatus(500);
+            response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("text/plain");
             response.getWriter().write("Error al copiar la imagen de portada.");
+            return;
         }
         
         //Creo la lista de DTGenero con los generos recibidos en el request
@@ -239,17 +284,20 @@ public class SVAltaAlbum extends HttpServlet {
         
         try {
             ictrl.AltaAlbum(dataAlbum);
+            response.setStatus(201);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             response.setStatus(500);
-            response.setContentType("text/plain");
-            response.getWriter().write("Error de alta.");
+            if (e instanceof NonexistentEntityException || e instanceof InvalidDataException) {
+                response.getWriter().write(e.getMessage());
+            } else {
+                response.getWriter().write("Internal Server Error");
+            }
+            return;
         }
-        
         
         //response
         response.setContentType("text/plain");
-        response.getWriter().write("OK");
+        response.getWriter().write("Album creado exitosamente.");
     }
 
     @Override
