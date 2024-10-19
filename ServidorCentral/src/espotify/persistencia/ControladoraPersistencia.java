@@ -1521,6 +1521,10 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             throw ex;
         }
-
     }
+    
+     public boolean existeArtista(String nicknameArtista) {
+         Artista art = this.artJpa.findArtista(nicknameArtista);
+         return art != null;
+     }
 }

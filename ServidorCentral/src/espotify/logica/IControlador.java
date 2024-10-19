@@ -35,6 +35,7 @@ public interface IControlador {
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteCliente(String nicknameCliente);
     public abstract boolean ExisteEmail(String email);
+    public abstract boolean existeArtista(String nicknameArtista);
 
     public abstract boolean existeNombreLista(String nombreLista);
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);

@@ -74,6 +74,13 @@ $('input[type=radio][name=tipoDeAcceso]').on('change', function() {
             break;
   }
 });
+
+//
+document.getElementById("btnCloseModal").addEventListener("click", () => {
+    $("#modal").addClass("d-none");
+    //window.location.href = "/ServidorWeb";
+});
+
 //Valido los datos del form antes de habilitar el boton de submit
 document.getElementById("btnCrear").addEventListener("click", validateForm);
 
@@ -87,17 +94,6 @@ document.getElementById("formAlbum").addEventListener("submit", handleSubmit);
  * -----------------------------------------------------------
  */
 
-function convertFormDataToJSON(formData) {
-    try {
-        const jsonData = JSON.stringify(formData);
-        return jsonData;
-    } catch(e) {
-        alert("No se pudo convertir los datos a json.")
-        return null;
-    }
-    
-}
-
 async function handleSubmit(evt) {
     evt.preventDefault();
     if (!GLOBAL_data) return;
@@ -106,6 +102,8 @@ async function handleSubmit(evt) {
     const form = document.getElementById("formAlbum");    
     const formObject = new FormData(form);
             
+    formObject.append("test", convertDataToJSON(data.Generos));
+    
     formObject.append("nombreAlbum", data.Album);
     formObject.append("anioAlbum", data.Anio);
     formObject.append("nombrePortada", data.Portada);
@@ -124,17 +122,36 @@ async function handleSubmit(evt) {
         formObject.append(`tema-${i}-posicion`, data.Temas[i][1].posicion);
     }
     
+    console.log("pre request v12");
+    
     const request = new Request("/ServidorWeb/AltaAlbum", {
         method: "POST",
         body: formObject
     });
-    
+ 
+    let result;
     try {
         const response = await fetch(request);
-        const result = await response;
-        console.log("Result: ",  result);
+        result = await response.text();
     } catch (e) {
-        console.error("Error:" , e);
+        console.error("Error: " , e);
+    }
+    
+    
+    const modal = $("#modal");
+    const modalText = $("#modalText");
+    modalText.text(result);
+    modal.removeClass("d-none");
+    console.log(result);
+}
+
+function convertDataToJSON(data) {
+    try {
+        const jsonData = JSON.stringify(data);
+        return jsonData;
+    } catch(e) {
+        alert("No se pudo convertir los datos a json.")
+        return null;
     }
     
 }

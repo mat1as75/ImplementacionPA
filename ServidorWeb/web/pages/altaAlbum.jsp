@@ -6,7 +6,7 @@
 <%@page import="espotify.logica.IControlador"%>
 <%@page import="espotify.logica.Fabrica"%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -153,7 +153,7 @@
             </div>            
 
             <div class="btnsTemasContainer">
-                <button type="button" class="btn btn-primary" id="btnCrear">Crear Album</button>
+                <button type="button" class="btn btn-primary" id="btnCrear">Validar Datos</button>
             </div>
             
             <div class="btnsTemasContainer">
@@ -161,6 +161,13 @@
             </div>
         </form>
 
+        <div id="modal" class="modalResultado d-none">
+            <div class="modalContainer">
+                <p id="modalText"></p>
+                <button id="btnCloseModal" type="button" class="btn btn-primary">Aceptar</button>  
+            </div>
+        </div>
+                            
         <a href="/ServidorWeb">Volver</a>        
         
     </body>
