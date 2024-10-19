@@ -23,14 +23,14 @@ const mapTemasAgregados = new Map();
 
 //inicializa el <ol> con drag&drop para los temas 
 const sortableList = Sortable.create(document.getElementById("olTemasCreados"), { 
-                animation: 100, 
-                group: 'list-1', 
-                draggable: '.list-group-item', 
-                handle: '.list-group-item', 
-                sort: true, 
-                filter: '.sortable-disabled', 
-                chosenClass: 'active'
-            }
+        animation: 100, 
+        group: 'list-1', 
+        draggable: '.list-group-item', 
+        handle: '.list-group-item', 
+        sort: true, 
+        filter: '.sortable-disabled', 
+        chosenClass: 'active'
+    }
 ); 
 
 //datos del album, generos seleccionados y temas agregados en forma de objeto
@@ -75,8 +75,8 @@ $('input[type=radio][name=tipoDeAcceso]').on('change', function() {
   }
 });
 
-//cierro el modal al clickear la X
-document.getElementById("spanCloseModal").addEventListener("click", (evt) => {
+//cierra el modal al clickear el boton de cancelar
+document.getElementById("btnCancelSubmit").addEventListener("click", (evt) => {
     $("#modalDataVerification").addClass("d-none"); 
 });
 
@@ -192,96 +192,100 @@ function resetInputs() {
 }
 
 function validarDatosAlbum(nombre, anio) {
-    const errorSpanNombre = $("#errorNombreAlbum");
-    const errorSpanAnio = $("#errorAnioAlbum");
+    const inputNombre = document.querySelector("#nombreAlbum");
+    const inputAnio = document.querySelector("#anioAlbum");
+    const errorSpanNombre = document.querySelector("#errorNombreAlbum");
+    const errorSpanAnio = document.querySelector("#errorAnioAlbum");
     const spanNombreContainer = errorSpanNombre.closest("div");
     const spanAnioContainer = errorSpanAnio.closest("div");
     
     if (!nombre) {
-        errorSpanNombre.text(errorMsgs.nombreAlbumVacio);
-        spanNombreContainer.removeClass("d-none");
+        errorSpanNombre.innerText = errorMsgs.nombreAlbumVacio;
+        spanNombreContainer.classList.remove("d-none");
+        inputNombre.scrollIntoView();
         return false;
     }
-    errorSpanNombre.text("");
-    spanNombreContainer.addClass("d-none");
+    errorSpanNombre.innerText = "";
+    spanNombreContainer.classList.add("d-none");
     
     if (!anio) {
-        errorSpanAnio.text(errorMsgs.anioAlbumInvalido);
-        spanAnioContainer.removeClass("d-none");
+        errorSpanAnio.innerText = errorMsgs.anioAlbumInvalido;
+        spanAnioContainer.classList.remove("d-none");
+        inputAnio.scrollIntoView();
         return false;
     }
-    errorSpanAnio.text("");
-    spanAnioContainer.addClass("d-none")
+    errorSpanAnio.innerText = "";
+    spanAnioContainer.classList.add("d-none");
     
     return true;
 }
 
 //Verifica que todos los temas de tipo ruta tengan seleccionado un archivo
 function validarArchivosDeTemaVacio() {
-    const errorSpan = $("#errorTemasVacios");
+    const errorSpan = document.querySelector("#errorTemasVacios");
     const spanContainer = errorSpan.closest("div");
     const fileInputs =  document.querySelectorAll("input[data-type='file-tema'");
     
     for (let i = 0; i < fileInputs.length; i++) {
         if (!fileInputs[i].value) {
-            errorSpan.text(errorMsgs.temaSinArchivo);
-            spanContainer.removeClass("d-none");
+            errorSpan.innerText = errorMsgs.temaSinArchivo;
+            spanContainer.classList.remove("d-none");
             return false;
         }
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     return true;
 }
 
 //Valida que se haya creado al menos un tema
 function validarCreacionDeTemas(mapTemas) {
-    const errorSpan = $("#errorTemasVacios");
+    const errorSpan = document.querySelector("#errorTemasVacios");
     const spanContainer = errorSpan.closest("div");
     
     if (mapTemas.size < 1) {
-        errorSpan.text(errorMsgs.sinTemas);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.sinTemas;
+        spanContainer.classList.remove("d-none");
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     return true;
 }
 
 //Valida que se haya seleccionado al menos 1 genero
 function validarSeleccionGeneros(generos) {
-    const errorSpan = $("#errorGeneros");
+    const errorSpan = document.querySelector("#errorGeneros");
     const spanContainer = errorSpan.closest("div");
     
     if (generos.length < 1) {
-        errorSpan.text(errorMsgs.sinGeneros);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.sinGeneros;
+        spanContainer.classList.remove("d-none");
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     return true;
 }
 
 //Verifica que el nombre de tema ingresado no se repita
 function validarNombreTema(nombre) {
-    const errorSpan = $("#errorNombreTema");
+    const errorSpan = document.querySelector("#errorNombreTema");
     const spanContainer = errorSpan.closest("div");
 
     if (nombre.trim() === "") {
-        errorSpan.text(errorMsgs.nombreTemaInvalido);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.nombreTemaInvalido;
+        spanContainer.classList.remove("d-none");
         return false;
     }
 
     if (mapTemasAgregados.has(nombre)) {        
-        errorSpan.text(errorMsgs.nombreTemaRepetido);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.nombreTemaRepetido;
+        spanContainer.classList.remove("d-none");
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     
     return true;
 }
@@ -289,17 +293,17 @@ function validarNombreTema(nombre) {
 //Verifica que la duracion del tema tenga el formato correcto mm:ss o m:s
 function validarDuracionTema(duracion) {
     const regex =  /(?<!\S)(([0-5]?\d):)([0-5]?\d)(?!\S)/;
-    const errorSpan = $("#errorDuracionTema");
+    const errorSpan = document.querySelector("#errorDuracionTema");
     const spanContainer = errorSpan.closest("div");
     
     if (!regex.test(duracion)) {
-        errorSpan.text(errorMsgs.duracionTemaInvalida);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.duracionTemaInvalida;
+        spanContainer.classList.remove("d-none");
         
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     
     return true;
 }
@@ -307,17 +311,17 @@ function validarDuracionTema(duracion) {
 //Verifica que la url ingresada para el tema sea valida, 
 //Intenta crear un url con el constructor new URL, capturando el error si no es valida
 function validarUrl(url) {
-    const errorSpan = $("#errorUrlTema");
+    const errorSpan = document.querySelector("#errorUrlTema");
     const spanContainer = errorSpan.closest("div");
     
     try {
         new URL(url);
-        errorSpan.text("");
-        spanContainer.addClass("d-none");
+        errorSpan.innerText = "";
+        spanContainer.classList.add("d-none");
         return true;
     } catch (err) {
-        errorSpan.text(errorMsgs.urlTemaInvalido);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.urlTemaInvalido;
+        spanContainer.classList.remove("d-none");
         return false;
     }
 }
@@ -337,6 +341,17 @@ function createFileInput(nombreTema) {
     label.innerText = "Seleccione el archivo: ";
         
     return {label, input};
+}
+
+function updateTemasAgregadosContent() {
+    const divAviso = document.querySelector("#divAvisoSinTemas");
+    const cantTemas = mapTemasAgregados.size;
+    
+    if (cantTemas < 1) {
+        divAviso.classList.remove("d-none");
+    } else {
+        divAviso.classList.add("d-none");
+    }
 }
 
 //Crea un nuevo <li> con la informacion del tema 
@@ -385,6 +400,7 @@ function addLiTema() {
     };
     mapTemasAgregados.set(nombre, tema);
     ol.appendChild(li);
+    updateTemasAgregadosContent();
 }
 
 //Remueve el <li> del tema seleccionado y lo borra del map
@@ -395,6 +411,7 @@ function removeLiTema(liElement){
         liElement.remove();
         mapTemasAgregados.delete(nombre);
     }
+    updateTemasAgregadosContent();
 }
 
 //Obtiene una lista con los nombres de los generos seleccionados
