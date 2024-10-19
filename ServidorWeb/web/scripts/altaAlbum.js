@@ -109,7 +109,6 @@ async function handleSubmit(evt) {
                 
     formObject.append("nombreAlbum", data.Album);
     formObject.append("anioAlbum", data.Anio);
-    formObject.append("nombrePortada", data.Portada);
     
     for (let i=0; i<data.Generos.length; i++) {
         formObject.append("generos", data.Generos[i]);
@@ -149,8 +148,7 @@ function validateForm() {
     const arrGeneros = getGenerosSeleccionados();
     const nombreAlbum = $("#nombreAlbum").val();
     const anioAlbum = $("#anioAlbum").val();
-    const rutaPortada = $("#inputPortadaAlbum").val();
-    const nombrePortada = rutaPortada.substring(rutaPortada.lastIndexOf("\\")+1);
+    const rutaPortada = $("#inputPortadaAlbum").val() || "";
     
     if (!validarDatosAlbum(nombreAlbum, anioAlbum)) return;
     if (!validarSeleccionGeneros(arrGeneros)) return;
@@ -162,7 +160,6 @@ function validateForm() {
     const formData = {
         Album: nombreAlbum,
         Anio: anioAlbum,
-        Portada: nombrePortada || "",
         Generos: [...arrGeneros],
         Temas: [...mapTemasAgregados]
     };
