@@ -1364,7 +1364,7 @@ public class ControladoraPersistencia {
         if (art != null) {
             List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
             for (Album a : albumsDeArtista) {
-                if (a.getNombreAlbum().equals(nombreAlb)) {
+                if (a.getNombreAlbum().toLowerCase().equals(nombreAlb.toLowerCase())) {
                     idAlbum = a.getIdAlbum();
                 }
             }

@@ -92,12 +92,60 @@ document.getElementById("btnValidar").addEventListener("click", validateForm);
 //submit del form
 document.getElementById("formAlbum").addEventListener("submit", handleSubmit);
 
+document.getElementById("nombreAlbum").addEventListener("change", async (evt) => {
+    
+    const value = evt.target.value;
+    if (value.trim() === "") {
+        return;
+    } 
+    
+    const inputNombre = document.querySelector("#nombreAlbum");
+    const errorSpanNombre = document.querySelector("#errorNombreAlbum");
+    const spanNombreContainer = errorSpanNombre.closest("div");
+
+
+    if (await validarNombreAlbumRepetido(value) === false) {
+        errorSpanNombre.innerText = errorMsgs.nombreAlbumRepetido;
+        spanNombreContainer.classList.remove("d-none");
+        inputNombre.scrollIntoView();
+        return false;
+    }
+    errorSpanNombre.innerText = "";
+    spanNombreContainer.classList.add("d-none");
+});
 
 /* 
  * -----------------------------------------------------------
  * FUNCTIONS
  * -----------------------------------------------------------
  */
+
+async function validarNombreAlbumRepetido(inputValue) {
+    
+    const request = new Request("/ServidorWeb/ExisteAlbum", {
+        method: "POST",
+        body: inputValue,
+        headers: {'Content-Type': 'text/plain;charset=UTF-8'}
+    });
+ 
+    let result;
+    try {
+        const response = await fetch(request);
+        
+        if (response.ok) {
+            result = await response.text();
+        }
+        
+        if (result === "Existe") {
+            return false;
+        } else {
+            return true;
+        }
+    } catch (e) {
+        console.error("Error: " , e);
+        return true;
+    }
+}
 
 async function handleSubmit(evt) {
     evt.preventDefault();
@@ -335,7 +383,6 @@ function createFileInput(nombreTema) {
     input.setAttribute("accept", ".mp3, .wav");
     
     label.setAttribute("for", `file-${nombreTema}`);
-    label.innerText = "Seleccione el archivo: ";
         
     return {label, input};
 }
