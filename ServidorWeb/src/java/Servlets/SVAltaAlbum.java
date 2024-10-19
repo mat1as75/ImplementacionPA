@@ -35,7 +35,7 @@ import javax.servlet.http.Part;
 )
 public class SVAltaAlbum extends HttpServlet {
     
-    private static final String UPLOAD_DIR = "../Resource/Albums/";
+    private static final String UPLOAD_DIR = "../../web/Resource/Albums/";
     
     boolean deleteDir(File directorioABorrar) {
         File[] contenido = directorioABorrar.listFiles();
@@ -83,11 +83,11 @@ public class SVAltaAlbum extends HttpServlet {
     }
     
     private String uploadPortada(Part partPortada, String artista, String nombreAlbum) {
-    
-        //Directorio de la portada del album: ../Resource/Albums/Portadas
-        String uploadPathPortadas = this.getServletContext().getRealPath("") + UPLOAD_DIR + "/Portadas";
-        File uploadDirPortadas = new File(uploadPathPortadas);
         
+        //Directorio de la portada del album: ../Resource/Albums/Portadas
+        String uploadPathPortadas = this.getServletContext().getRealPath("") + UPLOAD_DIR + artista + "/" + nombreAlbum;
+        File uploadDirPortadas = new File(uploadPathPortadas);
+
         //Creo el directorio de las portadas si no existe
         if (!uploadDirPortadas.exists()) {
             uploadDirPortadas.mkdirs();
@@ -174,19 +174,28 @@ public class SVAltaAlbum extends HttpServlet {
         return encoded;
     }
     
+    private void redirectUnauthorized(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("errorCode", "401");
+        request.setAttribute("errorName", "Unauthorized");
+        request.setAttribute("errorMsg", "Usuario no autorizado.");
+        request.getRequestDispatcher("/Error").forward(request, response);
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
         
         HttpSession sesion = request.getSession(false);
+        if (sesion == null) {
+            redirectUnauthorized(request, response);
+            return;
+        }
+        
         DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
         
         if (datosUsuario == null) {
-            request.setAttribute("errorCode", "401");
-            request.setAttribute("errorName", "Unauthorized");
-            request.setAttribute("errorMsg", "Usuario no autorizado.");
-            request.getRequestDispatcher("/Error").forward(request, response);
+            redirectUnauthorized(request, response);
             return;
         }
         
@@ -194,10 +203,7 @@ public class SVAltaAlbum extends HttpServlet {
         Boolean existeArtista = ictrl.existeArtista(nickname);
         
         if (!existeArtista) {
-            request.setAttribute("errorCode", "401");
-            request.setAttribute("errorName", "Unauthorized");
-            request.setAttribute("errorMsg", "Usuario no autorizado. El usuario no es artista.");
-            request.getRequestDispatcher("/Error").forward(request, response);
+            redirectUnauthorized(request, response);
             return;
         }
         
@@ -228,7 +234,6 @@ public class SVAltaAlbum extends HttpServlet {
         String nombreAlbum = convertToUTF8(request.getParameter("nombreAlbum"));
         String anioAlbumString = convertToUTF8(request.getParameter("anioAlbum"));
         int anioAlbum = Integer.valueOf(anioAlbumString);
-        String nombrePortada = convertToUTF8(request.getParameter("nombrePortada"));
         String[] generosAlbum = request.getParameterMap().get("generos");
         String cantidadTemasString = convertToUTF8(request.getParameter("cantidadTemas"));
         int cantidadTemas = Integer.valueOf(cantidadTemasString);
@@ -245,7 +250,9 @@ public class SVAltaAlbum extends HttpServlet {
                     archivosDeTemas.put(nombreTema, p);
                 }
                 if (partName.equals("inputPortadaAlbum")) {
-                    partPortada = p;
+                    if (p.getSize() > 0) {
+                        partPortada = p;
+                    }
                 }
             }
         }
@@ -261,13 +268,16 @@ public class SVAltaAlbum extends HttpServlet {
         //Creo los DTTema con los datos del request y con las rutas de los archivos subidos en los que son con ruta
         List<DTTemaGenerico> dataTemas = crearListaDTTemas(mapTemasConRutas, cantidadTemas, request);
        
+        String rutaPortada = "";
         //Subo la imagen de portada
-        String rutaPortada = uploadPortada(partPortada, artista, nombreAlbum);
-        if (rutaPortada == null) {
-            response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
-            response.setContentType("text/plain");
-            response.getWriter().write("Error al copiar la imagen de portada.");
-            return;
+        if (partPortada != null) {
+            rutaPortada = uploadPortada(partPortada, artista, nombreAlbum);
+            if (rutaPortada == null) {
+                response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+                response.setContentType("text/plain");
+                response.getWriter().write("Error al copiar la imagen de portada.");
+                return;
+            }
         }
         
         //Creo la lista de DTGenero con los generos recibidos en el request
