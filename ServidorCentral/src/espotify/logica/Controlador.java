@@ -9,10 +9,13 @@ import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
+import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
 import java.util.Date;
@@ -437,8 +440,37 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public DTDatosUsuario getDatosUsuario(String identificadorUsuario) {
+        return this.contpersis.getDatosUsuario(identificadorUsuario);
+    }
+    
+    @Override
     public Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb) {
         return this.contpersis.buscarAlbumPorNombreYArtista(nombreArt, nombreAlb);
+    }
+    
+    @Override
+    public ArrayList<DTSuscripcion> getDTSuscripciones() {
+        return this.contpersis.getDTSuscripciones();
+    }
+    
+    @Override
+    public DTSuscripcion getDTSuscripcion(Long id) {
+        return this.contpersis.getDTSuscripcion(id);
+    }
+    
+    @Override
+    public void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion) {
+        try {
+            this.contpersis.ActualizarEstadoSuscripcion(idSuscripcion, estadoSuscripcion, fechaSuscripcion);
+        } catch (Exception ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public boolean existeArtista(String nicknameArtista) {
+        return this.contpersis.existeArtista(nicknameArtista);
     }
 }
 

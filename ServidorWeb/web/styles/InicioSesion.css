@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+}
+
+.contenido-banner {
+    padding: 20px;
+    background-color: #f8f9fa;
+    margin: auto;
+    margin-top: 5%;
+    border-radius: 40px;
+    height: 550px;
+    width: 525px;
+    border: 1px solid #ccc;
+}
+
+.mensaje_request {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    background-color: #d9534f;
+}
+
+.mensaje_request i {
+    border-radius: 8px;
+    margin-left: -40%;
+    margin-right: 3%;
+    color: #000;
+    background-color: #d9534f;
+    font-size: 20px;
+}
+
+.mensaje-texto {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 45px;
+}
+
+.logo .i {
+    color: #000; /* Color del icono de Spotify */
+}
+
+#logoBanner {
+    cursor: pointer;
+    font-size: 2.5rem;
+    padding: 0;
+}
+
+#tituloPrincipal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #000; /* Color del texto */
+    font-weight: bold; /* Negrita */
+    letter-spacing: -2px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.barra-divisora {
+    display: flex;
+    width: 440px;
+    border-top: 1px solid #ccc;
+    margin-top: 8%;
+}
+
+.usuario-login {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 3%;
+    padding: 20px;
+}
+
+.grupo-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.grupo-form {
+    position: relative;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.label-usuario {
+    margin-left: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+#usuario {
+    width: 80%;
+    height: 42px;
+    padding: 10px;
+    justify-content: center;
+    margin-top: 1%;
+    margin-left: 40px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.error-usuario {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0;
+    margin: 0;
+}
+
+.error-usuario i {
+    border: 1px solid red;
+    border-radius: 8px;
+    margin-left: 41px;
+    margin-right: -2px;
+    color: #fff;
+    background-color: red;
+    font-size: 12px;
+}
+
+.errorU-sugerencia {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: #d9534f;
+    z-index: 1;
+}
+
+.texto {
+    margin: 0;
+}
+
+.grupo-form {
+    position: relative;
+    width: 100%;
+    margin: 0.8%;
+    margin-top: 10px;
+    max-width: 400px
+}
+
+#grupo-form-pass {
+    margin-top: 10px;
+}
+
+.grupo-form .label-contrasena {
+    margin-left: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+#contrasena {
+    width: 80%;
+    height: 42px;
+    padding: 10px 35px 10px 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 1%;
+    margin-left: 40px;
+}
+
+/* Boton altarnar Visibilidad */
+.grupo-form .alternar-visible {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin-left: 330px;
+    margin-top: -30px;
+    border: none;
+    background-color: transparent;
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    z-index: 1;
+}
+
+/* Icono alternar Visibilidad */
+.alternar-visible #btnVisibilidadP {
+    position: relative;
+    background-color: transparent;
+    color: #888;
+    z-index: 0;
+}
+
+.alternar-visible #btnVisibilidadP:hover {
+    color: #333;
+}
+
+.error-contrasena {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error-contrasena i {
+    border: 1px solid red;
+    border-radius: 8px;
+    margin-left: 41px;
+    margin-right: -2px;
+    color: #fff;
+    background-color: red;
+    font-size: 12px;
+    padding: 0;
+    z-index: 1;
+}
+
+.errorP-sugerencia {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: #d9534f;
+    z-index: 1;
+}
+
+.texto {
+    margin: 0;
+}
+
+.grupo-form {
+    position: relative;
+    width: 100%;
+    margin: 0.8%;
+    max-width: 400px
+}
+
+.grupo-form #btnLogin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 110px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    width: 80%;
+    height: 42px;
+    margin-top: 30px;
+    margin-left: 42px;
+    display: flex;
+    white-space: nowrap;
+}
+
+.error-usuario {
+    display: none; /* Ocultamos los mensajes de error por defecto */
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.error-contrasena {
+    display: none; /* Ocultamos los mensajes de error por defecto */
+    color: red;
+    font-size: 12px;
+    margin-top: 18px;
+}
+
+.input.error {
+    border: 1px solid red;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+#mensaje { 
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 20px;
+}

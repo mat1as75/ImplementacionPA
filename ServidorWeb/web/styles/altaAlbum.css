@@ -1,0 +1,308 @@
+:root {
+    --bg-color-dark-5: #000;
+    --bg-color-dark-4: #121212;
+    --bg-color-dark-3: #1f1f1f;
+    --bg-color-dark-2: hsla(0,0%,100%,.05);
+    --bg-color-dark-1: hsla(0,0%,100%,.14);
+    --color-green-primary: #1ed760;
+    --color-red-error: #ed2c3f;
+    --color-grey-accent: #7c7c7c;
+    --color-white: #fff;
+    --border-radius-containers: 8px;
+}
+
+body {
+    background-color: var(--bg-color-dark-5);
+    color: var(--color-white);
+    padding: 2rem .5rem;
+}
+
+h1 {
+    color: var(--color-white);
+    text-align: center;
+}
+
+h2, h3, h4 {
+    font-size: 2rem;
+    margin: .5rem 1.5rem;
+}
+
+div {
+    border:1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    padding: .2rem .4rem;
+}
+
+.formSubContainer {
+    padding: 0 1rem;
+    margin-top: 1rem;
+}
+
+/*sobreescribo partes del css de los botones de Bootstrap*/
+.btn {
+    max-height: 70px;
+}
+
+.btn-primary {
+    color: var(--color-white);
+    background-color: var(--bg-color-dark-3);
+    border-color: var(--color-white);
+}
+
+.btn-danger {
+    color: var(--color-red-error);
+    background-color: var(--bg-color-dark-3);
+    border-color: var(--color-white);
+}
+
+.btn-primary:hover {
+    border-color: var(--color-green-primary);
+    background-color: var(--bg-color-dark-5);
+}
+
+.btn-danger:hover {
+    border-color: var(--color-red-error);
+    background-color: var(--bg-color-dark-5);
+}
+
+.bi-trash3 {
+    padding-left: 1em;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--color-white);
+}
+
+.bi-trash3:hover {
+    color: var(--color-red-error);
+}
+
+
+.radioTema {
+    display: inline-block;
+    margin: 0 2rem;
+}
+
+.listaTemas {
+    margin: 1rem;
+}
+
+.listaTemas li {
+    overflow: scroll;
+    color: var(--color-white);
+    background-color: var(--bg-color-dark-3);
+    cursor: grab;
+}
+
+.listaTemas li:hover {
+    border-color: var(--color-green-primary);
+}
+
+.formContainer {
+    padding: 2rem .5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.temasContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .5rem;
+    background-color: var(--bg-color-dark-4);
+}
+
+.inputsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: .5rem 0;
+    padding: .5rem 1rem;
+    background-color: var(--bg-color-dark-4);
+}
+
+.errorDiv {
+    margin: .25rem 0;
+    padding: .35rem .5rem;
+}
+
+.divAyuda {
+    margin: .25rem 0;
+    padding: .35rem .5rem;
+}
+
+.spanAyuda {
+   color: var(--color-green-primary);
+}
+
+.spanAviso {
+    color: var(--color-white);
+}
+
+.spanError {
+    color: var(--color-red-error);
+}
+
+.btnsTemasContainer {
+    margin: .25rem 1rem;
+    padding: .25rem 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.btnsTemasContainer .btn {
+    margin: 0 1rem;
+}
+
+.imgPortada {
+    max-width: 150px;
+    margin: .25rem 0;
+}
+
+.formPortada {
+    display: flex;
+    flex-direction: column;
+}
+
+.formPortada div {
+    display: inline-block;
+}
+
+input[type=file] {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 70%;
+}
+
+.treeGeneros {
+  --spacing: 2rem;
+  --radius: 10px;
+}
+
+.treeGeneros li {
+  display: block;
+  position: relative;
+  padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);
+  padding-top: .2em;
+  padding-bottom: .2em;
+}
+
+.treeGeneros ul {
+  margin-left: calc(var(--radius) - var(--spacing));
+  padding-left: 0;
+}
+
+.treeGeneros ul li {
+  border-left: 2px solid var(--color-grey-primary);
+}
+
+.treeGeneros ul li:last-child {
+  border-color: transparent;
+}
+
+.treeGeneros ul li::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(var(--spacing) / -2);
+    left: -2px;
+    width: calc(var(--spacing) + 2px);
+    height: calc(var(--spacing) + 1px);
+    border: solid var(--color-grey-accent);
+    border-width: 0 0 2px 2px;
+}
+
+.treeGeneros summary {
+  padding: .2em .4em;
+  display: block;
+  cursor: pointer;
+}
+
+.treeGeneros label {
+    cursor: pointer;
+    border: 1px solid var(--color-grey-accent);
+    border-radius: 10%;
+    padding: .1rem .4rem;
+}
+
+.treeGeneros label:hover {
+    background-color: var(--bg-color-dark-2);
+}
+
+.treeGeneros summary::marker,
+.treeGeneros summary::-webkit-details-marker {
+  display: none;
+}
+
+.treeGeneros summary:focus {
+  outline: none;
+}
+
+.treeGeneros summary:focus-visible {
+  outline: 1px dotted #000;
+}
+
+.treeGeneros li::after,
+.treeGeneros summary::before {
+    font-family:'Bootstrap-icons';
+    color: #000;
+    content: '  \F280';
+    display: block;
+    position: absolute;
+    top: calc(var(--spacing) / 2 - var(--radius));
+    left: calc(var(--spacing) - var(--radius) - 12px);
+    width: calc(3 * var(--radius));
+    height: calc(2 * var(--radius));
+    border-radius: 10%;
+    background-color: var(--color-green-primary);
+}
+
+.treeGeneros summary::before {
+  z-index: 1;
+  background-color: var(--color-green-primary);
+}
+
+.treeGeneros details[open] > summary::before {
+  background-color: var(--color-grey-accent);
+  content: '\F27E';
+}
+
+.treeGeneros summary:hover:before {
+    width: calc(3.3 * var(--radius));
+    height: calc(2.3 * var(--radius));
+}
+
+.customModal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: var(--color-white);
+  justify-content: center;
+  background-color: var(--bg-color-dark-3);
+  margin: 15% auto;
+  padding: 1rem;
+  border: 2px solid var(--color-grey-accent);
+  width: 80%;
+  border-radius: var(--border-radius-containers);
+}
+
+.modalContainer p {
+    font-size: 1rem;
+    font-weight: bold;
+    flex-basis: 100%;
+}
+
+.modalContainer .btn {
+    margin: 0 1rem;
+}

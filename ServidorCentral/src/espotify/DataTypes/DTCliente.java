@@ -12,6 +12,7 @@ public class DTCliente extends DTUsuario{
     private List<DTTemaGenerico> misTemasFav;
     private List<DTListaReproduccion> misListasReproduccionFav;
     private List<DTParticulares> misListasReproduccionCreadas;
+    private DTSuscripcion miSuscripcion;
     
     // Constructores
     public DTCliente() {
@@ -21,7 +22,7 @@ public class DTCliente extends DTUsuario{
         this.nickname = nickname;
         this.contrasenaUsuario = contrasenaUsuario;
     }
-    public DTCliente(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email,Date fecNac, String fotoPerfil) {
+    public DTCliente(String nickname, String nombreUsuario, String apellidoUsuario, String contrasenaUsuario, String email, Date fecNac, String fotoPerfil) {
         super( nickname, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil );
     }
     
@@ -80,4 +81,12 @@ public class DTCliente extends DTUsuario{
         this.misListasReproduccionCreadas.addFirst(misListasReproduccionCreadas);
     }
 
+    public DTSuscripcion getMiSuscripcion() {
+        return miSuscripcion;
+    }
+    public void setMiSuscripcion(DTSuscripcion miSuscripcion) {
+        this.miSuscripcion = miSuscripcion;
+    }
+
+    
 }

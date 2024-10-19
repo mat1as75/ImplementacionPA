@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
+
+.container-info {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    background-color: #f8faf9;
+}
+
+.container-info .perfil-img {
+    width: 50px; /* Tamaño de la imagen de perfil */
+    height: 35px; /* Debe ser igual al ancho para que sea circular */
+    border: 1px solid #000;
+    border-radius: 50%; /* Hace la imagen circular */
+    margin-right: 0%; /* Espaciado entre imagen y nombre */
+    margin-left: 15px;
+    margin-top: 2%;
+}
+
+.container-info .divisor {
+    width: 0;
+    padding: 0;
+    border-right: 1px solid #000;
+    height: calc(4.375rem - 2rem);
+    margin: auto 1rem;
+}
+
+.info-usuario {
+    display: flex;
+    padding-right: 5%;
+    flex-direction: column; /* Apila elementos verticalmente */
+    border-radius: 15px;
+    margin-top: -3%;
+    background-color: #f8faf9;
+}
+
+.info-usuario .nickname-usuario {
+    margin-top: 0%;
+    margin-left: 15px;
+    margin-right: 15px;
+    font-family:'Times New Roman', Times, serif;
+    font-size: 16px;
+    background-size: 0% 0%;
+    background: left top;
+    color: #000;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.info-usuario .boton-favoritos {
+    background-size: 0% 0%;
+    background: left top;
+    color: #000;
+    border: none;
+    margin-top: 0%;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.info-usuario .boton-favoritos i {
+    color: #000;
+    cursor: pointer;
+}
+.info-usuario .boton-favoritos .text-favoritos {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.info-usuario .boton-clsSession {
+    font-style: italic;
+    background-color: #000; /* Color de fondo del botón */
+    color: #0056b3;; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 8px;
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    margin-top: 0%;
+    background-size: 0% 0%;
+    background: left top;
+    background-repeat: no-repeat;
+    padding: 0;
+    display: block;
+    white-space: nowrap;
+}
+
+.info-usuario .boton-clsSession:hover {
+    text-decoration: underline;
+}
+

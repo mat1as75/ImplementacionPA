@@ -8,11 +8,14 @@ import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTGenero_Simple;
+import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
+import espotify.logica.Suscripcion.EstadoSuscripcion;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +35,7 @@ public interface IControlador {
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteCliente(String nicknameCliente);
     public abstract boolean ExisteEmail(String email);
+    public abstract boolean existeArtista(String nicknameArtista);
 
     public abstract boolean existeNombreLista(String nombreLista);
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
@@ -98,5 +102,10 @@ public interface IControlador {
     public abstract List<String> getUsuariosSinEste(String nickname);
     
     public abstract DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario);
+    public abstract DTDatosUsuario getDatosUsuario(String identificadorUsuario);
+    
+    public abstract ArrayList<DTSuscripcion> getDTSuscripciones();
+    public abstract DTSuscripcion getDTSuscripcion(Long id);
+    public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
 
 }
