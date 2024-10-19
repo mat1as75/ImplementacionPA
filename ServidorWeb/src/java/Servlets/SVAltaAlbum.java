@@ -296,7 +296,7 @@ public class SVAltaAlbum extends HttpServlet {
             ictrl.AltaAlbum(dataAlbum);
             response.setStatus(201);
         } catch (Exception e) {
-            response.setStatus(500);
+            response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
             if (e instanceof NonexistentEntityException || e instanceof InvalidDataException) {
                 response.getWriter().write(e.getMessage());
             } else {
