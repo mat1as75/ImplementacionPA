@@ -62,6 +62,7 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
         }
         if(Seguidor!=null){
             request.setAttribute("Seguidor", Seguidor);
+            
             request.getRequestDispatcher("SeguirUsuario.jsp").forward(request, response);
         }
 
