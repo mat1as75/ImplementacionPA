@@ -108,7 +108,7 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         response.sendRedirect("ConsultaPerfilUsuario.jsp");
 
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -127,4 +127,5 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
     public void ConsultaPerfilArtista(String nicknameArtista) {
         
     }
+    
 }
