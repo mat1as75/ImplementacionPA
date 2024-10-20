@@ -30,17 +30,17 @@
 <body>
     <%  
         HttpSession sesion = request.getSession();
-        sesion.setAttribute("rol", "Cliente");
-        sesion.setAttribute("nickname", "lachiqui");
         String nicknameSesion = (String) sesion.getAttribute("nickname");
         String rolSesion = (String) sesion.getAttribute("rol");
         Fabrica f = Fabrica.getInstance();
         IControlador i = f.getControlador();
         
-        if (rolSesion.equals("Cliente")) {
+        boolean vigente = false; // Declarar la variable antes de usarla
+        
+        if ((nicknameSesion!=null)&&(rolSesion!=null)&&(rolSesion.equals("Cliente"))) {
             DTDatosCliente datosC = (DTDatosCliente) i.getDatosUsuario(nicknameSesion);
             String estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
-            boolean vigente = estadoSuscripcionSesion.equals("Vigente");
+            vigente = estadoSuscripcionSesion.equals("Vigente");
             
             if (!vigente) {
     %>
