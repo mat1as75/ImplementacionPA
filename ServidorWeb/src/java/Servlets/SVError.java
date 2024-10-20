@@ -10,17 +10,56 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SVError", urlPatterns = {"/Error"})
 public class SVError extends HttpServlet {
 
+    public static void redirectUnauthorized(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("errorCode", "401");
+        request.setAttribute("errorName", "Unauthorized");
+        request.setAttribute("errorMsg", "Usuario no autorizado.");
+        request.getRequestDispatcher("/Error").forward(request, response);
+    }
+    
+    public static void redirectForbidden(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("errorCode", "403");
+        request.setAttribute("errorName", "Forbidden");
+        request.setAttribute("errorMsg", "Sin sesión.");
+        request.getRequestDispatcher("/Error").forward(request, response);
+    }
+    
+    public static void redirectNotFound(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("errorCode", "404");
+        request.setAttribute("errorName", "Not Found");
+        request.setAttribute("errorMsg", "Recurso no encontrado.");
+                System.out.println("antes del redirect");
+
+        request.getRequestDispatcher("/Error").forward(request, response);        
+        System.out.println("despues del redirect");
+
+    }
+    
+    public static void redirectInternalServerError(HttpServletRequest request, HttpServletResponse response, String optionalMsg) throws ServletException, IOException {
+        request.setAttribute("errorCode", "500");
+        request.setAttribute("errorName", "Internal Server Error");
+        String errorMsg = (optionalMsg == null ? "El servidor no pudo procesar la solicitud." : optionalMsg);
+        request.setAttribute("errorMsg", errorMsg);
+        request.getRequestDispatcher("/Error").forward(request, response);
+    }
+    
+    public static void redirectBadRequest(HttpServletRequest request, HttpServletResponse response, String optionalMsg) throws ServletException, IOException {
+        request.setAttribute("errorCode", "400");
+        request.setAttribute("errorName", "Bad Request");
+        String errorMsg = (optionalMsg == null ? "El servidor no pudo procesar la solicitud" : optionalMsg);
+        request.setAttribute("errorMsg", errorMsg);
+        request.getRequestDispatcher("/Error").forward(request, response);
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-        request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
-
     }
 
     @Override

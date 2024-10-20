@@ -174,13 +174,6 @@ public class SVAltaAlbum extends HttpServlet {
         return encoded;
     }
     
-    private void redirectUnauthorized(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("errorCode", "401");
-        request.setAttribute("errorName", "Unauthorized");
-        request.setAttribute("errorMsg", "Usuario no autorizado.");
-        request.getRequestDispatcher("/Error").forward(request, response);
-    }
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Fabrica fb = Fabrica.getInstance();
@@ -188,14 +181,14 @@ public class SVAltaAlbum extends HttpServlet {
         
         HttpSession sesion = request.getSession(false);
         if (sesion == null) {
-            redirectUnauthorized(request, response);
+            SVError.redirectForbidden(request, response);
             return;
         }
         
         DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
         
         if (datosUsuario == null) {
-            redirectUnauthorized(request, response);
+            SVError.redirectUnauthorized(request, response);
             return;
         }
         
@@ -203,7 +196,7 @@ public class SVAltaAlbum extends HttpServlet {
         Boolean existeArtista = ictrl.existeArtista(nickname);
         
         if (!existeArtista) {
-            redirectUnauthorized(request, response);
+            SVError.redirectUnauthorized(request, response);
             return;
         }
         
@@ -268,7 +261,7 @@ public class SVAltaAlbum extends HttpServlet {
         //Creo los DTTema con los datos del request y con las rutas de los archivos subidos en los que son con ruta
         List<DTTemaGenerico> dataTemas = crearListaDTTemas(mapTemasConRutas, cantidadTemas, request);
        
-        String rutaPortada = "";
+        String rutaPortada = null;
         //Subo la imagen de portada
         if (partPortada != null) {
             rutaPortada = uploadPortada(partPortada, artista, nombreAlbum);
@@ -297,11 +290,13 @@ public class SVAltaAlbum extends HttpServlet {
             response.setStatus(201);
         } catch (Exception e) {
             response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
-            if (e instanceof NonexistentEntityException || e instanceof InvalidDataException) {
-                response.getWriter().write(e.getMessage());
-            } else {
-                response.getWriter().write("Internal Server Error");
+            if (e instanceof NonexistentEntityException) {
+                response.setStatus(response.SC_NOT_FOUND);
             }
+            if (e instanceof InvalidDataException) {
+                response.setStatus(response.SC_BAD_REQUEST);
+            }
+            response.getWriter().write(e.getMessage());
             return;
         }
         
