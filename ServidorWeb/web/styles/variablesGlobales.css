@@ -1,0 +1,13 @@
+:root {
+    --bg-color-dark-5: #000;
+    --bg-color-dark-4: #121212;
+    --bg-color-dark-3: #1f1f1f;
+    --bg-color-dark-2: hsla(0,0%,100%,.05);
+    --bg-color-dark-1: hsla(0,0%,100%,.14);
+    --color-green-primary: #1ed760;
+    --color-red-error: #ed2c3f;
+    --color-grey-accent: #7c7c7c;
+    --color-white: #fff;
+    --border-radius-containers: 8px;
+    --audio-player-max-width: 400px;
+}
