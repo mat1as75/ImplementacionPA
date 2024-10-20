@@ -8,51 +8,75 @@
 
 <%
     HttpSession sesion = request.getSession();
-    DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-    DTDatosCliente datosCliente = (DTDatosCliente) sesion.getAttribute("usuario");
+    String tipoUsuario = (String) sesion.getAttribute("rol");
+    String perfilConsultado = (String) sesion.getAttribute("perfilConsultado");
+    
+    DTDatosUsuario datosUsuarioSesion = datosUsuarioSesion = (DTDatosUsuario) sesion.getAttribute("usuario");
+    DTDatosCliente datosClienteSesion = null;
+    String nicknameUsuarioSesion = datosUsuarioSesion.getNicknameUsuario();
+    
     String nicknameUsuario = null, nombreCompleto = null, fotoPerfilUsuario = null, emailUsuario = null, fechaNacUsuario = null;
     ArrayList<String> nicknamesSeguidores = null, nicknamesSeguidos = null, nicknamesS = null, rolS = null, 
             nombresListasRCreadas = null, nombresTemasFav = null, nombresAlbumesFav = null, nombresListasFav = null, 
             nombresListasRPublicas = null;
             
-    nicknameUsuario = datosUsuario.getNicknameUsuario();
-    nombreCompleto = datosUsuario.getNombreUsuario() + " " + datosUsuario.getApellidoUsuario();
-    fotoPerfilUsuario = datosUsuario.getFotoPerfil();
+    nicknameUsuario = datosUsuarioSesion.getNicknameUsuario();
+    nombreCompleto = datosUsuarioSesion.getNombreUsuario() + " " + datosUsuarioSesion.getApellidoUsuario();
+    fotoPerfilUsuario = datosUsuarioSesion.getFotoPerfil();
+    
+    // Sesion no pertenece a un Visitante
+    if (!tipoUsuario.equals("Visitante")) {
+        datosClienteSesion = (DTDatosCliente) sesion.getAttribute("usuario");
+        
+        
+    
+        // Se quiere ConsultarPerfil propio
+        if (nicknameUsuarioSesion.equals(perfilConsultado)) {
+         
+            /* DATOS DE CLIENTE */
+            emailUsuario = datosUsuarioSesion.getEmail();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            fechaNacUsuario = dateFormat.format(datosUsuarioSesion.getFecNac());
+            nicknamesSeguidores = datosUsuarioSesion.getNicknamesSeguidores();
+
+            /* Extras de Cliente con Suscripcion */
+            nicknamesSeguidos = datosClienteSesion.getNicknamesSeguidos();
+            nicknamesS = new ArrayList<>();
+            rolS = new ArrayList<>();
+            for (String n : nicknamesSeguidos) {
+                int i = n.indexOf(",");
+                nicknamesS.add(n.substring(0, i));
+            }
+            for (String n : nicknamesSeguidos) {
+                int i = n.indexOf(" ");
+                rolS.add(n.substring(i + 1));
+            }
+
+            nombresListasRCreadas = null;
+            nombresTemasFav = null;
+            nombresAlbumesFav = null;
+            nombresListasFav = null;
+            if (datosClienteSesion.getSuscripcion() != null && datosClienteSesion.getSuscripcion().getEstadoSuscripcion().toString().equals("Vigente")) {
+                nicknamesSeguidos = datosClienteSesion.getNicknamesSeguidos();
+                nombresListasRCreadas = datosClienteSesion.getNombresListasRCreadas();
+                nombresTemasFav = datosClienteSesion.getNombresTemasFavoritos();
+                nombresAlbumesFav = datosClienteSesion.getNombresAlbumesFavoritos();
+                nombresListasFav = datosClienteSesion.getNombresListasRFavoritas();
+            }
+
+            fotoPerfilUsuario = (fotoPerfilUsuario != null) ? fotoPerfilUsuario.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+        }
+    } else { /* Obtengo datos que el Visitante debe de ver del Cliente */
+        /* LISTA REPRODUCCION PARTICULAR PUBLICAS */
+        nombresListasRPublicas = datosClienteSesion.getNombresListasRCreadasPublicas();
+    }
+    
+    
+    
     
     if (!sesion.getAttribute("rol").equals("Visitante")) {
 
-        /* DATOS DE CLIENTE */
-        emailUsuario = datosUsuario.getEmail();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        fechaNacUsuario = dateFormat.format(datosUsuario.getFecNac());
-        nicknamesSeguidores = datosUsuario.getNicknamesSeguidores();
-
-        /* Extras de Cliente con Suscripcion */
-        nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
-        nicknamesS = new ArrayList<>();
-        rolS = new ArrayList<>();
-        for (String n : nicknamesSeguidos) {
-            int i = n.indexOf(",");
-            nicknamesS.add(n.substring(0, i));
-        }
-        for (String n : nicknamesSeguidos) {
-            int i = n.indexOf(" ");
-            rolS.add(n.substring(i + 1));
-        }
-
-        nombresListasRCreadas = null;
-        nombresTemasFav = null;
-        nombresAlbumesFav = null;
-        nombresListasFav = null;
-        if (datosCliente.getSuscripcion() != null && datosCliente.getSuscripcion().getEstadoSuscripcion().toString().equals("Vigente")) {
-            nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
-            nombresListasRCreadas = datosCliente.getNombresListasRCreadas();
-            nombresTemasFav = datosCliente.getNombresTemasFavoritos();
-            nombresAlbumesFav = datosCliente.getNombresAlbumesFavoritos();
-            nombresListasFav = datosCliente.getNombresListasRFavoritas();
-        }
-
-        fotoPerfilUsuario = (fotoPerfilUsuario != null) ? fotoPerfilUsuario.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+        
     } else { /* Obtengo datos que el Visitante debe de ver del Cliente */
         /* LISTA REPRODUCCION PARTICULAR PUBLICAS */
         nombresListasRPublicas = datosCliente.getNombresListasRCreadasPublicas();

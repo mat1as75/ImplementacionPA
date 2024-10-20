@@ -1,3 +1,5 @@
+<%@page import="espotify.logica.IControlador"%>
+<%@page import="espotify.logica.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="javax.servlet.http.Cookie"%>
 <%@page import="javax.servlet.http.HttpServletRequest"%>
@@ -7,52 +9,60 @@
 
 <%
     /* Obtener la sesion actual */
+    Fabrica fb = Fabrica.getInstance();
+    IControlador control = fb.getControlador();
+    
     HttpSession sesion = request.getSession(false);
-    String rolUsuario = (String) sesion.getAttribute("rol");
-    DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-    String nickname = null;
-    String nombreUsuario = null;
-    String apellidoUsuario = null;
-    String fotoPerfilUsuario = null;
-    String emailUsuario = null;
+    String nicknameSesion = (String) sesion.getAttribute("nickname");
+    String rolSesion = (String) sesion.getAttribute("rol");
+    System.out.println("NICKNAME SESION HEADER: " + nicknameSesion);
+    
+    DTDatosUsuario datosUsuario = control.getDatosUsuario(nicknameSesion);
+    String nombreSesion = null;
+    String apellidoSesion = null;
+    String fotoPerfilSesion = null;
+    String emailSesion = null;
 
-    if (rolUsuario != null) {
-        nickname = datosUsuario.getNicknameUsuario();
-        nombreUsuario = datosUsuario.getNombreUsuario();
-        apellidoUsuario = datosUsuario.getApellidoUsuario();
-        fotoPerfilUsuario = datosUsuario.getFotoPerfil();
+    if (rolSesion != null) {
+        nombreSesion = datosUsuario.getNombreUsuario();
+        apellidoSesion = datosUsuario.getApellidoUsuario();
+        fotoPerfilSesion = datosUsuario.getFotoPerfil();
         //System.out.println("FOTO PERFIL: "+ fotoPerfilUsuario);
-        fotoPerfilUsuario = (fotoPerfilUsuario != null) ? fotoPerfilUsuario.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+        fotoPerfilSesion = (fotoPerfilSesion != null) ? fotoPerfilSesion.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
         //System.out.println("FOTO PERFIL2: "+ fotoPerfilUsuario);
-        emailUsuario = datosUsuario.getEmail();
+        emailSesion = datosUsuario.getEmail();
+        System.out.println("-----------");
+        System.out.println("NICKNAME SESION: " + nicknameSesion);
     }
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="scripts/consultaPerfilUsuario.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="icon" href="./Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
+<link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
 
 <div class="container-info">
-    <img src="<%= fotoPerfilUsuario%>" alt="Foto de Perfil" class="perfil-img">
+    <img src="<%= fotoPerfilSesion%>" alt="Foto de Perfil" class="perfil-img">
     <div class="divisor d-none d-sm-block"></div>
     <div class="info-usuario">
         <form action="SVConsultaPerfilUsuario" method="GET" >
             <button type="submit" id="btn-nickname" class="nickname-usuario">
-                <%= nombreUsuario + " " + apellidoUsuario%>
+                <%= nombreSesion + " " + apellidoSesion%>
             </button>
         </form>
         <button onclick="window.location.href='ConsultaPerfilUsuario.jsp#favoritos'" id="btn-favoritos" class="boton-favoritos">
             <i class="fa-solid fa-star"></i>
             <span class="text-favoritos">
-                <% if (rolUsuario.equals("Cliente")) { %>
+                <% if (rolSesion.equals("Cliente")) { %>
                 Favoritos
                 <% } else { %>
                 Albumes
                 <% }%>
             </span>
         </button>
-        <button id="btn-clsSession" class="boton-clsSession">cerrar sesión</button>
+        <form id="form-CierreSesion" action="SVCierreSesion" method="GET">
+            <button id="btn-clsSession" class="boton-clsSession">cerrar sesión</button>
+        </form>
     </div>
 </div>
 

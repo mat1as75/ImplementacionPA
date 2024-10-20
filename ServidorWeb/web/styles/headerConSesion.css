@@ -69,6 +69,10 @@
     cursor: pointer;
 }
 
+.info-usuario #form-CierreSesion {
+    margin: auto;
+}
+
 .info-usuario .boton-clsSession {
     font-style: italic;
     background-color: #000; /* Color de fondo del botón */

@@ -4,6 +4,7 @@
  */
 package Servlets;
 
+import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.logica.Cliente;
@@ -11,6 +12,7 @@ import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,6 +54,57 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        Fabrica fb = Fabrica.getInstance();
+        IControlador control = fb.getControlador();
+        
+        /* DATOS DE LA SESION */
+        HttpSession sesion = request.getSession(false);
+        String tipoUsuarioSesion = (String) sesion.getAttribute("rol");
+        String nicknameUsuarioSesion = null;
+        DTDatosUsuario datosUsuarioSesion = null;
+        ArrayList<String> nicknamesSeguidoresSesion = null;
+        /* ------------------ */
+        
+        /* DATOS DE PERFIL CONSULTADO */
+        DTDatosUsuario datosUsuarioConsultado = (DTDatosUsuario) sesion.getAttribute("perfilConsultado");
+        DTDatosCliente datosClienteConsultado = null;
+        DTDatosArtista datosArtistaConsultado = null;
+        String nicknameUsuarioConsultado = datosUsuarioConsultado.getNicknameUsuario();
+        ArrayList<String> nombresListasRPublicas = null, nicknamesSeguidoresConsultados = null;
+        
+        
+        /* ------------------ */
+        
+        // Sesion no pertenece a un Visitante
+        if (tipoUsuarioSesion.equals("Visitante")) {
+            datosUsuarioSesion = (DTDatosUsuario) sesion.getAttribute("usuario");
+            nicknameUsuarioSesion = datosUsuarioSesion.getNicknameUsuario();
+            
+            // ConsultaPerfilCliente
+            if (tipoUsuarioSesion.equals("Cliente")) { 
+                datosClienteConsultado = (DTDatosCliente) sesion.getAttribute("perfilConsultado");
+                
+                // Cliente no se ConsultaPerfil propio
+                if (!nicknameUsuarioSesion.equals(nicknameUsuarioConsultado)) {
+                    
+                    nicknamesSeguidoresConsultados = datosUsuarioSesion.getNicknamesSeguidores();
+                    // Sesion es Seguidor del que se consulta
+                    if (nicknamesSeguidoresConsultados.contains(nicknameUsuarioSesion)) {
+                        
+                        // Lista Reproduccion Particular Publicas
+                        nombresListasRPublicas = datosClienteConsultado.getNombresListasRCreadasPublicas();
+                    }
+                }
+                
+                
+                
+            }
+        }
+        
+        // Si la sesion pertenece a un Cliente o Artista
+//        if (rolSesion.equals("Cliente") || rolSesion.equals("Artista")) {
+//            
+//        }
         response.sendRedirect("ConsultaPerfilUsuario.jsp");
 
     }

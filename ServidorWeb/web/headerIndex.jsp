@@ -3,6 +3,7 @@
 <%@page import="javax.servlet.http.HttpServletRequest"%>
 <%@page import="javax.servlet.http.HttpSession"%>
 <%@page import="espotify.DataTypes.DTDatosUsuario"%>
+<%@page session="true"%>
 <!-- HEADER INDEX -->
 
     <header>
@@ -10,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="styles/headerIndex.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="icon" href="./Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
+        <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
         <title>Espotify</title>
         
         <div onclick="location.href = 'index.jsp'" class="logo">
@@ -27,8 +28,9 @@
         
         <% 
             /* Obtener la sesion actual */
-            HttpSession sesion = request.getSession(false);
-            DTDatosUsuario usuario = (DTDatosUsuario) sesion.getAttribute("usuario");
+            String rolSesion = (String) session.getAttribute("rol");
+            DTDatosUsuario usuario = (DTDatosUsuario) session.getAttribute("usuario");
+            
             /* Verificar las cookies */
 //            Cookie[] cookies = request.getCookies();
 //            boolean cookieFound = false;
@@ -44,11 +46,12 @@
 //                }
 //            }
             
-        if (usuario != null) { %>
-                <!-- EXISTE SESION -->
-                <jsp:include page="headerConSesion.jsp"/>
-        <%  } else { %>
+        if (session.isNew()) { %>
                 <!-- NO EXISTE SESION -->
-                <jsp:include page="headerSinSesion.jsp"/>
+                <jsp:include page="headerSinSesion.jsp"/>     
+        <%  } else { %>
+                <!-- EXISTE SESION -->
+                <% System.out.println("ROL SESION: " + rolSesion); %>
+                <jsp:include page="headerConSesion.jsp"/>  
         <%  } %>
         
