@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,33 +25,20 @@
     <body>
         <h1>Reproductor</h1>
         
-        <div id="audioFilePlayerContainer" class="audioPlayerContainer">
-            
-            <img class="imgReproductor" src="imagenes/spotifyLogo.png" alt="Logo de spotify"/>
-            <p id="nombreTemaEnReproduccionFile">Tema</p>
-            <audio id="audioFilePlayer" controls controlslist="nofullscreen" type="audio/mpeg" src="/ServidorWeb/Tema" >
-                El cliente no soporta este tipo de audio
-            </audio> 
-        </div>
+        <%@include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
         
-<!--        <div id="audioFilePlayerContainer" class="audioPlayerContainer">
-            <p>Reproductor de archivos</p>
-            <audio id="audioFilePlayer" controls controlslist="nofullscreen" type="audio/mpeg" src="/ServidorWeb/Tema" >
-                El cliente no soporta este tipo de audio
-            </audio> 
-            <button id="playBtnFilePlayer" type="button" class="playButton"><i id="iconBtnFilePlayer" class="bi bi-play"></i></button>
-        </div>-->
-        
-        <div id="audioLinkPlayerContainer" class="audioPlayerContainer">
-            <iframe 
-                anonymous 
-                id="audioLinkPlayer"  
-                referrerpolicy="strict-origin-when-cross-origin"
-                src="https://youtube.com/embed/cHj8PtRdMQk">
-                El cliente no soporta este tipo de audio
-            </iframe> 
-            <p id="nombreTemaEnReproduccionLink">Tema</p>
+        <br/>
+        <button id="btn1">tema1 con ruta</button>
+        <button id="btn2">tema2 con ruta</button>
 
-        </div>
+        <script>
+            document.querySelector("#btn1").addEventListener("click", () => {
+                play(570,  "", "");
+            });
+
+            document.querySelector("#btn2").addEventListener("click", () => {
+                play(5711,  "", "");
+            });
+        </script>
     </body>
 </html>

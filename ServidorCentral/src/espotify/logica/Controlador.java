@@ -13,6 +13,7 @@ import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
@@ -466,6 +467,11 @@ public class Controlador implements IControlador{
     @Override
     public boolean existeArtista(String nicknameArtista) {
         return this.contpersis.existeArtista(nicknameArtista);
+    }
+    
+    @Override
+    public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
+        return this.contpersis.getDTTemaGenericoConRutaOUrl(idTema);
     }
 }
 

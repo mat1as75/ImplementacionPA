@@ -1,5 +1,6 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import javax.persistence.Entity;
 
 @Entity
@@ -26,6 +27,16 @@ public class TemaConURL extends Tema {
 
     public void setUrlTema(String urlTema) {
         this.urlTema = urlTema;
+    }
+    
+    @Override
+    public DTTemaGenericoConRutaOUrl getDTTemaConRutaOUrl() {
+        return new DTTemaGenericoConRutaOUrl(
+                this.getIdTema(),
+                this.getNombreTema(),
+                null,
+                this.getUrlTema()
+        );
     }
     
 }
