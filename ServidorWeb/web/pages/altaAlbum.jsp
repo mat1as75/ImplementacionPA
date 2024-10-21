@@ -38,6 +38,7 @@
         <script src="../${pageContext.request.contextPath}/scripts/altaAlbum.js" defer></script>
         
         <!-- CUSTOM CSS -->
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/altaAlbum.css"/>
 
         

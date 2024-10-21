@@ -1,5 +1,6 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -113,4 +114,6 @@ public abstract class Tema implements Serializable {
                 generosDeTema
         );
     }
+    
+    public abstract DTTemaGenericoConRutaOUrl getDTTemaConRutaOUrl();
 }

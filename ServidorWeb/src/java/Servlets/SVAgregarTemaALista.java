@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SVAgregarTemaALista", urlPatterns = {"/AgregarTemaALista"})
 public class SVAgregarTemaALista extends HttpServlet {
 
+    
+    //Clase que mapea los datos recibidos en el body
     class JsonData {
         private String nombreListaReproduccion;
         private Long idTema;

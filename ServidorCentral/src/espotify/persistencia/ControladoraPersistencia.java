@@ -15,6 +15,7 @@ import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTSuscripcion;
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 
@@ -1534,8 +1535,21 @@ public class ControladoraPersistencia {
         }
     }
     
-     public boolean existeArtista(String nicknameArtista) {
-         Artista art = this.artJpa.findArtista(nicknameArtista);
-         return art != null;
-     }
+    public boolean existeArtista(String nicknameArtista) {
+        Artista art = this.artJpa.findArtista(nicknameArtista);
+        return art != null;
+    }
+     
+    public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
+        TemaConRuta temaConRuta = this.temaconrutaJpa.findTemaConRuta(idTema);
+        TemaConURL temaConURL = this.temaurlJpa.findTemaConURL(idTema);
+        
+        if (temaConRuta != null) {
+            return temaConRuta.getDTTemaConRutaOUrl();
+        } else if (temaConURL != null) {
+            return temaConURL.getDTTemaConRutaOUrl();
+        } else {
+            return null;
+        }
+    }
 }
