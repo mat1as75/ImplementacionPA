@@ -22,14 +22,14 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author tecnologo
+ * @author ms
  */
 public class ClienteJpaController implements Serializable {
 
     public ClienteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public ClienteJpaController() {
+     public ClienteJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
     private EntityManagerFactory emf = null;

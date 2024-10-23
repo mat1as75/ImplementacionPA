@@ -2,6 +2,7 @@
 package espotify.logica;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ public abstract class ListaReproduccion implements Serializable {
     @Id
     protected String nombreLista;
     protected String fotoLista;
+    protected Date fechaCreacion;
  
     // Referencias
     @ManyToMany(mappedBy="misReproducciones")
@@ -47,6 +49,14 @@ public abstract class ListaReproduccion implements Serializable {
     
     public void setFotoLista(String fotoLista) {
         this.fotoLista = fotoLista;
+    }
+
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
     
     public List<Tema> getMisTemas() {

@@ -1,5 +1,6 @@
 package espotify.logica;
 
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -22,7 +23,14 @@ public class ListaParticular extends ListaReproduccion{
          this.miCliente = miCliente;
          this.soyPrivada = soyPrivada;
     }
-
+    
+    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente,Date fechaCreacion, boolean soyPrivada){
+         super(nombreLista, fotoLista);
+         this.miCliente = miCliente;
+         this.fechaCreacion = fechaCreacion;
+         this.soyPrivada = soyPrivada;
+    }
+    
     // Getters & Setters
     public Cliente getCliente(){
         return miCliente;

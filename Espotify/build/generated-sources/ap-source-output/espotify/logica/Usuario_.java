@@ -7,12 +7,13 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2024-09-20T01:14:13", comments="EclipseLink-2.7.12.v20230209-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2024-10-06T22:30:53", comments="EclipseLink-2.7.12.v20230209-rNA")
 @StaticMetamodel(Usuario.class)
 public abstract class Usuario_ { 
 
     public static volatile SingularAttribute<Usuario, String> fotoPerfil;
     public static volatile SingularAttribute<Usuario, String> apellidoUsuario;
+    public static volatile SingularAttribute<Usuario, String> contrasenaUsuario;
     public static volatile ListAttribute<Usuario, Usuario> misSeguidores;
     public static volatile SingularAttribute<Usuario, Date> fecNac;
     public static volatile SingularAttribute<Usuario, String> nickname;
