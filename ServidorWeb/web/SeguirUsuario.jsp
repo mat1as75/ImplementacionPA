@@ -39,8 +39,10 @@
         
         if ((nicknameSesion!=null)&&(rolSesion!=null)&&(rolSesion.equals("Cliente"))) {
             DTDatosCliente datosC = (DTDatosCliente) i.getDatosUsuario(nicknameSesion);
-            String estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
-            vigente = estadoSuscripcionSesion.equals("Vigente");
+            if((datosC!=null)&&(datosC.getSuscripcion()!=null)){
+                String estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
+                vigente = estadoSuscripcionSesion.equals("Vigente");
+            }
             
             if (!vigente) {
     %>
