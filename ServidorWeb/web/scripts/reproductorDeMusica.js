@@ -186,6 +186,7 @@ function parseYoutubeUrlToEmbeddable(url) {
     }
 }
 
+//Toggle para mostrar u ocultar el dropdown menu que muestra las listas de reproduccion
 async function toggleDropdown(idDropdownContent) {
     const element = document.getElementById(idDropdownContent);
  
@@ -201,13 +202,18 @@ async function toggleDropdown(idDropdownContent) {
     }
 }
 
+//Event listener para el toggle del menu y para agregar o quitar un tema de la lista seleccionada
 document.querySelector("body").addEventListener("click", async (evt) => {
+   
+   //si el elemento clickeado es el icono que muestra las listas
+   //a las cuales se puede agregar o desde las que se puede quitar el tema
    if (evt.target.getAttribute("data-function") === "toggleDropDown") {
        const idDropdownContent = evt.target.getAttribute("data-dropdown-content");
        await toggleDropdown(idDropdownContent);
        return;
    } 
    
+   //si el elemento es un <a> de la lista de reproduccion con la funcion de agregarTemaALista
    if (evt.target.getAttribute("data-function") === "agregarTemaALista") {
         const idTema = evt.target.getAttribute("data-idTema");
         const nombreLista = evt.target.getAttribute("data-nombreLista");
@@ -215,6 +221,7 @@ document.querySelector("body").addEventListener("click", async (evt) => {
         return;
    }
    
+   //si el elemento es un <a> de la lista de reproduccion con la funcion de quitarTemaDeLista
    if (evt.target.getAttribute("data-function") === "quitarTemaDeLista") {
         const idTema = evt.target.getAttribute("data-idTema");
         const nombreLista = evt.target.getAttribute("data-nombreLista");
@@ -223,11 +230,13 @@ document.querySelector("body").addEventListener("click", async (evt) => {
    }
 });
 
+//Recibo el id del tema, el nombre de la lista y el elemento clickeado
 async function requestAgregarTema(idTema, nombreLista, anchorTag) {
-    
+    //creo el body del request con los datos necesarios
     const data = { idTema: idTema, nombreListaReproduccion: nombreLista };
+    //paso los datos a json
     const jsonData = JSON.stringify(data);
-    
+    //creo el request
     const url = "/ServidorWeb/AgregarTemaALista";
     const request = new Request(url, {
         method: "POST",
@@ -237,9 +246,11 @@ async function requestAgregarTema(idTema, nombreLista, anchorTag) {
 
     let response;
 
+    //hago el request
     try {
         response = await fetch(request);
         if (response.ok) {
+            //si el request es exitoso cambio la funcion del <a> al opuesto y su apariencia
             anchorTag.setAttribute("data-function", "quitarTemaDeLista");
             anchorTag.classList.remove("temaNoPerteneceALista");
             anchorTag.classList.add("temaPerteneceALista");
@@ -253,6 +264,7 @@ async function requestAgregarTema(idTema, nombreLista, anchorTag) {
     }
 }
 
+//Casi igual a requestAgregarTema pero hace lo opuesto
 async function requestQuitarTema(idTema, nombreLista, anchorTag) {
     
     const data = { idTema: idTema, nombreListaReproduccion: nombreLista };
@@ -283,6 +295,9 @@ async function requestQuitarTema(idTema, nombreLista, anchorTag) {
     }
 }
 
+//Params: id del temae y nombre de la lista
+//Param: booleano que determina si el <a> a crear pertenece 
+//o no a la lista para asi definir su funcion y su apariencia
 function createAnchor(idTema, nombreLista, perteneceALista) {
     const a = document.createElement("a");
     a.setAttribute("data-idTema", idTema);
@@ -300,19 +315,31 @@ function createAnchor(idTema, nombreLista, perteneceALista) {
     return a;
 }
 
+//Elimino el contenido del dropdown
+//Param idDropdownContent: el id del contenedor donde se insertan las listas de reproduccion
 function removePreviousContent(idDropdownContent) {
     const dropdownContent = document.getElementById(idDropdownContent);
     dropdownContent.innerHTML = "";
 }
 
+//Cargo el contenido del dropdown con las listas recibidas en el request
+//Param contentType:
+// -> si el response contiene listas de reproduccion recibo application/json
+// -> si el response no tiene listas recibo text/plain
+//Param data: 
+// --> contiene la informacion de las listas de reproduccion del usuario logueado
+// --> si el response es text/plain recibo un mensaje
+//Param idDropdownContent: recibo el id del contenedor a donde se van a cargar las listas de reproduccion
 function loadDropdownContent(contentType, data, idDropdownContent) {
     removePreviousContent(idDropdownContent);
     const dropdownContent = document.getElementById(idDropdownContent);
+    //obtengo el id del tema a partir del data-idTema del contenedor del reproductor
+    //el atributo es seteado cuando se reproduce un tema
     const idTema = dropdownContent.closest(".audioPlayerContainer").getAttribute("data-idTema");
     
     if (contentType === "json") {
         data.forEach( lista => {
-            
+            //determino si el tema ya pertenece a la lista o no para definir la apariencia y funcion del <a>
             const perteneceALista = lista.temas.find( tema => tema.idTema.toString() === idTema);
             
             if (perteneceALista) {
@@ -324,6 +351,7 @@ function loadDropdownContent(contentType, data, idDropdownContent) {
         return;
     }
     
+    //si recibo text/plain muestro un mensaje
     const span = document.createElement("span");
     if (contentType === "text") {
         if (data === "Visitante") {
@@ -341,6 +369,10 @@ function loadDropdownContent(contentType, data, idDropdownContent) {
     dropdownContent.append(span);
 }
 
+//Busca las listas de reproduccion del cliente logueado. El response contiene:
+// --> las listas en formato json si el usuario tiene listas
+// --> un mensaje en text/plain de listas vacias si el usuario no tiene listas
+// --> un mensaje en text/plain de sin sesion si el usuario es visitante
 async function fetchListasReproduccion(idDropdownContent) {
     
     const url = "/ServidorWeb/ListasParticularesDeCliente";
