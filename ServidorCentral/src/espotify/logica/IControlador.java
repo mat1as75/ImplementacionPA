@@ -45,6 +45,7 @@ public interface IControlador {
     
     public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero);
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
+    public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada);
     public abstract DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
 
     public abstract Map<Long, String> getTemasDisponibles();

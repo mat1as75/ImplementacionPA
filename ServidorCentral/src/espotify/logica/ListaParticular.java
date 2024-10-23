@@ -1,5 +1,7 @@
 package espotify.logica;
 
+
+import java.util.Date;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTTemaSimple;
 import java.util.ArrayList;
@@ -26,7 +28,13 @@ public class ListaParticular extends ListaReproduccion{
          this.miCliente = miCliente;
          this.soyPrivada = soyPrivada;
     }
-
+    
+    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente, Date fechaCreacion, List<Tema> misTemas, boolean soyPrivada){
+         super(nombreLista, fotoLista, fechaCreacion, misTemas);
+         this.miCliente = miCliente;
+         this.soyPrivada = soyPrivada;
+    }
+    
     // Getters & Setters
     public Cliente getCliente(){
         return miCliente;
