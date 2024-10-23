@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -18,6 +19,8 @@ public abstract class ListaReproduccion implements Serializable {
     @Id
     protected String nombreLista;
     protected String fotoLista;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
     protected Date fechaCreacion;
  
     // Referencias

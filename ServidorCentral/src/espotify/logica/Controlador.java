@@ -143,7 +143,7 @@ public class Controlador implements IControlador{
     
     @Override
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
-        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente,fechaCreacion, esPrivada);
     }
     
     @Override
