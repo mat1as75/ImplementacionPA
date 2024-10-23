@@ -473,5 +473,11 @@ public class Controlador implements IControlador{
     public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
         return this.contpersis.getDTTemaGenericoConRutaOUrl(idTema);
     }
+    
+    @Override
+    public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception {
+        return this.contpersis.getListaDTDatosListaReproduccionDeCliente(nicknameCliente);
+    }
+
 }
 

@@ -13,12 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "SVAgregarTemaALista", urlPatterns = {"/AgregarTemaALista"})
-public class SVAgregarTemaALista extends HttpServlet {
+@WebServlet(name = "SVQuitarTemaDeLista", urlPatterns = {"/QuitarTemaDeLista"})
+public class SVQuitarTemaDeLista extends HttpServlet {
 
-    
     //Clase que mapea los datos recibidos en el body
     class JsonData {
         private String nombreListaReproduccion;
@@ -50,20 +48,14 @@ public class SVAgregarTemaALista extends HttpServlet {
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
+            throws ServletException, IOException {
         
-        HttpSession sesion = request.getSession(false);
-        if (sesion == null) {
-            SVError.redirectForbidden(request, response);
-        }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        request.getRequestDispatcher("pruebaAgregarTemaALista.jsp").forward(request, response);
-
     }
 
     @Override
@@ -89,14 +81,14 @@ public class SVAgregarTemaALista extends HttpServlet {
         //Parse del body en formato Json
         //Creo un objeto json con los datos obtenidos
         Gson gson = new Gson();
-        JsonData jsonObject = gson.fromJson(requestBody, JsonData.class);
+        SVQuitarTemaDeLista.JsonData jsonObject = gson.fromJson(requestBody, SVQuitarTemaDeLista.JsonData.class);
 
         //Extraigo los datos del objeto
         String nombreLista = jsonObject.getNombreListaReproduccion();
         Long idTema = jsonObject.getIdTema();
 
         try {
-            ictrl.agregarTemaALista(idTema, nombreLista);
+            ictrl.quitarTemaDeLista(idTema, nombreLista);
             response.setStatus(response.SC_NO_CONTENT);
         } catch (Exception e) {
             response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
@@ -114,5 +106,4 @@ public class SVAgregarTemaALista extends HttpServlet {
             response.getWriter().write("Error: " + e.getMessage());
         }
     }
-
 }
