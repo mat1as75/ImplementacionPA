@@ -65,16 +65,19 @@ public class SVInicioSesion extends HttpServlet {
             
             /* Crear sesion para el usuario */
             HttpSession miSesion = request.getSession();
-            miSesion.setAttribute("nickname", dtUser.getNickname());
-            miSesion.setAttribute("perfilConsultado", null);
+            miSesion.setAttribute("nickname", (String) dtUser.getNickname());
+            miSesion.setAttribute("DTusuarioConsultado", null);
 
             if (dtUser instanceof DTCliente){
                 miSesion.setAttribute("rol", "Cliente");
-                System.out.println("Cliente");
             }else{
                 miSesion.setAttribute("rol", "Artista");
-                System.out.println("Artista");
             }
+            
+            /* Creo una cookie que persiste */
+            Cookie cookie = new Cookie("sessionId", miSesion.getId());
+            cookie.setMaxAge(60 * 60 * 24); // 1 dia
+            response.addCookie(cookie);
             
 //            if (datosUsuario.getClass().equals(DTDatosCliente.class))
 //                miSesion.setAttribute("rol", "Cliente");

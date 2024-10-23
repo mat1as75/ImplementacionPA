@@ -3,7 +3,6 @@
 <%@page import="javax.servlet.http.HttpServletRequest"%>
 <%@page import="javax.servlet.http.HttpSession"%>
 <%@page import="espotify.DataTypes.DTDatosUsuario"%>
-<%@page session="true"%>
 <!-- HEADER INDEX -->
 
     <header>
@@ -27,31 +26,35 @@
         </div>
         
         <% 
-            /* Obtener la sesion actual */
-            String rolSesion = (String) session.getAttribute("rol");
-            DTDatosUsuario usuario = (DTDatosUsuario) session.getAttribute("usuario");
+            HttpSession sesion = request.getSession(false);
             
             /* Verificar las cookies */
-//            Cookie[] cookies = request.getCookies();
-//            boolean cookieFound = false;
-//            
-//            if (cookies != null) {
-//                for (Cookie c : cookies) {
-//                    if ("JSESSIONID".equals(c.getName()) && 
-//                        nickname != null && 
-//                        c.getValue().equals(usuario.getNickname())) {
-//                        cookieFound = true;
-//                        break;
-//                    }
-//                }
-//            }
+            Cookie[] cookies = request.getCookies();
+            boolean loggedIn = false;
             
-        if (session.isNew()) { %>
-                <!-- NO EXISTE SESION -->
-                <jsp:include page="headerSinSesion.jsp"/>     
-        <%  } else { %>
-                <!-- EXISTE SESION -->
-                <% System.out.println("ROL SESION: " + rolSesion); %>
-                <jsp:include page="headerConSesion.jsp"/>  
-        <%  } %>
+            if (cookies != null) {
+                for (Cookie c : cookies) {
+                    if ("sessionId".equals(c.getName()) && sesion.getId().equals(c.getValue())){
+                        loggedIn = true;
+                        break;
+                    }
+                }
+            }
+            if (loggedIn) {
+                sesion = request.getSession(false);
+                if (sesion != null) {
+                    /* EXISTE SESION */ %>
+                    <% System.out.println("CON SESION: " + (String) sesion.getAttribute("nickname")); %>
+                    <jsp:include page="headerConSesion.jsp"/>
+            <%  } 
+            } else { %>
+                <% /* NO EXISTE SESION */ %>
+                <% System.out.println("SIN SESION"); %>
+                <jsp:include page="headerSinSesion.jsp"/>
+            <%  }  %>
+            
+    </header>
+ 
+        
+        
         

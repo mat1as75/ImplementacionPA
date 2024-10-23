@@ -4,7 +4,6 @@
 <%@page import="espotify.logica.IControlador"%>
 <%@page import="espotify.logica.Fabrica"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page session="true"%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -21,23 +20,12 @@
         <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
     </head>
     
-        <%
-            // Verifico si la sesion ya existe
-            if (session.isNew()) {
-                // Si es nueva sesion, establezco el atributo rol
-                session.setAttribute("rol", "Visitante");
-            }
-            
-            String rolSesion = (String) session.getAttribute("rol");
-            
-        %>
+        
     
         <jsp:include page="headerIndex.jsp"/>
     
         <body>
             
-            <h3>SOY <%= rolSesion %></h3>
-
             <%  /* Mensaje de InicioSesion */
                 String mensajeInicioSesion = request.getParameter("mensaje");
                 if ("abierta".equals(mensajeInicioSesion)) {

@@ -61,45 +61,65 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         HttpSession sesion = request.getSession(false);
         String tipoUsuarioSesion = (String) sesion.getAttribute("rol");
         String nicknameUsuarioSesion = null;
-        DTDatosUsuario datosUsuarioSesion = null;
-        ArrayList<String> nicknamesSeguidoresSesion = null;
-        /* ------------------ */
+        nicknameUsuarioSesion = (String) sesion.getAttribute("nickname");
         
-        /* DATOS DE PERFIL CONSULTADO */
-        DTDatosUsuario datosUsuarioConsultado = (DTDatosUsuario) sesion.getAttribute("perfilConsultado");
-        DTDatosCliente datosClienteConsultado = null;
-        DTDatosArtista datosArtistaConsultado = null;
-        String nicknameUsuarioConsultado = datosUsuarioConsultado.getNicknameUsuario();
-        ArrayList<String> nombresListasRPublicas = null, nicknamesSeguidoresConsultados = null;
+        DTDatosUsuario datosUsuario = null;
+
+        // Recupero el parametro enviado desde el formulario en resultados.jsp
+        String usuarioConsultado = request.getParameter("usuario-Consultar");
+        
+        if (usuarioConsultado == null) {
+            // ConsultaPerfilUsuario propio de la Sesion
+            datosUsuario = control.getDatosUsuario(nicknameUsuarioSesion);
+
+        } else {
+            // ConsultaPerfilUsuario desde SearchBar
+            datosUsuario = control.getDatosUsuario(usuarioConsultado);
+        }
         
         
+        // Envio un DataType con los datos del Usuario consultado
+        sesion.setAttribute("DTusuarioConsultado", datosUsuario);
+
+        
+//        /* DATOS DE PERFIL CONSULTADO */
+//        String nicknameUsuarioConsultado = (String) sesion.getAttribute("perfilConsultado");
+//        System.out.println("Nickname Perfil Consultado: " + nicknameUsuarioConsultado);
+//        DTDatosUsuario datosUsuarioConsultado = control.getDatosUsuario(nicknameUsuarioConsultado);
+//        DTDatosCliente datosClienteConsultado = null;
+//        DTDatosArtista datosArtistaConsultado = null;
+//        ArrayList<String> nombresListasRPublicas = null, nicknamesSeguidoresConsultados = null;
+//        
+//        //DTDatosUsuario datosUsr = control.getDatosUsuario(nicknameUsuarioSesion);
+//        System.out.println("DATOS USR: " + nicknameUsuarioSesion);
+//        request.setAttribute("datosUsr", datosUsr);
         /* ------------------ */
         
         // Sesion no pertenece a un Visitante
-        if (tipoUsuarioSesion.equals("Visitante")) {
-            datosUsuarioSesion = (DTDatosUsuario) sesion.getAttribute("usuario");
-            nicknameUsuarioSesion = datosUsuarioSesion.getNicknameUsuario();
-            
-            // ConsultaPerfilCliente
-            if (tipoUsuarioSesion.equals("Cliente")) { 
-                datosClienteConsultado = (DTDatosCliente) sesion.getAttribute("perfilConsultado");
-                
-                // Cliente no se ConsultaPerfil propio
-                if (!nicknameUsuarioSesion.equals(nicknameUsuarioConsultado)) {
-                    
-                    nicknamesSeguidoresConsultados = datosUsuarioSesion.getNicknamesSeguidores();
-                    // Sesion es Seguidor del que se consulta
-                    if (nicknamesSeguidoresConsultados.contains(nicknameUsuarioSesion)) {
-                        
-                        // Lista Reproduccion Particular Publicas
-                        nombresListasRPublicas = datosClienteConsultado.getNombresListasRCreadasPublicas();
-                    }
-                }
-                
-                
-                
-            }
-        }
+//        if (tipoUsuarioSesion.equals("Visitante")) {
+//            datosUsuarioSesion = (DTDatosUsuario) sesion.getAttribute("usuario");
+//            nicknameUsuarioSesion = datosUsuarioSesion.getNicknameUsuario();
+//            
+//            // ConsultaPerfilCliente
+//            if (tipoUsuarioSesion.equals("Cliente")) { 
+//                datosClienteConsultado = (DTDatosCliente) sesion.getAttribute("perfilConsultado");
+//                
+//                // Cliente no se ConsultaPerfil propio
+//                if (!nicknameUsuarioSesion.equals(nicknameUsuarioConsultado)) {
+//                    
+//                    nicknamesSeguidoresConsultados = datosUsuarioSesion.getNicknamesSeguidores();
+//                    // Sesion es Seguidor del que se consulta
+//                    if (nicknamesSeguidoresConsultados.contains(nicknameUsuarioSesion)) {
+//                        
+//                        // Lista Reproduccion Particular Publicas
+//                        nombresListasRPublicas = datosClienteConsultado.getNombresListasRCreadasPublicas();
+//                    }
+//                }
+//                
+//                
+//                
+//            }
+//        }
         
         // Si la sesion pertenece a un Cliente o Artista
 //        if (rolSesion.equals("Cliente") || rolSesion.equals("Artista")) {
@@ -112,7 +132,15 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        // Obtengo la sesion actual
+        HttpSession sesion = request.getSession(false);
+        
+        // Lee el valor del nicknameUsuarioConsultado enviado desde el cliente
+        String nicknameUsuarioConsultado = (String) request.getAttribute("nicknameUsuarioConsultado");
+        
+        // Asigno el valor a la sesion
+        sesion.setAttribute("perfilConsultado", "nicknameUsuarioConsultado");
     }
 
     @Override

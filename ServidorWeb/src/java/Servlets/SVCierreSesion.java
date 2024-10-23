@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,17 +38,32 @@ public class SVCierreSesion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        // Obtengo la sesion actual
         HttpSession sesion = request.getSession(false);
+        
         if (sesion != null) {
-            // Restablecer atributos de sesion
-            sesion.setAttribute("usuario", null);
-            sesion.setAttribute("rol", "Visitante");
-            
-            // Invalidar la sesion
+            // Invalido la sesion
             sesion.invalidate();
-            
-            response.sendRedirect("index.jsp?mensaje=cerrada");
         }
+        
+        // Elimino la cookie de sesion
+        Cookie cookie = new Cookie("sessionId", null);
+        cookie.setMaxAge(0); // Invalido la cookie
+        response.addCookie(cookie);
+        
+        // Redirigo
+        response.sendRedirect("index.jsp?mensaje=cerrada");
+        
+//        if (sesion != null) {
+//            // Restablecer atributos de sesion
+//            sesion.setAttribute("usuario", null);
+//            sesion.setAttribute("rol", "Visitante");
+//            
+//            // Invalidar la sesion
+//            sesion.invalidate();
+//            
+//            response.sendRedirect("index.jsp?mensaje=cerrada");
+//        }
     }
 
     @Override

@@ -20,8 +20,7 @@
     <%
         Fabrica fb = Fabrica.getInstance();
         HttpSession sesion = request.getSession(false);
-        String tipoUsuario = (String) sesion.getAttribute("rol");
-        String perfilConsultado = (String) sesion.getAttribute("perfilConsultado");
+        DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
     %>
 
     <%
@@ -39,9 +38,11 @@
             
     %>
     
-    <%  if (sesion != null && tipoUsuario.equals("Cliente")) { %>
+    <%  if (DTusuarioConsultado instanceof DTDatosCliente) { %>
+    <%System.out.println("ACA DTDATOSCLIENTE");%>
             <jsp:include page="ConsultaPerfilCliente.jsp"/>
-    <%  } else if (tipoUsuario.equals("Artista")) {  %>
+    <%  } else {  %>
+    <%System.out.println("ACA DTDATOSARTISTA");%>
             <jsp:include page="ConsultaPerfilArtista.jsp"/>
     <%  }  %>
     

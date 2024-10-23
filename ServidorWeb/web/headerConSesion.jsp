@@ -12,10 +12,22 @@
     Fabrica fb = Fabrica.getInstance();
     IControlador control = fb.getControlador();
     
+    /* Verificar las cookies */
+    Cookie[] cookies = request.getCookies();
+    String sesionId = null;
+
+    if (cookies != null) {
+        for (Cookie c : cookies) {
+            if ("sessionId".equals(c.getName())) {
+                sesionId = c.getValue();
+                break;
+            }
+        }
+    }
+    
     HttpSession sesion = request.getSession(false);
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
-    System.out.println("NICKNAME SESION HEADER: " + nicknameSesion);
     
     DTDatosUsuario datosUsuario = control.getDatosUsuario(nicknameSesion);
     String nombreSesion = null;
@@ -23,7 +35,7 @@
     String fotoPerfilSesion = null;
     String emailSesion = null;
 
-    if (rolSesion != null) {
+    if (sesionId != null) {
         nombreSesion = datosUsuario.getNombreUsuario();
         apellidoSesion = datosUsuario.getApellidoUsuario();
         fotoPerfilSesion = datosUsuario.getFotoPerfil();
@@ -37,6 +49,11 @@
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+    // Pasar el nickname de la sesion a una variable global
+    var nickname = "<%= request.getAttribute("nickname") != null ? request.getAttribute("nickname") : "" %>";
+</script>
+<script src="scripts/headerConSesion.js"></script>
 <script src="scripts/consultaPerfilUsuario.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
@@ -45,7 +62,11 @@
     <img src="<%= fotoPerfilSesion%>" alt="Foto de Perfil" class="perfil-img">
     <div class="divisor d-none d-sm-block"></div>
     <div class="info-usuario">
-        <form action="SVConsultaPerfilUsuario" method="GET" >
+        <form action="SVConsultaPerfilUsuario" method="GET" onclick="asignarPerfilConsultado()" >
+            <%
+                String usuarioConsultado = nicknameSesion;
+                request.setAttribute("usuarioConsultado", usuarioConsultado);
+            %>
             <button type="submit" id="btn-nickname" class="nickname-usuario">
                 <%= nombreSesion + " " + apellidoSesion%>
             </button>
