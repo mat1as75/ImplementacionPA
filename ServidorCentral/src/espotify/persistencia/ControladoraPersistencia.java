@@ -15,6 +15,7 @@ import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTSuscripcion;
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 
@@ -31,6 +32,7 @@ import espotify.logica.ListaReproduccion;
 import espotify.logica.Suscripcion;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.logica.Usuario;
+import espotify.persistencia.exceptions.DatabaseUpdateException;
 import espotify.persistencia.exceptions.InvalidDataException;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 
@@ -1022,14 +1024,18 @@ public class ControladoraPersistencia {
 
     public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
         Tema tema = this.temaJpa.findTema(idTema);
+        if (tema == null) throw new NonexistentEntityException("No existe el tema con id " + idTema);
+        
         ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
+        if (listaRep == null) throw new NonexistentEntityException("No existe la lista con nombre " + nombreLista);
+        
         //obtengo los temas de la lista de reproduccion destino
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
 
         for (Tema t : temasDeListaRep) {
             if (t.getIdTema() == tema.getIdTema()) {
                 //error si el tema ya pertenece a la lista
-                throw new Exception("El tema elegido ["
+                throw new InvalidDataException("El tema elegido ["
                         + tema.getIdTema()
                         + "] ya pertenece a la lista "
                         + listaRep.getNombreLista()
@@ -1056,7 +1062,7 @@ public class ControladoraPersistencia {
             try {
                 this.lreprodccJpa.edit(listaRep);
             } catch (Exception ex) {
-                throw new Exception("Ocurrio un error al agregar la lista "
+                throw new DatabaseUpdateException("Ocurrio un error al agregar la lista "
                         + listaRep.getNombreLista()
                         + " a las listas asociadas al tema ["
                         + tema.getIdTema() + "]."
@@ -1067,7 +1073,7 @@ public class ControladoraPersistencia {
         try {
             this.temaJpa.edit(tema);
         } catch (Exception ex) {
-            throw new Exception(
+            throw new DatabaseUpdateException(
                     "Ocurrio un error al agregar el tema ["
                     + tema.getIdTema() + "] a la lista "
                     + listaRep.getNombreLista());
@@ -1546,8 +1552,39 @@ public class ControladoraPersistencia {
         }
     }
     
-     public boolean existeArtista(String nicknameArtista) {
-         Artista art = this.artJpa.findArtista(nicknameArtista);
-         return art != null;
-     }
+    public boolean existeArtista(String nicknameArtista) {
+        Artista art = this.artJpa.findArtista(nicknameArtista);
+        return art != null;
+    }
+     
+    public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
+        TemaConRuta temaConRuta = this.temaconrutaJpa.findTemaConRuta(idTema);
+        TemaConURL temaConURL = this.temaurlJpa.findTemaConURL(idTema);
+        
+        if (temaConRuta != null) {
+            return temaConRuta.getDTTemaConRutaOUrl();
+        } else if (temaConURL != null) {
+            return temaConURL.getDTTemaConRutaOUrl();
+        } else {
+            return null;
+        }
+    }
+    
+    public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws NonexistentEntityException {
+        Cliente cliente = this.cliJpa.findCliente(nicknameCliente);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+
+        List<ListaParticular> particularesDeCliente = cliente.getMisListasReproduccionCreadas();
+        if (particularesDeCliente == null || particularesDeCliente.isEmpty()) {
+            return null;
+        }
+        
+        List<DTDatosListaReproduccion> listaDeDtListas = new ArrayList();
+        for (ListaParticular lp : particularesDeCliente) {
+            listaDeDtListas.add(lp.getDTDatosListaReproduccion());
+        }
+        return listaDeDtListas;
+    }
 }

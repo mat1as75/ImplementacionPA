@@ -1,0 +1,48 @@
+<%@ page pageEncoding="UTF-8" %>
+
+
+<div id="audioFilePlayerContainer" data-idTema="" class="audioPlayerContainer">    
+    <img  class="portada" id="filePlayerImg" src="imagenes/spotifyLogo.png" alt="Logo de spotify"/>
+    <p id="nombreTemaFile" class="pNombreTema" >Tema</p>
+    <audio id="audioFilePlayer" autoplay controls controlslist="nofullscreen" type="audio/mpeg" src="" >
+        El cliente no soporta este tipo de audio
+    </audio>
+    <p id="errorAudioFilePlayer" class="pError"></p>
+    <div class="btnsPlaylistContainer">
+        <span class="btnsPlaylist dropdownMenu" type="button" >
+            <i class="bi bi-music-note-list"
+               data-function="toggleDropDown" 
+               data-dropdown-content="dropdownContent1"
+               id="iconAddToPlaylist_FilePlayer"
+               >  
+            </i>
+            <div class="dropdownContent hidden" id="dropdownContent1" >
+            </div>
+        </span>
+    </div>
+</div>
+
+<div id="audioLinkPlayerContainer" class="audioPlayerContainer" data-idTema="">
+    <iframe id="linkPlayerIframe" 
+        anonymous   
+        referrerpolicy="strict-origin-when-cross-origin"
+        src="">
+        El cliente no soporta este tipo de audio
+    </iframe> 
+    <p id="nombreTemaLink" class="pNombreTema">Tema</p>
+    <p class="pLink"><a id="linkTema" href="">Enlace</a></p>
+    <p id="errorAudioLinkPlayer" class="pError"></p>
+    <div class="btnsPlaylistContainer">
+        <span class="btnsPlaylist dropdownMenu" type="button">
+            <i class="bi bi-music-note-list"
+               data-function="toggleDropDown" 
+               data-dropdown-content="dropdownContent2"
+               id="iconAddToPlaylist_LinkPlayer"
+               >
+            </i>
+            <div class="dropdownContent hidden" id="dropdownContent2">
+            </div>
+        </span>
+    </div>
+    
+</div>

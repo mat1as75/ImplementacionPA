@@ -63,7 +63,7 @@ public abstract class ListaReproduccion implements Serializable {
     }
     
     public List<Tema> getMisTemas() {
-        return misTemas;
+        return this.misTemas;
     }  
     
     public void setMisTemas(List<Tema> temas) {
