@@ -295,7 +295,7 @@ async function requestQuitarTema(idTema, nombreLista, anchorTag) {
     }
 }
 
-//Params: id del temae y nombre de la lista
+//Params: id del tema y nombre de la lista
 //Param: booleano que determina si el <a> a crear pertenece 
 //o no a la lista para asi definir su funcion y su apariencia
 function createAnchor(idTema, nombreLista, perteneceALista) {
