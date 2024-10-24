@@ -6,6 +6,7 @@
         <title>Crear Lista de Reproducción</title>
         <link rel="stylesheet" href="styles/CrearListaReproduccion.css">
     </head>
+    <jsp:include page="headerIndex.jsp"/>
     <body>
 
         <h1 style="text-align: center;">Crear Lista de Reproducción</h1>
@@ -17,7 +18,7 @@
                     <input type="text" id="nombreLista" name="nombreLista">
                     <div id="errorNombreLista" class="error">
                         <i class="fa-solid fa-circle-exclamation"></i>
-                        <p>(!) Por favor introduce un nombre para la lista.</p>
+                        <p>Por favor introduce un nombre para la lista.</p>
                     </div>
                 </div>
                 
@@ -26,7 +27,7 @@
                     <input type="file" id="imagenLista" name="imagenLista" accept="image/*" onchange="cargarImagen(event)">
                     <div id="errorImagenLista" class="error">
                         <i class="fa-solid fa-circle-exclamation"></i>
-                        <p>(!) Por favor selecciona una imagen válida.</p>
+                        <p>Por favor selecciona una imagen válida.</p>
                     </div>
                 </div>
 

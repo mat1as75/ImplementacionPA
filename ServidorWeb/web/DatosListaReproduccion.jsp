@@ -24,6 +24,10 @@
         if (tipoLista != null) {
             datosLista = iControlador.ConsultarListaReproduccion(tipoLista, nombreLista);
         }
+        String fotoLista = datosLista != null ? datosLista.getFotoLista() : null;
+        if (fotoLista != null) {
+            fotoLista = fotoLista.substring(2);
+        }
     } catch (Exception e) {
         errorMsg = "Error al obtener los datos de la lista: " + e.getMessage();
     }
@@ -32,7 +36,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="scripts/ConsultarListaReproduccion.js"></script>
+        <script src="scripts/ConsultaListaReproduccion.js"></script>
         <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
     </head>
     <body>
@@ -40,18 +44,27 @@
             <div class="lista-detalles">
                 <div class="info-container">
                     <div class="lista-fotoLista">
-                       
+                        <%
+                            String fotoLista = datosLista != null ? datosLista.getFotoLista() : null;
+                            if (fotoLista != null && !fotoLista.isEmpty()) {
+                                fotoLista = fotoLista.substring(2);
+                            } else {
+                                fotoLista = "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+                            }
+                        %>
+                        <img src="<%= request.getContextPath() + "/" + fotoLista%>" alt="Imagen de la lista" />
                     </div>
 
-                     <div class="lista-info">
-                    <h1><%= datosLista != null ? datosLista.getNombreLista() : "Lista no encontrada" %></h1> 
-                    <p><span>Tipo:</span> <%= tipoLista != null ? tipoLista : "Desconocido" %></p>
-                    <% if ("Por Defecto".equals(tipoLista)) { %>
-                        <p><span>Género:</span> <%= datosLista != null ? datosLista.getGenero() : "N/A" %></p>
-                    <% } else if ("Particular".equals(tipoLista)) { %>
-                        <p><span>Cliente:</span> <%= datosLista != null ? datosLista.getCliente() : "N/A" %></p>
-                    <% } %>
-                </div>
+
+                    <div class="lista-info">
+                        <h1><%= datosLista != null ? datosLista.getNombreLista() : "Lista no encontrada"%></h1> 
+                        <p><span>Tipo:</span> <%= tipoLista != null ? tipoLista : "Desconocido"%></p>
+                        <% if ("Por Defecto".equals(tipoLista)) {%>
+                        <p><span>Género:</span> <%= datosLista != null ? datosLista.getGenero() : "N/A"%></p>
+                        <% } else if ("Particular".equals(tipoLista)) {%>
+                        <p><span>Cliente:</span> <%= datosLista != null ? datosLista.getCliente() : "N/A"%></p>
+                        <% } %>
+                    </div>
 
                 </div>
 
@@ -73,7 +86,7 @@
                                     for (DTTemaSimple tema : datosLista.getTemas()) {
                                         int duracionSegundos = tema.getDuracionSegundos();
                                         int minutos = duracionSegundos / 60;
-                                    int segundos = duracionSegundos % 60;%>
+                                        int segundos = duracionSegundos % 60;%>
                             <tr>
                                 <td><%= index++%></td>
                                 <td><button class="agregar">+</button></td>
@@ -81,7 +94,7 @@
                                 <td><%= String.format("%d:%02d", minutos, segundos)%></td>
                             </tr>
                             <% }
-                            }%>
+                                }%>
                         </tbody>
                     </table>
                 </div>

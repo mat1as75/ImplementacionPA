@@ -45,9 +45,9 @@ h1 {
 }
 
 .mosaico {
-    display: none;
+    display: grid;
     grid-template-columns: repeat(3, 1fr); 
-    gap: 5px; 
+    gap: 10px; 
 }
 
 .mosaico-item {
@@ -69,5 +69,5 @@ h1 {
 }
 
 .mosaico-item:hover {
-    border-color: #aaa; 
+    border-color: gray; 
 }
