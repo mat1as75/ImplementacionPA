@@ -9,5 +9,6 @@
     --color-grey-accent: #7c7c7c;
     --color-white: #fff;
     --border-radius-containers: 8px;
+    --border-radius-btns: 9999px;
     --audio-player-max-width: 400px;
 }

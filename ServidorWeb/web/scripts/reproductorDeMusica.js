@@ -8,7 +8,6 @@ const filePlayerImg = document.querySelector("#filePlayerImg");
 const linkTema = document.querySelector("#linkTema");
 const errorAudioFilePlayer = document.querySelector("#errorAudioFilePlayer");
 const errorAudioLinkPlayer = document.querySelector("#errorAudioLinkPlayer");
-
 const logo = {src: "imagenes/spotifyLogo.png", alt: "Logo de spotify"};
 
 /*
@@ -189,7 +188,6 @@ function parseYoutubeUrlToEmbeddable(url) {
 //Toggle para mostrar u ocultar el dropdown menu que muestra las listas de reproduccion
 async function toggleDropdown(idDropdownContent) {
     const element = document.getElementById(idDropdownContent);
- 
     if (element.classList.contains("hidden")) {
         await fetchListasReproduccion(idDropdownContent);
         element.classList.remove("hidden");
