@@ -79,9 +79,11 @@
             }
         } else { /* UsuarioSesion != UsuarioConsultado */
             
-            if (rolSesion.equals("Artista") || (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null)) {
-                if (rolSesion.equals("Cliente") && estadoSuscripcionSesion.equals("Vigente")) {
-                    // Usuarios a los que sigue (identificando si son clientes o artistas)
+            // Consulta un Artista o Cliente con Suscripcion Vigente
+            if (rolSesion.equals("Artista") || ((rolSesion.equals("Cliente") && estadoSuscripcionSesion != null 
+                                                && estadoSuscripcionSesion.equals("Vigente")))) {
+                // Usuarios a los que sigue (identificando si son clientes o artistas)
+                    System.out.println("SEGUIDOS");
                     nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
                     nicknamesS = new ArrayList<>();
                     rolesS = new ArrayList<>();
@@ -105,16 +107,47 @@
                     nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
                     nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
                     nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
-                } else {
-                    // Listas de Reproduccion que creo (Publicas)
-                    nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
                     
-                    // Preferencias que tiene guardadas
-                    nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
-                    nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
-                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
-                }
-            }
+            } 
+        
+//            if (rolSesion.equals("Artista") || ((rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null))) {
+//                if (rolSesion.equals("Cliente") && estadoSuscripcionSesion.equals("Vigente")) {
+//                    // Usuarios a los que sigue (identificando si son clientes o artistas)
+//                    System.out.println("SEGUIDOS");
+//                    nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
+//                    nicknamesS = new ArrayList<>();
+//                    rolesS = new ArrayList<>();
+//                    for (String n : nicknamesSeguidosConsultados) {
+//                        int i = n.indexOf(",");
+//                        nicknamesS.add(n.substring(0, i));
+//                    }
+//                    for (String n : nicknamesSeguidosConsultados) {
+//                        int i = n.indexOf(" ");
+//                        rolesS.add(n.substring(i + 1));
+//                    }
+//
+//                    /* UsuarioSesion es Seguidor de UsuarioConsultado */
+//                    if (nicknamesSeguidoresConsultados.contains(nicknameSesion)) {
+//
+//                        // Listas de Reproduccion que creo (Publicas)
+//                        nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
+//                    }
+//
+//                    // Preferencias que tiene guardadas
+//                    nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
+//                    nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
+//                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
+//                } else {
+//                    // Listas de Reproduccion que creo (Publicas)
+//                    nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
+//                    
+//                    // Preferencias que tiene guardadas
+//                    nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
+//                    nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
+//                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
+//                    System.out.println("PREFERENCIAS");
+//                }
+//            }
         }
     } else { /* No existe Sesion (Visitante) */
         
@@ -199,36 +232,41 @@
                             </table>
                         </div>
                     <% } %>
-                    <% if (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente")) { %>        
-                        <div id="followed" class="followed-list">
-                            <h3 class="followed-info"><%= nicknamesSeguidosConsultados.size() + " " %><% if (nicknamesSeguidosConsultados.size() == 1) { %>
-                                                                            seguido</h3>
-                                                                   <% } else { %>
-                                                                            seguidos</h3>
-                                                                   <% } %>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Nickname</th>
-                                        <th>Rol</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (int i = 0; i < nicknamesSeguidosConsultados.size(); i++) {%>
-                                    <tr>
-                                        <td><%= nicknamesS.get(i) %></td>
-                                        <td><%= rolesS.get(i) %></td>
-                                    </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
+                    <% if (rolSesion.equals("Artista") || (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>        
+                        <% if (nicknamesSeguidosConsultados != null) { %>
+                            <div id="followed" class="followed-list">
+                                <h3 class="followed-info"><%= nicknamesSeguidosConsultados.size() + " " %><% if (nicknamesSeguidosConsultados.size() == 1) { %>
+                                                                                seguido</h3>
+                                                                       <% } else { %>
+                                                                                seguidos</h3>
+                                                                       <% } %>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Nickname</th>
+                                            <th>Rol</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for (int i = 0; i < nicknamesSeguidosConsultados.size(); i++) {%>
+                                        <tr>
+                                            <td><%= nicknamesS.get(i) %></td>
+                                            <td><%= rolesS.get(i) %></td>
+                                        </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } %>
                     <% } %>
                 </div>
 
                 <div id="tab2" class="tab">
-                    <% if ((estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>
-                        <% if (nombresListasRConsultadas.size() > 0) { %>
+                    <% if (rolSesion.equals("Artista") || (rolSesion.equals("Cliente") && estadoSuscripcionSesion != null 
+                                                                && estadoSuscripcionSesion.equals("Vigente"))) { %>
+                        <% // UsuarioSesion es Seguidor de UsuarioConsultado
+                           // Hay ListasRConsultadas
+                           if (nicknamesSeguidoresConsultados.contains(nicknameSesion) && nombresListasRConsultadas.size() > 0) { %>
                         <div id="listasRCreadas" class="lista-listasRCreados">
                             <div class="divisor d-none d-sm-block"></div>
                             <% if (rolSesion != null) { %>

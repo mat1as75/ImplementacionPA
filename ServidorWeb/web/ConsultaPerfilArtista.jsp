@@ -79,9 +79,10 @@
                     <p><%= emailConsultado %></p>
                     <h3>Fecha de Nacimiento</h3>
                     <p><%= fechaNacConsultado %></p>
-                    <h3>Biografía</h3>
-                    <p><%= biografiaConsultado %></p>
-
+                    <% if (biografiaConsultado != null) { %>
+                        <h3>Biografía</h3>
+                        <p><%= biografiaConsultado %></p>
+                    <% } %>
                     <div id="followers" class="followers-list">
                         <h3 class="followers-info"><%= nicknamesSeguidoresConsultados.size() + " " %><% if (nicknamesSeguidoresConsultados.size() == 1) { %>
                                                                             seguidor</h3>
