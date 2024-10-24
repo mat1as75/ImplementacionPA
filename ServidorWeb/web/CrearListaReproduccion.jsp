@@ -6,6 +6,7 @@
         <title>Crear Lista de Reproducción</title>
         <link rel="stylesheet" href="styles/CrearListaReproduccion.css">
     </head>
+    <jsp:include page="headerIndex.jsp"/>
     <body>
 
         <h1 style="text-align: center;">Crear Lista de Reproducción</h1>

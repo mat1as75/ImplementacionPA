@@ -7,6 +7,7 @@
     <title>Consulta Lista Reproducción</title>
     <link rel="stylesheet" href="styles/ConsultaListaReproduccion.css">
 </head>
+<jsp:include page="headerIndex.jsp"/>
 <body>
     <h1>Consulta Lista Reproducción</h1>
 

@@ -11,7 +11,7 @@ function mostrarPorGenero() {
     document.getElementById('mosaicoListasPorDefecto').style.display = 'none';
     
     // Cargar generos 
-    fetch('SvConsultaListaReproduccion?tipoDeLista=PorGenero')
+    fetch('SVConsultaListaReproduccion?tipoDeLista=PorGenero')
         .then(response => response.json())
         .then(data => {
             let mosaico = document.getElementById('mosaicoGeneros');
@@ -42,7 +42,7 @@ function mostrarPorLista() {
     document.getElementById('mosaicoListasPorDefecto').innerHTML = '';
     
     // Cargar listas particulares publicas
-    fetch('SvConsultaListaReproduccion?tipoDeLista=PorListaParticular')
+    fetch('SVConsultaListaReproduccion?tipoDeLista=PorListaParticular')
         .then(response => response.json())
         .then(data => {
             let mosaico = document.getElementById('mosaicoListas');
@@ -65,7 +65,7 @@ function selectGenero(nombreGenero) {
     document.getElementById('PorGenero').classList.add('active');
     console.log("Género seleccionado:", nombreGenero);
     
-    fetch('SvConsultaListaReproduccion?tipoDeLista=PorListaPorDefecto&nombre=' + encodeURIComponent(nombreGenero))
+    fetch('SVConsultaListaReproduccion?tipoDeLista=PorListaPorDefecto&nombre=' + encodeURIComponent(nombreGenero))
         .then(response => response.json())
         .then(data => {
             let mosaico = document.getElementById('mosaicoListasPorDefecto');

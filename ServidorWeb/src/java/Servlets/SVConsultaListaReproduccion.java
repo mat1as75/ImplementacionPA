@@ -1,4 +1,4 @@
-package servlets;
+package Servlets;
 
 import com.google.gson.Gson;
 import espotify.DataTypes.DTGenero_Simple;
