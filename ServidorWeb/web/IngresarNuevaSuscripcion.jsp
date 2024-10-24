@@ -5,14 +5,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Nueva Suscripción</title>
         
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="scripts/ingresarNuevaSuscripcion.js" defer></script>
         <link rel="stylesheet" href="styles/variablesGlobales.css"/>
+        <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="styles/ingresarNuevaSuscripcion.css"/>
-
+        
     </head>
-    <body class="bodyContainer">
-        <h1 class="mainTitle">Suscripciones</h1>
+    <body>
         <section id="section" class="sectionContainer">
+            <h1 class="mainTitle">Suscripciones</h1>
             <div class="serviciosContainer">
                 <h2>Suscribiéndote podrás acceder a diversos servicios:</h2>
                 <ul>
@@ -24,9 +26,9 @@
                 </ul>
             </div>
             
-            <h2>Nuestros planes</h2>
             <div class="planesContainer">
-                    
+                <h2>Nuestros planes</h2>
+
                 <div class="cardPlanes" data-idRadio="planSemanal">
                     <h3>Plan Semanal</h3>
                     <p>2.99 USD</p>
@@ -46,18 +48,19 @@
                     <input type="radio" id="planAnual" data-plan="Anual" name="tipoDePlan" checked>
                 </div>
                 
-            </div>
-            <div>
-                <button type="button" id="btnConfirmar">
+                <div class="btnConfirmarContainer">
+                <button type="button" id="btnConfirmar" class="btncustom btnPrimary">
                     Confirmar
                 </button>
             </div>
+            </div>
+            
             
             <div id="modalResultado" class="customModal hidden">
                 <div class="modalContainer">
                     <p id="pResultado"></p>
-                    <button type="button" id="btnSalir">Salir</button>
-                    <button type="button" id="btnContinuar" class="hidden">Continuar al pago</button>
+                    <button type="button" id="btnSalir" class="btncustom btnSecondary">Salir</button>
+                    <button type="button" id="btnContinuar" class="btncustom btnPrimary hidden">Continuar al pago</button>
                 </div>
             </div>
         </section>

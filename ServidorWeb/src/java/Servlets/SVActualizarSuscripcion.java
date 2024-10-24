@@ -42,7 +42,7 @@ public class SVActualizarSuscripcion extends HttpServlet {
         public String getCVV() { return this.CVV; };
         public Date getVencimiento() { return this.vencimiento; };
         public String getPropietario() { return this.propietario; };
-        public void setNuevoEstadoSuscripcion(String estadoSuscripcion) { this.nuevoEstadoSuscripcion = nuevoEstadoSuscripcion; };
+        public void setNuevoEstadoSuscripcion(String nuevoEstadoSuscripcion) { this.nuevoEstadoSuscripcion = nuevoEstadoSuscripcion; };
         public void setCCN(String CCN) { this.CCN = CCN; };
         public void setCVV(String CVV) { this.CVV = CVV; };
         public void setVencimiento(Date vencimiento) { this.vencimiento = vencimiento; };
@@ -55,13 +55,13 @@ public class SVActualizarSuscripcion extends HttpServlet {
         Date vencimiento = data.getVencimiento();
         String propietario = data.getPropietario();
         
-        if (CCN.length() != 16) return false;
-        if (!CCN.matches(".*[^0-9].*")) return false;
-        if (CVV.length() != 3) return false;
-        if (!CCN.matches(".*[^0-9].*")) return false;
-        if (vencimiento.getTime() < new Date().getTime()) return false;
-        if (propietario == null || propietario.isBlank() || propietario.isEmpty()) return false;
-        
+//        if (CCN.length() != 16) return false;
+//        if (!CCN.matches(".*[^0-9].*")) return false;
+//        if (CVV.length() != 3) return false;
+//        if (!CCN.matches(".*[^0-9].*")) return false;
+//        if (vencimiento.getTime() < new Date().getTime()) return false;
+//        if (propietario == null || propietario.isBlank() || propietario.isEmpty()) return false;
+//        
         return true;
     }
     
@@ -73,12 +73,51 @@ public class SVActualizarSuscripcion extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Un cliente sin sesion no puede acceder al sitio
+        HttpSession sesion = request.getSession(false);
+        if (sesion == null) {
+            SVError.redirectUnauthorized(request, response);
+            return;
+        }
+        //Un usuario no logueado no puede acceder al sitio
+        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
+        if (datosUsuario == null) {
+            SVError.redirectUnauthorized(request, response);
+            return;
+        }
+        
+        String nickname = datosUsuario.getNicknameUsuario();        
+        DTSuscripcion dtSuscripcion = null;
+        
+        Fabrica fb = Fabrica.getInstance();
+        IControlador ictrl = fb.getControlador();
+        //Obtengo la suscripcion del cliente logueado
+        try {
+            dtSuscripcion = ictrl.getDTSuscripcionDeCliente(nickname);
+            //El cliente esta intentando acceder a una suscripcion inexistente
+            if (dtSuscripcion == null) {
+                SVError.redirectNotFound(request, response);
+                return;
+            }
+            //Paso el estado de la suscripcion al request para manejar este valor en el JSP
+            request.setAttribute("estadoSuscripcion", dtSuscripcion.getEstadoSuscripcion());
+        } catch (Exception e) {
+            //El request recibio un cliente inexistente
+            if (e instanceof NonexistentEntityException) {
+                SVError.redirectNotFound(request, response);
+            } else {
+                //Ocurrio un error inesperado en el servidor
+                SVError.redirectInternalServerError(request, response, e.getMessage());
+            }
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("actualizarSuscripcion.jsp").forward(request, response);
+
+        processRequest(request, response);
+        request.getRequestDispatcher("ActualizarSuscripcion.jsp").forward(request, response);
     }
 
     /*
@@ -101,40 +140,43 @@ public class SVActualizarSuscripcion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //El cliente no tiene una sesion
         HttpSession sesion = request.getSession(false);
         if (sesion == null) {
             setResponseToText(response, response.SC_UNAUTHORIZED);
             response.getWriter().write("Sin sesión");
             return;
         }
-        
+        //El cliente tiene que iniciar sesion para contratar una suscripcion
         DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
         if (datosUsuario == null) {
             setResponseToText(response, response.SC_UNAUTHORIZED);
             response.getWriter().write("El usuario no inició sesión");
             return;
         }
-        
+        //Obtengo el usuario logueado
         String nickname = datosUsuario.getNicknameUsuario();        
         DTSuscripcion dtSuscripcion = null;
         
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
-        
+        //Obtengo el estado de la suscripcion del usuario logueado
         try {
             dtSuscripcion = ictrl.getDTSuscripcionDeCliente(nickname);
         } catch (Exception e) {
+            //El request recibio un cliente inexistente
             if (e instanceof NonexistentEntityException) {
                 setResponseToText(response, response.SC_NOT_FOUND);
                 response.getWriter().write("El usuario no existe");
                 return;
             } else {
+                //Ocurrio un error inesperado en el servidor
                 setResponseToText(response, response.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write(e.getMessage());
                 return;
             }
         }
-        
+        //No se puede actualizar una suscripcion inexistente
         if (dtSuscripcion == null) {
             setResponseToText(response, response.SC_BAD_REQUEST);
             response.getWriter().write("El usuario no tiene una suscripción");
@@ -152,13 +194,15 @@ public class SVActualizarSuscripcion extends HttpServlet {
 
         //Convierto el body a String
         String requestBody = body.toString();
-
+        System.out.println("request body: "+requestBody);
+        
         //Parse del body en formato Json
         //Creo un objeto json con los datos obtenidos
         Gson gson = new Gson();
         JsonData jsonObject = gson.fromJson(requestBody, JsonData.class);
-        
+        //Obtengo el valor actual de la suscripcion del cliente
         String estadoPrevio = dtSuscripcion.getEstadoSuscripcion();
+        //No se permite un intento de actualizacion hacia el mismo estado
         if (estadoPrevio.equals(jsonObject.getNuevoEstadoSuscripcion())) {
             setResponseToText(response, response.SC_BAD_REQUEST);
             response.getWriter().write("La suscripción ya se encuentra en estado " + estadoPrevio + ".");
@@ -173,11 +217,14 @@ public class SVActualizarSuscripcion extends HttpServlet {
                 (dtSuscripcion.getEstadoSuscripcion().equals("Vencida") 
                 && jsonObject.getNuevoEstadoSuscripcion().equals("Vigente"))) 
         {
+            //Verifico los datos de la tarjeta
             if (!validarDatosDeTarjeta(jsonObject)) {
                 setResponseToText(response, response.SC_BAD_REQUEST);
                 response.getWriter().write("Los datos de la tarjeta no son válidos.");
                 return;
             } else {
+                //Actualizo la suscripcion hacia el estado vigente al corroborar los datos de pago
+                //Asigno la fecha de hoy
                 try {
                     ictrl.ActualizarEstadoSuscripcion(
                             dtSuscripcion.getIdSuscripcion(), 
@@ -187,6 +234,7 @@ public class SVActualizarSuscripcion extends HttpServlet {
                     response.setStatus(response.SC_NO_CONTENT);
                     return;
                 } catch (Exception e) {
+                    //Ocurrio un error inesperado en el servidor
                     setResponseToText(response, response.SC_INTERNAL_SERVER_ERROR);
                     response.getWriter().write("Error al actualizar la suscripción.");
                     return;
@@ -197,21 +245,23 @@ public class SVActualizarSuscripcion extends HttpServlet {
         // Pendiente --> Cancelada
         if (dtSuscripcion.getEstadoSuscripcion().equals("Pendiente") 
                 && jsonObject.getNuevoEstadoSuscripcion().equals("Cancelada")) {
-            
+            //Si el cliente quiere cancelar la suscripcion
             try {
                 ictrl.ActualizarEstadoSuscripcion(
                         dtSuscripcion.getIdSuscripcion(), 
-                        Suscripcion.EstadoSuscripcion.Vigente, 
+                        Suscripcion.EstadoSuscripcion.Cancelada, 
                         new Date()
                 );
                 response.setStatus(response.SC_NO_CONTENT);
             } catch (Exception e) {
+                //Ocurrio un error inesperado en el servidor
                 setResponseToText(response, response.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write("Error al actualizar la suscripción.");
             }
         } else {
-            setResponseToText(response, response.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Error operación no permitida.");
+            //Captura el resto de los casos
+            setResponseToText(response, response.SC_FORBIDDEN);
+            response.getWriter().write("Error. Operación no permitida.");
         }
     }
 }

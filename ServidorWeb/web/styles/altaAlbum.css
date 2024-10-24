@@ -1,17 +1,18 @@
-body {
+#bodyAltaAlbum {
     background-color: var(--bg-color-dark-5);
     color: var(--color-white);
     padding: 2rem .5rem;
 }
 
-h1 {
+h1, h2, h3, h4 {
     color: var(--color-white);
     text-align: center;
 }
 
 h2, h3, h4 {
     font-size: 2rem;
-    margin: .5rem 1.5rem;
+    margin: 2rem 1.5rem 1.5rem 1.5rem;
+    border-top: 2px solid var(--color-grey-accent);
 }
 
 div {
@@ -23,33 +24,6 @@ div {
 .formSubContainer {
     padding: 0 1rem;
     margin-top: 1rem;
-}
-
-/*sobreescribo partes del css de los botones de Bootstrap*/
-.btn {
-    max-height: 70px;
-}
-
-.btn-primary {
-    color: var(--color-white);
-    background-color: var(--bg-color-dark-3);
-    border-color: var(--color-white);
-}
-
-.btn-danger {
-    color: var(--color-red-error);
-    background-color: var(--bg-color-dark-3);
-    border-color: var(--color-white);
-}
-
-.btn-primary:hover {
-    border-color: var(--color-green-primary);
-    background-color: var(--bg-color-dark-5);
-}
-
-.btn-danger:hover {
-    border-color: var(--color-red-error);
-    background-color: var(--bg-color-dark-5);
 }
 
 .bi-trash3 {
@@ -258,38 +232,14 @@ input[type=file] {
     height: calc(2.3 * var(--radius));
 }
 
-.customModal {
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4);
+.btnValidarContainer {
+    background-color: var(--bg-color-dark-4);
+    margin: 1.5rem 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
 }
 
-.modalContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  color: var(--color-white);
-  justify-content: center;
-  background-color: var(--bg-color-dark-3);
-  margin: 15% auto;
-  padding: 1rem;
-  border: 2px solid var(--color-grey-accent);
-  width: 80%;
-  border-radius: var(--border-radius-containers);
-}
-
-.modalContainer p {
-    font-size: 1rem;
-    font-weight: bold;
-    flex-basis: 100%;
-}
-
-.modalContainer .btn {
-    margin: 0 1rem;
+.btnValidarContainer .btncustom {
+    width: 180px;
 }

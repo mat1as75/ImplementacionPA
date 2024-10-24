@@ -37,6 +37,7 @@ public class SVAltaAlbum extends HttpServlet {
     
     private static final String UPLOAD_DIR = "../../web/Resource/Albums/";
     
+    //Funcion para borrar el directorio si falla la copia de los archivos
     boolean deleteDir(File directorioABorrar) {
         File[] contenido = directorioABorrar.listFiles();
         if (contenido != null) {
@@ -178,15 +179,15 @@ public class SVAltaAlbum extends HttpServlet {
             throws ServletException, IOException {
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
-        
+        //No se permite acceder a un usuario sin sesion
         HttpSession sesion = request.getSession(false);
         if (sesion == null) {
-            SVError.redirectForbidden(request, response);
+            SVError.redirectUnauthorized(request, response);
             return;
         }
         
-        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-        
+        //No se permite el acceso a un usuario no logueado
+        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");  
         if (datosUsuario == null) {
             SVError.redirectUnauthorized(request, response);
             return;
@@ -194,12 +195,12 @@ public class SVAltaAlbum extends HttpServlet {
         
         String nickname = datosUsuario.getNicknameUsuario();
         Boolean existeArtista = ictrl.existeArtista(nickname);
-        
+        //No se permite el acceso a un usuario que no sea artista
         if (!existeArtista) {
             SVError.redirectUnauthorized(request, response);
             return;
         }
-        
+        //Seteo el como atributo el nickname del artista logueado para usarlo en el jsp
         request.setAttribute("nicknameArtista", nickname);
     }
     
@@ -289,10 +290,14 @@ public class SVAltaAlbum extends HttpServlet {
             ictrl.AltaAlbum(dataAlbum);
             response.setStatus(201);
         } catch (Exception e) {
+            //Si ocurrio un error inesperado en el servidor
             response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
+            //Si no se encontro uno de los recursos buscados (artista/genero)
             if (e instanceof NonexistentEntityException) {
                 response.setStatus(response.SC_NOT_FOUND);
             }
+            
+            //Si se recibieron datos invalidos en el request
             if (e instanceof InvalidDataException) {
                 response.setStatus(response.SC_BAD_REQUEST);
             }
@@ -304,10 +309,4 @@ public class SVAltaAlbum extends HttpServlet {
         response.setContentType("text/plain");
         response.getWriter().write("Album creado exitosamente.");
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
-
 }

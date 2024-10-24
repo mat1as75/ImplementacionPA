@@ -107,7 +107,7 @@ document.getElementById("nombreAlbum").addEventListener("change", async (evt) =>
     if (await validarNombreAlbumRepetido(value) === false) {
         errorSpanNombre.innerText = errorMsgs.nombreAlbumRepetido;
         spanNombreContainer.classList.remove("d-none");
-        inputNombre.scrollIntoView();
+        inputNombre.scrollIntoView({ behavior: "smooth"});
         return false;
     }
     errorSpanNombre.innerText = "";
@@ -247,7 +247,7 @@ function validarDatosAlbum(nombre, anio) {
     if (!nombre) {
         errorSpanNombre.innerText = errorMsgs.nombreAlbumVacio;
         spanNombreContainer.classList.remove("d-none");
-        inputNombre.scrollIntoView();
+        inputNombre.scrollIntoView({ behavior: "smooth"});
         return false;
     }
     errorSpanNombre.innerText = "";
@@ -256,7 +256,7 @@ function validarDatosAlbum(nombre, anio) {
     if (!anio) {
         errorSpanAnio.innerText = errorMsgs.anioAlbumInvalido;
         spanAnioContainer.classList.remove("d-none");
-        inputAnio.scrollIntoView();
+        inputAnio.scrollIntoView({ behavior: "smooth"});
         return false;
     }
     errorSpanAnio.innerText = "";
