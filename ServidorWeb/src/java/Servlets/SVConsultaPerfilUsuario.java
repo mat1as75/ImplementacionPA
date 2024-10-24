@@ -30,23 +30,23 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
-        
-        /* Obtengo datos del Cliente */
-        DTDatosCliente user = control.ConsultarPerfilCliente(request.getParameter("nickname"));
-        
-        /* Traigo la Session del Usuario y setteo al
-        atributo de la misma los datos de dicho Cliente */
-        HttpSession miSesion = request.getSession(false);
-        miSesion.setAttribute("user", user);
-        
-        /* Redirecciono a ConsultarPerfilUsuario que pertenezca */
-        if (user.getClass().equals(Cliente.class)) {
-            response.sendRedirect("ConsultarPerfilCliente.jsp");
-        } else {
-            response.sendRedirect("ConsultarPerfilArtista.jsp");
-        }
+//        Fabrica fb = Fabrica.getInstance();
+//        IControlador control = fb.getControlador();
+//        
+//        /* Obtengo datos del Cliente */
+//        DTDatosCliente user = control.ConsultarPerfilCliente(request.getParameter("nickname"));
+//        
+//        /* Traigo la Session del Usuario y setteo al
+//        atributo de la misma los datos de dicho Cliente */
+//        HttpSession miSesion = request.getSession(false);
+//        miSesion.setAttribute("user", user);
+//        
+//        /* Redirecciono a ConsultarPerfilUsuario que pertenezca */
+//        if (user.getClass().equals(Cliente.class)) {
+//            response.sendRedirect("ConsultarPerfilCliente.jsp");
+//        } else {
+//            response.sendRedirect("ConsultarPerfilArtista.jsp");
+//        }
         
     }
 
@@ -59,7 +59,6 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         
         /* DATOS DE LA SESION */
         HttpSession sesion = request.getSession(false);
-        String tipoUsuarioSesion = (String) sesion.getAttribute("rol");
         String nicknameUsuarioSesion = null;
         nicknameUsuarioSesion = (String) sesion.getAttribute("nickname");
         

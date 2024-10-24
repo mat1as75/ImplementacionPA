@@ -34,8 +34,7 @@ public class Suscripcion implements Serializable {
     private EstadoSuscripcion estadoSuscripcion;
     @Temporal(TemporalType.DATE)
     private Date fechaSuscripcion;
-    @OneToOne
-    @JoinTable(name="Cliente_Suscripcion")
+    @OneToOne(mappedBy = "miSuscripcion")
     private Cliente miCliente;
 
     public Suscripcion() {

@@ -173,7 +173,7 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-    
+
     public Usuario findUsuarioByEmail(String email) {
         EntityManager em = getEntityManager();
         try {

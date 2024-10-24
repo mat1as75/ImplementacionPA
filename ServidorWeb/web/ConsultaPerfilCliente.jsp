@@ -19,7 +19,8 @@
     DTDatosUsuario usuarioSesion = null;
     String estadoSuscripcionSesion = null;
     
-    DTDatosUsuario usuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosUsuario usuarioConsultado = control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario());
     DTDatosCliente clienteConsultado = null;
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
@@ -44,6 +45,7 @@
         usuarioSesion = control.getDatosUsuario(nicknameSesion);
         if (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
             estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+            System.out.println("ESTADO SUSCRIPCION: " + estadoSuscripcionSesion);
         }
         
         /* UsuarioSesion == UsuarioConsultado */
@@ -136,6 +138,24 @@
                 <p class="rol">CLIENTE</p><!-- TIPO DE USUARIO -->
                 <p class="nombre-usuario"><%= nombreCompletoConsultado %></p><!-- NOMBRE DE USUARIO -->
                 <!-- Si el perfil lo consulta otro Cliente, poner boton SEGUIR -->
+                
+                <%  // Sesion.rol no nula (Visitantes no pueden realizar seguimientos)
+                    // Sesion.rol == Cliente (Clientes unicamente pueden Seguir)
+                    // NicknameSesion != NicknameConsultado (No se permite auto-Seguimientos)
+                    if (rolSesion != null && rolSesion.equals("Cliente") && !nicknameConsultado.equals(nicknameSesion)) {
+                        if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
+                            <form action="SVSeguirUsuario" method="POST">
+                                <button type="submit" class="boton-seguimiento">Seguir</button>
+                            </form>
+                        <% } else { %>
+                            <form action="SVDejarSeguirAUsuario" method="POST">
+                                <button type="submit" class="boton-seguimiento">Siguiendo</button>
+                            </form>
+                        <% } %>
+                <%  } %>
+                
+                
+                
             </div>
         </div>
     
@@ -207,7 +227,7 @@
                 </div>
 
                 <div id="tab2" class="tab">
-                    <% if (rolSesion == null || (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>
+                    <% if ((estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>
                         <% if (nombresListasRConsultadas.size() > 0) { %>
                         <div id="listasRCreadas" class="lista-listasRCreados">
                             <div class="divisor d-none d-sm-block"></div>

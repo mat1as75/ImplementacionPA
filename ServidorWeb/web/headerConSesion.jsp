@@ -71,7 +71,7 @@
                 <%= nombreSesion + " " + apellidoSesion%>
             </button>
         </form>
-        <button onclick="window.location.href='ConsultaPerfilUsuario.jsp#favoritos'" id="btn-favoritos" class="boton-favoritos">
+            <button onclick="window.location.href='ConsultaPerfilUsuario.jsp#tab2'" id="btn-favoritos" class="boton-favoritos">
             <i class="fa-solid fa-star"></i>
             <span class="text-favoritos">
                 <% if (rolSesion.equals("Cliente")) { %>
