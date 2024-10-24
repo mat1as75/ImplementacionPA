@@ -1,5 +1,7 @@
 package espotify.logica;
 
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -17,6 +19,11 @@ public class ListaPorDefecto extends ListaReproduccion{
 
     public ListaPorDefecto(String nombreLista, String fotoLista, Genero miGenero){
         super(nombreLista, fotoLista);
+        this.miGenero = miGenero;
+    }
+
+    public ListaPorDefecto(String nombreLista, String fotoLista, Date fechaCreacion, List<Tema> misTemas, Genero miGenero) {
+        super(nombreLista, fotoLista, fechaCreacion, misTemas);
         this.miGenero = miGenero;
     }
 

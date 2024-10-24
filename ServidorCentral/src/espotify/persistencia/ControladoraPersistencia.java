@@ -533,7 +533,7 @@ public class ControladoraPersistencia {
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
 
         // Crear la nueva lista particular
-        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion, esPrivada);
+        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion,null, esPrivada);
         try {
             lpartJpa.create(lista);
             cli.getMisListasReproduccionCreadas().add(lista);

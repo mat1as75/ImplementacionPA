@@ -29,10 +29,9 @@ public class ListaParticular extends ListaReproduccion{
          this.soyPrivada = soyPrivada;
     }
     
-    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente,Date fechaCreacion, boolean soyPrivada){
-         super(nombreLista, fotoLista);
+    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente, Date fechaCreacion, List<Tema> misTemas, boolean soyPrivada){
+         super(nombreLista, fotoLista, fechaCreacion, misTemas);
          this.miCliente = miCliente;
-         this.fechaCreacion = fechaCreacion;
          this.soyPrivada = soyPrivada;
     }
     
