@@ -11,7 +11,7 @@
         <h1 style="text-align: center;">Crear Lista de Reproducción</h1>
         
         <div class="form-container">
-            <form id="form-submit" action="SvCrearListaReproduccion" method="POST" enctype="multipart/form-data" onsubmit="return validar()">
+            <form id="form-submit" action="SVCrearListaReproduccion" method="POST" enctype="multipart/form-data" onsubmit="return validar()">
                 <div class="form-group">
                     <label for="nombreLista">Nombre de la Lista:</label>
                     <input type="text" id="nombreLista" name="nombreLista">

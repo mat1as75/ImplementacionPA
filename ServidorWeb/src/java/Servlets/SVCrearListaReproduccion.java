@@ -1,6 +1,8 @@
 package Servlets;
 
 import com.google.gson.JsonObject;
+import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.File;
@@ -23,47 +25,75 @@ import javax.servlet.http.Part;
 @MultipartConfig
 @WebServlet(name = "SVCrearListaReproduccion", urlPatterns = {"/SVCrearListaReproduccion"})
 public class SVCrearListaReproduccion extends HttpServlet {
-
+    
+    private String extractFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        for (String token : contentDisposition.split(";")) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf('=') + 2, token.length() - 1);
+            }
+        }
+        return null;
+    }
+    
+    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
+    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession sesion = request.getSession();
-        //String nicknameSesion = (String) sesion.getAttribute("nickname");
-        //String rolSesion = (String) sesion.getAttribute("rol");
+        String nicknameSesion = (String) sesion.getAttribute("nickname");
+        System.out.println("nickname" + nicknameSesion);
+        String rolSesion = (String) sesion.getAttribute("rol");
         
-        String nicknameSesion = "cbochinche";
-        String rolSesion = "Cliente";
-       
         // Comprobar si es un cliente
         if (rolSesion.equals("Cliente")) {
             Fabrica fb = Fabrica.getInstance();
             IControlador control = fb.getControlador();
             
-            //DTDatosUsuario datosU = control.getDatosUsuario(nicknameSesion); 
-            //String estadoSuscripcionSesion = datosU.getDTSuscripcion().getEstadoSuscripcion();
-            String estadoSuscripcionSesion = "Vigente"; //Momentaneo para testear
+            DTDatosUsuario datosU = control.getDatosUsuario(nicknameSesion);
+            DTDatosCliente datosC = (DTDatosCliente) datosU;
+            String estadoSuscripcionSesion = null;
+            if( datosC.getSuscripcion() != null){
+                estadoSuscripcionSesion = ((DTDatosCliente)datosU).getSuscripcion().getEstadoSuscripcion();
+            }
             // Comprobar si la suscripciun esta vigente
-            if (estadoSuscripcionSesion.equals("Vigente")) {
+            if (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
                 String nombreLista = request.getParameter("nombreLista");
-                String rutaImagen = null;
-
-                // Manejo del archivo de imagen
+                 
+                // Obtener el archivo de la solicitud
                 Part filePart = request.getPart("imagenLista");
-                if (filePart != null && filePart.getSize() > 0) {
-                    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                    String uploadsDir = getServletContext().getRealPath("") + File.separator + "uploads";
-                    File uploadsFolder = new File(uploadsDir);
-                    if (!uploadsFolder.exists()) {
-                        uploadsFolder.mkdirs();
-                    }
 
-                    File file = new File(uploadsFolder, fileName);
-                    try (InputStream input = filePart.getInputStream()) {
-                        Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                        rutaImagen = file.getAbsolutePath();
-                    }
+                // Obtener el nombre del archivo desde el header "content-disposition"
+                String fileName = extractFileName(filePart);
+
+                // Construir la ruta de carga usando el contexto de la aplicación
+                ///home/usuario/Documentos/GitHub/ImplementacionPA/ServidorWeb/web/index.jsp
+                String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir(); // Crear el directorio si no existe
                 }
+
+                // Verificar si el archivo ya existe y generar un nuevo nombre si es necesario
+                File file = new File(uploadDir, fileName);
+                int count = 1;
+                String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+                String extension = fileName.substring(fileName.lastIndexOf('.'));
+
+                while (file.exists()) {
+                    fileName = baseName + "_" + count + extension; // Cambiar el nombre
+                    file = new File(uploadDir, fileName);
+                    count++;
+                }
+
+                // Guardar el archivo en el directorio
+                try (InputStream input = filePart.getInputStream()) {
+                    Files.copy(input, file.toPath());
+                }
+
+                String rutaImagen = DIRECCION_BASE + "/" + fileName;
 
                 
                 ArrayList<String> listasParticulares = new ArrayList<>();
