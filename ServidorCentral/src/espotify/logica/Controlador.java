@@ -465,6 +465,24 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        try {
+            return this.contpersis.getDTSuscripcionDeCliente(nickname);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
+    public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        try {
+            this.contpersis.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
     public boolean existeArtista(String nicknameArtista) {
         return this.contpersis.existeArtista(nicknameArtista);
     }

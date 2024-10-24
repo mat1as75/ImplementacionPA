@@ -1570,4 +1570,43 @@ public class ControladoraPersistencia {
         }
         return listaDeDtListas;
     }
+    
+    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        Cliente cliente = this.cliJpa.findCliente(nickname);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+        
+        DTSuscripcion dataSus = null;
+        
+        Suscripcion sus = cliente.getMiSuscripcion();
+        if (sus != null) {
+            dataSus = sus.getDataSuscripcion();
+        }
+        
+        return dataSus;
+    }
+    
+    public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        Cliente cliente = this.cliJpa.findCliente(nickname);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+        
+        Suscripcion nuevaSuscripcion = new Suscripcion(
+                tipoSuscripcion,
+                EstadoSuscripcion.Pendiente,
+                new Date(),
+                cliente
+        );
+        this.suscripcionJpa.create(nuevaSuscripcion);
+        
+        cliente.setMiSuscripcion(nuevaSuscripcion);
+        try {
+            this.cliJpa.edit(cliente);
+        } catch (Exception ex) {
+            this.suscripcionJpa.destroy(nuevaSuscripcion.getIdSuscripcion());
+            throw new DatabaseUpdateException("No se pudo ingresar la suscripcion");
+        }
+    }
 }
