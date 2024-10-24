@@ -50,6 +50,14 @@ public class Suscripcion implements Serializable {
         this.miCliente = miCliente;
     }
 
+    public Suscripcion(TipoSuscripcion tipoSuscripcion, 
+            EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion, Cliente miCliente) {
+        this.tipoSuscripcion = tipoSuscripcion;
+        this.estadoSuscripcion = estadoSuscripcion;
+        this.fechaSuscripcion = fechaSuscripcion;
+        this.miCliente = miCliente;
+    }
+    
     public Long getIdSuscripcion() {
         return idSuscripcion;
     }
