@@ -120,7 +120,6 @@ public class ControladoraPersistencia {
     }
 
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
-
         if (dataAlbum.getNombreAlbum() == null
                 || dataAlbum.getMiArtista() == null
                 || dataAlbum.getMisTemas() == null
@@ -133,14 +132,12 @@ public class ControladoraPersistencia {
         //creo el album vacio
         Album nuevoAlbum = new Album();
         this.albJpa.create(nuevoAlbum);
-
         //busco el artista para agregarle el album
         Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
         if (art == null) {
             this.albJpa.destroy(nuevoAlbum.getIdAlbum());
             throw new NonexistentEntityException("No se encontro el artista: " + dataAlbum.getMiArtista());
         }
-
         //verifico que no tenga un album con el mismo nombre
         List<Album> albumsDelArtista = art.getMisAlbumesPublicados();
         for (Album al : albumsDelArtista) {
@@ -196,7 +193,6 @@ public class ControladoraPersistencia {
                 temas.add(nuevoTemaConURL);
             }
         }
-
         //set atributos
         nuevoAlbum.setAnioCreacion(dataAlbum.getAnioCreacion());
         nuevoAlbum.setFotoAlbum(dataAlbum.getFotoAlbum());

@@ -187,13 +187,12 @@ public class SVAltaAlbum extends HttpServlet {
         }
         
         //No se permite el acceso a un usuario no logueado
-        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");  
-        if (datosUsuario == null) {
+        String nickname = (String) sesion.getAttribute("nickname");
+        if (nickname == null) {
             SVError.redirectUnauthorized(request, response);
             return;
         }
         
-        String nickname = datosUsuario.getNicknameUsuario();
         Boolean existeArtista = ictrl.existeArtista(nickname);
         //No se permite el acceso a un usuario que no sea artista
         if (!existeArtista) {
@@ -223,7 +222,7 @@ public class SVAltaAlbum extends HttpServlet {
         IControlador ictrl = fb.getControlador();
         
         String artista = (String) request.getAttribute("nicknameArtista");
-        
+
         //Obtengo los datos generales del album
         String nombreAlbum = convertToUTF8(request.getParameter("nombreAlbum"));
         String anioAlbumString = convertToUTF8(request.getParameter("anioAlbum"));
@@ -301,7 +300,7 @@ public class SVAltaAlbum extends HttpServlet {
             if (e instanceof InvalidDataException) {
                 response.setStatus(response.SC_BAD_REQUEST);
             }
-            response.getWriter().write(e.getMessage());
+            response.getWriter().write("Error al procesar la solicitud.");
             return;
         }
         
