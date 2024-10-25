@@ -21,14 +21,15 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author tecnologo
+ * @author ms
  */
 public class ListaParticularJpaController implements Serializable {
 
     public ListaParticularJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public ListaParticularJpaController() {
+    
+     public ListaParticularJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
     private EntityManagerFactory emf = null;

@@ -15,6 +15,7 @@ import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTSuscripcion;
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 
@@ -31,6 +32,7 @@ import espotify.logica.ListaReproduccion;
 import espotify.logica.Suscripcion;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.logica.Usuario;
+import espotify.persistencia.exceptions.DatabaseUpdateException;
 import espotify.persistencia.exceptions.InvalidDataException;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 
@@ -118,7 +120,6 @@ public class ControladoraPersistencia {
     }
 
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
-
         if (dataAlbum.getNombreAlbum() == null
                 || dataAlbum.getMiArtista() == null
                 || dataAlbum.getMisTemas() == null
@@ -131,20 +132,18 @@ public class ControladoraPersistencia {
         //creo el album vacio
         Album nuevoAlbum = new Album();
         this.albJpa.create(nuevoAlbum);
-
         //busco el artista para agregarle el album
         Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
         if (art == null) {
             this.albJpa.destroy(nuevoAlbum.getIdAlbum());
             throw new NonexistentEntityException("No se encontro el artista: " + dataAlbum.getMiArtista());
         }
-
         //verifico que no tenga un album con el mismo nombre
         List<Album> albumsDelArtista = art.getMisAlbumesPublicados();
         for (Album al : albumsDelArtista) {
             if (al.getNombreAlbum().equals(dataAlbum.getNombreAlbum())) {
                 this.albJpa.destroy(nuevoAlbum.getIdAlbum());
-                throw new Exception("Este artista ya tiene un album con el nombre: " + dataAlbum.getNombreAlbum());
+                throw new InvalidDataException("Este artista ya tiene un album con el nombre: " + dataAlbum.getNombreAlbum());
             }
         }
         art.setMisAlbumesPublicados(nuevoAlbum);
@@ -155,7 +154,7 @@ public class ControladoraPersistencia {
             Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
             if (gen == null) {
                 this.albJpa.destroy(nuevoAlbum.getIdAlbum());
-                throw new Exception("No se encontro el genero: " + dataG.getNombreGenero());
+                throw new NonexistentEntityException("No se encontro el genero: " + dataG.getNombreGenero());
             }
         }
 
@@ -194,7 +193,6 @@ public class ControladoraPersistencia {
                 temas.add(nuevoTemaConURL);
             }
         }
-
         //set atributos
         nuevoAlbum.setAnioCreacion(dataAlbum.getAnioCreacion());
         nuevoAlbum.setFotoAlbum(dataAlbum.getFotoAlbum());
@@ -241,8 +239,10 @@ public class ControladoraPersistencia {
         boolean retorno = false;
         for (Cliente c : clientes) {
             String cliente = c.getNickname();
-            if (cliente.equals(nicknameCliente)) {
-                retorno = true;
+            if(cliente!=null){
+                if (cliente.equals(nicknameCliente)) {
+                    retorno = true;
+                }
             }
         }
         return retorno;
@@ -253,8 +253,10 @@ public class ControladoraPersistencia {
         boolean retorno = false;
         for (Usuario u : usuarios) {
             String usuario = u.getNickname();
-            if (usuario.equals(nickname)) {
-                retorno = true;
+            if(usuario!=null){
+                if (usuario.equals(nickname)) {
+                    retorno = true;
+                }
             }
         }
         return retorno;
@@ -266,8 +268,10 @@ public class ControladoraPersistencia {
         boolean retorno = false;
         for (Usuario u : usuarios) {
             String mail = u.getEmail();
-            if (mail.equals(email)) {
-                retorno = true;
+            if(mail!=null){
+                if (mail.equals(email)) {
+                    retorno = true;
+                }
             }
         }
         return retorno;
@@ -518,7 +522,24 @@ public class ControladoraPersistencia {
             throw new RuntimeException("Error al crear la lista particular: " + ex.getMessage());
         }
     }
+   
+    public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
+    
+        // Buscar cliente por su nickname
+        Cliente cli = this.cliJpa.findCliente(nicknameCliente);
 
+        // Crear la nueva lista particular
+        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion,null, esPrivada);
+        try {
+            lpartJpa.create(lista);
+            cli.getMisListasReproduccionCreadas().add(lista);
+            cliJpa.edit(cli);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, "Error al crear lista particular", ex);
+            throw new RuntimeException("Error al crear la lista particular: " + ex.getMessage());
+        }
+    }
+    
     public List<String> getNombresListasPorTipo(String tipoDeLista, String nickOgen) {
 
         List<String> nombresListas = new ArrayList<>();
@@ -999,14 +1020,18 @@ public class ControladoraPersistencia {
 
     public void agregarTemaALista(Long idTema, String nombreLista) throws Exception {
         Tema tema = this.temaJpa.findTema(idTema);
+        if (tema == null) throw new NonexistentEntityException("No existe el tema con id " + idTema);
+        
         ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
+        if (listaRep == null) throw new NonexistentEntityException("No existe la lista con nombre " + nombreLista);
+        
         //obtengo los temas de la lista de reproduccion destino
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
 
         for (Tema t : temasDeListaRep) {
             if (t.getIdTema() == tema.getIdTema()) {
                 //error si el tema ya pertenece a la lista
-                throw new Exception("El tema elegido ["
+                throw new InvalidDataException("El tema elegido ["
                         + tema.getIdTema()
                         + "] ya pertenece a la lista "
                         + listaRep.getNombreLista()
@@ -1033,7 +1058,7 @@ public class ControladoraPersistencia {
             try {
                 this.lreprodccJpa.edit(listaRep);
             } catch (Exception ex) {
-                throw new Exception("Ocurrio un error al agregar la lista "
+                throw new DatabaseUpdateException("Ocurrio un error al agregar la lista "
                         + listaRep.getNombreLista()
                         + " a las listas asociadas al tema ["
                         + tema.getIdTema() + "]."
@@ -1044,7 +1069,7 @@ public class ControladoraPersistencia {
         try {
             this.temaJpa.edit(tema);
         } catch (Exception ex) {
-            throw new Exception(
+            throw new DatabaseUpdateException(
                     "Ocurrio un error al agregar el tema ["
                     + tema.getIdTema() + "] a la lista "
                     + listaRep.getNombreLista());
@@ -1364,7 +1389,7 @@ public class ControladoraPersistencia {
         if (art != null) {
             List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
             for (Album a : albumsDeArtista) {
-                if (a.getNombreAlbum().equals(nombreAlb)) {
+                if (a.getNombreAlbum().toLowerCase().equals(nombreAlb.toLowerCase())) {
                     idAlbum = a.getIdAlbum();
                 }
             }
@@ -1521,6 +1546,80 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             throw ex;
         }
+    }
+    
+    public boolean existeArtista(String nicknameArtista) {
+        Artista art = this.artJpa.findArtista(nicknameArtista);
+        return art != null;
+    }
+     
+    public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
+        TemaConRuta temaConRuta = this.temaconrutaJpa.findTemaConRuta(idTema);
+        TemaConURL temaConURL = this.temaurlJpa.findTemaConURL(idTema);
+        
+        if (temaConRuta != null) {
+            return temaConRuta.getDTTemaConRutaOUrl();
+        } else if (temaConURL != null) {
+            return temaConURL.getDTTemaConRutaOUrl();
+        } else {
+            return null;
+        }
+    }
+    
+    public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws NonexistentEntityException {
+        Cliente cliente = this.cliJpa.findCliente(nicknameCliente);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
 
+        List<ListaParticular> particularesDeCliente = cliente.getMisListasReproduccionCreadas();
+        if (particularesDeCliente == null || particularesDeCliente.isEmpty()) {
+            return null;
+        }
+        
+        List<DTDatosListaReproduccion> listaDeDtListas = new ArrayList();
+        for (ListaParticular lp : particularesDeCliente) {
+            listaDeDtListas.add(lp.getDTDatosListaReproduccion());
+        }
+        return listaDeDtListas;
+    }
+    
+    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        Cliente cliente = this.cliJpa.findCliente(nickname);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+        
+        DTSuscripcion dataSus = null;
+        
+        Suscripcion sus = cliente.getMiSuscripcion();
+        if (sus != null) {
+            dataSus = sus.getDataSuscripcion();
+        }
+        
+        return dataSus;
+    }
+    
+    public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        Cliente cliente = this.cliJpa.findCliente(nickname);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+        
+        Suscripcion nuevaSuscripcion = new Suscripcion(
+                tipoSuscripcion,
+                EstadoSuscripcion.Pendiente,
+                new Date(),
+                cliente
+        );
+        this.suscripcionJpa.create(nuevaSuscripcion);
+        
+        cliente.setMiSuscripcion(nuevaSuscripcion);
+        try {
+            this.cliJpa.edit(cliente);
+        } catch (Exception ex) {
+            this.suscripcionJpa.destroy(nuevaSuscripcion.getIdSuscripcion());
+            throw new DatabaseUpdateException("No se pudo ingresar la suscripcion");
+        }
     }
 }

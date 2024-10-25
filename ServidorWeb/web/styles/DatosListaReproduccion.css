@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+}
+
+.lista-fotoLista {
+    width: 175px;
+    height: 175px;
+    overflow: hidden;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lista-fotoLista img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.lista-detalles {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.boton-agregar {
+    padding: 8px 12px;
+    background-color: black; 
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold; 
+}
+.boton-agregar:hover {
+    background-color: gray; 
+}
+
+.info-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.lista-info {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.lista-info h1 {
+    font-size: 3em;
+    margin: 0;
+    color: black;
+}
+
+.separador {
+    border-top: 1px solid black;
+    margin: 10px 0;
+}
+
+.temas-lista {
+    margin-top: 10px;
+}
+
+table {
+    width: 95%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border: none;
+}
+
+tr {
+    border-bottom: 2px solid black;
+}
+
+.agregar {
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 8px;
+}
+
+.tabla-temas {
+    width: 100%;                 
+    border-collapse: collapse;   
+}
+
+.tabla-temas th, .tabla-temas td {
+    text-align: center;         
+    padding: 8px;                
+}
+
+.ruta-link {
+    display: flex;               
+    justify-content: center;     
+    align-items: center;         
+}
+
+

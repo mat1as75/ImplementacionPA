@@ -23,17 +23,17 @@ const mapTemasAgregados = new Map();
 
 //inicializa el <ol> con drag&drop para los temas 
 const sortableList = Sortable.create(document.getElementById("olTemasCreados"), { 
-                animation: 100, 
-                group: 'list-1', 
-                draggable: '.list-group-item', 
-                handle: '.list-group-item', 
-                sort: true, 
-                filter: '.sortable-disabled', 
-                chosenClass: 'active'
-            }
+        animation: 100, 
+        group: 'list-1', 
+        draggable: '.list-group-item', 
+        handle: '.list-group-item', 
+        sort: true, 
+        filter: '.sortable-disabled', 
+        chosenClass: 'active'
+    }
 ); 
 
-//datos del album, generos seleccionados y temas agregados en forma de objeto para luego pasar a JSON
+//datos del album, generos seleccionados y temas agregados en forma de objeto
 let GLOBAL_data;
 
 /* 
@@ -74,12 +74,46 @@ $('input[type=radio][name=tipoDeAcceso]').on('change', function() {
             break;
   }
 });
-//Valido los datos del form antes de habilitar el boton de submit
-document.getElementById("btnCrear").addEventListener("click", validateForm);
 
+//cierra el modal al clickear el boton de cancelar
+document.getElementById("btnCancelSubmit").addEventListener("click", (evt) => {
+    $("#modalDataVerification").addClass("d-none"); 
+});
+
+//redirecciono a la pagina principal luego de enviarse la solicitud de alta al cerrar el modal de confirmacion
+document.getElementById("btnCloseModalResultado").addEventListener("click", (evt) => {
+    $("#modalResultado").addClass("d-none");
+    window.location.href = "/ServidorWeb";
+});
+
+//Valido los datos del form antes de habilitar el boton de submit
+document.getElementById("btnValidar").addEventListener("click", validateForm);
+
+//submit del form
 document.getElementById("formAlbum").addEventListener("submit", handleSubmit);
 
-//window.onload = resetInputs;
+document.getElementById("nombreAlbum").addEventListener("change", async (evt) => {
+    
+    
+    const value = evt.target.value;
+    if (value.trim() === "") {
+        return;
+    } 
+    
+    const inputNombre = document.querySelector("#nombreAlbum");
+    const errorSpanNombre = document.querySelector("#errorNombreAlbum");
+    const spanNombreContainer = errorSpanNombre.closest("div");
+
+
+    if (await validarNombreAlbumRepetido(value) === false) {
+        errorSpanNombre.innerText = errorMsgs.nombreAlbumRepetido;
+        spanNombreContainer.classList.remove("d-none");
+        inputNombre.scrollIntoView({ behavior: "smooth"});
+        return false;
+    }
+    errorSpanNombre.innerText = "";
+    spanNombreContainer.classList.add("d-none");
+});
 
 /* 
  * -----------------------------------------------------------
@@ -87,15 +121,30 @@ document.getElementById("formAlbum").addEventListener("submit", handleSubmit);
  * -----------------------------------------------------------
  */
 
-function convertFormDataToJSON(formData) {
-    try {
-        const jsonData = JSON.stringify(formData);
-        return jsonData;
-    } catch(e) {
-        alert("No se pudo convertir los datos a json.")
-        return null;
-    }
+async function validarNombreAlbumRepetido(inputValue) {
     
+    const request = new Request("/ServidorWeb/ExisteAlbum", {
+        method: "POST",
+        body: inputValue,
+        headers: {'Content-Type': 'text/plain;charset=UTF-8'}
+    });
+ 
+    let result;
+    try {
+        const response = await fetch(request);
+        
+        if (response.ok) {
+            result = await response.text();
+        }
+        if (result === "Existe") {
+            return false;
+        } else {
+            return true;
+        }
+    } catch (e) {
+        console.error("Error: " , e);
+        return true;
+    }
 }
 
 async function handleSubmit(evt) {
@@ -105,10 +154,9 @@ async function handleSubmit(evt) {
     const data = GLOBAL_data;
     const form = document.getElementById("formAlbum");    
     const formObject = new FormData(form);
-            
+                
     formObject.append("nombreAlbum", data.Album);
     formObject.append("anioAlbum", data.Anio);
-    formObject.append("nombrePortada", data.Portada);
     
     for (let i=0; i<data.Generos.length; i++) {
         formObject.append("generos", data.Generos[i]);
@@ -123,20 +171,24 @@ async function handleSubmit(evt) {
         formObject.append(`tema-${i}-urlOruta`, data.Temas[i][1].urlORuta);
         formObject.append(`tema-${i}-posicion`, data.Temas[i][1].posicion);
     }
-    
+        
     const request = new Request("/ServidorWeb/AltaAlbum", {
         method: "POST",
         body: formObject
     });
-    
+ 
+    let result;
     try {
         const response = await fetch(request);
-        const result = await response;
-        console.log("Result: ",  result);
+        result = await response.text();
     } catch (e) {
-        console.error("Error:" , e);
+        console.error("Error: " , e);
     }
     
+    const modal = $("#modalResultado");
+    const modalText = $("#modalText");
+    modalText.text(result);
+    modal.removeClass("d-none");
 }
 
 //Validar datos del form antes de habilitar el submit
@@ -144,8 +196,7 @@ function validateForm() {
     const arrGeneros = getGenerosSeleccionados();
     const nombreAlbum = $("#nombreAlbum").val();
     const anioAlbum = $("#anioAlbum").val();
-    const rutaPortada = $("#inputPortadaAlbum").val();
-    const nombrePortada = rutaPortada.substring(rutaPortada.lastIndexOf("\\")+1);
+    const rutaPortada = $("#inputPortadaAlbum").val() || "";
     
     if (!validarDatosAlbum(nombreAlbum, anioAlbum)) return;
     if (!validarSeleccionGeneros(arrGeneros)) return;
@@ -157,11 +208,11 @@ function validateForm() {
     const formData = {
         Album: nombreAlbum,
         Anio: anioAlbum,
-        Portada: nombrePortada || "",
         Generos: [...arrGeneros],
         Temas: [...mapTemasAgregados]
     };
     
+    $("#modalDataVerification").removeClass("d-none");
     $("#btnSubmit").removeAttr("disabled");
     GLOBAL_data = formData;
 }
@@ -186,91 +237,100 @@ function resetInputs() {
 }
 
 function validarDatosAlbum(nombre, anio) {
-    const errorSpanNombre = $("#errorNombreAlbum");
-    const errorSpanAnio = $("#errorAnioAlbum");
+    const inputNombre = document.querySelector("#nombreAlbum");
+    const inputAnio = document.querySelector("#anioAlbum");
+    const errorSpanNombre = document.querySelector("#errorNombreAlbum");
+    const errorSpanAnio = document.querySelector("#errorAnioAlbum");
     const spanNombreContainer = errorSpanNombre.closest("div");
     const spanAnioContainer = errorSpanAnio.closest("div");
     
     if (!nombre) {
-        errorSpanNombre.text(errorMsgs.nombreAlbumVacio);
-        spanNombreContainer.removeClass("d-none");
+        errorSpanNombre.innerText = errorMsgs.nombreAlbumVacio;
+        spanNombreContainer.classList.remove("d-none");
+        inputNombre.scrollIntoView({ behavior: "smooth"});
         return false;
     }
-    errorSpanNombre.text("");
-    spanNombreContainer.addClass("d-none");
+    errorSpanNombre.innerText = "";
+    spanNombreContainer.classList.add("d-none");
     
     if (!anio) {
-        errorSpanAnio.text(errorMsgs.anioAlbumInvalido);
-        spanAnioContainer.removeClass("d-none");
+        errorSpanAnio.innerText = errorMsgs.anioAlbumInvalido;
+        spanAnioContainer.classList.remove("d-none");
+        inputAnio.scrollIntoView({ behavior: "smooth"});
         return false;
     }
-    errorSpanAnio.text("");
-    spanAnioContainer.addClass("d-none")
+    errorSpanAnio.innerText = "";
+    spanAnioContainer.classList.add("d-none");
     
     return true;
 }
 
 //Verifica que todos los temas de tipo ruta tengan seleccionado un archivo
 function validarArchivosDeTemaVacio() {
-    const errorSpan = $("#errorTemasVacios");
+    const errorSpan = document.querySelector("#errorTemasVacios");
     const spanContainer = errorSpan.closest("div");
     const fileInputs =  document.querySelectorAll("input[data-type='file-tema'");
     
     for (let i = 0; i < fileInputs.length; i++) {
         if (!fileInputs[i].value) {
-            errorSpan.text(errorMsgs.temaSinArchivo);
-            spanContainer.removeClass("d-none");
+            errorSpan.innerText = errorMsgs.temaSinArchivo;
+            spanContainer.classList.remove("d-none");
             return false;
         }
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     return true;
 }
 
 //Valida que se haya creado al menos un tema
 function validarCreacionDeTemas(mapTemas) {
-    const errorSpan = $("#errorTemasVacios");
+    const errorSpan = document.querySelector("#errorTemasVacios");
     const spanContainer = errorSpan.closest("div");
     
     if (mapTemas.size < 1) {
-        errorSpan.text(errorMsgs.sinTemas);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.sinTemas;
+        spanContainer.classList.remove("d-none");
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     return true;
 }
 
 //Valida que se haya seleccionado al menos 1 genero
 function validarSeleccionGeneros(generos) {
-    const errorSpan = $("#errorGeneros");
+    const errorSpan = document.querySelector("#errorGeneros");
     const spanContainer = errorSpan.closest("div");
     
     if (generos.length < 1) {
-        errorSpan.text(errorMsgs.sinGeneros);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.sinGeneros;
+        spanContainer.classList.remove("d-none");
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     return true;
 }
 
 //Verifica que el nombre de tema ingresado no se repita
 function validarNombreTema(nombre) {
-    const errorSpan = $("#errorNombreTema");
+    const errorSpan = document.querySelector("#errorNombreTema");
     const spanContainer = errorSpan.closest("div");
 
-    if (mapTemasAgregados.has(nombre)) {        
-        errorSpan.text(errorMsgs.nombreTemaRepetido);
-        spanContainer.removeClass("d-none");
-        
+    if (nombre.trim() === "") {
+        errorSpan.innerText = errorMsgs.nombreTemaInvalido;
+        spanContainer.classList.remove("d-none");
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+
+    if (mapTemasAgregados.has(nombre)) {        
+        errorSpan.innerText = errorMsgs.nombreTemaRepetido;
+        spanContainer.classList.remove("d-none");
+        return false;
+    }
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     
     return true;
 }
@@ -278,17 +338,17 @@ function validarNombreTema(nombre) {
 //Verifica que la duracion del tema tenga el formato correcto mm:ss o m:s
 function validarDuracionTema(duracion) {
     const regex =  /(?<!\S)(([0-5]?\d):)([0-5]?\d)(?!\S)/;
-    const errorSpan = $("#errorDuracionTema");
+    const errorSpan = document.querySelector("#errorDuracionTema");
     const spanContainer = errorSpan.closest("div");
     
     if (!regex.test(duracion)) {
-        errorSpan.text(errorMsgs.duracionTemaInvalida);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.duracionTemaInvalida;
+        spanContainer.classList.remove("d-none");
         
         return false;
     }
-    errorSpan.text("");
-    spanContainer.addClass("d-none");
+    errorSpan.innerText = "";
+    spanContainer.classList.add("d-none");
     
     return true;
 }
@@ -296,17 +356,17 @@ function validarDuracionTema(duracion) {
 //Verifica que la url ingresada para el tema sea valida, 
 //Intenta crear un url con el constructor new URL, capturando el error si no es valida
 function validarUrl(url) {
-    const errorSpan = $("#errorUrlTema");
+    const errorSpan = document.querySelector("#errorUrlTema");
     const spanContainer = errorSpan.closest("div");
     
     try {
         new URL(url);
-        errorSpan.text("");
-        spanContainer.addClass("d-none");
+        errorSpan.innerText = "";
+        spanContainer.classList.add("d-none");
         return true;
     } catch (err) {
-        errorSpan.text(errorMsgs.urlTemaInvalido);
-        spanContainer.removeClass("d-none");
+        errorSpan.innerText = errorMsgs.urlTemaInvalido;
+        spanContainer.classList.remove("d-none");
         return false;
     }
 }
@@ -323,9 +383,19 @@ function createFileInput(nombreTema) {
     input.setAttribute("accept", ".mp3, .wav");
     
     label.setAttribute("for", `file-${nombreTema}`);
-    label.innerText = "Seleccione el archivo: ";
         
     return {label, input};
+}
+
+function updateTemasAgregadosContent() {
+    const divAviso = document.querySelector("#divAvisoSinTemas");
+    const cantTemas = mapTemasAgregados.size;
+    
+    if (cantTemas < 1) {
+        divAviso.classList.remove("d-none");
+    } else {
+        divAviso.classList.add("d-none");
+    }
 }
 
 //Crea un nuevo <li> con la informacion del tema 
@@ -374,6 +444,7 @@ function addLiTema() {
     };
     mapTemasAgregados.set(nombre, tema);
     ol.appendChild(li);
+    updateTemasAgregadosContent();
 }
 
 //Remueve el <li> del tema seleccionado y lo borra del map
@@ -384,6 +455,7 @@ function removeLiTema(liElement){
         liElement.remove();
         mapTemasAgregados.delete(nombre);
     }
+    updateTemasAgregadosContent();
 }
 
 //Obtiene una lista con los nombres de los generos seleccionados

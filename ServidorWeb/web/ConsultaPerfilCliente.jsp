@@ -303,7 +303,7 @@
                                                 <% } %>
 
                                                 <% if (sizeListas > 0) {%>
-                                                    <td><a href="SVConsultaListaReproduccion?id=<%= nombresListasRFavConsultadas.get(i) %>"><%= nombresListasRFavConsultadas.get(i) %></a></td>
+                                                    <td><a href="DatosListaReproduccion.jsp?nombreLista=<%= nombresListasRFavConsultadas.get(i) %>"><%= nombresListasRFavConsultadas.get(i) %></a></td>
                                                     <% sizeListas--; %>
                                                 <% } else { %>
                                                     <td></td>

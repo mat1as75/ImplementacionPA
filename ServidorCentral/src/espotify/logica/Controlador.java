@@ -13,6 +13,7 @@ import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
@@ -139,6 +140,11 @@ public class Controlador implements IControlador{
     @Override
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
         this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
+    }
+    
+    @Override
+    public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente,fechaCreacion, esPrivada);
     }
     
     @Override
@@ -462,5 +468,39 @@ public class Controlador implements IControlador{
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Override
+    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        try {
+            return this.contpersis.getDTSuscripcionDeCliente(nickname);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
+    public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        try {
+            this.contpersis.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
+    public boolean existeArtista(String nicknameArtista) {
+        return this.contpersis.existeArtista(nicknameArtista);
+    }
+    
+    @Override
+    public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
+        return this.contpersis.getDTTemaGenericoConRutaOUrl(idTema);
+    }
+    
+    @Override
+    public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception {
+        return this.contpersis.getListaDTDatosListaReproduccionDeCliente(nicknameCliente);
+    }
+
 }
 

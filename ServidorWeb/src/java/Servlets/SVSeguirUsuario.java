@@ -5,6 +5,7 @@ import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,8 +39,16 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
 
         Fabrica f = Fabrica.getInstance();
         IControlador i = f.getControlador();
-        List<String> nicknamesUsuarios = i.getUsuariosSinEste(seguidor);
-
+        List<String> Usuarios = i.getUsuariosSinEste(seguidor);
+        List<String> nicknamesUsuarios=new ArrayList<String>();
+        for(String u:Usuarios){
+            String seguido=u;
+            boolean existeRelacion = i.existeRelacion(seguidor, seguido);
+            if(!existeRelacion){
+                nicknamesUsuarios.add(u);
+            }
+        
+        }
         // Convertimos la lista de usuarios a formato JSON
         Gson gson = new Gson();
         String json = gson.toJson(nicknamesUsuarios);
@@ -62,6 +71,7 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
         }
         if(Seguidor!=null){
             request.setAttribute("Seguidor", Seguidor);
+            
             request.getRequestDispatcher("SeguirUsuario.jsp").forward(request, response);
         }
 

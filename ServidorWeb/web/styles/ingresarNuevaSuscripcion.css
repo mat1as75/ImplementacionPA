@@ -1,0 +1,117 @@
+body {
+    background-color: var(--bg-color-dark-5);
+    color: var(--color-white);
+    padding: 2rem .5rem;
+}
+
+section {
+    padding: 0 .5rem;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+input[type="radio"] {
+    display:none;
+}
+
+.serviciosContainer {
+    border: 1px solid var(--color-grey-accent);
+    background-color: var(--bg-color-dark-4);
+    border-radius: var(--border-radius-containers);
+    padding: .3rem 1rem 1.5rem 1rem;
+}
+
+.serviciosContainer ul {
+    list-style: none;
+    padding: 0 2rem;
+}
+
+.serviciosContainer li {
+    border: 1px solid var(--color-grey-accent);
+    background-color: var(--bg-color-dark-3);
+    border-radius: var(--border-radius-containers);
+    padding: .8rem 1.5rem;
+    margin: 1.2rem 0;
+}
+
+.serviciosContainer li::before {
+    font-family:'Bootstrap-icons';
+    content: '\F26D';
+    color: var(--color-green-primary);
+    font-size: 1.5em;
+    padding-right: .3em;
+}
+
+.planesContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 1px solid var(--color-grey-accent);
+    background-color: var(--bg-color-dark-4);
+    border-radius: var(--border-radius-containers);
+    padding: .3rem 1rem 1.5rem 1rem;
+    margin: 2rem 0;
+}
+
+.planesContainer h2 {
+    width: 100%;
+}
+
+.cardPlanes {
+    display: flex;
+    cursor: pointer;
+    flex-basis: 10rem;
+    padding: 2rem;
+    margin: .5rem .8rem;
+    text-align: center;
+    font-weight: bold;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: var(--border-radius-containers);
+    border: 1px solid var(--color-grey-accent);
+    background-color: var(--bg-color-dark-3);
+}
+
+.cardPlanes h3 {
+    font-size: 1.5em;
+}
+
+.cardPlanes p {
+    font-size: 1.3em;
+    font-weight: bold;
+    border-bottom: 2px solid var(--color-green-primary);
+}
+
+.cardPlanes:hover {
+    box-shadow: 5px 5px 10px var(--color-green-primary);
+}
+
+.selectedCard {
+    border: 2px solid var(--color-green-primary);
+    box-shadow: 3px 3px 10px var(--color-green-primary);
+}
+
+.btnConfirmarContainer {
+    margin: 1.5rem;
+    padding: 1.5rem;
+    width: 100%;
+    background-color: var(--bg-color-dark-3);
+    border: 1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    display: flex;
+    justify-content: center;
+}
+
+.btnConfirmarContainer .btncustom {
+    width: 200px;
+}
+
