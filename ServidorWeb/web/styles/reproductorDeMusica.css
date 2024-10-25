@@ -79,7 +79,6 @@
 }
 
 .dropdownContent {
-    display:none;
     position: absolute;
     background-color: var(--bg-color-dark-4);
     border: 1px solid var(--color-grey-accent);
@@ -102,25 +101,19 @@
 }
 
 .temaPerteneceALista::after {
+    font-family:'Bootstrap-icons';
     color: var(--color-red-error);
     font-size: 1.5em;
     font-weight: bold;
     margin-left: 1em;
-    content: '-';
+    content: '\F2E9';
 }
 
 .temaNoPerteneceALista::after {
+    font-family:'Bootstrap-icons';
     color: var(--color-green-primary);
     font-size: 1.5em;
     font-weight: bold;
     margin-left: 1em;
-    content: '+';
-}
-
-.hidden {
-    display:none;
-}
-
-.visible-block {
-    display:block;
+    content: '\F4FD';
 }

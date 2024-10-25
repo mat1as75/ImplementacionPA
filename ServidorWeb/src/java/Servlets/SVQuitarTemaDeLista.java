@@ -21,30 +21,19 @@ public class SVQuitarTemaDeLista extends HttpServlet {
     class JsonData {
         private String nombreListaReproduccion;
         private Long idTema;
-
         JsonData() {};
-        
         JsonData(String nombreListaReproduccion, Long idTema) {
             this.nombreListaReproduccion = nombreListaReproduccion;
             this.idTema = idTema;
         }
-        
         public String getNombreListaReproduccion() {
             return nombreListaReproduccion;
         }
-
         public void setNombreListaReproduccion(String nombreListaReproduccion) {
             this.nombreListaReproduccion = nombreListaReproduccion;
         }
-
-        public Long getIdTema() {
-            return idTema;
-        }
-
-        public void setIdTema(Long idTema) {
-            this.idTema = idTema;
-        }
-        
+        public Long getIdTema() { return idTema; }
+        public void setIdTema(Long idTema) { this.idTema = idTema; }
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

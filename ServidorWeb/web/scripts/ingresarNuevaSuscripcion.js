@@ -34,7 +34,7 @@ btnSalir.addEventListener("click", evt => {
 });
 
 btnContinuar.addEventListener("click", evt => {
-   console.log("continuar en otra pagina donde se paga");
+    window.location.href = "/ServidorWeb/ActualizarSuscripcion";
 });
 
 async function handleSubmit(tipoDeSuscripcion) {
@@ -54,7 +54,7 @@ async function handleSubmit(tipoDeSuscripcion) {
         response = await fetch(request);
         data = await response.text();
     } catch (e) {
-        console.error(e);
+        data = e;
     }
     
     return { responseOk: response.ok, statusCode: response.status, msg: data };
