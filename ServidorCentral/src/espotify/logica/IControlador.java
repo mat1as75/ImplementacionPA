@@ -13,9 +13,11 @@ import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
+import espotify.logica.Suscripcion.TipoSuscripcion;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,7 @@ public interface IControlador {
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteCliente(String nicknameCliente);
     public abstract boolean ExisteEmail(String email);
+    public abstract boolean existeArtista(String nicknameArtista);
 
     public abstract boolean existeNombreLista(String nombreLista);
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
@@ -43,6 +46,7 @@ public interface IControlador {
     
     public abstract void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero);
     public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada);
+    public abstract void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada);
     public abstract DTDatosListaReproduccion ConsultarListaReproduccion(String tipoDeLista, String op);
 
     public abstract Map<Long, String> getTemasDisponibles();
@@ -105,5 +109,10 @@ public interface IControlador {
     public abstract ArrayList<DTSuscripcion> getDTSuscripciones();
     public abstract DTSuscripcion getDTSuscripcion(Long id);
     public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
+    public abstract DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception;
+    public abstract void ingresarNuevaSuscripcion(String nickname, TipoSuscripcion tipoSuscripcion) throws Exception;
+    
+    public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
+    public abstract List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception;
 
 }
