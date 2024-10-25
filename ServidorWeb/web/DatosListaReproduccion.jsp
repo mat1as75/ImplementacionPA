@@ -34,7 +34,7 @@
     } catch (Exception e) {
         errorMsg = "Error al obtener los datos de la lista: " + e.getMessage();
     }
-    // Comprobar suscripción vigente
+    // Comprobar suscripcion vigente
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
@@ -53,7 +53,7 @@
             errorMsg = "Error al obtener datos del usuario: " + e.getMessage();
         }
     }
-    // Verificar si se puede descargar
+    // Comprobar si puede descargar
     boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
 %>
 
