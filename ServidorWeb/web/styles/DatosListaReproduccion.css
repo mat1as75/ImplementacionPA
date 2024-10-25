@@ -1,12 +1,9 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     font-family: Arial, sans-serif;
 }
 
 .container {
+    margin: 0 auto;
     text-align: center;
     width: 50%;
 }
