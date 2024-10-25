@@ -6,7 +6,7 @@ body {
     display: none;
 }
 
-.resultados {
+.opciones-Bar {
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -52,13 +52,28 @@ body {
     background-color: #ccc;
 }
 
-.resultadosDiv {
-    display: flex;
-    width: 50%;
-    margin: 0 auto;
+.divisor {
+    border-top: 1px solid #ccc;
+    width: 98%;
+    margin: 10px 0;
+    margin-left: 6px;
 }
 
-.resultadosDiv p {
+.resultados {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.resultados form {
+/*    border: 1px solid #ccc;*/
+    padding: 10px;
+    width: 200px;
+}
+
+.resultados p {
     margin: auto;
     margin-top: 50px;
     margin-left: -50%;
@@ -67,7 +82,19 @@ body {
     font-weight: bold;
 }
 
-.resultadosDiv p:hover {
+.resultados p:hover {
     text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Botones con Resultados */
+.resultados button {
+    padding: 0;
+    font-family: 'Monospace';
+    background-color: transparent;
+    border: none;
+}
+
+.resultados button:hover {
     cursor: pointer;
 }

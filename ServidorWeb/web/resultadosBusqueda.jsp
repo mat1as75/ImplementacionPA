@@ -15,7 +15,12 @@
 
 <body>
     
-    <div class="resultados">
+    <%
+        // Hacer la misma funcion del JavaScript pero aca
+        // Necesito a partir de los idTema & idAlbum obtener sus nombres y mostrarlos
+    %>
+    
+    <div class="opciones-Bar">
         <div class="columnDiv">
             <% if ((int) request.getAttribute("n_Resultados") == 1) { %>
                 <p><%= request.getAttribute("n_Resultados") %> resultado</p>
@@ -32,27 +37,29 @@
                 </select>
             </div>
         </div>
-
-        <div class="resultadosDiv" id="resultadoDiv">
-        <%
-            Map<String, String> resultados = (Map<String, String>) request.getAttribute("resultados");
-            if (resultados.isEmpty()) {
-        %>
-            <p>No se encontraron resultados.</p>
-        <%
-            } else { 
-                // Convertir el Map en una lista para procesarlo en JavaScript
-                String jsonResultados = new Gson().toJson(resultados);
-        %>
-            <script>
-                var resultados = <%= jsonResultados %>;
-                mostrarResultados(resultados); // Mostrar resultados iniciales
-            </script>
-        <%
-            }
-        %>
+        <div class="divisor d-none d-sm-block"></div>
+        <div class="js" id="js"></div>
+        <div class="resultados" id="resultadoDiv">
+            <%
+                Map<String, String> resultados = (Map<String, String>) request.getAttribute("resultados");
+                if (resultados.isEmpty()) {
+            %>
+                <p>No se encontraron resultados.</p>
+            <%
+                } else { 
+                    // Convertir el Map en una lista para procesarlo en JavaScript
+                    String jsonResultados = new Gson().toJson(resultados);
+            %>
+                <script>
+                    var resultados = <%= jsonResultados %>;
+                    mostrarResultados(resultados); // Mostrar resultados iniciales
+                </script>
+            <%
+                }
+            %>
+        </div>
     </div>
-    </div>
+    
     
 </body>
 

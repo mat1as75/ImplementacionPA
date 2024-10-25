@@ -38,14 +38,13 @@
     fotoPerfilConsultado = (fotoPerfilConsultado != null) ? fotoPerfilConsultado.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac());
-    nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
-            
+    nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores(); 
     if (rolSesion != null) { /* Si existe Sesion (Cliente o Artista) */
     
         usuarioSesion = control.getDatosUsuario(nicknameSesion);
         if (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
+            ((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
             estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
-            System.out.println("ESTADO SUSCRIPCION: " + estadoSuscripcionSesion);
         }
         
         /* UsuarioSesion == UsuarioConsultado */
@@ -83,7 +82,6 @@
             if (rolSesion.equals("Artista") || ((rolSesion.equals("Cliente") && estadoSuscripcionSesion != null 
                                                 && estadoSuscripcionSesion.equals("Vigente")))) {
                 // Usuarios a los que sigue (identificando si son clientes o artistas)
-                    System.out.println("SEGUIDOS");
                     nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
                     nicknamesS = new ArrayList<>();
                     rolesS = new ArrayList<>();
@@ -95,9 +93,10 @@
                         int i = n.indexOf(" ");
                         rolesS.add(n.substring(i + 1));
                     }
-
-                    /* UsuarioSesion es Seguidor de UsuarioConsultado */
-                    if (nicknamesSeguidoresConsultados.contains(nicknameSesion)) {
+                    
+                    // Consulta un Artista
+                    // UsuarioSesion es Seguidor de UsuarioConsultado
+                    if (rolSesion.equals("Artista") || nicknamesSeguidoresConsultados.contains(nicknameSesion)) {
 
                         // Listas de Reproduccion que creo (Publicas)
                         nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
@@ -108,46 +107,7 @@
                     nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
                     nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
                     
-            } 
-        
-//            if (rolSesion.equals("Artista") || ((rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null))) {
-//                if (rolSesion.equals("Cliente") && estadoSuscripcionSesion.equals("Vigente")) {
-//                    // Usuarios a los que sigue (identificando si son clientes o artistas)
-//                    System.out.println("SEGUIDOS");
-//                    nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
-//                    nicknamesS = new ArrayList<>();
-//                    rolesS = new ArrayList<>();
-//                    for (String n : nicknamesSeguidosConsultados) {
-//                        int i = n.indexOf(",");
-//                        nicknamesS.add(n.substring(0, i));
-//                    }
-//                    for (String n : nicknamesSeguidosConsultados) {
-//                        int i = n.indexOf(" ");
-//                        rolesS.add(n.substring(i + 1));
-//                    }
-//
-//                    /* UsuarioSesion es Seguidor de UsuarioConsultado */
-//                    if (nicknamesSeguidoresConsultados.contains(nicknameSesion)) {
-//
-//                        // Listas de Reproduccion que creo (Publicas)
-//                        nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
-//                    }
-//
-//                    // Preferencias que tiene guardadas
-//                    nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
-//                    nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
-//                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
-//                } else {
-//                    // Listas de Reproduccion que creo (Publicas)
-//                    nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
-//                    
-//                    // Preferencias que tiene guardadas
-//                    nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
-//                    nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
-//                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
-//                    System.out.println("PREFERENCIAS");
-//                }
-//            }
+            }
         }
     } else { /* No existe Sesion (Visitante) */
         
@@ -170,8 +130,7 @@
             <div class="usuario-info">
                 <p class="rol">CLIENTE</p><!-- TIPO DE USUARIO -->
                 <p class="nombre-usuario"><%= nombreCompletoConsultado %></p><!-- NOMBRE DE USUARIO -->
-                <!-- Si el perfil lo consulta otro Cliente, poner boton SEGUIR -->
-                
+               
                 <%  // Sesion.rol no nula (Visitantes no pueden realizar seguimientos)
                     // Sesion.rol == Cliente (Clientes unicamente pueden Seguir)
                     // NicknameSesion != NicknameConsultado (No se permite auto-Seguimientos)
@@ -232,7 +191,7 @@
                             </table>
                         </div>
                     <% } %>
-                    <% if (rolSesion.equals("Artista") || (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>        
+                    <% if ((rolSesion != null && rolSesion.equals("Artista")) || (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>        
                         <% if (nicknamesSeguidosConsultados != null) { %>
                             <div id="followed" class="followed-list">
                                 <h3 class="followed-info"><%= nicknamesSeguidosConsultados.size() + " " %><% if (nicknamesSeguidosConsultados.size() == 1) { %>
@@ -262,34 +221,46 @@
                 </div>
 
                 <div id="tab2" class="tab">
-                    <% if (rolSesion.equals("Artista") || (rolSesion.equals("Cliente") && estadoSuscripcionSesion != null 
-                                                                && estadoSuscripcionSesion.equals("Vigente"))) { %>
-                        <% // UsuarioSesion es Seguidor de UsuarioConsultado
-                           // Hay ListasRConsultadas
-                           if (nicknamesSeguidoresConsultados.contains(nicknameSesion) && nombresListasRConsultadas.size() > 0) { %>
-                        <div id="listasRCreadas" class="lista-listasRCreados">
-                            <div class="divisor d-none d-sm-block"></div>
-                            <% if (rolSesion != null) { %>
-                                <h3 class="registros">Registro de Listas Creadas</h3>
-                            <% } else {%>
-                                <h3 class="registros">Registro de Listas Publicas Creadas</h3>
-                            <% } %>
-                            <h3 class="listasR-info">Listas de Reproducción</h3>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (String lista : nombresListasRConsultadas) { %>
-                                          <tr>
-                                              <td><%= lista %></td>
-                                          </tr>
+                <%  // Consulta un Visitante
+                    // Consulta un Artista
+                    // Consulta un Cliente que tiene Suscripcion con estado == Vigente
+                    if ((rolSesion == null || rolSesion.equals("Artista") || 
+                        (rolSesion.equals("Cliente") && estadoSuscripcionSesion != null && 
+                        estadoSuscripcionSesion.equals("Vigente")))) { %>
+                    <%
+                        
+                            // 
+                            if (nombresListasRConsultadas != null && nombresListasRConsultadas.size() > 0) { %>
+                            <%System.out.println("DIV ListasRCreadas");%>
+                                <div id="listasRCreadas" class="lista-listasRCreados">
+                                    <div class="divisor d-none d-sm-block"></div>
+                                    
+                                <%  // Consulta un Visitante
+                                    // Consulta un Artista
+                                    // Consulta un Usuario & ese Usuario es Seguidor del Consultado
+                                    if (rolSesion == null || rolSesion.equals("Artista") ||
+                                            (rolSesion.equals("Cliente") && 
+                                            nicknamesSeguidoresConsultados.contains(nicknameSesion))) { %>
+                                        <h3 class="registros">Registro de Listas Publicas Creadas</h3>
+                                    <% } else { %>
+                                        <h3 class="registros">Registro de Listas Creadas</h3>
                                     <% } %>
-                                </tbody>
-                            </table>
-                        </div>
+                                    <h3 class="listasR-info">Listas de Reproducción</h3>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (String lista : nombresListasRConsultadas) { %>
+                                                  <tr>
+                                                      <td><%= lista %></td>
+                                                  </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
                         <% } %>
 
                         <div class="tabla-preferencias">
