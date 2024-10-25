@@ -83,6 +83,23 @@ body {
     text-decoration: underline;
 }
 
+.boton-seguimiento {
+    margin: 0;
+    margin-top: 5px;
+    position: relative;
+    padding: 5px 10px;
+    font-family: 'Montserrat',monospace;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+}
+
+.boton-seguimiento:hover {
+    background-color: #f8f9fa;
+    border: 2px solid #ccc;
+}
+
 .tabs {
    margin-top: 15px;
 }

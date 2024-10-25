@@ -54,7 +54,7 @@
     var nickname = "<%= request.getAttribute("nickname") != null ? request.getAttribute("nickname") : "" %>";
 </script>
 <script src="scripts/headerConSesion.js"></script>
-<script src="scripts/consultaPerfilUsuario.js"></script>
+<script src="scripts/consultaPerfilUsuario.js" defer></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
 
@@ -71,7 +71,7 @@
                 <%= nombreSesion + " " + apellidoSesion%>
             </button>
         </form>
-            <button onclick="window.location.href='ConsultaPerfilUsuario.jsp#tab2'" id="btn-favoritos" class="boton-favoritos">
+            <button onclick="window.location.href='ConsultaPerfilUsuario.jsp'" id="btn-favoritos" class="boton-favoritos">
             <i class="fa-solid fa-star"></i>
             <span class="text-favoritos">
                 <% if (rolSesion.equals("Cliente")) { %>

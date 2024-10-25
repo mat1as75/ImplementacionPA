@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,18 +33,88 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SVBarraBusqueda", urlPatterns = {"/SVBarraBusqueda"})
 public class SVBarraBusqueda extends HttpServlet {
 
+    private EntityManagerFactory emf;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
     }
 
     @Override
+    public void init() {
+        emf = Persistence.createEntityManagerFactory("EspotifyPU");
+    }
+    
+    @Override
+    public void destroy() {
+        // Cierra el EntityManagerFactory
+        if (emf != null) {
+            emf.close();
+        }
+    }
+    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();
+        EntityManager em = emf.createEntityManager();
+        
+        // Consulta
         String consulta = request.getParameter("consulta");
+        
+        // Mapa para almacenar los resultados
+        Map<String, String> resultados = new HashMap<>();
+        
+        // Nicknames de Clientes en el Sistema
+        ArrayList<String> nicknamesClientes = (ArrayList<String>) control.getNicknamesClientes();
+        
+        try {
+            
+            // Buscar Usuarios
+            String jpqlUsuarios = "SELECT u.nickname FROM Usuario u WHERE u.nickname LIKE :query AND LENGTH(u.nickname) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<String> consultaUsuarios = em.createQuery(jpqlUsuarios, String.class);
+            consultaUsuarios.setParameter("query", "%" + consulta + "%");
+            for (String nickname : consultaUsuarios.getResultList()) {
+                if (nicknamesClientes.contains(nickname))
+                    resultados.put("Cliente", nickname);
+                else
+                    resultados.put("Artista", nickname);
+            }
+            
+            // Buscar Temas
+            String jpqlTemas = "SELECT t.idTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<Long> consultaTemas = em.createQuery(jpqlTemas, Long.class);
+            consultaTemas.setParameter("query", "%" + consulta + "%");
+            for (Long idTema : consultaTemas.getResultList()) {
+                resultados.put("Tema", idTema.toString());
+            }
+            
+            // Buscar Albumes
+            String jpqlAlbumes = "SELECT a.idAlbum FROM Album a WHERE a.nombreAlbum LIKE :query AND LENGTH(a.nombreAlbum) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<Long> consultaAlbumes = em.createQuery(jpqlAlbumes, Long.class);
+            consultaAlbumes.setParameter("query", "%" + consulta + "%");
+            for (Long idAlbum : consultaAlbumes.getResultList()) {
+                resultados.put("Album", idAlbum.toString());
+            }
+            
+            // Buscar ListaReproduccion
+            String jpqlListasR = "SELECT l.nombreLista FROM ListaReproduccion l WHERE l.nombreLista LIKE :query AND LENGTH(l.nombreLista) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<String> consultaListasR = em.createQuery(jpqlListasR, String.class);
+            consultaListasR.setParameter("query", "%" + consulta + "%");
+            for (String nombreListaR : consultaListasR.getResultList()) {
+                resultados.put("Lista", nombreListaR);
+            }
+        } catch (Exception e) {
+            
+            throw e;
+        } finally {
+            
+            if (em != null) {
+                em.close();
+            }
+        }
         
 //        /* Podria guardar el ID (si encuentra) para poder obtener 
 //            el Entity desde TemaJpaController */
@@ -81,7 +155,7 @@ public class SVBarraBusqueda extends HttpServlet {
 //        }
         
         // Obtengo resultados de la busqueda
-        Map<String, String> resultados = buscarResultados(consulta);
+//        Map<String, String> resultados = buscarResultados(consulta);
         
         // Guardo resultados en el request
         request.setAttribute("resultados", resultados);

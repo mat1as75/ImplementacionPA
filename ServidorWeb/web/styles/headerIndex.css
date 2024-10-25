@@ -45,7 +45,7 @@ header {
     display: flex;
     align-items: center;
     position: relative;
-    width: 550px; 
+    width: 100%; 
 }
 
 .barra-busqueda input {

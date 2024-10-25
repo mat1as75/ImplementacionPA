@@ -61,7 +61,20 @@
                 <% if (dirSitioWebConsultado != null) { %>
                     <a href="<%= "https:" + dirSitioWebConsultado %>" target="_blank" class="btn-webPage"><%= dirSitioWebConsultado %></a>
                 <% } %>
-                <!-- Si el perfil lo consulta otro Cliente, poner boton SEGUIR -->
+                <%  // Sesion.rol no nula (Visitantes no pueden realizar seguimientos)
+                    // Sesion.rol == Cliente (Clientes unicamente pueden Seguir)
+                    // NicknameSesion != NicknameConsultado (No se permite auto-Seguimientos)
+                    if (rolSesion != null && rolSesion.equals("Cliente") && !nicknameConsultado.equals(nicknameSesion)) {
+                        if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
+                            <form action="SVSeguirUsuario" method="POST">
+                                <button type="submit" class="boton-seguimiento">Seguir</button>
+                            </form>
+                        <% } else { %>
+                            <form action="SVDejarSeguirAUsuario" method="POST">
+                                <button type="submit" class="boton-seguimiento">Siguiendo</button>
+                            </form>
+                        <% } %>
+                <%  } %>
             </div>
         </div>
 
