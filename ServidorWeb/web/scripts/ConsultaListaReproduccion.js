@@ -16,7 +16,6 @@ function mostrarPorGenero() {
             .then(data => {
                 let mosaico = document.getElementById('mosaicoGeneros');
                 mosaico.innerHTML = '';
-
                 data.forEach(genero => {
                     let item = document.createElement('div');
                     item.className = 'mosaico-item';
@@ -71,7 +70,6 @@ function mostrarPorListaPorDefecto(nombreGenero) {
             .then(data => {
                 let mosaico = document.getElementById('mosaicoListasPorDefecto');
                 mosaico.innerHTML = '';
-
                 data.forEach(lista => {
                     let item = document.createElement('div');
                     item.className = 'mosaico-item';

@@ -1,13 +1,13 @@
 body {
     display: flex;
-    justify-content: center;
+   
     align-items: center;
     flex-direction: column;
     font-family: Arial, sans-serif;
 }
 
 .container {
-    text-align: center;
+    
     width: 50%;
 }
 
@@ -32,6 +32,19 @@ body {
     padding: 10px;
     border: 1px solid black;
     border-radius: 5px;
+}
+
+.boton-agregar {
+    padding: 8px 12px;
+    background-color: black; 
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold; 
+}
+.boton-agregar:hover {
+    background-color: gray; 
 }
 
 .info-container {
@@ -83,3 +96,21 @@ tr {
     cursor: pointer;
     padding: 5px 8px;
 }
+
+.tabla-temas {
+    width: 100%;                 
+    border-collapse: collapse;   
+}
+
+.tabla-temas th, .tabla-temas td {
+    text-align: center;         
+    padding: 8px;                
+}
+
+.ruta-link {
+    display: flex;               
+    justify-content: center;     
+    align-items: center;         
+}
+
+
