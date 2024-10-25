@@ -54,14 +54,13 @@ public class SVIngresarSuscripcion extends HttpServlet {
             return;
         }
         //No se permite el ingreso de una suscripcion a un usuario no logueado
-        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-        if (datosUsuario == null) {
+        String nickname = (String) sesion.getAttribute("nickname");
+        if (nickname == null) {
             setResponseToText(response, response.SC_UNAUTHORIZED);
             response.getWriter().write("El usuario no inició sesión");
             return;
         }
         
-        String nickname = datosUsuario.getNicknameUsuario();        
         DTSuscripcion dtSuscripcion = null;
         
         Fabrica fb = Fabrica.getInstance();

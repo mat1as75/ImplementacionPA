@@ -94,6 +94,7 @@ document.getElementById("formAlbum").addEventListener("submit", handleSubmit);
 
 document.getElementById("nombreAlbum").addEventListener("change", async (evt) => {
     
+    
     const value = evt.target.value;
     if (value.trim() === "") {
         return;
@@ -135,7 +136,6 @@ async function validarNombreAlbumRepetido(inputValue) {
         if (response.ok) {
             result = await response.text();
         }
-        
         if (result === "Existe") {
             return false;
         } else {

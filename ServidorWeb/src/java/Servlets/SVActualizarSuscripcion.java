@@ -79,14 +79,13 @@ public class SVActualizarSuscripcion extends HttpServlet {
             SVError.redirectUnauthorized(request, response);
             return;
         }
+        
         //Un usuario no logueado no puede acceder al sitio
-        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-        if (datosUsuario == null) {
+        String nickname = (String) sesion.getAttribute("nickname");
+        if (nickname == null) {
             SVError.redirectUnauthorized(request, response);
             return;
         }
-        
-        String nickname = datosUsuario.getNicknameUsuario();        
         DTSuscripcion dtSuscripcion = null;
         
         Fabrica fb = Fabrica.getInstance();
@@ -148,14 +147,13 @@ public class SVActualizarSuscripcion extends HttpServlet {
             return;
         }
         //El cliente tiene que iniciar sesion para contratar una suscripcion
-        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-        if (datosUsuario == null) {
+        String nickname = (String) sesion.getAttribute("nickname");
+        if (nickname == null) {
             setResponseToText(response, response.SC_UNAUTHORIZED);
             response.getWriter().write("El usuario no inició sesión");
             return;
         }
         //Obtengo el usuario logueado
-        String nickname = datosUsuario.getNicknameUsuario();        
         DTSuscripcion dtSuscripcion = null;
         
         Fabrica fb = Fabrica.getInstance();
