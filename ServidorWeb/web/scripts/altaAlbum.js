@@ -381,6 +381,7 @@ function createFileInput(nombreTema) {
     input.setAttribute("data-type", "file-tema");
     input.setAttribute("type", "file");
     input.setAttribute("accept", ".mp3, .wav");
+    input.setAttribute("class", "inputFile");
     
     label.setAttribute("for", `file-${nombreTema}`);
         

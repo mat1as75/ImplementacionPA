@@ -5,10 +5,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Modificar Suscripción</title>
-        <script src="scripts/actualizarSuscripcion.js" defer></script>
-        <link rel="stylesheet" href="styles/variablesGlobales.css"/>
-        <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
-        <link rel="stylesheet" href="styles/actualizarSuscripcion.css"/>
+        <script src="../${pageContext.request.contextPath}/scripts/actualizarSuscripcion.js" defer></script>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/variablesGlobales.css"/>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/actualizarSuscripcion.css"/>
 
     </head>
     
@@ -16,11 +16,13 @@
         String estadoSuscripcion = (String) request.getAttribute("estadoSuscripcion");
     %>
     
-    <body>
-        <h1>Modificar Suscripción</h1>
-        <section>
+    <jsp:include page="../headerIndex.jsp"/>
+    
+    <body class="bodyContainer">
+        <h1 class="textAligned titlePrimary">Modificar Suscripción</h1>
+        <section class="sectionContainer">
             <div class="opcionesContainer">
-                <h2>Mi suscripción: <span id="estadoSuscripcion" class=""><%=estadoSuscripcion%></span></h2>
+                <h2 class="textAligned">Mi suscripción: <span id="estadoSuscripcion" class=""><%=estadoSuscripcion%></span></h2>
                 <div class="btnsContainer" id="btnsOpciones">
                     
                     <% if (estadoSuscripcion.equals("Pendiente") || estadoSuscripcion.equals("Vencida")) { %>

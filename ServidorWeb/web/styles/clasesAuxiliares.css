@@ -7,6 +7,29 @@
     display: block;
 }
 
+.textAligned {
+    text-align: center;
+}
+
+.bodyContainer {
+    background-color: var(--bg-color-dark-5);
+    color: var(--color-white);
+    margin: 0;
+}
+
+.roundedContainer {
+    border:1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    padding: .2rem .4rem;
+}
+
+
+.sectionContainer {
+    padding: 1rem 2rem;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
 .btncustom {
     font-size: 1em;
     font-weight: 400;

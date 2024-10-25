@@ -1,24 +1,17 @@
-#bodyAltaAlbum {
-    background-color: var(--bg-color-dark-5);
-    color: var(--color-white);
-    padding: 2rem .5rem;
-}
 
-h1, h2, h3, h4 {
+.titlePrimary {
     color: var(--color-white);
     text-align: center;
+    margin-top: 2rem;
 }
 
-h2, h3, h4 {
+
+.titleSecondary {
+    color: var(--color-white);
+    text-align: center;
     font-size: 2rem;
     margin: 2rem 1.5rem 1.5rem 1.5rem;
     border-top: 2px solid var(--color-grey-accent);
-}
-
-div {
-    border:1px solid var(--color-grey-accent);
-    border-radius: var(--border-radius-containers);
-    padding: .2rem .4rem;
 }
 
 .formSubContainer {
@@ -59,7 +52,7 @@ div {
 }
 
 .formContainer {
-    padding: 2rem .5rem;
+    padding: 1rem 2rem;
     max-width: 900px;
     margin: 0 auto;
 }
@@ -128,7 +121,7 @@ div {
     display: inline-block;
 }
 
-input[type=file] {
+.inputFile {
     white-space: nowrap;
     overflow: hidden;
     max-width: 70%;
