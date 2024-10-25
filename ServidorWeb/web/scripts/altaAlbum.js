@@ -449,9 +449,8 @@ function addLiTema() {
 
 //Remueve el <li> del tema seleccionado y lo borra del map
 function removeLiTema(liElement){
-    const nombre = liElement.getAttribute("data-name");
-        
-    if (liElement != null) {
+    if (liElement) {
+        const nombre = liElement.getAttribute("data-name");
         liElement.remove();
         mapTemasAgregados.delete(nombre);
     }
