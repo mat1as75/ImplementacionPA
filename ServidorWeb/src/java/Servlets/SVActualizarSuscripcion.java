@@ -55,13 +55,13 @@ public class SVActualizarSuscripcion extends HttpServlet {
         Date vencimiento = data.getVencimiento();
         String propietario = data.getPropietario();
         
-//        if (CCN.length() != 16) return false;
-//        if (!CCN.matches(".*[^0-9].*")) return false;
-//        if (CVV.length() != 3) return false;
-//        if (!CCN.matches(".*[^0-9].*")) return false;
-//        if (vencimiento.getTime() < new Date().getTime()) return false;
-//        if (propietario == null || propietario.isBlank() || propietario.isEmpty()) return false;
-//        
+        if (CCN.length() != 16) return false;
+        if (CCN.matches(".*[^0-9].*")) return false;
+        if (CVV.length() != 3) return false;
+        if (CCN.matches(".*[^0-9].*")) return false;
+        if (vencimiento.getTime() < new Date().getTime()) return false;
+        if (propietario == null || propietario.isBlank() || propietario.isEmpty()) return false;
+        
         return true;
     }
     
@@ -73,21 +73,27 @@ public class SVActualizarSuscripcion extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         //Un cliente sin sesion no puede acceder al sitio
         HttpSession sesion = request.getSession(false);
         if (sesion == null) {
             SVError.redirectUnauthorized(request, response);
             return;
         }
-        
+
         //Un usuario no logueado no puede acceder al sitio
         String nickname = (String) sesion.getAttribute("nickname");
         if (nickname == null) {
             SVError.redirectUnauthorized(request, response);
             return;
         }
+
         DTSuscripcion dtSuscripcion = null;
-        
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
         //Obtengo la suscripcion del cliente logueado
@@ -98,6 +104,7 @@ public class SVActualizarSuscripcion extends HttpServlet {
                 SVError.redirectNotFound(request, response);
                 return;
             }
+
             //Paso el estado de la suscripcion al request para manejar este valor en el JSP
             request.setAttribute("estadoSuscripcion", dtSuscripcion.getEstadoSuscripcion());
         } catch (Exception e) {
@@ -109,14 +116,8 @@ public class SVActualizarSuscripcion extends HttpServlet {
                 SVError.redirectInternalServerError(request, response, e.getMessage());
             }
         }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        processRequest(request, response);
-        request.getRequestDispatcher("ActualizarSuscripcion.jsp").forward(request, response);
+        
+        request.getRequestDispatcher("pages/ActualizarSuscripcion.jsp").forward(request, response);
     }
 
     /*
@@ -192,7 +193,6 @@ public class SVActualizarSuscripcion extends HttpServlet {
 
         //Convierto el body a String
         String requestBody = body.toString();
-        System.out.println("request body: "+requestBody);
         
         //Parse del body en formato Json
         //Creo un objeto json con los datos obtenidos

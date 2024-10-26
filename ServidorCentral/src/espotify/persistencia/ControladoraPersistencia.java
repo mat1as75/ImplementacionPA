@@ -138,6 +138,7 @@ public class ControladoraPersistencia {
             this.albJpa.destroy(nuevoAlbum.getIdAlbum());
             throw new NonexistentEntityException("No se encontro el artista: " + dataAlbum.getMiArtista());
         }
+
         //verifico que no tenga un album con el mismo nombre
         List<Album> albumsDelArtista = art.getMisAlbumesPublicados();
         for (Album al : albumsDelArtista) {
@@ -147,9 +148,7 @@ public class ControladoraPersistencia {
             }
         }
         art.setMisAlbumesPublicados(nuevoAlbum);
-
         //verifico que todos los generos recibidos existan
-        List<Genero> generosDeAlbum = new ArrayList();
         for (DTGenero dataG : dataAlbum.getMisgeneros()) {
             Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
             if (gen == null) {
@@ -159,13 +158,12 @@ public class ControladoraPersistencia {
         }
 
         //busco los generos para agregarlos al album y agregar el album a la lista de albums que tiene genero
+        List<Genero> generosDeAlbum = new ArrayList();
         for (DTGenero dataG : dataAlbum.getMisgeneros()) {
             Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
             generosDeAlbum.add(gen);
             //agrego el nuevo album en la lista de albums del genero
-            gen.setMisAlbumes(nuevoAlbum);
-            //guardo los cambios a cada genero modificado
-            this.genJpa.edit(gen);
+            gen.setMisAlbumes(nuevoAlbum);            
         }
 
         //creo los temas y los agrego a una lista
@@ -193,6 +191,7 @@ public class ControladoraPersistencia {
                 temas.add(nuevoTemaConURL);
             }
         }
+
         //set atributos
         nuevoAlbum.setAnioCreacion(dataAlbum.getAnioCreacion());
         nuevoAlbum.setFotoAlbum(dataAlbum.getFotoAlbum());
@@ -201,9 +200,36 @@ public class ControladoraPersistencia {
         nuevoAlbum.setMiArtista(art);
         nuevoAlbum.setMisGeneros(generosDeAlbum);
         nuevoAlbum.setMisTemas(temas);
+        
         //guardar cambios en el artista y el album
-        this.artJpa.edit(art);
-        this.albJpa.edit(nuevoAlbum);
+        try {
+            this.artJpa.edit(art);
+            this.albJpa.edit(nuevoAlbum);
+        } catch (Exception e) {
+            //Deshacer actualizacion de generos
+            //Recorro los generos modificados
+            for (Genero g : generosDeAlbum) {
+                //Obtengo la lista recien modificada de albums asociados al genero
+                List<Album> albumsDeGenero_Anterior = g.getMisAlbumes();
+                //Creo una copia de la lista modificada
+                List<Album> albumsDeGenero_Nuevo = new ArrayList(albumsDeGenero_Anterior);
+                //Remuevo de la copia al album asociado al genero de esta iteracion
+                for (Album a : albumsDeGenero_Anterior) {
+                    if (a.getIdAlbum().equals(nuevoAlbum.getIdAlbum())) {
+                        albumsDeGenero_Nuevo.remove(a);
+                    }
+                }
+                //Seteo como la lista de albums la copia, que ya no contiene el id del album creado
+                g.setListaMisAlbumes(albumsDeGenero_Nuevo);
+                this.genJpa.edit(g);
+            }
+            for (Tema t : temas) {
+                //Deshacer creacion de temas si falla el alta
+                this.temaJpa.destroy(t.getIdTema());
+            }
+            this.albJpa.destroy(nuevoAlbum.getIdAlbum());
+            throw new DatabaseUpdateException("No se pudo editar el artista o el album.");
+        }  
     }
 
     public Artista getArtista(String nickname) {
@@ -1029,7 +1055,7 @@ public class ControladoraPersistencia {
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
 
         for (Tema t : temasDeListaRep) {
-            if (t.getIdTema() == tema.getIdTema()) {
+            if (t.getIdTema().equals(tema.getIdTema())) {
                 //error si el tema ya pertenece a la lista
                 throw new InvalidDataException("El tema elegido ["
                         + tema.getIdTema()
@@ -1040,11 +1066,9 @@ public class ControladoraPersistencia {
         }
         //si no existe el tema en la lista destino, lo agrego
         listaRep.agregarTema(tema);
-
         //obtengo las listas a las que se asocia el tema
         List<ListaReproduccion> listasAsociadasAlTema = tema.getMisReproducciones();
         //si el tema no esta asociado a esta lista, entonces agrego la misma a sus listas asociadas
-
         Boolean temaYaEstaAsociadoALista = false;
         for (ListaReproduccion lr : listasAsociadasAlTema) {
             if (lr.getNombreLista().equals(listaRep.getNombreLista())) {
@@ -1052,7 +1076,7 @@ public class ControladoraPersistencia {
                 break;
             }
         }
-
+        
         if (!temaYaEstaAsociadoALista) {
             tema.setMisReproducciones(listaRep);
             try {
