@@ -21,10 +21,6 @@
     
       <%  
         HttpSession sesion = request.getSession();
-        sesion.setAttribute("nickname","ppargento");
-        sesion.setAttribute("rol","Cliente");
-        
-        
         String nicknameSesion = (String) sesion.getAttribute("nickname");
         String rolSesion = (String) sesion.getAttribute("rol");
         Fabrica f = Fabrica.getInstance();
@@ -51,7 +47,8 @@
 
     <% if (vigente) { %>
     <header>
-                <div class="main-container">
+            
+            <div class="main-container">
                     <h1>Publicar Lista</h1>
                 </div>
             </header> 
