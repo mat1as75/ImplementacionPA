@@ -42,10 +42,12 @@
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/altaAlbum.css"/>
         
-        <jsp:include page="../headerIndex.jsp"/>
         
     </head>
     <body class="bodyContainer">
+        
+        <jsp:include page="../headerIndex.jsp"/>
+
         <% 
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
