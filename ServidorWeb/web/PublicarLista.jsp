@@ -7,7 +7,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listas Pegadas</title>
+    <title>Publicar Lista</title>
+    
+    
     <link rel="stylesheet" href="styles/PublicarLista.css">
     <script type="text/javascript">
         function mostrarPopup() {
@@ -16,8 +18,13 @@
     </script>
 </head>
 <body>
+    
       <%  
         HttpSession sesion = request.getSession();
+        sesion.setAttribute("nickname","ppargento");
+        sesion.setAttribute("rol","Cliente");
+        
+        
         String nicknameSesion = (String) sesion.getAttribute("nickname");
         String rolSesion = (String) sesion.getAttribute("rol");
         Fabrica f = Fabrica.getInstance();
@@ -43,10 +50,16 @@
     %>
 
     <% if (vigente) { %>
+    <header>
+                <div class="main-container">
+                    <h1>Publicar Lista</h1>
+                </div>
+            </header> 
         <% String mensaje=(String)request.getAttribute("mensaje");
         if(mensaje!=null){%>
             <div id="felisidades" class="error" style="color: red;"><%=mensaje%></div>
-            <%}%><br><br><br><br> 
+      <%}%>
+            
             <form id="miFormulario" action="SVPublicarLista" method="POST" onsubmit="return validarSeleccion();">
                 <div class="contenedor-listas">
                     <div class="lista-contenedor">

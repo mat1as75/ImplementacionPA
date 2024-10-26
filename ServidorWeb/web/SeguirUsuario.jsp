@@ -55,6 +55,11 @@
     %>
 
     <% if (vigente) { %>
+     <header>
+        <div class="main-container">
+            <h1>Seguir Usuario</h1>
+        </div>
+    </header>   
         <form id="miFormulario" action="SVSeguirUsuario" method="post">
             <table>
                 <tr>
