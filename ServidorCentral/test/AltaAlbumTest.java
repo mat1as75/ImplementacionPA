@@ -24,11 +24,15 @@ public class AltaAlbumTest {
     
     private static ControladoraPersistencia cp;
     private static CargarDatosTest cdt;
-    private String nickArtistaDePrueba;
+    private static String nickArtistaDePrueba = "alcides";
+    private String nickArtistaDePruebaNuevo;
     
     public AltaAlbumTest() {
         cp = new ControladoraPersistencia();
         cdt = new CargarDatosTest();
+        //reseteo los datos de la base de datos al instanciar esta clase, 
+        //previo a la ejecucion de los tests
+        cdt.resetDatosDePrueba();
     }
     
     public List<DTTemaGenerico> crearDataTemasDePrueba() {
@@ -74,11 +78,11 @@ public class AltaAlbumTest {
         
         try {
             cp.AltaArtista(dtArtista);
-            this.nickArtistaDePrueba = dtArtista.getNickname();
+            this.nickArtistaDePruebaNuevo = dtArtista.getNickname();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             //fallback
-            this.nickArtistaDePrueba = "alcides";
+            this.nickArtistaDePruebaNuevo = "los_pimpi";
         }
     }
     
@@ -111,10 +115,10 @@ public class AltaAlbumTest {
         }
             
         if (fueCreado.equals(expected)) {
-            System.out.println("Test: " + test + ". OK");
+            System.out.println("Test de Alta Album: " + test + ". OK");
             return true;
         } else {
-            System.out.println("Test: " + test + ". FAIL");
+            System.out.println("Test de Alta Album: " + test + ". FAIL");
             return false;
         }
     }
@@ -122,9 +126,6 @@ public class AltaAlbumTest {
     @Before
     public void setUp() {
         //con @Before esta funcion se ejecuta antes de cada test
-        //reseteo la base de datos a un estado que tenga solo los datos de prueba
-        cdt.resetDatosDePrueba();
-        crearArtistaDePrueba();
     }
     
     @AfterClass
@@ -139,7 +140,7 @@ public class AltaAlbumTest {
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaDatosValidos",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -151,12 +152,31 @@ public class AltaAlbumTest {
     }
     
     @Test
+    public void testDatosCorrectosArtistaNuevo() {
+        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
+        
+        crearArtistaDePrueba();
+        
+        DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
+                "albumPruebaDatosValidosArtistaNuevo",
+                2000,
+                "Resource/Albums/portadasAlbum/img.jpg",
+                dataTemas,
+                dataGeneros,
+                this.nickArtistaDePruebaNuevo        
+        );
+        
+        assertTrue(comprobarCreacion(dtAlbum, "Datos correctos artista nuevo", true));
+    }
+    
+    @Test
     public void testArtistaNull() {
         List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaArtistaNull",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -189,7 +209,7 @@ public class AltaAlbumTest {
         List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaGenerosNull",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -206,7 +226,7 @@ public class AltaAlbumTest {
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaTemasNull",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 null,
@@ -223,7 +243,7 @@ public class AltaAlbumTest {
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaTemasVacios",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -240,7 +260,7 @@ public class AltaAlbumTest {
         List<DTGenero> dataGeneros = new ArrayList();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaGenerosVacios",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -257,7 +277,7 @@ public class AltaAlbumTest {
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaArtistaInexistente",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -295,7 +315,7 @@ public class AltaAlbumTest {
         dataGeneros.add(dg2);
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "20 Grandes Éxitos",
+                "albumPruebaGeneroInexistente",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -311,10 +331,10 @@ public class AltaAlbumTest {
        
         List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
-        String test = "Test: Verificar temas. "; 
+        String test = "Test de Alta Album: Verificar temas. "; 
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaVerificarTemas",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
@@ -348,7 +368,6 @@ public class AltaAlbumTest {
             System.out.println(test + "FAIL");
             assertTrue(false);
         }
-        
     }
     
     @Test
@@ -356,10 +375,10 @@ public class AltaAlbumTest {
     
         List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
-        String test = "Test: Verificar generos. "; 
+        String test = "Test de Alta Album: Verificar generos. "; 
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
-                "albumPrueba",
+                "albumPruebaVerificarGeneros",
                 2000,
                 "Resource/Albums/portadasAlbum/img.jpg",
                 dataTemas,
