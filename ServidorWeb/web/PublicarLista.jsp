@@ -47,7 +47,8 @@
 
     <% if (vigente) { %>
     <header>
-                <div class="main-container">
+            
+            <div class="main-container">
                     <h1>Publicar Lista</h1>
                 </div>
             </header> 
