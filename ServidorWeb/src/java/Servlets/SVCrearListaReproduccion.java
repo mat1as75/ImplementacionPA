@@ -34,8 +34,8 @@ public class SVCrearListaReproduccion extends HttpServlet {
         return null;
     }
     
-    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
-    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
+    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil";  
+    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,30 +56,43 @@ public class SVCrearListaReproduccion extends HttpServlet {
             if( datosC.getSuscripcion() != null){
                 estadoSuscripcionSesion = ((DTDatosCliente)datosU).getSuscripcion().getEstadoSuscripcion();
             }
-            // Comprobar si la suscripciun esta vigente
+            // Comprobar si la suscripcion esta vigente
             if (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
                 String nombreLista = request.getParameter("nombreLista");
                  
                 // Obtener el archivo de la solicitud
                 Part filePart = request.getPart("imagenLista");
 
-                // Obtener el nombre del archivo desde el header "content-disposition"
+                // Obtener el nombre del archivo 
                 String fileName = extractFileName(filePart);
 
-                // Construir la ruta de carga usando el contexto de la aplicación
-                ///home/usuario/Documentos/GitHub/ImplementacionPA/ServidorWeb/web/index.jsp
+                // Construir la ruta de carga usando el contexto 
                 String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
                 File uploadDir = new File(uploadPath);
                 if (!uploadDir.exists()) {
                     uploadDir.mkdir(); // Crear el directorio si no existe
                 }
 
-                // Verificar si el archivo ya existe y generar un nuevo nombre si es necesario
+                // Comprobar si el archivo ya existe y generar un nuevo nombre si es necesario
                 File file = new File(uploadDir, fileName);
                 int count = 1;
-                String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
-                String extension = fileName.substring(fileName.lastIndexOf('.'));
 
+                // Comprobar si el archivo tiene una extensión
+                int dotIndex = fileName.lastIndexOf('.');
+                String baseName;
+                String extension;
+
+                if (dotIndex > 0) {
+                    // Si hay un punto, separar el nombre base y la extension
+                    baseName = fileName.substring(0, dotIndex);
+                    extension = fileName.substring(dotIndex);
+                } else {
+                    // Si no hay extension, usa el nombre completo como base y deja la extension vacia
+                    baseName = fileName;
+                    extension = "";
+                }
+
+                // Cambiar el nombre si el archivo ya existe
                 while (file.exists()) {
                     fileName = baseName + "_" + count + extension; // Cambiar el nombre
                     file = new File(uploadDir, fileName);
