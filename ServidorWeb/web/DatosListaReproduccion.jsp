@@ -91,7 +91,7 @@
                         <% }%>
 
                         <!-- Agregar lista a favoritos -->
-                        <form action="AgregarListaFavoritos.jsp" method="post">
+                        <form action="SVGuardarListaFavorito" method="post">
                             <input type="hidden" name="nombreLista" value="<%= nombreLista%>"/>
                             <button type="submit" class="boton-agregar">Guardar</button>
                         </form>
