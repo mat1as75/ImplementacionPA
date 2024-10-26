@@ -163,9 +163,7 @@ public class ControladoraPersistencia {
             Genero gen = this.genJpa.findGenero(dataG.getNombreGenero());
             generosDeAlbum.add(gen);
             //agrego el nuevo album en la lista de albums del genero
-            gen.setMisAlbumes(nuevoAlbum);
-            //guardo los cambios a cada genero modificado
-            this.genJpa.edit(gen);
+            gen.setMisAlbumes(nuevoAlbum);            
         }
 
         //creo los temas y los agrego a una lista
@@ -202,7 +200,7 @@ public class ControladoraPersistencia {
         nuevoAlbum.setMiArtista(art);
         nuevoAlbum.setMisGeneros(generosDeAlbum);
         nuevoAlbum.setMisTemas(temas);
-
+        
         //guardar cambios en el artista y el album
         try {
             this.artJpa.edit(art);
