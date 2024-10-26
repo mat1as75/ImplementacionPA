@@ -20,7 +20,7 @@ public class SVError extends HttpServlet {
     public static void redirectForbidden(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("errorCode", "403");
         request.setAttribute("errorName", "Forbidden");
-        request.setAttribute("errorMsg", "Acceso no autorizado.");
+        request.setAttribute("errorMsg", "Sin sesión.");
         request.getRequestDispatcher("/Error").forward(request, response);
     }
     
@@ -28,13 +28,17 @@ public class SVError extends HttpServlet {
         request.setAttribute("errorCode", "404");
         request.setAttribute("errorName", "Not Found");
         request.setAttribute("errorMsg", "Recurso no encontrado.");
+                System.out.println("antes del redirect");
+
         request.getRequestDispatcher("/Error").forward(request, response);        
+        System.out.println("despues del redirect");
+
     }
     
     public static void redirectInternalServerError(HttpServletRequest request, HttpServletResponse response, String optionalMsg) throws ServletException, IOException {
         request.setAttribute("errorCode", "500");
         request.setAttribute("errorName", "Internal Server Error");
-        String errorMsg = (optionalMsg == null ? "Error al procesar la solicitud." : optionalMsg);
+        String errorMsg = (optionalMsg == null ? "El servidor no pudo procesar la solicitud." : optionalMsg);
         request.setAttribute("errorMsg", errorMsg);
         request.getRequestDispatcher("/Error").forward(request, response);
     }
@@ -42,7 +46,7 @@ public class SVError extends HttpServlet {
     public static void redirectBadRequest(HttpServletRequest request, HttpServletResponse response, String optionalMsg) throws ServletException, IOException {
         request.setAttribute("errorCode", "400");
         request.setAttribute("errorName", "Bad Request");
-        String errorMsg = (optionalMsg == null ? "El servidor no puede procesar la solicitud" : optionalMsg);
+        String errorMsg = (optionalMsg == null ? "El servidor no pudo procesar la solicitud" : optionalMsg);
         request.setAttribute("errorMsg", errorMsg);
         request.getRequestDispatcher("/Error").forward(request, response);
     }

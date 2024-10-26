@@ -2,6 +2,9 @@
 @import "headerConSesion.css";
 @import "headerSinSesion.css";
 
+body {
+    margin: 0;
+}
 
 header {
     display: flex;
@@ -42,7 +45,7 @@ header {
     display: flex;
     align-items: center;
     position: relative;
-    width: 100%; 
+    width: 550px; 
 }
 
 .barra-busqueda input {

@@ -1,4 +1,3 @@
-<%@page import="espotify.logica.Fabrica"%>
 <%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
@@ -18,14 +17,14 @@
     <jsp:include page="headerIndex.jsp"/>
 
     <%
-        Fabrica fb = Fabrica.getInstance();
         HttpSession sesion = request.getSession(false);
-        DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+        String rolUsuario = (String) sesion.getAttribute("rol");
     %>
+
     
-    <%  if (DTusuarioConsultado instanceof espotify.DataTypes.DTDatosCliente) { %>
+    <%  if (sesion != null && rolUsuario.equals("Cliente")) { %>
             <jsp:include page="ConsultaPerfilCliente.jsp"/>
-    <%  } else {  %>
+    <%  } else if (rolUsuario.equals("Artista")) {  %>
             <jsp:include page="ConsultaPerfilArtista.jsp"/>
     <%  }  %>
     

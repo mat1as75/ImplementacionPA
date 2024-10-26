@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package Servlets;
 
 import espotify.DataTypes.DTDatosUsuario;
@@ -43,13 +46,14 @@ public class SVExisteAlbum extends HttpServlet {
             return;
         }
         
-        String nickname = (String) sesion.getAttribute("nickname");
-        if (nickname == null) {
+        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
+        if (datosUsuario == null) {
             response.setStatus(response.SC_UNAUTHORIZED);
             response.getWriter().write("Error al obtener la sesión de usuario.");
             return;
         }
 
+        String nickname = datosUsuario.getNicknameUsuario();
         String album;
         
         BufferedReader reader = request.getReader();

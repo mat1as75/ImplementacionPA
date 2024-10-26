@@ -12,7 +12,6 @@
 }
 
 .audioPlayerContainer audio {
-    margin: 0 auto;
     max-width: var(--audio-player-max-width);
     border: 1px solid var(--color-green-primary);
     border-radius: var(--border-radius-containers);
@@ -26,7 +25,7 @@
     background-color: var(--bg-color-dark-3);
 }
 
-.audioPlayerContainer .portada {
+.audioPlayerContainer img {
     display: inline-block;
     width: 100%;
     border: 1px solid var(--color-green-primary);
@@ -36,17 +35,16 @@
 
 .audioPlayerContainer p {
     margin: auto auto;
-    padding: .5rem .2rem;
+    padding: .7rem 0;
     font-weight: bold;
     font-size: 1rem;
 }
-
 
 .audioPlayerContainer a {
     border: 1px solid var(--color-grey-accent);
     border-radius: var(--border-radius-containers);
     background-color: var(--bg-color-dark-3);
-    padding: 0 .5rem;
+    padding: .2rem;
     display: block;
     color: var(--color-white);
     text-decoration: none;
@@ -58,62 +56,6 @@
     color: var(--color-white);
 }
 
-.btnsPlaylistContainer {
-    display:flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    border: 1px solid var(--color-grey-accent);
-    border-radius: var(--border-radius-containers);
-    background-color: var(--bg-color-dark-3);
-}
-
-.btnsPlaylist i {
-    font-size: 1.4em;
-    font-weight: bold;
-    color: var(--color-white);
-}
-
-.dropdownMenu {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdownContent {
-    position: absolute;
-    background-color: var(--bg-color-dark-4);
-    border: 1px solid var(--color-grey-accent);
-    border-radius: var(--border-radius-containers);
-    color: var(--color-white);
-    z-index: 1;
-    padding: .5rem 1rem;
-    width: 220px;
-    overflow: auto;
-}
-
-.dropdownContent a {
-    margin: .3rem auto;
-    font-size: 1em;
-}
-
-
-.temaPerteneceALista {
-    color: var(--color-green-primary);
-}
-
-.temaPerteneceALista::after {
-    font-family:'Bootstrap-icons';
-    color: var(--color-red-error);
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-left: 1em;
-    content: '\F2E9';
-}
-
-.temaNoPerteneceALista::after {
-    font-family:'Bootstrap-icons';
-    color: var(--color-green-primary);
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-left: 1em;
-    content: '\F4FD';
+.hidden {
+    display:none;
 }

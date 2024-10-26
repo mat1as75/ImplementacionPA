@@ -64,23 +64,23 @@ public class Album implements Serializable {
     }
     
     public String getNombreAlbum() {
-        return this.nombreAlbum;
+        return nombreAlbum;
     }
 
     public int getAnioCreacion() {
-        return this.anioCreacion;
+        return anioCreacion;
     }
 
     public String getFotoAlbum() {
-        return this.fotoAlbum;
+        return fotoAlbum;
     }
 
     public List<Tema> getMisTemas() {
-        return this.misTemas;
+        return misTemas;
     }
 
     public List<Genero> getMisGeneros() {
-        return this.misGeneros;
+        return misGeneros;
     }
 
     public List<String> getMisGenerosString() {
@@ -92,7 +92,7 @@ public class Album implements Serializable {
     }
     
     public Usuario getMiArtista() {
-        return this.miArtista;
+        return miArtista;
     }
 
     public void setNombreAlbum(String nombreAlbum) {

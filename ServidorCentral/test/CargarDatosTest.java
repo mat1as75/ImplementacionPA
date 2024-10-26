@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -61,9 +62,14 @@ public class CargarDatosTest {
         comentar este test cuando se quiera ver el resultado de las inserciones y modificaciones en la BD,
         de lo contrario se resetea la base de datos al ejecutar este test
     */    
+//    @Test
+//    public void testCargarDatos(){
+//        assertTrue(resetDatosDePrueba());
+//    }
+    
     @Test
-    public void testCargarDatos(){
-        assertTrue(resetDatosDePrueba());
+    public void test1() {
+        assertTrue(true);
     }
     
 }

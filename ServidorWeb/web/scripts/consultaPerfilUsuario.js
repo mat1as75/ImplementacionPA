@@ -1,4 +1,3 @@
-// Tab Bar
 jQuery(document).ready(function () {
     jQuery('.tabs .tab-links a').on('click', function (e) {
         var currentAttrValue = jQuery(this).attr('href');
@@ -12,22 +11,6 @@ jQuery(document).ready(function () {
         e.preventDefault();
     });
 });
-
-//document.addEventListener("DOMContentLoaded", evt => {
-//    const tabId = window.location.href.substr(-4);
-//    console.log(tabId);
-//
-//    const activeLi = document.querySelector("li[class='active']");
-//    const activeTab = document.querySelector("div[class='tab active']");
-//
-//    activeLi.classList.remove("active");
-//    activeTab.classList.remove("active");
-//    const newActiveLi = document.querySelector(`li[href="${tabId}"]`);
-//
-//    newActiveLi.classList.add("active");
-//    document.querySelector(`#{tabId}`).classList.add("active");
-//
-//});
 
 function redirigirFavoritosCliente() {
     window.location.href = "ConsultaPerfilUsuario.jsp#favoritos";

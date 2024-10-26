@@ -17,7 +17,6 @@ import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
-import espotify.logica.Suscripcion.TipoSuscripcion;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -109,10 +108,6 @@ public interface IControlador {
     public abstract ArrayList<DTSuscripcion> getDTSuscripciones();
     public abstract DTSuscripcion getDTSuscripcion(Long id);
     public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
-    public abstract DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception;
-    public abstract void ingresarNuevaSuscripcion(String nickname, TipoSuscripcion tipoSuscripcion) throws Exception;
-    
-    public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
-    public abstract List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception;
 
+    public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
 }

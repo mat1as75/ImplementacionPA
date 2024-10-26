@@ -6,9 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrarte</title>
+    <title>Alta de Perfil</title>
     <link rel="stylesheet" href="styles/AltaPerfil.css">
-    <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
 </head>
 <body>
 
