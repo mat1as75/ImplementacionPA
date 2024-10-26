@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+}
+
+#opciones option[disabled] {
+    display: none;
+}
+
+.opciones-Bar {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 50%;
+    margin: auto;
+    margin-top: 25px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 700px;
+    min-width: 500px;
+    max-width: 800px;
+    overflow-y: auto;
+}
+
+.columnDiv {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 10px; /* Espacio entre elementos */
+}
+
+.columnDiv p {
+    margin-left: 10px;
+    font-family: 'Monospace';
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.columnDiv .opciones {
+    font-family: 'Monospace';
+    font-size: 14px;
+    margin-top: 13px;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.columnDiv .opciones #opciones {
+    font-family: 'Monospace';
+    font-size: 14px;
+}
+
+.columnDiv .opciones #opciones option:checked {
+    background-color: #ccc;
+}
+
+.divisor {
+    border-top: 1px solid #ccc;
+    width: 98%;
+    margin: 10px 0;
+    margin-left: 6px;
+}
+
+.resultados {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.resultados form {
+/*    border: 1px solid #ccc;*/
+    padding: 10px;
+    width: 200px;
+}
+
+.resultados p {
+    margin: auto;
+    margin-top: 50px;
+    margin-left: -50%;
+    font-family: 'Monospace';
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.resultados p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Botones con Resultados */
+.resultados button {
+    padding: 0;
+    font-family: 'Monospace';
+    background-color: transparent;
+    border: none;
+}
+
+.resultados button:hover {
+    cursor: pointer;
+}

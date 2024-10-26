@@ -1,6 +1,11 @@
 package espotify.logica;
 
+
 import java.util.Date;
+import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.DataTypes.DTTemaSimple;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -24,10 +29,9 @@ public class ListaParticular extends ListaReproduccion{
          this.soyPrivada = soyPrivada;
     }
     
-    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente,Date fechaCreacion, boolean soyPrivada){
-         super(nombreLista, fotoLista);
+    public ListaParticular(String nombreLista, String fotoLista, Cliente miCliente, Date fechaCreacion, List<Tema> misTemas, boolean soyPrivada){
+         super(nombreLista, fotoLista, fechaCreacion, misTemas);
          this.miCliente = miCliente;
-         this.fechaCreacion = fechaCreacion;
          this.soyPrivada = soyPrivada;
     }
     
@@ -50,5 +54,22 @@ public class ListaParticular extends ListaReproduccion{
     
     public void setMiClienteNull() {
         this.miCliente = null;
+    }
+    
+    public DTDatosListaReproduccion getDTDatosListaReproduccion() {
+        List<DTTemaSimple> listaDtTemas = new ArrayList();
+
+        for (Tema tema : this.getMisTemas()) {
+            listaDtTemas.add(tema.getDTTemaSimple());
+        }
+
+        return new DTDatosListaReproduccion(
+        this.getNombreLista(),
+        this.getFotoLista(),
+        "ListaParticular",
+        listaDtTemas,
+        this.getCliente().getNickname(),
+        this.soyPrivada()
+        );
     }
 }

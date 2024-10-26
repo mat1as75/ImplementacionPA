@@ -54,7 +54,8 @@ public class Cliente extends Usuario{
     )
     private List<ListaParticular> misListasReproduccionCreadas;
     
-    @OneToOne (mappedBy="miCliente")
+    @OneToOne
+    @JoinColumn(name = "idSuscripcion")
     private Suscripcion miSuscripcion;
 
     // Constructores

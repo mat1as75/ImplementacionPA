@@ -60,18 +60,24 @@ public class SVInicioSesion extends HttpServlet {
 
         /* Usuario existe en el Sistema */
         if (dtUser != null) {
-            /* Obtengo datos del Usuario */
-            DTDatosUsuario datosUsuario = control.getDatosUsuario(indentificadorUsuario);
+            /* Si el Usuario Existe en el Sistema simplemente 
+                dejo su Nickname como atributo de la Sesion */
             
             /* Crear sesion para el usuario */
             HttpSession miSesion = request.getSession();
-            miSesion.setAttribute("usuario", datosUsuario);
+            miSesion.setAttribute("nickname", (String) dtUser.getNickname());
+            miSesion.setAttribute("DTusuarioConsultado", null);
 
-            if (datosUsuario instanceof DTDatosCliente)
+            if (dtUser instanceof DTCliente){
                 miSesion.setAttribute("rol", "Cliente");
-            else
+            }else{
                 miSesion.setAttribute("rol", "Artista");
+            }
             
+            /* Creo una cookie que persiste */
+            Cookie cookie = new Cookie("sessionId", miSesion.getId());
+            cookie.setMaxAge(60 * 60 * 24); // 1 dia
+            response.addCookie(cookie);
             
 //            if (datosUsuario.getClass().equals(DTDatosCliente.class))
 //                miSesion.setAttribute("rol", "Cliente");
@@ -83,10 +89,7 @@ public class SVInicioSesion extends HttpServlet {
             response.addCookie(cookieMiSesion);
 
             /* Redirecciono al Usuario */
-            response.sendRedirect("index.jsp");
-
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write("Inicio de sesion exitoso!");
+            response.sendRedirect("index.jsp?mensaje=abierta");
         } else {
             /* Usuario no existe en el Sistema */
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

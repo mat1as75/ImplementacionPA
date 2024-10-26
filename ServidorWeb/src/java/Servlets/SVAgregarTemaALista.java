@@ -25,28 +25,16 @@ public class SVAgregarTemaALista extends HttpServlet {
         private Long idTema;
 
         JsonData() {};
-        
         JsonData(String nombreListaReproduccion, Long idTema) {
             this.nombreListaReproduccion = nombreListaReproduccion;
             this.idTema = idTema;
         }
         
-        public String getNombreListaReproduccion() {
-            return nombreListaReproduccion;
-        }
-
-        public void setNombreListaReproduccion(String nombreListaReproduccion) {
-            this.nombreListaReproduccion = nombreListaReproduccion;
-        }
-
-        public Long getIdTema() {
-            return idTema;
-        }
-
-        public void setIdTema(Long idTema) {
-            this.idTema = idTema;
-        }
-        
+        public String getNombreListaReproduccion() { return nombreListaReproduccion; }
+        public void setNombreListaReproduccion(String nombreListaReproduccion) { 
+            this.nombreListaReproduccion = nombreListaReproduccion; }
+        public Long getIdTema() { return idTema; }
+        public void setIdTema(Long idTema) { this.idTema = idTema; }
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -55,7 +43,6 @@ public class SVAgregarTemaALista extends HttpServlet {
         HttpSession sesion = request.getSession(false);
         if (sesion == null) {
             SVError.redirectForbidden(request, response);
-            return;
         }
     }
     
@@ -98,8 +85,7 @@ public class SVAgregarTemaALista extends HttpServlet {
 
         try {
             ictrl.agregarTemaALista(idTema, nombreLista);
-            response.setStatus(response.SC_CREATED);
-            response.getWriter().write("Tema agregado exitosamente a la lista "+ nombreLista +".");
+            response.setStatus(response.SC_NO_CONTENT);
         } catch (Exception e) {
             response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
             if (e instanceof NonexistentEntityException) {

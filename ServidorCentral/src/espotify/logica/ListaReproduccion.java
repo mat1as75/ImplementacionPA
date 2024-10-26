@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -18,6 +20,9 @@ public abstract class ListaReproduccion implements Serializable {
     @Id
     protected String nombreLista;
     protected String fotoLista;
+    
+
+    @Temporal(TemporalType.DATE)
     protected Date fechaCreacion;
  
     // Referencias
@@ -32,6 +37,13 @@ public abstract class ListaReproduccion implements Serializable {
     public ListaReproduccion(String nombreLista, String fotoLista) {
         this.nombreLista = nombreLista;
         this.fotoLista = fotoLista;
+    }
+
+    public ListaReproduccion(String nombreLista, String fotoLista, Date fechaCreacion, List<Tema> misTemas) {
+        this.nombreLista = nombreLista;
+        this.fotoLista = fotoLista;
+        this.fechaCreacion = fechaCreacion;
+        this.misTemas = misTemas;
     }
     
     // Getters & Setters
@@ -60,7 +72,7 @@ public abstract class ListaReproduccion implements Serializable {
     }
     
     public List<Tema> getMisTemas() {
-        return misTemas;
+        return this.misTemas;
     }  
     
     public void setMisTemas(List<Tema> temas) {

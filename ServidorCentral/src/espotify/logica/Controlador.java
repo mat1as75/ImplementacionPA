@@ -144,7 +144,7 @@ public class Controlador implements IControlador{
     
     @Override
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
-        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente,fechaCreacion, esPrivada);
     }
     
     @Override
@@ -470,6 +470,24 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        try {
+            return this.contpersis.getDTSuscripcionDeCliente(nickname);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
+    public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        try {
+            this.contpersis.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
     public boolean existeArtista(String nicknameArtista) {
         return this.contpersis.existeArtista(nicknameArtista);
     }
@@ -478,5 +496,11 @@ public class Controlador implements IControlador{
     public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
         return this.contpersis.getDTTemaGenericoConRutaOUrl(idTema);
     }
+    
+    @Override
+    public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception {
+        return this.contpersis.getListaDTDatosListaReproduccionDeCliente(nicknameCliente);
+    }
+
 }
 
