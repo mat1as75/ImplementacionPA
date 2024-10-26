@@ -1,0 +1,110 @@
+
+.titlePrimary {
+    font-size: 2em;
+}
+
+.radioCard {
+    display:none;
+}
+
+.serviciosContainer {
+    padding: 0 .5rem;
+    margin: 0 auto;
+    max-width: 800px;
+    border: 1px solid var(--l-color-grey-accent);
+    background-color: var(--l-bg-color-2);
+    border-radius: var(--l-border-radius-containers);
+    padding: .3rem 1rem 1.5rem 1rem;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+}
+
+.serviciosContainer ul {
+    list-style: none;
+    padding: 0 2rem;
+}
+
+.serviciosContainer li {
+    background-color: #aeaeae;
+    border: 1px solid var(--color-grey-accent);
+    border-radius: var(--l-border-radius-containers);
+    padding: .8rem 1.5rem;
+    margin: 1.2rem 0;
+}
+
+.serviciosContainer li::before {
+    font-family:'Bootstrap-icons';
+    content: '\F26D';
+    color: var(--l-font-color-grey);
+    font-size: 1.5em;
+    padding-right: .3em;
+}
+
+.planesContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 1px solid var(--l-color-grey-accent);
+    background-color: var(--l-bg-color-2);
+    border-radius: var(--l-border-radius-containers);
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    padding: .3rem 1rem 1.5rem 1rem;
+    margin: 2rem 0;
+}
+
+.planesContainer h2 {
+    width: 100%;
+}
+
+.cardPlanes {
+    display: flex;
+    cursor: pointer;
+    flex-basis: 10rem;
+    padding: 2rem;
+    margin: .5rem .8rem;
+    text-align: center;
+    font-weight: bold;
+    justify-content: center;
+    flex-direction: column;
+    color: #000;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    border-radius: var(--l-border-radius-containers);
+    border: 1px solid var(--color-grey-accent);
+    background-color: var(--l-bg-color-3);
+}
+
+.cardPlanes h3 {
+    font-size: 1.5em;
+}
+
+.cardPlanes p {
+    font-size: 1.3em;
+    font-weight: bold;
+    border-bottom: 2px solid #101010;
+}
+
+.cardPlanes:hover {
+    box-shadow: 5px 5px 10px #000;
+}
+
+.selectedCard {
+    border: 3px solid #000;
+    box-shadow: 3px 3px 10px #202020;
+}
+
+.btnConfirmarContainer {
+    margin: 1.5rem;
+    padding: 1.5rem;
+    width: 100%;
+    background-color: #aeaeae;
+    border: 1px solid #000;
+    border-radius: var(--l-border-radius-containers);
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    display: flex;
+    justify-content: center;
+}
+
+.btnConfirmarContainer .btncustom {
+    width: 200px;
+}
+

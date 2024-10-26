@@ -53,7 +53,7 @@ public class SVError extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+        request.getRequestDispatcher("/pages/ErrorPage.jsp").forward(request, response);
     }
 
     @Override
