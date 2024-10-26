@@ -429,6 +429,15 @@ public class Controlador implements IControlador{
     public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
         return this.contpersis.getDTAlbumesSimplePorGenero(genero);
     }
+    
+    @Override
+    public ArrayList<DTAlbum> getDTAlbumesPorGenero(String genero){
+        return this.contpersis.getDTAlbumesPorGenero(genero);
+    }
+    @Override
+    public ArrayList<DTAlbum> getDTAlbumesPorArtista(String artista){
+        return this.contpersis.getDTAlbumesPorArtista(artista);
+    }
 
     @Override
     public List<String> getUsuariosSinEste(String nickname){
@@ -478,5 +487,7 @@ public class Controlador implements IControlador{
     public DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema) {
         return this.contpersis.getDTTemaGenericoConRutaOUrl(idTema);
     }
+    
+   
 }
 

@@ -9,6 +9,7 @@ import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author brisa
  */
-@WebServlet(name = "SVConsultaAlbum", urlPatterns = {"/SVConsultaAlbum"})
-public class SVConsultaAlbum extends HttpServlet {
+@WebServlet(name = "SVCargaAlbumes", urlPatterns = {"/SVCargaAlbumes"})
+public class SVCargaAlbumes extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,23 +48,32 @@ public class SVConsultaAlbum extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Obtener el controlador
+        throws ServletException, IOException {
+        
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();
         
-        // Obtener el ID del álbum desde la solicitud
-        String albumIdStr = request.getParameter("albumId");
+        // Obtener parámetros de la solicitud
+        String tipo = request.getParameter("tipo"); // "genero" o "artista"
+        String nombre = request.getParameter("nombre");
         
-        if (albumIdStr != null) {
-            Long albumId = Long.parseLong(albumIdStr);
-            DTAlbum album = control.ConsultaAlbum(albumId);
-            request.setAttribute("album", album);
-            request.getRequestDispatcher("detalleAlbum.jsp").forward(request, response);
+        List<DTAlbum> albumes;
+        
+        if ("genero".equals(tipo)) {
+            albumes = control.getDTAlbumesPorGenero(nombre);
+        } else if ("artista".equals(tipo)) {
+            albumes = control.getDTAlbumesPorArtista(nombre);
         } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de álbum inválido");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tipo inválido");
+            return;
         }
+        
+        request.setAttribute("albumes", albumes);
+        request.setAttribute("titulo", tipo.equals("genero") ? "Álbumes del género " + nombre : "Álbumes del artista " + nombre);
+        
+        request.getRequestDispatcher("albumes.jsp").forward(request, response);
     }
+    
 
     /**
      * Handles the HTTP <code>POST</code> method.

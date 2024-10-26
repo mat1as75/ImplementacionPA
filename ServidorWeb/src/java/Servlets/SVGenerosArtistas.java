@@ -5,22 +5,26 @@
 package Servlets;
 
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author brisa
  */
-@WebServlet(name = "SVConsultaAlbum", urlPatterns = {"/SVConsultaAlbum"})
-public class SVConsultaAlbum extends HttpServlet {
+@WebServlet(name = "SVGenerosArtistas", urlPatterns = {"/SVGenerosArtistas"})
+public class SVGenerosArtistas extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,8 +37,10 @@ public class SVConsultaAlbum extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+            
     }
+            
+   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -47,24 +53,32 @@ public class SVConsultaAlbum extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Obtener el controlador
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
-        
-        // Obtener el ID del álbum desde la solicitud
-        String albumIdStr = request.getParameter("albumId");
-        
-        if (albumIdStr != null) {
-            Long albumId = Long.parseLong(albumIdStr);
-            DTAlbum album = control.ConsultaAlbum(albumId);
-            request.setAttribute("album", album);
-            request.getRequestDispatcher("detalleAlbum.jsp").forward(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de álbum inválido");
-        }
-    }
+        throws ServletException, IOException {
+    
+    Fabrica fb = Fabrica.getInstance();
+    IControlador control = fb.getControlador();
 
+    // Obtener géneros y artistas
+    
+    // Devuelve lista de géneros disponibles
+    ArrayList<String> generos = control.getNombresGenerosPadre();
+    for(String Gh : control.getNombresGenerosHijos()){
+        generos.addLast(Gh);
+    }
+    
+    // Devuelve lista de artistas disponibles
+    ArrayList<String> artistas = control.getNicknamesArtistas(); 
+
+    // Enviar géneros y artistas como atributos de la solicitud
+    request.setAttribute("generos", generos);
+    request.setAttribute("artistas", artistas);
+
+    // Redireccionar a la página JSP donde se mostrará la información
+    request.getRequestDispatcher("/GenerosArtistas.jsp").forward(request, response);
+}
+
+            
+ 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -76,7 +90,7 @@ public class SVConsultaAlbum extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            
     }
 
     /**

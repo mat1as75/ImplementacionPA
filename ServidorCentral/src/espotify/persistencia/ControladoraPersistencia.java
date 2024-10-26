@@ -819,6 +819,32 @@ public class ControladoraPersistencia {
         }
         return dataAlbums;
     }
+    
+    public ArrayList<DTAlbum> getDTAlbumesPorGenero(String genero) {
+        ArrayList<DTAlbum> dataAlbums = new ArrayList<>();
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+
+        for (Album album : listaAlbumes) {
+
+            if (album.getMisGenerosString().contains(genero)) {
+                dataAlbums.add(album.getDataAlbum());
+            }
+        }
+        return dataAlbums;
+    }
+    
+    public ArrayList<DTAlbum> getDTAlbumesPorArtista(String nickArtista) {
+        ArrayList<DTAlbum> dataAlbums = new ArrayList<>();
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+
+        for (Album album : listaAlbumes) {
+
+            if (album.getMiArtista().getNickname().equals(nickArtista)) {
+                dataAlbums.add(album.getDataAlbum());
+            }
+        }
+        return dataAlbums;
+    }
 
     public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
 

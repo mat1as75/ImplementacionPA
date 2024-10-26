@@ -110,4 +110,9 @@ public interface IControlador {
     public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
 
     public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
+    
+    public abstract ArrayList<DTAlbum> getDTAlbumesPorGenero(String genero);
+    public abstract ArrayList<DTAlbum> getDTAlbumesPorArtista(String genero);
+    
+
 }
