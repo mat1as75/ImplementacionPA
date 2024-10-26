@@ -381,6 +381,7 @@ function createFileInput(nombreTema) {
     input.setAttribute("data-type", "file-tema");
     input.setAttribute("type", "file");
     input.setAttribute("accept", ".mp3, .wav");
+    input.setAttribute("class", "inputFile");
     
     label.setAttribute("for", `file-${nombreTema}`);
         
@@ -449,9 +450,8 @@ function addLiTema() {
 
 //Remueve el <li> del tema seleccionado y lo borra del map
 function removeLiTema(liElement){
-    const nombre = liElement.getAttribute("data-name");
-        
-    if (liElement != null) {
+    if (liElement) {
+        const nombre = liElement.getAttribute("data-name");
         liElement.remove();
         mapTemasAgregados.delete(nombre);
     }

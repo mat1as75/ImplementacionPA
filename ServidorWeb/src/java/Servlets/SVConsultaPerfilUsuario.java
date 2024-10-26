@@ -70,15 +70,19 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         if (usuarioConsultado == null) {
             // ConsultaPerfilUsuario propio de la Sesion
             datosUsuario = control.getDatosUsuario(nicknameUsuarioSesion);
-
         } else {
             // ConsultaPerfilUsuario desde SearchBar
             datosUsuario = control.getDatosUsuario(usuarioConsultado);
         }
         
-        
-        // Envio un DataType con los datos del Usuario consultado
-        sesion.setAttribute("DTusuarioConsultado", datosUsuario);
+        if (datosUsuario instanceof espotify.DataTypes.DTDatosCliente) {
+            System.out.println("SVCONSULTA " + datosUsuario.getClass());
+            // Envio un DataType con los datos del Usuario consultado
+            sesion.setAttribute("DTusuarioConsultado", (DTDatosCliente) datosUsuario);
+        } else {
+            // Envio un DataType con los datos del Usuario consultado
+            sesion.setAttribute("DTusuarioConsultado", (DTDatosArtista) datosUsuario);
+        }
 
         
 //        /* DATOS DE PERFIL CONSULTADO */

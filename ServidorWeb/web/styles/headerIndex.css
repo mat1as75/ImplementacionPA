@@ -42,10 +42,11 @@ header {
     display: flex;
     align-items: center;
     position: relative;
-    width: 550px; 
+    width: 100%; 
 }
 
 .barra-busqueda input {
+    min-width: 150px;         /* No permite que el input de busqueda se achique a menos de 150px */
     width: 100%;              /* Ocupa todo el ancho del contenedor */
     padding: 10px 40px;      /* Espaciado interno */
     border: 1px solid #000;   /* Borde */

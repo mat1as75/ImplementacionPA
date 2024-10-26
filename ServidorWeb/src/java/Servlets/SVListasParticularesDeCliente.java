@@ -22,8 +22,6 @@ public class SVListasParticularesDeCliente extends HttpServlet {
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
 
-       
-        
     }
 
     @Override
@@ -36,8 +34,8 @@ public class SVListasParticularesDeCliente extends HttpServlet {
             SVError.redirectForbidden(request, response);
         }
         
-        DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-        if (datosUsuario == null) {
+        String nickname = (String) sesion.getAttribute("nickname");
+        if (nickname == null) {
             response.setContentType("text/plain");
             response.getWriter().write("Visitante");
             return;
@@ -45,7 +43,6 @@ public class SVListasParticularesDeCliente extends HttpServlet {
         
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
-        String nickname = datosUsuario.getNicknameUsuario();
         Boolean existeCliente = ictrl.ExisteCliente(nickname);
         
         if (!existeCliente) {

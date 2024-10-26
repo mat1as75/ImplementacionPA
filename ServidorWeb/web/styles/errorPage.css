@@ -1,0 +1,14 @@
+.sectionContainer {
+    max-width: 450px;
+    margin: 3rem auto;
+    padding: 2rem;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    background-color: var(--l-bg-color-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.errorImg {
+    width: 100px;
+}

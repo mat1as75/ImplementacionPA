@@ -22,27 +22,10 @@
         HttpSession sesion = request.getSession(false);
         DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
     %>
-
-    <%
-//        if (tipoUsuario.equals("Visitante")) {
-//            
-//        }
-//        
-//        
-//        
-//        if (nicknameUsuarioConsultar != null) {
-//            if (sesion != null && rolUsuario.equals("Visitante") && ) {
-//            
-//            }
-//        }
-            
-    %>
     
-    <%  if (DTusuarioConsultado instanceof DTDatosCliente) { %>
-    <%System.out.println("ACA DTDATOSCLIENTE");%>
+    <%  if (DTusuarioConsultado instanceof espotify.DataTypes.DTDatosCliente) { %>
             <jsp:include page="ConsultaPerfilCliente.jsp"/>
     <%  } else {  %>
-    <%System.out.println("ACA DTDATOSARTISTA");%>
             <jsp:include page="ConsultaPerfilArtista.jsp"/>
     <%  }  %>
     

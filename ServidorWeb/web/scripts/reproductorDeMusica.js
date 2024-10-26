@@ -394,5 +394,3 @@ async function fetchListasReproduccion(idDropdownContent) {
         loadDropdownContent(contentTypes[2], "Error al cargar las listas.", idDropdownContent);
     }  
 }
-
-
