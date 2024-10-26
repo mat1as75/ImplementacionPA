@@ -35,7 +35,7 @@
         nombreTema es opcional, se usa para mostrar el nombre del tema en reproduccion
         srcPortada es opcional, se usa para cargar la foto de portada del album o lista que se desea mostrar
 -->
-<div id="audioFilePlayerContainer" data-idTema="11" class="audioPlayerContainer">    
+<div id="audioFilePlayerContainer" data-idTema="" class="audioPlayerContainer">    
     <img  class="portada" id="filePlayerImg" src="imagenes/spotifyLogo.png" alt="Logo de spotify"/>
     <p id="nombreTemaFile" class="pNombreTema" >Tema</p>
     <audio id="audioFilePlayer" autoplay controls controlslist="nofullscreen" type="audio/mpeg" src="" >
