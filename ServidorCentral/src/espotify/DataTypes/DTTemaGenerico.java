@@ -13,6 +13,7 @@ public class DTTemaGenerico {
         this.nombreTema = nombreTema;
         this.duracionSegundos = duracionSegundos;
         this.posicionEnAlbum = posicionEnAlbum;
+        
     }
 
     public String getNombreTema() {
@@ -62,5 +63,7 @@ public class DTTemaGenerico {
     public void setMiAlbum(DTAlbum miAlbum) {
         this.miAlbum = miAlbum;
     }
+    
+    
     
 }
