@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -498,8 +500,12 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
             DefaultListModel<String> listaAlbumesFavoritos = new DefaultListModel<>();
-            ArrayList<String> nombresAlbumesFavoritos = datosCliente.getNombresAlbumesFavoritos();
-        
+            ArrayList<String> nombresAlbumesFavoritos = new ArrayList<>();
+            if (datosCliente.getNombresAlbumesFavoritos() != null) {
+                nombresAlbumesFavoritos.addAll(datosCliente.getNombresAlbumesFavoritos().values());
+                System.out.println("- ALB" + nombresAlbumesFavoritos.get(0));
+            }
+
             for (String nombreAlbumF: nombresAlbumesFavoritos) {
                 listaAlbumesFavoritos.addElement(nombreAlbumF);
             }
@@ -509,7 +515,11 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
             DefaultListModel<String> listaTemasFavoritos = new DefaultListModel<>();
-            ArrayList<String> nombresTemasFavoritos = datosCliente.getNombresTemasFavoritos();
+            ArrayList<String> nombresTemasFavoritos = new ArrayList<>();
+            if (datosCliente.getNombresTemasFavoritos() != null) {
+                nombresTemasFavoritos.addAll(datosCliente.getNombresTemasFavoritos().values());
+                System.out.println("- TEM" + nombresTemasFavoritos.get(0));
+            }
             
             for (String nombreTemaF: nombresTemasFavoritos) {
                 listaTemasFavoritos.addElement(nombreTemaF);

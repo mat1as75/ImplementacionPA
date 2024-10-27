@@ -6,7 +6,7 @@
 <%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
 <%@ page import="espotify.logica.Fabrica" %>
 <%@ page import="espotify.logica.IControlador" %>
-
+<!DOCTYPE html>
 <%
     String nombreLista = request.getParameter("nombreLista");
     Fabrica f = Fabrica.getInstance();
@@ -60,6 +60,7 @@
     <head>
         <script src="scripts/ConsultaListaReproduccion.js"></script>
         <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <jsp:include page="headerIndex.jsp"/>
     <body>

@@ -1,3 +1,5 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="espotify.logica.IControlador"%>
 <%@page import="espotify.logica.Fabrica"%>
 <%@page import="espotify.DataTypes.DTDatosArtista"%>
@@ -25,8 +27,9 @@
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
     ArrayList<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
-            nombresTemasFavConsultados = null, nombresAlbumesFavConsultados = null, nombresListasRFavConsultadas = null, 
-            nombresListasRConsultadas = null, nombresListasPublicasConsultadas = null;
+            nombresListasRFavConsultadas = null, nombresListasRConsultadas = null, nombresListasPublicasConsultadas = null;
+    
+    Map<Long, String> temasFavConsultados = new HashMap<>(), albumesFavConsultados = new HashMap<>();
     
     /*-----DATOS USUARIO CONSULTADO------*/
     clienteConsultado = (DTDatosCliente) usuarioConsultado;
@@ -38,13 +41,15 @@
     fotoPerfilConsultado = (fotoPerfilConsultado != null) ? fotoPerfilConsultado.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac());
-    nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores(); 
+    nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
     if (rolSesion != null) { /* Si existe Sesion (Cliente o Artista) */
-    
+        
         usuarioSesion = control.getDatosUsuario(nicknameSesion);
+        System.out.println("ACA " + ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion());
         if (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
             ((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
             estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+            System.out.println("### " + estadoSuscripcionSesion);
         }
         
         /* UsuarioSesion == UsuarioConsultado */
@@ -71,8 +76,8 @@
                     nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadas();
 
                     // Preferencias que tiene guardadas
-                    nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
-                    nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
+                    temasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
+                    albumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
                     nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
                 }  
             }
@@ -103,8 +108,8 @@
                     }
 
                     // Preferencias que tiene guardadas
-                    nombresTemasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
-                    nombresAlbumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
+                    temasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
+                    albumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
                     nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
                     
             }
@@ -253,10 +258,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% for (String lista : nombresListasRConsultadas) { %>
-                                                  <tr>
-                                                      <td><%= lista %></td>
-                                                  </tr>
+                                            <% for (int i = 0; i < nombresListasRConsultadas.size(); i++) { %>
+                                            <tr>
+                                                <td><a href="DatosListaReproduccion.jsp?nombreLista=<%= nombresListasRConsultadas.get(i) %>"><%= nombresListasRConsultadas.get(i) %></a></td>
+                                            </tr>
                                             <% } %>
                                         </tbody>
                                     </table>
@@ -265,7 +270,7 @@
 
                         <div class="tabla-preferencias">
                             <% if (rolSesion != null) { %>
-                                <% if (nombresTemasFavConsultados.size() > 0 || nombresAlbumesFavConsultados.size() > 0 || nombresListasRFavConsultadas.size() > 0) { %>
+                                <% if (temasFavConsultados.size() > 0 || albumesFavConsultados.size() > 0 || nombresListasRFavConsultadas.size() > 0) { %>
                                 <div class="divisor d-none d-sm-block"></div>    
                                 <h3 class="preferencias">Preferencias</h3>
                                     <table>
@@ -279,24 +284,38 @@
                                         <tbody>
 
                                             <%   
-                                            int sizeTemas = nombresTemasFavConsultados.size();
-                                            int sizeAlbumes = nombresAlbumesFavConsultados.size();
-                                            int sizeListas = nombresListasRFavConsultadas.size();
+                                                int sizeTemas = temasFavConsultados.size();
+                                                int sizeAlbumes = albumesFavConsultados.size();
+                                                int sizeListas = nombresListasRFavConsultadas.size();
 
-                                            int max = Math.max(Math.max(sizeTemas, sizeAlbumes), sizeListas); 
+                                                int max = Math.max(Math.max(sizeTemas, sizeAlbumes), sizeListas);
+
+                                                // Conviertir las entradas del Map a List
+                                                List<Map.Entry<Long, String>> entryTemasFav = new ArrayList<>(temasFavConsultados.entrySet());
+                                                List<Map.Entry<Long, String>> entryAlbumesFav = new ArrayList<>(albumesFavConsultados.entrySet());
                                             %>
 
                                             <% for (int i = 0; i < max; i++) {%>
                                             <tr>
                                                 <% if (sizeTemas > 0) { %>
-                                                    <td><%= nombresTemasFavConsultados.get(i)%></td>
+                                                    <%
+                                                        Map.Entry<Long, String> entryTemaFav = entryTemasFav.get(i);
+                                                        Long idTema = entryTemaFav.getKey();
+                                                        String nombreTema = entryTemaFav.getValue();
+                                                    %>
+                                                    <td><a href="ConsultaTema?temaId=<%= idTema %>"><%= nombreTema %></td>
                                                     <% sizeTemas--; %>
                                                 <% } else { %>
                                                     <td></td>
                                                 <% } %>
 
                                                 <% if (sizeAlbumes > 0) { %>
-                                                <td><a href="SVConsultaAlbum?id=<%= nombresAlbumesFavConsultados.get(i) %>"><%= nombresAlbumesFavConsultados.get(i) %></a></td>
+                                                    <%
+                                                        Map.Entry<Long, String> entryAlbumFav = entryAlbumesFav.get(i);
+                                                        Long idAlbum = entryAlbumFav.getKey();
+                                                        String nombreAlbum = entryAlbumFav.getValue();
+                                                    %>
+                                                    <td><a href="ConsultaAlbum?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
                                                     <% sizeAlbumes--; %>
                                                 <% } else { %>
                                                     <td></td>

@@ -32,7 +32,7 @@ function mostrarResultados(resultados) {
                 resultadoDiv.innerHTML += `
                         <form action="SVConsultaListaReproduccion" method="GET">
                             <input type="hidden" name="listaR-Consultar" value="${encodeURIComponent(value)}">
-                            <button type="submit">${value} - ${key}</button>
+                            <button type="submit"><a href="DatosListaReproduccion.jsp?nombreLista= ${value}"> ${value} - ${key}</button>
                         </form>
                 `;
                 break;

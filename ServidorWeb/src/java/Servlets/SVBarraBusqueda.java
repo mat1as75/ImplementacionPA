@@ -162,7 +162,7 @@ public class SVBarraBusqueda extends HttpServlet {
         request.setAttribute("n_Resultados", resultados.size());
         
         // Redirigir a la pagina de resultados
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("resultadosBusqueda.jsp");
         dispatcher.forward(request, response); 
     }
 

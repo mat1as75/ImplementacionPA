@@ -1,3 +1,6 @@
+<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="espotify.logica.IControlador"%>
 <%@page import="espotify.logica.Fabrica"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -23,7 +26,8 @@
             fechaNacConsultado = null, fotoPerfilConsultado = null, biografiaConsultado = null,
             dirSitioWebConsultado = null;
     
-    ArrayList<String> nicknamesSeguidoresConsultados = null, nombresAlbumesPublicadosConsultados = null;
+    ArrayList<String> nicknamesSeguidoresConsultados = null;
+    Map<Long, String> albumesPublicadosConsultados = new HashMap<>();
     
     /*-----DATOS USUARIO CONSULTADO------*/
     artistaConsultado = (DTDatosArtista) usuarioConsultado;
@@ -39,7 +43,7 @@
     dirSitioWebConsultado = artistaConsultado.getDirSitioWeb();
   
     nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
-    nombresAlbumesPublicadosConsultados = artistaConsultado.getNombresAlbumesPublicados();
+    albumesPublicadosConsultados = artistaConsultado.getNombresAlbumesPublicados();
 
 %>
 
@@ -120,7 +124,11 @@
                 </div>
 
                 <div id="tab2" class="tab">
-                    <% if (nombresAlbumesPublicadosConsultados.size() > 0) { %>
+                    <% if (albumesPublicadosConsultados.size() > 0) { %>
+                    <%
+                        // Conviertir las entradas del Map a List
+                        List<Map.Entry<Long, String>> entryAlbumesPublicados = new ArrayList<>(albumesPublicadosConsultados.entrySet());
+                    %>
                     <div id="albumesP" class="lista-albumesP">
                         <div class="divisor d-none d-sm-block"></div>
                         <h3 class="registros">Registro de Álbumes Publicados</h3>
@@ -132,9 +140,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for (String album : nombresAlbumesPublicadosConsultados) {%>
+                                <% for (int i = 0; i < albumesPublicadosConsultados.size(); i++) { %>
                                 <tr>
-                                    <td><%= album %></td>
+                                    <%
+                                        Map.Entry<Long, String> entryAlbumPublicado = entryAlbumesPublicados.get(i);
+                                        Long idAlbum = entryAlbumPublicado.getKey();
+                                        String nombreAlbum = entryAlbumPublicado.getValue();
+                                    %>
+                                    <td><a href="ConsultaAlbum?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
                                 </tr>
                                 <% } %>
                             </tbody>
