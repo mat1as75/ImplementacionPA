@@ -84,19 +84,31 @@ public class SVBarraBusqueda extends HttpServlet {
             }
             
             // Buscar Temas
-            String jpqlTemas = "SELECT t.idTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
-            TypedQuery<Long> consultaTemas = em.createQuery(jpqlTemas, Long.class);
+            String jpqlTemas = "SELECT t.idTema, t.nombreTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<Object[]> consultaTemas = em.createQuery(jpqlTemas, Object[].class);
             consultaTemas.setParameter("query", "%" + consulta + "%");
-            for (Long idTema : consultaTemas.getResultList()) {
-                resultados.put("Tema", idTema.toString());
+            
+            for (Object[] result : consultaTemas.getResultList()) {
+                Long idTema = (Long) result[0];
+                String nombreTema = (String) result[1];
+                
+                // Concatenar idTema y nombreTema
+                String value = idTema + ", " + nombreTema;
+                resultados.put("Tema", value);
             }
             
             // Buscar Albumes
-            String jpqlAlbumes = "SELECT a.idAlbum FROM Album a WHERE a.nombreAlbum LIKE :query AND LENGTH(a.nombreAlbum) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
-            TypedQuery<Long> consultaAlbumes = em.createQuery(jpqlAlbumes, Long.class);
+            String jpqlAlbumes = "SELECT a.idAlbum, a.nombreAlbum FROM Album a WHERE a.nombreAlbum LIKE :query AND LENGTH(a.nombreAlbum) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<Object[]> consultaAlbumes = em.createQuery(jpqlAlbumes, Object[].class);
             consultaAlbumes.setParameter("query", "%" + consulta + "%");
-            for (Long idAlbum : consultaAlbumes.getResultList()) {
-                resultados.put("Album", idAlbum.toString());
+            
+            for (Object[] result : consultaAlbumes.getResultList()) {
+                Long idAlbum = (Long) result[0];
+                String nombreAlbum = (String) result[1];
+                
+                // Concatenar idAlbum y nombreAlbum
+                String value = idAlbum + ", " + nombreAlbum;
+                resultados.put("Album", value);
             }
             
             // Buscar ListaReproduccion

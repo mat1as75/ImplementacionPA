@@ -1,3 +1,4 @@
+<%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -17,6 +18,7 @@
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
+    String estadoSuscripcionSesion = null;
     DTDatosUsuario usuarioSesion = null;
     
     DTDatosUsuario usuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
@@ -45,6 +47,16 @@
     nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
     albumesPublicadosConsultados = artistaConsultado.getNombresAlbumesPublicados();
 
+    // Si UsuarioSesion != ArtistaConsultado => Obtengo DatosUsuarioSesion, caso contrario null
+    usuarioSesion = (!nicknameSesion.equals(nicknameConsultado)) ? control.getDatosUsuario(nicknameSesion) : null;
+    
+    // Sesion es Cliente
+    if (rolSesion.equals("Cliente")) {
+        // Tiene Suscripcion
+        if (((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
+            estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+        }
+    }
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -69,14 +81,16 @@
                     // Sesion.rol == Cliente (Clientes unicamente pueden Seguir)
                     // NicknameSesion != NicknameConsultado (No se permite auto-Seguimientos)
                     if (rolSesion != null && rolSesion.equals("Cliente") && !nicknameConsultado.equals(nicknameSesion)) {
-                        if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
-                            <form action="SVSeguirUsuario" method="POST">
-                                <button type="submit" class="boton-seguimiento">Seguir</button>
-                            </form>
-                        <% } else { %>
-                            <form action="SVDejarSeguirAUsuario" method="POST">
-                                <button type="submit" class="boton-seguimiento">Siguiendo</button>
-                            </form>
+                        if (usuarioSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
+                            if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
+                                <form action="SVSeguirUsuario" method="POST">
+                                    <button type="submit" class="boton-seguimiento">Seguir</button>
+                                </form>
+                            <% } else { %>
+                                <form action="SVDejarSeguirAUsuario" method="POST">
+                                    <button type="submit" class="boton-seguimiento">Siguiendo</button>
+                                </form>
+                            <% } %>
                         <% } %>
                 <%  } %>
             </div>

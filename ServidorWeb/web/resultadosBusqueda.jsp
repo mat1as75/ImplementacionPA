@@ -53,7 +53,7 @@
                 %>
                     <script>
                         var resultados = <%= jsonResultados %>;
-                        mostrarResultados(resultados); // Mostrar resultados iniciales
+                        mostrarResultados(resultados); // Mostrar resultados iniciales                        
                     </script>
                 <%
                     }

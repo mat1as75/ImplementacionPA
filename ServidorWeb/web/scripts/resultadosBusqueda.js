@@ -30,28 +30,32 @@ function mostrarResultados(resultados) {
                 break;
             case "Lista": // ConsultaListaReproduccion
                 resultadoDiv.innerHTML += `
-                        <form action="SVConsultaListaReproduccion" method="GET">
-                            <input type="hidden" name="listaR-Consultar" value="${encodeURIComponent(value)}">
-                            <button type="submit"><a href="DatosListaReproduccion.jsp?nombreLista= ${value}"> ${value} - ${key}</button>
-                        </form>
+                        
+                        <a href="DatosListaReproduccion.jsp?nombreLista=${value}">${value} - ${key}</a>
                 `;
+                console.log();
                 break;
             case "Album": // ConsultaAlbum
+                
+                const album = `${value}`;
+                const[idAlbum, nombreAlbum] = album.split(', ');
+
                 resultadoDiv.innerHTML += `
                         <form action="SVConsultaAlbum" method="GET">
                             <input type="hidden" name="album-Consultar" value="${encodeURIComponent(value)}">
-                            <button type="submit">${value} - ${key}</button>
+                            <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum}">${nombreAlbum} - ${key}</button>
                         </form>
                 `;
                 break;
             default: // Temas
-                resultadoDiv.innerHTML += `      
-                        // Obtengo el Tema con el idTema actual
-                        String nombreTema = temasDisponibles().get(${value});
-                                
+                
+                const tema = `${value}`;
+                const[idTema, nombreTema] = tema.split(', ');
+                
+                resultadoDiv.innerHTML += `            
                         <form action="SVConsultaTema" method="GET">
                             <input type="hidden" name="tema-Consultar" value="${encodeURIComponent(value)}">
-                            <button type="submit"><%= nombreTema %> - ${key}</button>
+                            <button type="submit"><a href="ConsultaTema.jsp?temaId=${idTema}">${nombreTema} - ${key}</button>
                         </form>
                 `;
                 break;

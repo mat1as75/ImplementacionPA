@@ -45,7 +45,6 @@
     if (rolSesion != null) { /* Si existe Sesion (Cliente o Artista) */
         
         usuarioSesion = control.getDatosUsuario(nicknameSesion);
-        System.out.println("ACA " + ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion());
         if (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
             ((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
             estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
