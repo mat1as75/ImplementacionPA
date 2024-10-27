@@ -21,11 +21,6 @@
     <title>Seguir Usuario</title>
     <link rel="stylesheet" href="styles/SeguirUsuario.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        function mostrarPopup() {
-            alert('No tienes inscripciones vigentes');
-        }
-    </script>
 </head>
 <body>
     <%  
@@ -43,10 +38,15 @@
                 String estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
                 vigente = estadoSuscripcionSesion.equals("Vigente");
             }
-            
+ 
             if (!vigente) {
     %>
                 <script type="text/javascript">
+                    function mostrarPopup() {
+                        const userConfirmed = confirm("No tienes subscripciones vigentes");
+                        // Redirige a la página deseada
+                        window.location.href = "index.jsp";
+                    }
                     window.onload = mostrarPopup; // Llama a la función para mostrar el popup
                 </script>
     <%
