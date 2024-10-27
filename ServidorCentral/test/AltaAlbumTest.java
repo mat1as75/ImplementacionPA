@@ -24,7 +24,7 @@ public class AltaAlbumTest {
     
     private static ControladoraPersistencia cp;
     private static CargarDatosTest cdt;
-    private static String nickArtistaDePrueba = "alcides";
+    private static final String nickArtistaDePrueba = "alcides";
     private String nickArtistaDePruebaNuevo;
     
     public AltaAlbumTest() {
@@ -61,6 +61,17 @@ public class AltaAlbumTest {
         return dataGeneros;
     }
     
+    public List<DTGenero> crearDataGenerosDePrueba2() {
+        DTGenero g1 = new DTGenero("Balada");
+        DTGenero g2 = new DTGenero("Cumbia");
+        
+        List<DTGenero> dataGeneros = new ArrayList();
+        dataGeneros.add(g1);
+        dataGeneros.add(g2);
+        
+        return dataGeneros;
+    }
+    
     public void crearArtistaDePrueba() {
         DTArtista dtArtista = new DTArtista(
                 "nickArtistaDePrueba", 
@@ -81,7 +92,7 @@ public class AltaAlbumTest {
             this.nickArtistaDePruebaNuevo = dtArtista.getNickname();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            //fallback
+            //fallback si no se logra crear el artista de prueba nuevo
             this.nickArtistaDePruebaNuevo = "los_pimpi";
         }
     }
@@ -97,9 +108,8 @@ public class AltaAlbumTest {
                     dtAlbum.getNombreAlbum());
         } catch (Exception e) {
             throw e;
-        } finally {
-            return idNuevoAlbum;
         }
+        return idNuevoAlbum;
     }
 
     public Boolean comprobarCreacion(DTAlbum_SinDTArtista dtAlbum, String test, Boolean expected) {
@@ -110,7 +120,6 @@ public class AltaAlbumTest {
             idAlb = crearAlbum(dtAlbum);
             fueCreado = (idAlb != null);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             fueCreado = false;
         }
             
@@ -152,6 +161,23 @@ public class AltaAlbumTest {
     }
     
     @Test
+    public void testDatosCorrectos2() {
+        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTGenero> dataGeneros = crearDataGenerosDePrueba2();
+        
+        DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
+                "albumPruebaDatosValidos2",
+                2000,
+                "Resource/Albums/portadasAlbum/img.jpg",
+                dataTemas,
+                dataGeneros,
+                this.nickArtistaDePrueba        
+        );
+        
+        assertTrue(comprobarCreacion(dtAlbum, "Datos correctos 2", true));
+    }
+    
+    @Test
     public void testDatosCorrectosArtistaNuevo() {
         List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
@@ -168,6 +194,25 @@ public class AltaAlbumTest {
         );
         
         assertTrue(comprobarCreacion(dtAlbum, "Datos correctos artista nuevo", true));
+    }
+    
+    @Test
+    public void testDatosCorrectosArtistaNuevo2() {
+        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTGenero> dataGeneros = crearDataGenerosDePrueba2();
+        
+        crearArtistaDePrueba();
+        
+        DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
+                "albumPruebaDatosValidosArtistaNuevo2",
+                2000,
+                "Resource/Albums/portadasAlbum/img.jpg",
+                dataTemas,
+                dataGeneros,
+                this.nickArtistaDePruebaNuevo        
+        );
+        
+        assertTrue(comprobarCreacion(dtAlbum, "Datos correctos artista nuevo 2", true));
     }
     
     @Test

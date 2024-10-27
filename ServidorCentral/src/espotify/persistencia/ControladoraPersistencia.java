@@ -64,10 +64,7 @@ public class ControladoraPersistencia {
     public TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
     public SuscripcionJpaController suscripcionJpa = new SuscripcionJpaController();
 
-    public ControladoraPersistencia() {
-    }
-
-    ;
+    public ControladoraPersistencia() {}
     
     public void AltaGenero(String nombreGenero, String nomPadre) {
 
@@ -1200,7 +1197,7 @@ public class ControladoraPersistencia {
         ListaReproduccion listaRep = this.lreprodccJpa.findListaReproduccion(nombreLista);
 
         if (tema == null || listaRep == null) {
-            throw new Exception("No se pudo encontrar el tema [" + idTema + "] o la lista [" + nombreLista + "].");
+            throw new NonexistentEntityException("No se pudo encontrar el tema [" + idTema + "] o la lista [" + nombreLista + "].");
         }
 
         List<Tema> temasDeListaRep = listaRep.getMisTemas();
@@ -1224,7 +1221,9 @@ public class ControladoraPersistencia {
             this.temaJpa.edit(tema);
             this.lreprodccJpa.edit(listaRep);
         } catch (Exception ex) {
-            throw ex;
+            throw new DatabaseUpdateException("Ocurrio un error al quitar el tema ["
+                    + tema.getIdTema() + "] de la lista "
+                    + listaRep.getNombreLista());
         }
     }
 
