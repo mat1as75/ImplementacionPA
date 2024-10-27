@@ -52,6 +52,7 @@
         // Pasar el nickname de la sesion a una variable global
         var nickname = "<%= request.getAttribute("nickname") != null ? request.getAttribute("nickname") : "" %>";
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts/headerConSesion.js"></script>
     <script src="scripts/consultaPerfilUsuario.js" defer></script>
 

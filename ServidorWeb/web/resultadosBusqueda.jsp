@@ -30,10 +30,10 @@
                 <% } %>
 
                 <div class="opciones">
-                    <label id="label-opciones" for="opciones">Ordenar por:</label>
-                    <select id="opciones" name="opcion" oncharge="ordenarResultados(resultados)">
+                    <label id="label-opciones" for="ordenar">Ordenar por:</label>
+                    <select id="ordenar" name="opcion" oncharge="mostrarResultados(orderByAlhpabetical(resultados, consulta => consulta.value))">
                         <option selected disabled hidden>(seleccione una opción)</option>
-                        <option typevalue="alfabeticamente">Alfabéticamente (A-Z a-z)</option>
+                        <option value="alfabetico">Alfabéticamente (A-Z a-z)</option>
                         <option value="anio">Año (descendente)</option>
                     </select>
                 </div>
@@ -53,7 +53,8 @@
                 %>
                     <script>
                         var resultados = <%= jsonResultados %>;
-                        mostrarResultados(resultados); // Mostrar resultados iniciales                        
+                        mostrarResultados(resultados); // Mostrar resultados iniciales
+                        console.log(resultados);
                     </script>
                 <%
                     }

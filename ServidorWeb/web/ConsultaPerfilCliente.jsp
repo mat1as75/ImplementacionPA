@@ -46,7 +46,7 @@
         
         usuarioSesion = control.getDatosUsuario(nicknameSesion);
         if (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
-            ((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
+            //((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
             estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
             System.out.println("### " + estadoSuscripcionSesion);
         }
@@ -122,7 +122,7 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="scripts/consultaPerfilUsuario.js"></script>
+<script src="scripts/consultaPerfilUsuario.js" defer></script>
 <link rel="stylesheet" href="styles/consultaPerfilCliente.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
