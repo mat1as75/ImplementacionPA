@@ -54,11 +54,9 @@
     }
     // Comprobar si puede descargar
     boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
-    
 %>
 
     <head>
-        <script src="scripts/ConsultaListaReproduccion.js"></script>
         <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
               rel="stylesheet" 
@@ -67,9 +65,10 @@
               >
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="scripts/reproductorDeMusica.js" defer></script>
+        <script src="scripts/ConsultaListaReproduccion.js" defer></script>
         <link rel="stylesheet" href="styles/variablesGlobales.css"/>
-        <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
+        <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
     </head>
     <jsp:include page="headerIndex.jsp"/>
     <body>
