@@ -1,59 +1,62 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Ocultar los mensajes de error al cargar la pagina
     document.getElementById('errorNombreLista').style.display = 'none';
     document.getElementById('errorImagenLista').style.display = 'none';
-});
 
-document.getElementById('crearListaForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+    document.getElementById("crearListaForm").addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    let formData = new FormData(this);
-
-    fetch('SvCrearListaReproduccion', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.Error) {
-            document.getElementById('error').textContent = data.Error; 
-        } else if (data.Exito) {
-            alert(data.Exito); 
-            document.getElementById('crearListaForm').reset();
-            document.getElementById('error').textContent = ''; 
+        if (!validar()) {
+            return;
         }
-    })
-    .catch(error => console.error('Error:', error));
-});
 
+        const formData = new FormData(this);
+
+        fetch("SVCrearListaReproduccion", {
+            method: "POST",
+            body: formData
+        })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.Exito) {
+                        alert(data.Exito);
+                    } else if (data.Error) {
+                        alert(data.Error);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Error");
+                });
+    });
+});
 
 function validar() {
-    var correct = true;
+    let correcto = true;
 
-    var nombreLista = document.getElementById('nombreLista').value.trim();
-    var imagenLista = document.getElementById('imagenLista').value;
+    const nombreLista = document.getElementById('nombreLista').value.trim();
+    const imagenLista = document.getElementById('imagenLista').value;
 
-    // Nombre de la lista no vacio
+    // Comprobar nombre 
     if (nombreLista === '') {
         document.getElementById('errorNombreLista').style.display = 'flex';
-        correct = false;
+        correcto = false;
     } else {
         document.getElementById('errorNombreLista').style.display = 'none';
     }
 
-    // Formatos validos para la imagen
+    // Comprobar extension
     if (imagenLista !== '') {
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
         if (!allowedExtensions.exec(imagenLista)) {
-            document.getElementById('errorImagenLista').style.display = 'flex'; 
-            correct = false;
+            document.getElementById('errorImagenLista').style.display = 'flex';
+            correcto = false;
         } else {
-            document.getElementById('errorImagenLista').style.display = 'none'; 
+            document.getElementById('errorImagenLista').style.display = 'none';
         }
     } else {
         document.getElementById('errorImagenLista').style.display = 'none';
     }
-    return correct;
+    return correcto;
 }
 
 function cargarImagen(event) {

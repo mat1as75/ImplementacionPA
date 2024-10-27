@@ -23,7 +23,7 @@ import javax.servlet.http.Part;
 @MultipartConfig
 @WebServlet(name = "SVCrearListaReproduccion", urlPatterns = {"/SVCrearListaReproduccion"})
 public class SVCrearListaReproduccion extends HttpServlet {
-    
+
     private String extractFileName(Part part) {
         String contentDisposition = part.getHeader("content-disposition");
         for (String token : contentDisposition.split(";")) {
@@ -33,107 +33,104 @@ public class SVCrearListaReproduccion extends HttpServlet {
         }
         return null;
     }
-    
-    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
-    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
+
+    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil";
+    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil";
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
         HttpSession sesion = request.getSession();
         String nicknameSesion = (String) sesion.getAttribute("nickname");
-        System.out.println("nickname" + nicknameSesion);
         String rolSesion = (String) sesion.getAttribute("rol");
-        
+
+        JsonObject jsonResponse = new JsonObject();
+
         // Comprobar si es un cliente
-        if (rolSesion.equals("Cliente")) {
+        if ("Cliente".equals(rolSesion)) {
             Fabrica fb = Fabrica.getInstance();
             IControlador control = fb.getControlador();
-            
+
             DTDatosUsuario datosU = control.getDatosUsuario(nicknameSesion);
             DTDatosCliente datosC = (DTDatosCliente) datosU;
             String estadoSuscripcionSesion = null;
-            if( datosC.getSuscripcion() != null){
-                estadoSuscripcionSesion = ((DTDatosCliente)datosU).getSuscripcion().getEstadoSuscripcion();
+            if (datosC.getSuscripcion() != null) {
+                estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
             }
-            // Comprobar si la suscripciun esta vigente
+
+            // Comprobar suscripcion vigente
             if (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
                 String nombreLista = request.getParameter("nombreLista");
-                 
-                // Obtener el archivo de la solicitud
                 Part filePart = request.getPart("imagenLista");
+                String rutaImagen = null;  
 
-                // Obtener el nombre del archivo desde el header "content-disposition"
-                String fileName = extractFileName(filePart);
+                // Comprobar si se ha seleccionado un archivo
+                if (filePart != null && filePart.getSize() > 0) {
+                    String fileName = extractFileName(filePart);
+                    // Construir la ruta de carga
+                    String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
+                    File uploadDir = new File(uploadPath);
+                    if (!uploadDir.exists()) {
+                        uploadDir.mkdir();
+                    }
 
-                // Construir la ruta de carga usando el contexto de la aplicación
-                ///home/usuario/Documentos/GitHub/ImplementacionPA/ServidorWeb/web/index.jsp
-                String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir(); // Crear el directorio si no existe
+                    // Comprobar si el archivo ya existe y generar un nuevo nombre si es necesario
+                    File file = new File(uploadDir, fileName);
+                    int count = 1;
+
+                    // Comprobar si el archivo tiene una extension
+                    int dotIndex = fileName.lastIndexOf('.');
+                    String baseName;
+                    String extension;
+                    if (dotIndex > 0) {
+                        baseName = fileName.substring(0, dotIndex);
+                        extension = fileName.substring(dotIndex);
+                    } else {
+                        baseName = fileName;
+                        extension = "";
+                    }
+
+                    // Cambiar el nombre si el archivo ya existe
+                    while (file.exists()) {
+                        fileName = baseName + "_" + count + extension;
+                        file = new File(uploadDir, fileName);
+                        count++;
+                    }
+
+                    // Guardar el archivo en el directorio
+                    try (InputStream input = filePart.getInputStream()) {
+                        Files.copy(input, file.toPath());
+                    }
+                    rutaImagen = DIRECCION_BASE + "/" + fileName; // Asignar la ruta de la imagen
                 }
 
-                // Verificar si el archivo ya existe y generar un nuevo nombre si es necesario
-                File file = new File(uploadDir, fileName);
-                int count = 1;
-                String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
-                String extension = fileName.substring(fileName.lastIndexOf('.'));
-
-                while (file.exists()) {
-                    fileName = baseName + "_" + count + extension; // Cambiar el nombre
-                    file = new File(uploadDir, fileName);
-                    count++;
-                }
-
-                // Guardar el archivo en el directorio
-                try (InputStream input = filePart.getInputStream()) {
-                    Files.copy(input, file.toPath());
-                }
-
-                String rutaImagen = DIRECCION_BASE + "/" + fileName;
-
-                
-                ArrayList<String> listasParticulares = new ArrayList<>();
-                listasParticulares = control.getNombresListasParticulares();
-                
+                ArrayList<String> listasParticulares = control.getNombresListasParticulares();
                 // Comprobar si la lista ya existe
                 if (!listasParticulares.contains(nombreLista)) {
                     Date fechaCreacion = new Date();
                     boolean privada = true;
 
-                    try {
-                        control.CrearListaParticular(nombreLista, rutaImagen, nicknameSesion, fechaCreacion, privada);
-                        JsonObject jsonResponse = new JsonObject();
-                        jsonResponse.addProperty("Exito", "Lista de reproducción creada exitosamente");
-                        response.getWriter().write(jsonResponse.toString());
-                    } catch (IOException e) {
-                        JsonObject jsonResponse = new JsonObject();
-                        jsonResponse.addProperty("Error", "Error al crear la lista de reproducción: " + e.getMessage());
-                        response.getWriter().write(jsonResponse.toString());
-                    }
-                  // Nombre de la lista ya existe
+                    control.CrearListaParticular(nombreLista, rutaImagen, nicknameSesion, fechaCreacion, privada);
+                    jsonResponse.addProperty("Exito", "Lista de reproducción creada exitosamente");
                 } else {
-                    JsonObject jsonResponse = new JsonObject();
                     jsonResponse.addProperty("Error", "La lista de reproducción con el nombre " + nombreLista + " ya existe.");
-                    response.getWriter().write(jsonResponse.toString());
                 }
             } else {
                 // Suscripcion no vigente
-                JsonObject jsonResponse = new JsonObject();
                 jsonResponse.addProperty("Error", "No puedes crear una lista de reproducción. Tu suscripción no se encuentra vigente.");
-                response.getWriter().write(jsonResponse.toString());
             }
         } else {
             // No es un cliente
-            JsonObject jsonResponse = new JsonObject();
             jsonResponse.addProperty("Error", "Debes ser un Cliente para poder crear listas de reproducción.");
-            response.getWriter().write(jsonResponse.toString());
         }
+        response.getWriter().write(jsonResponse.toString());
     }
 
     @Override
     public String getServletInfo() {
-        return "Sv CrearListaReproduccion";
+        return "Servlet para crear lista de reproducción";
     }
 }
