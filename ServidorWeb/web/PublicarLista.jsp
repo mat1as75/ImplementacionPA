@@ -8,14 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicar Lista</title>
-    
-    
     <link rel="stylesheet" href="styles/PublicarLista.css">
-    <script type="text/javascript">
-        function mostrarPopup() {
-            alert('No tienes subscripciones vigentes');
-        }
-    </script>
 </head>
 <body>
     
@@ -36,11 +29,15 @@
             }
             
             if (!vigente) {
-    %>
-                <script type="text/javascript">
+    %>                <script type="text/javascript">
+                    function mostrarPopup() {
+                        const userConfirmed = confirm("No tienes subscripciones vigentes");
+                        // Redirige a la página deseada
+                        window.location.href = "index.jsp";
+                    }
                     window.onload = mostrarPopup; // Llama a la función para mostrar el popup
                 </script>
-    <%
+ <%
             }
         }
     %>
