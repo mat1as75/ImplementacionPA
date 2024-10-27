@@ -137,7 +137,12 @@
                             %>
                             <tr>
                                 <td><%= nroTema++%></td>
-                                <td><button class="agregar">+</button></td>
+                                <td>
+                                    <form action="SVGuardarTemaFavorito" method="post">
+                                        <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
+                                        <button type="submit" class="agregar">+</button> 
+                                    </form>
+                                </td>
                                 <td><%= tema.getNombreTema()%></td>
                                 <td><%= String.format("%d:%02d", minutos, segundos)%></td>
                                  <td class="ruta-link">  
