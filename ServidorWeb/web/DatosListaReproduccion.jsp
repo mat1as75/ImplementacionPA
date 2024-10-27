@@ -136,7 +136,8 @@
                                     DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
                                     String srcPortada = fotoLista;
                         %>
-                        <tr onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')" style="cursor: pointer;">
+                        <!-- Escuchar tema por fila -->
+                        <tr class="row-hover"onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
                                 <form action="SVGuardarTemaFavorito" method="post">
