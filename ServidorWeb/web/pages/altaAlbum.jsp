@@ -41,44 +41,47 @@
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/altaAlbum.css"/>
-
+        
         
     </head>
-    <body id="bodyAltaAlbum">
+    <body class="bodyContainer">
+        
+        <jsp:include page="../headerIndex.jsp"/>
+
         <% 
         Fabrica fb = Fabrica.getInstance();
         IControlador ictrl = fb.getControlador();
         ArrayList<DTGenero_Simple> generos = ictrl.getListaDTGeneroSimple();
         %>
         
-        <h1>Subir nuevo álbum</h1>
+        <h1 class="titlePrimary">Subir nuevo álbum</h1>
         <form class="formContainer" id="formAlbum" action="AltaAlbum" method="POST" enctype="multipart/form-data">
             
             <fieldset class="formSubContainer">
-                <div class="inputsContainer">
+                <div class="inputsContainer roundedContainer">
                     <label for="nombreAlbum">Nombre del album: </label>
                     <input type="text" id="nombreAlbum" class="inputValidated" minlength="1" maxlength="255" required/>
                 </div>
-                <div class="errorDiv d-none">                
+                <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorNombreAlbum"></span>
                 </div>
-                <div class="inputsContainer">
+                <div class="inputsContainer roundedContainer">
                     <label for="anioAlbum">Año: </label>
                     <input type="number" id="anioAlbum" class="inputValidated" min="1900" max="<%=Year.now()%>" required/>
                 </div>
-                <div class="errorDiv d-none">                
+                <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorAnioAlbum"></span>
                 </div>
 
-                <div class="inputsContainer">
+                <div class="inputsContainer roundedContainer">
                     <label for="inputPortadaAlbum">Portada: </label>
-                    <input class="d-block" type="file" id="inputPortadaAlbum" accept="image/*" name="inputPortadaAlbum"/>
+                    <input class="inputFile d-block" type="file" id="inputPortadaAlbum" accept="image/*" name="inputPortadaAlbum"/>
                 </div>
             </fieldset>
             
             <fieldset class="formSubContainer">
-                <h2>Géneros</h2>
-                <div class="inputsContainer">
+                <h2 class="titleSecondary">Géneros</h2>
+                <div class="inputsContainer roundedContainer">
                     <ul class="treeGeneros">
                         <li>
                             <details open>
@@ -113,30 +116,30 @@
                         </li>
                     </ul>
                 </div>
-                <div class="errorDiv d-none">                
+                <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorGeneros"></span>
                 </div>
             </fieldset>
             
             <fieldset class="formSubContainer">
-                <h2>Temas</h2>
-                <div class="inputsContainer">
+                <h2 class="titleSecondary">Temas</h2>
+                <div class="inputsContainer roundedContainer">
                     <label for="nombreTema">Nombre de tema: </label>
                     <input type="text" id="nombreTema" class="" minlength="1" maxlength="255"/>
                 </div>
-                <div class="errorDiv d-none">                
+                <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorNombreTema"></span>
                 </div>
 
-                <div class="inputsContainer">
+                <div class="inputsContainer roundedContainer">
                     <label for="duracionTema">Duracion: </label>
                     <input type="text" id="duracionTema" class="" placeholder="3:45" minlength="3" maxlength="5">
                 </div>
-                <div class="errorDiv d-none">                
+                <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorDuracionTema"></span>
                 </div>
 
-                <div class="inputsContainer">
+                <div class="inputsContainer roundedContainer">
                     <label for="tipoDeAcceso">Tipo de acceso: </label>
                     <input type="text" id="tipoDeAcceso" class="" placeholder="https://dominio.com/tema">
                     <label for="radioRuta">Subir</label>
@@ -144,7 +147,7 @@
                     <label for="radioUrl">URL</label>
                     <input type="radio" name="tipoDeAcceso" id="radioUrl" value="url" checked>
                 </div>
-                <div class="errorDiv d-none">                
+                <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorUrlTema"></span>
                 </div>
                 <button type="button" class="btncustom btnSecondary" onClick="addLiTema()">Agregar tema</button>
@@ -152,29 +155,29 @@
             
             
             <section class="formSubContainer">
-                <h3>Temas agregados</h3>
-                <div class="divAyuda">
+                <h3 class="titleSecondary">Temas agregados</h3>
+                <div class="divAyuda roundedContainer">
                     <i class="bi bi-info-circle"></i>
                     <span class="spanAyuda">Arrastre los temas para reordenar su posición en el álbum.</span>
                 </div>      
-                <div class="temasContainer">
+                <div class="temasContainer roundedContainer">
                     <ol class="list-group listaTemas" id="olTemasCreados">
-                        <div class="divAyuda" id="divAvisoSinTemas">
+                        <div class="divAyuda roundedContainer" id="divAvisoSinTemas">
                             <span class="spanAviso">No se han agregado temas.</span>
                         </div>  
                     </ol>
                 </div>
-                <div class="errorDiv d-none">                
+                <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorTemasVacios"></span>
                 </div>            
 
-                <div class="btnValidarContainer">
+                <div class="btnValidarContainer roundedContainer">
                     <button type="button" class="btncustom btnPrimary" id="btnValidar">Validar Datos</button>
                 </div>
             </section>
             
-            <div id="modalDataVerification" class="customModal d-none">
-                <div class="modalContainer">
+            <div id="modalDataVerification" class="customModal d-none roundedContainer">
+                <div class="modalContainer roundedContainer">
                     <p>Presione confirmar para crear el album o cancelar para revisar los campos</p>
                     <button type="button" class="btncustom btnSecondary" id="btnCancelSubmit">Cancelar</button>
                     <button type="submit" class="btncustom btnPrimary" id="btnSubmit" disabled>Confirmar</button>
@@ -182,16 +185,11 @@
             </div>
         </form>
 
-        <div id="modalResultado" class="customModal d-none">
-            <div class="modalContainer">
+        <div id="modalResultado" class="customModal d-none roundedContainer">
+            <div class="modalContainer roundedContainer">
                 <p id="modalText"></p>
                 <button id="btnCloseModalResultado" type="button" class="btncustom btnPrimary">Aceptar</button>
             </div>
         </div>
-                            
-        
-                            
-        <a href="/ServidorWeb">Volver</a>        
-        
     </body>
 </html>

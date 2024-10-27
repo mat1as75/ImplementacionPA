@@ -1,4 +1,18 @@
 :root {
+    /* Estilo claro */
+    --l-bg-color-3: #cfcfcf;
+    --l-bg-color-2: #f8f9fa; 
+    --l-bg-color-1: #fff;
+    --l-color-grey-accent: #ccc;
+    --l-font-color-grey: #202020;
+    --l-border-radius-containers: 10px;
+    --l-font-family: 'Montserrat', monospace;
+    
+    /* general */
+    --border-radius-btns: 9999px;
+    --color-white: #fff;
+    
+    /* Estilo Spotify */
     --bg-color-dark-5: #000;
     --bg-color-dark-4: #121212;
     --bg-color-dark-3: #1f1f1f;
@@ -7,8 +21,6 @@
     --color-green-primary: #1ed760;
     --color-red-error: #ed2c3f;
     --color-grey-accent: #7c7c7c;
-    --color-white: #fff;
     --border-radius-containers: 8px;
-    --border-radius-btns: 9999px;
     --audio-player-max-width: 400px;
 }

@@ -11,8 +11,10 @@
     <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
 </head>
 <body>
+<div class="main-container">
+    <h1>Formulario de Registro</h1>
+</div>
 
-<h1>Formulario de Registro</h1>
 
 <% String mensaje=(String)request.getAttribute("mensaje");
     if(mensaje!=null){%>

@@ -18,13 +18,18 @@
             Object errCodeMsg = request.getAttribute("errorMsg");
             
         %>
-    </head>
-    <body>
         
-        <section>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/variablesGlobales.css"/>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/errorPage.css"/>
+    </head>
+    <body class="bodyContainer">
+        <jsp:include page="../headerIndex.jsp"/>
+
+        <section class="sectionContainer roundedContainer">
             <h1>Error <%= errCodeObj == null ? 500 : errCodeObj.toString() %></h1>
             <p><%= errCodeMsg == null ? "Internal Server Error" : errCodeMsg.toString()%></p>
-            
+            <img class="errorImg" src="../${pageContext.request.contextPath}/imagenes/exclamacion.svg" alt="símbolo de exclamación"/>
         </section>
         
     </body>

@@ -1,24 +1,18 @@
-#bodyAltaAlbum {
-    background-color: var(--bg-color-dark-5);
-    color: var(--color-white);
-    padding: 2rem .5rem;
-}
 
-h1, h2, h3, h4 {
-    color: var(--color-white);
+.titlePrimary {
+    color: #000;
     text-align: center;
+    margin-top: 2rem;
+    font-family:  var(--l-font-family);
 }
 
-h2, h3, h4 {
+
+.titleSecondary {
+    color: #000;
+    text-align: center;
     font-size: 2rem;
     margin: 2rem 1.5rem 1.5rem 1.5rem;
-    border-top: 2px solid var(--color-grey-accent);
-}
-
-div {
-    border:1px solid var(--color-grey-accent);
-    border-radius: var(--border-radius-containers);
-    padding: .2rem .4rem;
+    border-top: 2px solid var(--l-color-grey-accent);
 }
 
 .formSubContainer {
@@ -30,7 +24,7 @@ div {
     padding-left: 1em;
     font-size: 1.5em;
     cursor: pointer;
-    color: var(--color-white);
+    color: #000;
 }
 
 .bi-trash3:hover {
@@ -49,26 +43,38 @@ div {
 
 .listaTemas li {
     overflow: scroll;
-    color: var(--color-white);
-    background-color: var(--bg-color-dark-3);
+    color: #000;
+    background-color: var(--l-bg-color-3);
     cursor: grab;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+
 }
 
 .listaTemas li:hover {
-    border-color: var(--color-green-primary);
+    background-color: #888;
 }
 
 .formContainer {
-    padding: 2rem .5rem;
-    max-width: 900px;
-    margin: 0 auto;
+    padding: 1rem 2rem;
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 3rem;
+    border: 1px solid var(--l-color-grey-accent);
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    font-family:  var(--l-font-family);
+
 }
 
 .temasContainer {
     display: flex;
     flex-direction: column;
     margin-bottom: .5rem;
-    background-color: var(--bg-color-dark-4);
+    background-color: var(--l-bg-color-1);
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+}
+
+.temasContainer li {
+    border: 1px solid #000;
 }
 
 .inputsContainer {
@@ -77,25 +83,31 @@ div {
     justify-content: space-between;
     margin: .5rem 0;
     padding: .5rem 1rem;
-    background-color: var(--bg-color-dark-4);
+    background-color: var(--l-bg-color-2);
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+
 }
 
 .errorDiv {
+    font-size: .9em;
     margin: .25rem 0;
     padding: .35rem .5rem;
 }
 
 .divAyuda {
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
     margin: .25rem 0;
     padding: .35rem .5rem;
 }
 
 .spanAyuda {
-   color: var(--color-green-primary);
+   color: green;
+   font-size: .9em;
 }
 
 .spanAviso {
-    color: var(--color-white);
+    color: #000;
+    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
 }
 
 .spanError {
@@ -128,7 +140,7 @@ div {
     display: inline-block;
 }
 
-input[type=file] {
+.inputFile {
     white-space: nowrap;
     overflow: hidden;
     max-width: 70%;
@@ -181,7 +193,7 @@ input[type=file] {
 .treeGeneros label {
     cursor: pointer;
     border: 1px solid var(--color-grey-accent);
-    border-radius: 10%;
+    border-radius: 9999px;
     padding: .1rem .4rem;
 }
 
@@ -205,7 +217,7 @@ input[type=file] {
 .treeGeneros li::after,
 .treeGeneros summary::before {
     font-family:'Bootstrap-icons';
-    color: #000;
+    color: #f4f4f4;
     content: '  \F280';
     display: block;
     position: absolute;
@@ -214,12 +226,12 @@ input[type=file] {
     width: calc(3 * var(--radius));
     height: calc(2 * var(--radius));
     border-radius: 10%;
-    background-color: var(--color-green-primary);
+    background-color: #000;
 }
 
 .treeGeneros summary::before {
   z-index: 1;
-  background-color: var(--color-green-primary);
+  background-color: #000;
 }
 
 .treeGeneros details[open] > summary::before {
@@ -233,7 +245,9 @@ input[type=file] {
 }
 
 .btnValidarContainer {
-    background-color: var(--bg-color-dark-4);
+    background-color: var(--l-bg-color-3);
+    border: 1px solid #000;
+    box-shadow: -2px 2px 2px rgba(0,0,0,0.20);
     margin: 1.5rem 0;
     padding: 1rem;
     display: flex;

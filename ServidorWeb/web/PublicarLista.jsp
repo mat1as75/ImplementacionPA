@@ -7,15 +7,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listas Pegadas</title>
+    <title>Publicar Lista</title>
     <link rel="stylesheet" href="styles/PublicarLista.css">
-    <script type="text/javascript">
-        function mostrarPopup() {
-            alert('No tienes subscripciones vigentes');
-        }
-    </script>
 </head>
 <body>
+    
       <%  
         HttpSession sesion = request.getSession();
         String nicknameSesion = (String) sesion.getAttribute("nickname");
@@ -33,20 +29,31 @@
             }
             
             if (!vigente) {
-    %>
-                <script type="text/javascript">
+    %>                <script type="text/javascript">
+                    function mostrarPopup() {
+                        const userConfirmed = confirm("No tienes subscripciones vigentes");
+                        // Redirige a la página deseada
+                        window.location.href = "index.jsp";
+                    }
                     window.onload = mostrarPopup; // Llama a la función para mostrar el popup
                 </script>
-    <%
+ <%
             }
         }
     %>
 
     <% if (vigente) { %>
+    <header>
+            
+            <div class="main-container">
+                    <h1>Publicar Lista</h1>
+                </div>
+            </header> 
         <% String mensaje=(String)request.getAttribute("mensaje");
         if(mensaje!=null){%>
             <div id="felisidades" class="error" style="color: red;"><%=mensaje%></div>
-            <%}%><br><br><br><br> 
+      <%}%>
+            
             <form id="miFormulario" action="SVPublicarLista" method="POST" onsubmit="return validarSeleccion();">
                 <div class="contenedor-listas">
                     <div class="lista-contenedor">
