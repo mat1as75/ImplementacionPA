@@ -120,7 +120,6 @@ public class ControladoraPersistencia {
     }
 
     public void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception {
-
         if (dataAlbum.getNombreAlbum() == null
                 || dataAlbum.getMiArtista() == null
                 || dataAlbum.getMisTemas() == null
@@ -133,7 +132,6 @@ public class ControladoraPersistencia {
         //creo el album vacio
         Album nuevoAlbum = new Album();
         this.albJpa.create(nuevoAlbum);
-
         //busco el artista para agregarle el album
         Artista art = this.artJpa.findArtista(dataAlbum.getMiArtista());
         if (art == null) {
@@ -557,7 +555,7 @@ public class ControladoraPersistencia {
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
 
         // Crear la nueva lista particular
-        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion, esPrivada);
+        ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion,null, esPrivada);
         try {
             lpartJpa.create(lista);
             cli.getMisListasReproduccionCreadas().add(lista);
@@ -839,32 +837,6 @@ public class ControladoraPersistencia {
 
             if (album.getMisGenerosString().contains(genero)) {
                 dataAlbums.add(album.getDTAlbumSimple());
-            }
-        }
-        return dataAlbums;
-    }
-    
-    public ArrayList<DTAlbum> getDTAlbumesPorGenero(String genero) {
-        ArrayList<DTAlbum> dataAlbums = new ArrayList<>();
-        List<Album> listaAlbumes = albJpa.findAlbumEntities();
-
-        for (Album album : listaAlbumes) {
-
-            if (album.getMisGenerosString().contains(genero)) {
-                dataAlbums.add(album.getDataAlbum());
-            }
-        }
-        return dataAlbums;
-    }
-    
-    public ArrayList<DTAlbum> getDTAlbumesPorArtista(String nickArtista) {
-        ArrayList<DTAlbum> dataAlbums = new ArrayList<>();
-        List<Album> listaAlbumes = albJpa.findAlbumEntities();
-
-        for (Album album : listaAlbumes) {
-
-            if (album.getMiArtista().getNickname().equals(nickArtista)) {
-                dataAlbums.add(album.getDataAlbum());
             }
         }
         return dataAlbums;
@@ -1615,6 +1587,63 @@ public class ControladoraPersistencia {
             return temaConURL.getDTTemaConRutaOUrl();
         } else {
             return null;
+        }
+    }
+    
+    public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws NonexistentEntityException {
+        Cliente cliente = this.cliJpa.findCliente(nicknameCliente);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+
+        List<ListaParticular> particularesDeCliente = cliente.getMisListasReproduccionCreadas();
+        if (particularesDeCliente == null || particularesDeCliente.isEmpty()) {
+            return null;
+        }
+        
+        List<DTDatosListaReproduccion> listaDeDtListas = new ArrayList();
+        for (ListaParticular lp : particularesDeCliente) {
+            listaDeDtListas.add(lp.getDTDatosListaReproduccion());
+        }
+        return listaDeDtListas;
+    }
+    
+    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        Cliente cliente = this.cliJpa.findCliente(nickname);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+        
+        DTSuscripcion dataSus = null;
+        
+        Suscripcion sus = cliente.getMiSuscripcion();
+        if (sus != null) {
+            dataSus = sus.getDataSuscripcion();
+        }
+        
+        return dataSus;
+    }
+    
+    public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        Cliente cliente = this.cliJpa.findCliente(nickname);
+        if (cliente == null) {
+            throw new NonexistentEntityException("No se encontró el cliente");
+        }
+        
+        Suscripcion nuevaSuscripcion = new Suscripcion(
+                tipoSuscripcion,
+                EstadoSuscripcion.Pendiente,
+                new Date(),
+                cliente
+        );
+        this.suscripcionJpa.create(nuevaSuscripcion);
+        
+        cliente.setMiSuscripcion(nuevaSuscripcion);
+        try {
+            this.cliJpa.edit(cliente);
+        } catch (Exception ex) {
+            this.suscripcionJpa.destroy(nuevaSuscripcion.getIdSuscripcion());
+            throw new DatabaseUpdateException("No se pudo ingresar la suscripcion");
         }
     }
 }

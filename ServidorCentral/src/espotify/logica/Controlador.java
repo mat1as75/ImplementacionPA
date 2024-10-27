@@ -144,7 +144,7 @@ public class Controlador implements IControlador{
     
     @Override
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
-        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, esPrivada);
+        this.contpersis.CrearListaParticular(nombreLista, fotoLista, nicknameCliente,fechaCreacion, esPrivada);
     }
     
     @Override
@@ -429,15 +429,6 @@ public class Controlador implements IControlador{
     public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
         return this.contpersis.getDTAlbumesSimplePorGenero(genero);
     }
-    
-    @Override
-    public ArrayList<DTAlbum> getDTAlbumesPorGenero(String genero){
-        return this.contpersis.getDTAlbumesPorGenero(genero);
-    }
-    @Override
-    public ArrayList<DTAlbum> getDTAlbumesPorArtista(String artista){
-        return this.contpersis.getDTAlbumesPorArtista(artista);
-    }
 
     @Override
     public List<String> getUsuariosSinEste(String nickname){
@@ -479,6 +470,24 @@ public class Controlador implements IControlador{
     }
     
     @Override
+    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        try {
+            return this.contpersis.getDTSuscripcionDeCliente(nickname);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
+    public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        try {
+            this.contpersis.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @Override
     public boolean existeArtista(String nicknameArtista) {
         return this.contpersis.existeArtista(nicknameArtista);
     }
@@ -488,6 +497,10 @@ public class Controlador implements IControlador{
         return this.contpersis.getDTTemaGenericoConRutaOUrl(idTema);
     }
     
-   
+    @Override
+    public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception {
+        return this.contpersis.getListaDTDatosListaReproduccionDeCliente(nicknameCliente);
+    }
+
 }
 
