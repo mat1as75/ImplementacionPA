@@ -2,6 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarPorGenero();
 });
 
+document.addEventListener("DOMContentLoaded", evt => {
+    document.getElementById("audioLinkPlayerContainer").classList.add("hidden");
+});
+    
 function mostrarPorGenero() {
     document.getElementById('PorLista').classList.remove('active');
     document.getElementById('PorGenero').classList.add('active');

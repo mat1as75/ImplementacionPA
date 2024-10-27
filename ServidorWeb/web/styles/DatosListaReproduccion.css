@@ -110,4 +110,10 @@ tr {
     align-items: center;         
 }
 
+.row-hover {
+    cursor: pointer;
+}
+.row-hover:hover {
+    background-color: lightgray;
+}
 
