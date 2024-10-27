@@ -6,6 +6,8 @@
 <%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
 <%@ page import="espotify.logica.Fabrica" %>
 <%@ page import="espotify.logica.IControlador" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <%
     String nombreLista = request.getParameter("nombreLista");
     Fabrica f = Fabrica.getInstance();
@@ -95,7 +97,7 @@
                         <h1><%= datosLista != null ? datosLista.getNombreLista() : "Lista no encontrada"%></h1> 
                         <p><span>Tipo:</span> <%= tipoLista != null ? tipoLista : "Desconocido"%></p>
                         <% if ("Por Defecto".equals(tipoLista)) {%>
-                        <p><span>Género:</span> <%= datosLista != null ? datosLista.getGenero() : "N/A"%></p>
+                        <p><span>GÃ©nero:</span> <%= datosLista != null ? datosLista.getGenero() : "N/A"%></p>
                         <% } else if ("Particular".equals(tipoLista)) {%>
                         <p><span>Cliente:</span> <%= datosLista != null ? datosLista.getCliente() : "N/A"%></p>
                         <% }%>
@@ -119,7 +121,7 @@
                                 <th>#</th>
                                 <th>Agregar</th>
                                 <th>Tema</th>
-                                <th>Duración</th>
+                                <th>DuraciÃ³n</th>
                                 <th>Ruta/Link</th> 
                             </tr>
                         </thead>
@@ -157,7 +159,7 @@
                                             if (puedeDescargar) {%>
                                     <a href="<%= request.getContextPath() + "/" + ruta%>" download>Descargar</a>
                                     <% } else { %>
-                                    <a href="#" onclick="alert('Debe tener una suscripción vigente para descargar el tema.'); return false;">Descargar</a>
+                                    <a href="#" onclick="alert('Debe tener una suscripciÃ³n vigente para descargar el tema.'); return false;">Descargar</a>
                                     <% }
                                         }
                                         // "-"
