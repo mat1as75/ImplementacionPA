@@ -1075,21 +1075,9 @@ public class ControladoraPersistencia {
                 break;
             }
         }
-        
-        if (!temaYaEstaAsociadoALista) {
-            tema.setMisReproducciones(listaRep);
-            try {
-                this.lreprodccJpa.edit(listaRep);
-            } catch (Exception ex) {
-                throw new DatabaseUpdateException("Ocurrio un error al agregar la lista "
-                        + listaRep.getNombreLista()
-                        + " a las listas asociadas al tema ["
-                        + tema.getIdTema() + "]."
-                );
-            }
-        }
 
         try {
+            tema.setMisReproducciones(listaRep);
             this.temaJpa.edit(tema);
         } catch (Exception ex) {
             throw new DatabaseUpdateException(
