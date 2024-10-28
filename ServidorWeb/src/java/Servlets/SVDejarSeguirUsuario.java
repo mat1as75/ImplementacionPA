@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DejarSeguirUsuario", urlPatterns = {"/DejarSeguirUsuario"})
+@WebServlet(name = "SVDejarSeguirUsuario", urlPatterns = {"/SVDejarSeguirUsuario"})
 public class SVDejarSeguirUsuario extends HttpServlet {
 
    
@@ -26,9 +26,10 @@ public class SVDejarSeguirUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String nicknameSeguidor = request.getParameter("nicknameSeguidor");
-        String nicknameSeguido = request.getParameter("nicknameSeguido");
-        
+        String nicknameSeguidor = request.getParameter("nicknameSesion");
+        String nicknameSeguido = request.getParameter("nicknameConsultado");
+        System.out.println("nicknameSesion: " + request.getParameter("nicknameSesion"));
+        System.out.println("nicknameConsultado: " + request.getParameter("nicknameConsultado"));
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();
         

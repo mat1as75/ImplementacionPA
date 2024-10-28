@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @WebServlet(name = "SVConsultaListaReproduccion", urlPatterns = {"/SVConsultaListaReproduccion"})
 public class SVConsultaListaReproduccion extends HttpServlet {
 
@@ -34,16 +33,39 @@ public class SVConsultaListaReproduccion extends HttpServlet {
             String json = new Gson().toJson(listasPublicas);
             response.getWriter().write(json);
         } else if ("PorGenero".equals(tipoDeLista)) {
-            List<DTGenero_Simple> listaGeneros = iControlador.getListaDTGeneroSimple();
-            String json = new Gson().toJson(listaGeneros);
+            // Obtener todos los generos
+            List<DTGenero_Simple> todosLosGeneros = iControlador.getListaDTGeneroSimple();
+            List<DTGenero_Simple> generosPrincipales = new ArrayList<>();
+            // Filtrar solo los generos principales (Con padre = "Genero")
+            for (DTGenero_Simple genero : todosLosGeneros) {
+                if ("Genero".equals(genero.getNombreGeneroPadre())) {
+                    generosPrincipales.add(genero);
+                }
+            }
+            String json = new Gson().toJson(generosPrincipales);
             response.getWriter().write(json);
         } else if ("PorListaPorDefecto".equals(tipoDeLista) && nombreG != null) {
+            // Obtener todas las listas por defecto
             List<String> listasPorDefecto = iControlador.getNombresListasPorDefecto();
             List<String> listasFiltradas = new ArrayList<>();
+            List<String> generosAsociados = new ArrayList<>();
+            generosAsociados.add(nombreG); // Incluir el genero seleccionado 
+
+            // Obtener todos los generos
+            List<DTGenero_Simple> todosLosGeneros = iControlador.getListaDTGeneroSimple();
+
+            // Filtrar subgeneros y agregar a generosAsociados
+            for (DTGenero_Simple genero : todosLosGeneros) {
+                if (nombreG.equals(genero.getNombreGeneroPadre())) {
+                    generosAsociados.add(genero.getNombreGenero());
+                }
+            }
+
+            // Filtrar listas por defecto que tengan los generos asociados
             for (String nombreLista : listasPorDefecto) {
                 try {
                     String generoLista = iControlador.getGeneroDeListaPorDefecto(nombreLista);
-                    if (nombreG.equals(generoLista)) {
+                    if (generosAsociados.contains(generoLista)) {
                         listasFiltradas.add(nombreLista);
                     }
                 } catch (Exception e) {
@@ -52,9 +74,9 @@ public class SVConsultaListaReproduccion extends HttpServlet {
             }
             String json = new Gson().toJson(listasFiltradas);
             response.getWriter().write(json);
-        } 
+        }
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Servlet para consultar lista de reproducción";

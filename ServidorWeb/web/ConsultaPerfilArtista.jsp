@@ -87,7 +87,7 @@
                                     <button type="submit" class="boton-seguimiento">Seguir</button>
                                 </form>
                             <% } else { %>
-                                <form action="SVDejarSeguirAUsuario" method="POST">
+                                <form action="SVDejarSeguirUsuario" method="POST">
                                     <button type="submit" class="boton-seguimiento">Siguiendo</button>
                                 </form>
                             <% } %>
