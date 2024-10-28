@@ -117,3 +117,13 @@ tr {
     background-color: lightgray;
 }
 
+.reproductor-contenedor {
+    /* Posicionamiento */
+    position: fixed;
+    top: 50%;
+    right: 0;
+
+    /* Centrado vertical */
+    transform: translateY(-50%);
+}
+
