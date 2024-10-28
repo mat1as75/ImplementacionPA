@@ -150,8 +150,6 @@
                                 <%
                                     String url = (temaRutaOUrl != null) ? temaRutaOUrl.getUrlTema() : null;
                                     String ruta = (temaRutaOUrl != null) ? temaRutaOUrl.getRutaTema() : null;
-                                    System.out.println("context: " + request.getContextPath());
-                                    System.out.println("ruta " + ruta);
                                     // "Ver enlace"
                                     if (url != null && !url.isEmpty()) {
                                         if (!url.startsWith("http://") && !url.startsWith("https://")) {
