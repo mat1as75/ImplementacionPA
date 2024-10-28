@@ -2,10 +2,22 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.container {
-    margin: 0 auto;
+.containerMain {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     text-align: center;
-    width: 50%;
+    justify-content: center;
+    align-content: center;
+}
+
+
+.lista-detalles {
+    flex-grow: 2;
+    padding: 10px;
+    margin: 1rem 2rem;
+    border: 1px solid black;
+    border-radius: 5px;
 }
 
 .lista-fotoLista {
@@ -23,12 +35,6 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
-}
-
-.lista-detalles {
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
 }
 
 .boton-agregar {
@@ -117,13 +123,5 @@ tr {
     background-color: lightgray;
 }
 
-.reproductor-contenedor {
-    /* Posicionamiento */
-    position: fixed;
-    top: 50%;
-    right: 0;
 
-    /* Centrado vertical */
-    transform: translateY(-50%);
-}
 

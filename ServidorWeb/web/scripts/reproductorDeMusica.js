@@ -24,12 +24,12 @@ const logo = {src: "imagenes/spotifyLogo.png", alt: "Logo de spotify"};
 async function play(idTema, nombreTema, srcPortada) {
     const url = `/ServidorWeb/Tema?idTema=${idTema || ""}`;
     const responseInfo = await verifyGetRequest(url);
-        
+                
     if (responseInfo.ok) {
         if (responseInfo.contentType === "audio/mpeg") {
             showFilePlayer(idTema, nombreTema, url, srcPortada);
         } else {
-            showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo);
+            await showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo);
         }
     } else {
         showErrorFilePlayer(responseInfo);
@@ -73,10 +73,10 @@ async function verifyGetRequest(url) {
 //Muestra el reproductor de archivos de musica
 function showFilePlayer(idTema, nombreTema, url, srcPortada) {
     
-    //oculto el iframe y remuevo el atributo src y data-idTema
+    //oculto el iframe y remuevo el atributo src y data-idtema
     audioLinkPlayer.setAttribute("src", "");
     audioLinkPlayerContainer.classList.add("hidden");
-    audioLinkPlayerContainer.setAttribute("data-idTema", "");
+    audioLinkPlayerContainer.setAttribute("data-idtema", "");
     
     //remuevo el contenido del link del tema del iframe
     linkTema.innerText = "";
@@ -95,8 +95,9 @@ function showFilePlayer(idTema, nombreTema, url, srcPortada) {
 
     //muestro el reproductor de archivos y seteo el url
     audioFilePlayerContainer.classList.remove("hidden");
-    audioFilePlayerContainer.setAttribute("data-idTema", idTema);
+    audioFilePlayerContainer.setAttribute("data-idtema", idTema);
     audioFilePlayer.setAttribute("src", url);
+    
 }
 
 //Muestra el mensaje de error recibido en el request
@@ -116,16 +117,16 @@ function showErrorFilePlayer(responseInfo) {
     audioFilePlayer.classList.remove("hidden");
     //remuevo el src e idTema
     audioFilePlayer.setAttribute("src", "");
-    audioFilePlayerContainer.setAttribute("data-idTema", "");
     //muestro el mensaje de error recibido en el body
     errorAudioFilePlayer.innerText = responseInfo.body;
 }
 
 //Muestra el reproductor de musica que lee un link 
-function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
+async function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
+    
     //oculto el reproductor de archivos y remuevo el atributo src y data-idTema
     audioFilePlayer.setAttribute("src", "");
-    audioFilePlayerContainer.setAttribute("data-idTema", "");
+    audioFilePlayerContainer.setAttribute("data-idtema", "");
     audioFilePlayerContainer.classList.add("hidden");
 
     //seteo el nombre del tema o fallback
@@ -137,7 +138,7 @@ function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
 
     //extraigo el url y si es un link de youtube le agrego /embed/ para poder usarlo en el iframe
     const receivedUrl = responseInfo.body;
-    const embeddableUrl = parseYoutubeUrlToEmbeddable(receivedUrl);
+    const embeddableUrl = await parseUrlToEmbeddable(receivedUrl);
     
     //modifico el link del tema y lo muestro
     linkTema.innerText = "Visitar enlace";
@@ -147,8 +148,9 @@ function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
     //muestro el reproductor de archivos y seteo el url
     audioLinkPlayerContainer.classList.remove("hidden");
     audioLinkPlayer.setAttribute("src", embeddableUrl);
-    audioLinkPlayer.setAttribute("data-idTema", idTema);
+    audioLinkPlayerContainer.setAttribute("data-idtema", idTema);
 }
+
 
 /*
  * Las direcciones de youtube deben ser de la forma youtube.com/embed/videoId
@@ -156,10 +158,25 @@ function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
  * Esta funcion recibe una url y si es una direccion de youtube sin esa caracteristica
  * la convierte a una version valida para el iframe
  */
-function parseYoutubeUrlToEmbeddable(url) {
-    let videoId = '';
-
+async function parseUrlToEmbeddable(url) {
+    
+    if (!url) return url;
+    
+    let newUrl;
+    if (url.includes("bit.ly")) {
+       const result = await getBitLyRedirectedLink(url);
+       if (result.ok) {
+           newUrl = result.result;
+       } else {
+           newUrl = result.result || "Url no soportada";
+       }
+       //Convierto el url del tema de soundcloud a una url que se pueda usar en un iframe
+       return "https://w.soundcloud.com/player/?url=" + newUrl;
+    }
+    
     if (url.includes('youtube.com/embed/')) return url;
+    
+    let videoId = '';
 
     // Verifico que sea una url estandar, por ejemplo
     // https://www.youtube.com/watch?v=videoId
@@ -175,6 +192,10 @@ function parseYoutubeUrlToEmbeddable(url) {
         videoId = url.split('youtu.be/')[1]; 
     }
     
+    if (videoId.includes("?list")) {
+        videoId = videoId.substr(0, videoId.indexOf("?"));
+    }
+    
     // retorno la url modificada
     if (videoId) {
         return `https://www.youtube.com/embed/${videoId}`;
@@ -182,6 +203,31 @@ function parseYoutubeUrlToEmbeddable(url) {
     //si no es una url de youtube retorno la url sin modificar
     } else {
         return url;
+    }
+}
+
+async function getBitLyRedirectedLink(url) {
+    
+    //Llamo al servlet que hace la conexion con el link de bitly
+    //asi obtengo el url de la pagina a la cual se redirecciona
+    const request = new Request("/ServidorWeb/SVRedirectedLinkBitly", {
+        method: "POST",
+        body: url,
+        headers: {'Content-Type': 'text/plain;charset=UTF-8'}
+    });
+ 
+    try {
+        const response = await fetch(request);
+        const result = await response.text();
+        
+        if (response.ok) {
+            return {ok: true, result: result};
+        } else {
+            return {ok: false, result: result};
+        }
+    } catch (e) {
+        console.error("Error: " , e);
+        return {ok: false, result: ""};
     }
 }
 
@@ -213,17 +259,21 @@ document.querySelector("body").addEventListener("click", async (evt) => {
    
    //si el elemento es un <a> de la lista de reproduccion con la funcion de agregarTemaALista
    if (evt.target.getAttribute("data-function") === "agregarTemaALista") {
-        const idTema = evt.target.getAttribute("data-idTema");
+        const idTema = evt.target.getAttribute("data-idtema");
         const nombreLista = evt.target.getAttribute("data-nombreLista");
+        evt.target.classList.add("hidden");
         await requestAgregarTema(idTema, nombreLista, evt.target);
+        evt.target.classList.remove("hidden");
         return;
    }
    
    //si el elemento es un <a> de la lista de reproduccion con la funcion de quitarTemaDeLista
    if (evt.target.getAttribute("data-function") === "quitarTemaDeLista") {
-        const idTema = evt.target.getAttribute("data-idTema");
+        const idTema = evt.target.getAttribute("data-idtema");
         const nombreLista = evt.target.getAttribute("data-nombreLista");
+        evt.target.classList.add("hidden");
         await requestQuitarTema(idTema, nombreLista, evt.target);
+        evt.target.classList.remove("hidden");
         return;
    }
 });
@@ -231,7 +281,7 @@ document.querySelector("body").addEventListener("click", async (evt) => {
 //Recibo el id del tema, el nombre de la lista y el elemento clickeado
 async function requestAgregarTema(idTema, nombreLista, anchorTag) {
     //creo el body del request con los datos necesarios
-    const data = { idTema: idTema, nombreListaReproduccion: nombreLista };
+    const data = { idTema: idTema || 0, nombreListaReproduccion: nombreLista };
     //paso los datos a json
     const jsonData = JSON.stringify(data);
     //creo el request
@@ -298,7 +348,7 @@ async function requestQuitarTema(idTema, nombreLista, anchorTag) {
 //o no a la lista para asi definir su funcion y su apariencia
 function createAnchor(idTema, nombreLista, perteneceALista) {
     const a = document.createElement("a");
-    a.setAttribute("data-idTema", idTema);
+    a.setAttribute("data-idtema", idTema);
     a.setAttribute("data-nombreLista", nombreLista);
     a.innerText = nombreLista;
     
@@ -331,15 +381,13 @@ function removePreviousContent(idDropdownContent) {
 function loadDropdownContent(contentType, data, idDropdownContent) {
     removePreviousContent(idDropdownContent);
     const dropdownContent = document.getElementById(idDropdownContent);
-    //obtengo el id del tema a partir del data-idTema del contenedor del reproductor
+    //obtengo el id del tema a partir del data-idtema del contenedor del reproductor
     //el atributo es seteado cuando se reproduce un tema
-    const idTema = dropdownContent.closest(".audioPlayerContainer").getAttribute("data-idTema");
-    
+    const idTema = dropdownContent.closest(".audioPlayerContainer").getAttribute("data-idtema");
     if (contentType === "json") {
         data.forEach( lista => {
             //determino si el tema ya pertenece a la lista o no para definir la apariencia y funcion del <a>
             const perteneceALista = lista.temas.find( tema => tema.idTema.toString() === idTema);
-            
             if (perteneceALista) {
                 dropdownContent.append(createAnchor(idTema, lista.nombreLista, true));
             } else {
