@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.Map"%>
 <%@page import="espotify.DataTypes.DTDatosUsuario"%>
@@ -64,6 +65,7 @@
 
                     <div class="tab-content">
                         <div id="tab1" class="tab active">
+<<<<<<< HEAD
                             <p>Tab #1 content goes here!</p>
                             <div class="lista-albumes">
                                 <!-- Aqui van los albumes por el genero seleccionado -->
@@ -71,6 +73,11 @@
                             <div class="lista-listasR">
                                 <!-- Aqui van las listas por defecto del genero seleccionado -->
                             </div>
+=======
+                            <div class="lista-Albumes"></div>
+                            <div class="lista-ListasR"></div>
+                            
+>>>>>>> main
                         </div>
                         <div id="tab2" class="tab">
                             <p>Tab #2 content goes here!</p>
@@ -86,7 +93,17 @@
 
                 </div>
                 
+<<<<<<< HEAD
                 
+=======
+                <%
+//                    ArrayList<String> nombresAlbumes = new ArrayList<>();
+//                    ArrayList<String> nombresListasR = new ArrayList<>();
+//                    
+//                    String nombreGenero = null;
+//                    
+//                    <% if () { %>
+>>>>>>> main
                 
                 
                 
