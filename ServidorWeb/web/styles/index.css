@@ -1,3 +1,79 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
 
+/*----- Tabs -----*/
+.tabs {
+    display: flex; /* Cambia a flexbox */
+    margin-top: 50px;
+}
 
+/*----- Tab Links -----*/
+/* Clearfix */
+.tab-links {
+    display: flex; /* Usar flexbox para los links */
+    flex-direction: column; /* Alinear en columna */
+    margin-right: -5px;
+}
+
+.tab-links li {
+    margin: 0px 5px;
+    list-style: none;
+    width: 120px; /* Cambia este valor al ancho deseado */
+    border-radius: 5px;
+}
+
+.tab-links a {
+    padding: 9px 15px;
+    display: block; /* Cambia a block para que el ancho se aplique */
+    border-radius: 15px 0px 0px 15px;
+    background: #aeaeae;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: bold;
+    color: #202020;
+    text-decoration: none;
+    transition: all linear 0.15s;
+    text-align: center; /* Centra el texto */
+}
+
+.tab-links a:hover {
+    background: #cfcfcf;
+    text-decoration: none;
+}
+
+li.active a, li.active a:hover {
+    background: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+}
+
+/*----- Content of Tabs -----*/
+.tab-content {
+    padding: 0;
+    height: 500px;
+    width: 50%;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
+    background: #fff;
+    overflow-y: auto;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.reproductor {
+    display: flex;
+    margin-top: 50px;
+    padding: 0;
+    height: 700px;
+    width: 50px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
+    background: #fff;
+}

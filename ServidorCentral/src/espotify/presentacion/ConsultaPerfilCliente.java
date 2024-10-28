@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -408,7 +410,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
 
                 // Verificar si tiene foto de perfil
                 if (datosCliente.getFotoPerfil() != null) {
-                    
+                    System.out.println("###" + datosCliente.getFotoPerfil());
                     // Lee la imagen desde el archivo(ruta)
                     archivoAlmacenado = ImageIO.read(new File(datosCliente.getFotoPerfil()));
 
@@ -448,8 +450,6 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             }
                 
             
-            
-            
             /* Recorro lista Nicknames de Seguidores del Cliente, 
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nicknames a la JList */
@@ -460,7 +460,6 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                 listaSeguidores.addElement(nickname);
             }
             jListSeguidores.setModel(listaSeguidores);
-            
             /* Recorro lista Nicknames de Seguidos del Cliente, 
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nicknames a la JList */
@@ -471,7 +470,6 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                 listaSeguidos.addElement(nickname);
             }
             jListSeguidos.setModel(listaSeguidos);
-            
             /* Recorro lista ListasR Creadas del Cliente, 
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
@@ -482,7 +480,6 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                 listaListasRCreadas.addElement(nombreListaC);
             }
             jListListasRCreadas.setModel(listaListasRCreadas);
-            
             /* Recorro lista ListasR Favoritas del Cliente, 
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
@@ -493,31 +490,29 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
                 listaListasRFavoritas.addElement(nombreListaF);
             }
             jListListasRFavoritas.setModel(listaListasRFavoritas);
-            
             /* Recorro lista Albumes Favoritas del Cliente, 
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
             DefaultListModel<String> listaAlbumesFavoritos = new DefaultListModel<>();
-            ArrayList<String> nombresAlbumesFavoritos = datosCliente.getNombresAlbumesFavoritos();
-        
+            ArrayList<String> nombresAlbumesFavoritos = new ArrayList<>();
+            nombresAlbumesFavoritos.addAll(datosCliente.getNombresAlbumesFavoritos().values());
+ 
             for (String nombreAlbumF: nombresAlbumesFavoritos) {
                 listaAlbumesFavoritos.addElement(nombreAlbumF);
             }
             jListAlbumesFavoritos.setModel(listaAlbumesFavoritos);
-        
             /* Recorro lista Temas Favoritas del Cliente, 
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
             DefaultListModel<String> listaTemasFavoritos = new DefaultListModel<>();
-            ArrayList<String> nombresTemasFavoritos = datosCliente.getNombresTemasFavoritos();
+            ArrayList<String> nombresTemasFavoritos = new ArrayList<>();
+            nombresTemasFavoritos.addAll(datosCliente.getNombresTemasFavoritos().values());
             
             for (String nombreTemaF: nombresTemasFavoritos) {
                 listaTemasFavoritos.addElement(nombreTemaF);
             }
             jListTemasFavoritos.setModel(listaTemasFavoritos);
             
-            // Quito la podibilidad de volver a Consultar
-            //jButtonAceptar.setVisible(false);
         }
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 

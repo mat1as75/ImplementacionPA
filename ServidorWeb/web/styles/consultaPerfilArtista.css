@@ -142,6 +142,15 @@ p {
     border-collapse: collapse;
 }
 
+.lista-albumesP a {
+    color: #000;
+    text-decoration: none;
+}
+
+.lista-albumesP a:hover {
+    text-decoration: underline;
+}
+
 .registros {
     margin-top: -30px;
 }

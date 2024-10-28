@@ -6,6 +6,7 @@ package espotify.DataTypes;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class DTDatosArtista extends DTDatosUsuario {
     
@@ -13,7 +14,7 @@ public class DTDatosArtista extends DTDatosUsuario {
     private String dirSitioWeb;
     
     private int contidadSeguidores;
-    private ArrayList<String> nombresAlbumesPublicados;
+    private Map<Long, String> nombresAlbumesPublicados;
 
     public DTDatosArtista() {
         
@@ -22,7 +23,7 @@ public class DTDatosArtista extends DTDatosUsuario {
     public DTDatosArtista(String nicknameUsuario, String nombreUsuario, String apellidoUsuario, 
             String contrasenaUsuario, String email, Date fecNac, String fotoPerfil, String biografia, 
             String dirSitioWeb, int cantidadSeguidores, 
-            ArrayList<String> nicknamesSeguidores, ArrayList<String> nombresAlbumesPublicados) {
+            ArrayList<String> nicknamesSeguidores, Map<Long, String> nombresAlbumesPublicados) {
         
         super( nicknameUsuario, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil, nicknamesSeguidores );
 
@@ -39,6 +40,6 @@ public class DTDatosArtista extends DTDatosUsuario {
     
     public int getCantidadSeguidores() { return contidadSeguidores; }
     
-    public ArrayList<String> getNombresAlbumesPublicados() { return nombresAlbumesPublicados; }
+    public Map<Long, String> getNombresAlbumesPublicados() { return nombresAlbumesPublicados; }
     
 }

@@ -384,7 +384,10 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los NombresAlbumesP a la JList*/
             DefaultListModel<String> listaAlbumesPublicados = new DefaultListModel<>();
-            ArrayList<String> nombresAlbumesP = datosArtista.getNombresAlbumesPublicados();
+            ArrayList<String> nombresAlbumesP = new ArrayList<>();
+            if (datosArtista.getNombresAlbumesPublicados() != null) {
+                nombresAlbumesP.addAll(datosArtista.getNombresAlbumesPublicados().values());
+            }
             
             for (String nombreAlbum: nombresAlbumesP) {
                 listaAlbumesPublicados.addElement(nombreAlbum);

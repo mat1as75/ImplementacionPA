@@ -154,6 +154,15 @@ p {
     border-collapse: collapse;
 }
 
+.lista-listasRCreados a {
+    color: #000;
+    text-decoration: none;
+}
+
+.lista-listasRCreados a:hover {
+    text-decoration: underline;
+}
+
 .registros {
     margin-top: -30px;
 }
@@ -200,6 +209,15 @@ p {
 
 .tabla-preferencias td {
     cursor: pointer;
+}
+
+.tabla-preferencias a {
+    color: #000;
+    text-decoration: none;
+}
+
+.tabla-preferencias a:hover {
+    text-decoration: underline;
 }
 
 .tabla-preferencias th, .tabla-preferencias td {

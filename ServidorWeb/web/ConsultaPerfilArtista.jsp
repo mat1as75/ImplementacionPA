@@ -1,3 +1,9 @@
+<%@page import="espotify.DataTypes.DTDatosCliente"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="espotify.logica.IControlador"%>
+<%@page import="espotify.logica.Fabrica"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
@@ -6,30 +12,56 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
+    Fabrica fb = Fabrica.getInstance();
+    IControlador control = fb.getControlador();
+    
     HttpSession sesion = request.getSession();
-    DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-    DTDatosArtista datosArtista = (DTDatosArtista) sesion.getAttribute("usuario");
+    String nicknameSesion = (String) sesion.getAttribute("nickname");
+    String rolSesion = (String) sesion.getAttribute("rol");
+    String estadoSuscripcionSesion = null;
+    DTDatosUsuario usuarioSesion = null;
     
-    /* DATOS DE ARTISTA */
-    String nicknameUsuario = datosUsuario.getNicknameUsuario();
-    String nombreCompleto = datosUsuario.getNombreUsuario() + " " + datosUsuario.getApellidoUsuario();
-    String fotoPerfilUsuario = datosUsuario.getFotoPerfil();
-    String emailUsuario = datosUsuario.getEmail();
+    DTDatosUsuario usuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosArtista artistaConsultado = null;
+    
+    String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, 
+            fechaNacConsultado = null, fotoPerfilConsultado = null, biografiaConsultado = null,
+            dirSitioWebConsultado = null;
+    
+    ArrayList<String> nicknamesSeguidoresConsultados = null;
+    Map<Long, String> albumesPublicadosConsultados = new HashMap<>();
+    
+    /*-----DATOS USUARIO CONSULTADO------*/
+    artistaConsultado = (DTDatosArtista) usuarioConsultado;
+    
+    nicknameConsultado = usuarioConsultado.getNicknameUsuario();
+    nombreCompletoConsultado = usuarioConsultado.getNombreUsuario() + " " + usuarioConsultado.getApellidoUsuario();
+    fotoPerfilConsultado = usuarioConsultado.getFotoPerfil();
+    fotoPerfilConsultado = (fotoPerfilConsultado != null) ? fotoPerfilConsultado.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+    emailConsultado = usuarioConsultado.getEmail();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    String fechaNacUsuario = dateFormat.format(datosUsuario.getFecNac());
-    ArrayList<String> nicknamesSeguidores = datosUsuario.getNicknamesSeguidores();
+    fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac());
+    biografiaConsultado = artistaConsultado.getBiografia();
+    dirSitioWebConsultado = artistaConsultado.getDirSitioWeb();
+  
+    nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
+    albumesPublicadosConsultados = artistaConsultado.getNombresAlbumesPublicados();
+
+    // Si UsuarioSesion != ArtistaConsultado => Obtengo DatosUsuarioSesion, caso contrario null
+    usuarioSesion = (!nicknameSesion.equals(nicknameConsultado)) ? control.getDatosUsuario(nicknameSesion) : null;
     
-    /* Extras de Artista */
-    String webPage = datosArtista.getDirSitioWeb();
-    String biografia = datosArtista.getBiografia();
-    ArrayList<String> nombresAlbumesP = datosArtista.getNombresAlbumesPublicados();
-    
-    fotoPerfilUsuario = (fotoPerfilUsuario != null) ? fotoPerfilUsuario.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+    // Sesion es Cliente
+    if (rolSesion.equals("Cliente")) {
+        // Tiene Suscripcion
+        if (((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
+            estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+        }
+    }
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="scripts/consultaPerfilUsuario.js"></script>
+<script src="scripts/consultaPerfilUsuario.js defer"></script>
 <link rel="stylesheet" href="styles/consultaPerfilArtista.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -37,12 +69,30 @@
 <body>
     <div class="container">
         <div class="top-info">
-            <img src="<%= fotoPerfilUsuario %>" alt="Foto de Perfil" class="perfil-imagen"/>
+            <img src="<%= fotoPerfilConsultado %>" alt="Foto de Perfil" class="perfil-imagen"/>
             <div class="usuario-info">
                 <p class="rol">ARTISTA</p><!-- TIPO DE USUARIO -->
-                <p class="nombre-usuario"><%= nombreCompleto %></p><!-- NOMBRE DE USUARIO -->
-                <a href="<%= "https:" + webPage %>" target="_blank" class="btn-webPage"><%= webPage %></a>
-                <!-- Si el perfil lo consulta otro Cliente, poner boton SEGUIR -->
+                <p class="nombre-usuario"><%= nombreCompletoConsultado %></p><!-- NOMBRE DE USUARIO -->
+                
+                <% if (dirSitioWebConsultado != null) { %>
+                    <a href="<%= "https:" + dirSitioWebConsultado %>" target="_blank" class="btn-webPage"><%= dirSitioWebConsultado %></a>
+                <% } %>
+                <%  // Sesion.rol no nula (Visitantes no pueden realizar seguimientos)
+                    // Sesion.rol == Cliente (Clientes unicamente pueden Seguir)
+                    // NicknameSesion != NicknameConsultado (No se permite auto-Seguimientos)
+                    if (rolSesion != null && rolSesion.equals("Cliente") && !nicknameConsultado.equals(nicknameSesion)) {
+                        if (usuarioSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
+                            if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
+                                <form action="SVSeguirUsuario" method="POST">
+                                    <button type="submit" class="boton-seguimiento">Seguir</button>
+                                </form>
+                            <% } else { %>
+                                <form action="SVDejarSeguirAUsuario" method="POST">
+                                    <button type="submit" class="boton-seguimiento">Siguiendo</button>
+                                </form>
+                            <% } %>
+                        <% } %>
+                <%  } %>
             </div>
         </div>
 
@@ -55,16 +105,17 @@
             <div class="tab-content">
                 <div id="tab1" class="tab active">
                     <h3>Nickname</h3>
-                    <p><%= nicknameUsuario %></p>
+                    <p><%= nicknameConsultado %></p>
                     <h3>Email</h3>
-                    <p><%= emailUsuario %></p>
+                    <p><%= emailConsultado %></p>
                     <h3>Fecha de Nacimiento</h3>
-                    <p><%= fechaNacUsuario %></p>
-                    <h3>Biografía</h3>
-                    <p><%= biografia %></p>
-
+                    <p><%= fechaNacConsultado %></p>
+                    <% if (biografiaConsultado != null) { %>
+                        <h3>Biografía</h3>
+                        <p><%= biografiaConsultado %></p>
+                    <% } %>
                     <div id="followers" class="followers-list">
-                        <h3 class="followers-info"><%= nicknamesSeguidores.size() + " " %><% if (nicknamesSeguidores.size() == 1) { %>
+                        <h3 class="followers-info"><%= nicknamesSeguidoresConsultados.size() + " " %><% if (nicknamesSeguidoresConsultados.size() == 1) { %>
                                                                             seguidor</h3>
                                                                    <% } else { %>
                                                                             seguidores</h3>
@@ -76,7 +127,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for (String nickname : nicknamesSeguidores) { %>
+                                <% for (String nickname : nicknamesSeguidoresConsultados) { %>
                                 <tr>
                                     <td><%= nickname %></td>
                                 </tr>
@@ -87,7 +138,11 @@
                 </div>
 
                 <div id="tab2" class="tab">
-                    <% if (nombresAlbumesP.size() > 0) { %>
+                    <% if (albumesPublicadosConsultados.size() > 0) { %>
+                    <%
+                        // Conviertir las entradas del Map a List
+                        List<Map.Entry<Long, String>> entryAlbumesPublicados = new ArrayList<>(albumesPublicadosConsultados.entrySet());
+                    %>
                     <div id="albumesP" class="lista-albumesP">
                         <div class="divisor d-none d-sm-block"></div>
                         <h3 class="registros">Registro de Álbumes Publicados</h3>
@@ -99,9 +154,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for (String album : nombresAlbumesP) {%>
+                                <% for (int i = 0; i < albumesPublicadosConsultados.size(); i++) { %>
                                 <tr>
-                                    <td><%= album %></td>
+                                    <%
+                                        Map.Entry<Long, String> entryAlbumPublicado = entryAlbumesPublicados.get(i);
+                                        Long idAlbum = entryAlbumPublicado.getKey();
+                                        String nombreAlbum = entryAlbumPublicado.getValue();
+                                    %>
+                                    <td><a href="ConsultaAlbum?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
                                 </tr>
                                 <% } %>
                             </tbody>

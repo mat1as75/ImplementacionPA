@@ -1,3 +1,8 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="espotify.logica.IControlador"%>
+<%@page import="espotify.logica.Fabrica"%>
+<%@page import="espotify.DataTypes.DTDatosArtista"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Date"%>
@@ -7,61 +12,117 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    HttpSession sesion = request.getSession();
-    DTDatosUsuario datosUsuario = (DTDatosUsuario) sesion.getAttribute("usuario");
-    DTDatosCliente datosCliente = (DTDatosCliente) sesion.getAttribute("usuario");
-    String nicknameUsuario = null, nombreCompleto = null, fotoPerfilUsuario = null, emailUsuario = null, fechaNacUsuario = null;
-    ArrayList<String> nicknamesSeguidores = null, nicknamesSeguidos = null, nicknamesS = null, rolS = null, 
-            nombresListasRCreadas = null, nombresTemasFav = null, nombresAlbumesFav = null, nombresListasFav = null, 
-            nombresListasRPublicas = null;
-            
-    nicknameUsuario = datosUsuario.getNicknameUsuario();
-    nombreCompleto = datosUsuario.getNombreUsuario() + " " + datosUsuario.getApellidoUsuario();
-    fotoPerfilUsuario = datosUsuario.getFotoPerfil();
+    Fabrica fb = Fabrica.getInstance();
+    IControlador control = fb.getControlador();
     
-    if (!sesion.getAttribute("rol").equals("Visitante")) {
-
-        /* DATOS DE CLIENTE */
-        emailUsuario = datosUsuario.getEmail();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        fechaNacUsuario = dateFormat.format(datosUsuario.getFecNac());
-        nicknamesSeguidores = datosUsuario.getNicknamesSeguidores();
-
-        /* Extras de Cliente con Suscripcion */
-        nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
-        nicknamesS = new ArrayList<>();
-        rolS = new ArrayList<>();
-        for (String n : nicknamesSeguidos) {
-            int i = n.indexOf(",");
-            nicknamesS.add(n.substring(0, i));
+    HttpSession sesion = request.getSession(false);
+    String nicknameSesion = (String) sesion.getAttribute("nickname");
+    String rolSesion = (String) sesion.getAttribute("rol");
+    DTDatosUsuario usuarioSesion = null;
+    String estadoSuscripcionSesion = null;
+    
+    DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosUsuario usuarioConsultado = control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario());
+    DTDatosCliente clienteConsultado = null;
+    
+    String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
+    ArrayList<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
+            nombresListasRFavConsultadas = null, nombresListasRConsultadas = null, nombresListasPublicasConsultadas = null;
+    
+    Map<Long, String> temasFavConsultados = new HashMap<>(), albumesFavConsultados = new HashMap<>();
+    
+    /*-----DATOS USUARIO CONSULTADO------*/
+    clienteConsultado = (DTDatosCliente) usuarioConsultado;
+    
+    nicknameConsultado = usuarioConsultado.getNicknameUsuario();
+    emailConsultado = usuarioConsultado.getEmail();
+    nombreCompletoConsultado = usuarioConsultado.getNombreUsuario() + " " + usuarioConsultado.getApellidoUsuario();
+    fotoPerfilConsultado = usuarioConsultado.getFotoPerfil();
+    fotoPerfilConsultado = (fotoPerfilConsultado != null) ? fotoPerfilConsultado.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac());
+    nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
+    if (rolSesion != null) { /* Si existe Sesion (Cliente o Artista) */
+        
+        usuarioSesion = control.getDatosUsuario(nicknameSesion);
+        if (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
+            //((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
+            estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+            System.out.println("### " + estadoSuscripcionSesion);
         }
-        for (String n : nicknamesSeguidos) {
-            int i = n.indexOf(" ");
-            rolS.add(n.substring(i + 1));
-        }
+        
+        /* UsuarioSesion == UsuarioConsultado */
+        if (nicknameSesion.equals(usuarioConsultado.getNicknameUsuario())) { 
+            /* UsuarioSesion.Suscripcion != null */
+            if (((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
+                /* UsuarioSesion EstadoSuscripcion.Vigente */
+                if (estadoSuscripcionSesion.equals("Vigente")) {
 
-        nombresListasRCreadas = null;
-        nombresTemasFav = null;
-        nombresAlbumesFav = null;
-        nombresListasFav = null;
-        if (datosCliente.getSuscripcion() != null && datosCliente.getSuscripcion().getEstadoSuscripcion().toString().equals("Vigente")) {
-            nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
-            nombresListasRCreadas = datosCliente.getNombresListasRCreadas();
-            nombresTemasFav = datosCliente.getNombresTemasFavoritos();
-            nombresAlbumesFav = datosCliente.getNombresAlbumesFavoritos();
-            nombresListasFav = datosCliente.getNombresListasRFavoritas();
-        }
+                    // Usuarios a los que sigue (identificando si son clientes o artistas)
+                    nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
+                    nicknamesS = new ArrayList<>();
+                    rolesS = new ArrayList<>();
+                    for (String n : nicknamesSeguidosConsultados) {
+                        int i = n.indexOf(",");
+                        nicknamesS.add(n.substring(0, i));
+                    }
+                    for (String n : nicknamesSeguidosConsultados) {
+                        int i = n.indexOf(" ");
+                        rolesS.add(n.substring(i + 1));
+                    }
 
-        fotoPerfilUsuario = (fotoPerfilUsuario != null) ? fotoPerfilUsuario.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
-    } else { /* Obtengo datos que el Visitante debe de ver del Cliente */
-        /* LISTA REPRODUCCION PARTICULAR PUBLICAS */
-        nombresListasRPublicas = datosCliente.getNombresListasRCreadasPublicas();
+                    // Listas de Reproduccion que creo (Publicas Y Privadas)
+                    nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadas();
+
+                    // Preferencias que tiene guardadas
+                    temasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
+                    albumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
+                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
+                }  
+            }
+        } else { /* UsuarioSesion != UsuarioConsultado */
+            
+            // Consulta un Artista o Cliente con Suscripcion Vigente
+            if (rolSesion.equals("Artista") || ((rolSesion.equals("Cliente") && estadoSuscripcionSesion != null 
+                                                && estadoSuscripcionSesion.equals("Vigente")))) {
+                // Usuarios a los que sigue (identificando si son clientes o artistas)
+                    nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
+                    nicknamesS = new ArrayList<>();
+                    rolesS = new ArrayList<>();
+                    for (String n : nicknamesSeguidosConsultados) {
+                        int i = n.indexOf(",");
+                        nicknamesS.add(n.substring(0, i));
+                    }
+                    for (String n : nicknamesSeguidosConsultados) {
+                        int i = n.indexOf(" ");
+                        rolesS.add(n.substring(i + 1));
+                    }
+                    
+                    // Consulta un Artista
+                    // UsuarioSesion es Seguidor de UsuarioConsultado
+                    if (rolSesion.equals("Artista") || nicknamesSeguidoresConsultados.contains(nicknameSesion)) {
+
+                        // Listas de Reproduccion que creo (Publicas)
+                        nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
+                    }
+
+                    // Preferencias que tiene guardadas
+                    temasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
+                    albumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
+                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
+                    
+            }
+        }
+    } else { /* No existe Sesion (Visitante) */
+        
+        nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
     }
+
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="scripts/consultaPerfilUsuario.js"></script>
+<script src="scripts/consultaPerfilUsuario.js" defer></script>
 <link rel="stylesheet" href="styles/consultaPerfilCliente.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -69,11 +130,28 @@
 <body>
     <div class="container">
         <div class="top-info">
-            <img src="<%= fotoPerfilUsuario %>" alt="Foto de Perfil" class="perfil-imagen"/>
+            <img src="<%= fotoPerfilConsultado %>" alt="Foto de Perfil" class="perfil-imagen"/>
             <div class="usuario-info">
                 <p class="rol">CLIENTE</p><!-- TIPO DE USUARIO -->
-                <p class="nombre-usuario"><%= nombreCompleto %></p><!-- NOMBRE DE USUARIO -->
-                <!-- Si el perfil lo consulta otro Cliente, poner boton SEGUIR -->
+                <p class="nombre-usuario"><%= nombreCompletoConsultado %></p><!-- NOMBRE DE USUARIO -->
+               
+                <%  // Sesion.rol no nula (Visitantes no pueden realizar seguimientos)
+                    // Sesion.rol == Cliente (Clientes unicamente pueden Seguir)
+                    // NicknameSesion != NicknameConsultado (No se permite auto-Seguimientos)
+                    if (rolSesion != null && rolSesion.equals("Cliente") && !nicknameConsultado.equals(nicknameSesion)) {
+                        if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
+                            <form action="SVSeguirUsuario" method="POST">
+                                <button type="submit" class="boton-seguimiento">Seguir</button>
+                            </form>
+                        <% } else { %>
+                            <form action="SVDejarSeguirAUsuario" method="POST">
+                                <button type="submit" class="boton-seguimiento">Siguiendo</button>
+                            </form>
+                        <% } %>
+                <%  } %>
+                
+                
+                
             </div>
         </div>
     
@@ -86,134 +164,173 @@
             <div class="tab-content">
                 <div id="tab1" class="tab active">
                     <h3>Nickname</h3>
-                    <p><%= nicknameUsuario %></p>
+                    <p><%= nicknameConsultado %></p>
                     
-                    <h3>Email</h3>
-                    <p><%= emailUsuario %></p>
-                    <h3>Fecha de Nacimiento</h3>
-                    <p><%= fechaNacUsuario %></p>
+                    <% if (rolSesion != null) { %>
+                        <h3>Email</h3>
+                        <p><%= emailConsultado %></p>
 
-                    <div id="followers" class="followers-list">
-                        <h3 class="followers-info"><%= nicknamesSeguidores.size() + " " %><% if (nicknamesSeguidores.size() == 1) { %>
-                                                                            seguidor</h3>
-                                                                   <% } else { %>
-                                                                            seguidores</h3>
-                                                                   <% } %>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Nickname</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for (String nickname : nicknamesSeguidores) {%>
-                                <tr>
-                                    <td><%= nickname %></td>
-                                </tr>
-                                <% } %>
-                            </tbody>
-                        </table>
-                    </div>
-                    <% if (datosCliente.getSuscripcion() != null && datosCliente.getSuscripcion().getEstadoSuscripcion().equals("Vigente")) { %>        
-                        <div id="followed" class="followed-list">
-                            <h3 class="followed-info"><%= nicknamesSeguidos.size() + " " %><% if (nicknamesSeguidores.size() == 1) { %>
-                                                                            seguido</h3>
-                                                                   <% } else { %>
-                                                                            seguidos</h3>
-                                                                   <% } %>
+                        <h3>Fecha de Nacimiento</h3>
+                        <p><%= fechaNacConsultado %></p>
+
+                        <div id="followers" class="followers-list">
+                            <h3 class="followers-info"><%= nicknamesSeguidoresConsultados.size() + " " %><% if (nicknamesSeguidoresConsultados.size() == 1) { %>
+                                                                                seguidor</h3>
+                                                                       <% } else { %>
+                                                                                seguidores</h3>
+                                                                       <% } %>
                             <table>
                                 <thead>
                                     <tr>
                                         <th>Nickname</th>
-                                        <th>Rol</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (int i = 0; i < nicknamesSeguidos.size(); i++) {%>
+                                    <% for (String nickname : nicknamesSeguidoresConsultados) {%>
                                     <tr>
-                                        <td><%= nicknamesS.get(i) %></td>
-                                        <td><%= rolS.get(i) %></td>
+                                        <td><%= nickname %></td>
                                     </tr>
                                     <% } %>
                                 </tbody>
                             </table>
                         </div>
                     <% } %>
-                </div>
-
-                <div id="tab2" class="tab">
-                    <% if (datosCliente.getSuscripcion() != null && datosCliente.getSuscripcion().getEstadoSuscripcion().equals("Vigente")) { %>
-                        <% if (nombresListasRCreadas.size() > 0) { %>
-                        <div id="listasRCreadas" class="lista-listasRCreados">
-                            <div class="divisor d-none d-sm-block"></div>
-                            <h3 class="registros">Registro de Listas Creadas</h3>
-                            <h3 class="listasR-info">Listas de Reproducción</h3>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (String lista : nombresListasRCreadas) { %>
-                                          <tr>
-                                              <td><%= lista %></td>
-                                          </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                        <% } %>
-                        
-                        <div class="tabla-preferencias">
-                            <% if (nombresTemasFav.size() > 0 || nombresAlbumesFav.size() > 0 || nombresListasFav.size() > 0) { %>
-                            <div class="divisor d-none d-sm-block"></div>    
-                            <h3 class="preferencias">Preferencias</h3>
+                    <% if ((rolSesion != null && rolSesion.equals("Artista")) || (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>        
+                        <% if (nicknamesSeguidosConsultados != null) { %>
+                            <div id="followed" class="followed-list">
+                                <h3 class="followed-info"><%= nicknamesSeguidosConsultados.size() + " " %><% if (nicknamesSeguidosConsultados.size() == 1) { %>
+                                                                                seguido</h3>
+                                                                       <% } else { %>
+                                                                                seguidos</h3>
+                                                                       <% } %>
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Temas</th>
-                                            <th>Álbumes</th> 
-                                            <th>Listas de Reproducción</th>
+                                            <th>Nickname</th>
+                                            <th>Rol</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                         
-                                        <% 
-                                        int max = Math.max(Math.max(nombresTemasFav.size(), nombresAlbumesFav.size()), 
-                                        nombresListasFav.size()); 
-
-                                        int sizeTemas = nombresTemasFav.size();
-                                        int sizeAlbumes = nombresAlbumesFav.size();
-                                        int sizeListas = nombresListasFav.size();
-                                        %>
-                                        
-                                        <% for (int i = 0; i < max; i++) {%>
+                                        <% for (int i = 0; i < nicknamesSeguidosConsultados.size(); i++) {%>
                                         <tr>
-                                            <% if (sizeTemas > 0) { %>
-                                                <td><%= nombresTemasFav.get(i)%></td>
-                                                <% sizeTemas--; %>
-                                            <% } else { %>
-                                                <td></td>
-                                            <% } %>
-                                            
-                                            <% if (sizeAlbumes > 0) { %>
-                                            <td><a href="SVConsultaAlbum?id=<%= nombresAlbumesFav.get(i) %>"><%= nombresAlbumesFav.get(i) %></a></td>
-                                                <% sizeAlbumes--; %>
-                                            <% } else { %>
-                                                <td></td>
-                                            <% } %>
-                                            
-                                            <% if (sizeListas > 0) {%>
-                                                <td><a href="SVConsultaListaReproduccion?id=<%= nombresListasFav.get(i) %>"><%= nombresListasFav.get(i) %></a></td>
-                                                <% sizeListas--; %>
-                                            <% } else { %>
-                                                <td></td>
-                                            <% } %>
+                                            <td><%= nicknamesS.get(i) %></td>
+                                            <td><%= rolesS.get(i) %></td>
                                         </tr>
                                         <% } %>
                                     </tbody>
                                 </table>
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+
+                <div id="tab2" class="tab">
+                <%  // Consulta un Visitante
+                    // Consulta un Artista
+                    // Consulta un Cliente que tiene Suscripcion con estado == Vigente
+                    if ((rolSesion == null || rolSesion.equals("Artista") || 
+                        (rolSesion.equals("Cliente") && estadoSuscripcionSesion != null && 
+                        estadoSuscripcionSesion.equals("Vigente")))) { %>
+                    <%
+                        
+                            // 
+                            if (nombresListasRConsultadas != null && nombresListasRConsultadas.size() > 0) { %>
+                            <%System.out.println("DIV ListasRCreadas");%>
+                                <div id="listasRCreadas" class="lista-listasRCreados">
+                                    <div class="divisor d-none d-sm-block"></div>
+                                    
+                                <%  // Consulta un Visitante
+                                    // Consulta un Artista
+                                    // Consulta un Usuario & ese Usuario es Seguidor del Consultado
+                                    if (rolSesion == null || rolSesion.equals("Artista") ||
+                                            (rolSesion.equals("Cliente") && 
+                                            nicknamesSeguidoresConsultados.contains(nicknameSesion))) { %>
+                                        <h3 class="registros">Registro de Listas Publicas Creadas</h3>
+                                    <% } else { %>
+                                        <h3 class="registros">Registro de Listas Creadas</h3>
+                                    <% } %>
+                                    <h3 class="listasR-info">Listas de Reproducción</h3>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (int i = 0; i < nombresListasRConsultadas.size(); i++) { %>
+                                            <tr>
+                                                <td><a href="DatosListaReproduccion.jsp?nombreLista=<%= nombresListasRConsultadas.get(i) %>"><%= nombresListasRConsultadas.get(i) %></a></td>
+                                            </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                        <% } %>
+
+                        <div class="tabla-preferencias">
+                            <% if (rolSesion != null) { %>
+                                <% if (temasFavConsultados.size() > 0 || albumesFavConsultados.size() > 0 || nombresListasRFavConsultadas.size() > 0) { %>
+                                <div class="divisor d-none d-sm-block"></div>    
+                                <h3 class="preferencias">Preferencias</h3>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Temas</th>
+                                                <th>Álbumes</th> 
+                                                <th>Listas de Reproducción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <%   
+                                                int sizeTemas = temasFavConsultados.size();
+                                                int sizeAlbumes = albumesFavConsultados.size();
+                                                int sizeListas = nombresListasRFavConsultadas.size();
+
+                                                int max = Math.max(Math.max(sizeTemas, sizeAlbumes), sizeListas);
+
+                                                // Conviertir las entradas del Map a List
+                                                List<Map.Entry<Long, String>> entryTemasFav = new ArrayList<>(temasFavConsultados.entrySet());
+                                                List<Map.Entry<Long, String>> entryAlbumesFav = new ArrayList<>(albumesFavConsultados.entrySet());
+                                            %>
+
+                                            <% for (int i = 0; i < max; i++) {%>
+                                            <tr>
+                                                <% if (sizeTemas > 0) { %>
+                                                    <%
+                                                        Map.Entry<Long, String> entryTemaFav = entryTemasFav.get(i);
+                                                        Long idTema = entryTemaFav.getKey();
+                                                        String nombreTema = entryTemaFav.getValue();
+                                                    %>
+                                                    <td><a href="ConsultaTema?temaId=<%= idTema %>"><%= nombreTema %></td>
+                                                    <% sizeTemas--; %>
+                                                <% } else { %>
+                                                    <td></td>
+                                                <% } %>
+
+                                                <% if (sizeAlbumes > 0) { %>
+                                                    <%
+                                                        Map.Entry<Long, String> entryAlbumFav = entryAlbumesFav.get(i);
+                                                        Long idAlbum = entryAlbumFav.getKey();
+                                                        String nombreAlbum = entryAlbumFav.getValue();
+                                                    %>
+                                                    <td><a href="ConsultaAlbum?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
+                                                    <% sizeAlbumes--; %>
+                                                <% } else { %>
+                                                    <td></td>
+                                                <% } %>
+
+                                                <% if (sizeListas > 0) {%>
+                                                    <td><a href="DatosListaReproduccion.jsp?nombreLista=<%= nombresListasRFavConsultadas.get(i) %>"><%= nombresListasRFavConsultadas.get(i) %></a></td>
+                                                    <% sizeListas--; %>
+                                                <% } else { %>
+                                                    <td></td>
+                                                <% } %>
+                                            </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                <% } %>
                             <% } %>
                         </div>
                     <%  } else {  %>

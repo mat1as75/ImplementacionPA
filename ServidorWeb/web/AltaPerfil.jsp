@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="styles/AltaPerfil.css">
 </head>
 <body>
+<div class="main-container">
+    <h1>Formulario de Registro</h1>
+</div>
 
-<h1>Formulario de Registro</h1>
 
 <% String mensaje=(String)request.getAttribute("mensaje");
     if(mensaje!=null){%>
