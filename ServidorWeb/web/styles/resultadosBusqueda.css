@@ -2,7 +2,7 @@ body {
     margin: 0;
 }
 
-#opciones option[disabled] {
+#ordenar option[disabled] {
     display: none;
 }
 
@@ -35,7 +35,7 @@ body {
     white-space: nowrap;
 }
 
-.columnDiv .opciones {
+.columnDiv #ordenar {
     font-family: 'Monospace';
     font-size: 14px;
     margin-top: 13px;
@@ -43,12 +43,12 @@ body {
     white-space: nowrap;
 }
 
-.columnDiv .opciones #opciones {
+.columnDiv .opciones {
     font-family: 'Monospace';
     font-size: 14px;
 }
 
-.columnDiv .opciones #opciones option:checked {
+.columnDiv .opciones option:checked {
     background-color: #ccc;
 }
 
@@ -64,13 +64,14 @@ body {
     flex-wrap: wrap;
     width: 50%;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .resultados form {
 /*    border: 1px solid #ccc;*/
     padding: 10px;
-    width: 200px;
+    padding-bottom: 20px;
+    width: 500px;
 }
 
 .resultados p {
@@ -96,5 +97,20 @@ body {
 }
 
 .resultados button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.resultados a {
+    width: 200px;
+    font-family: 'Monospace';
+    text-decoration: none;
+    color: #000;
+    background-color: transparent;
+    border: none;
+}
+
+.resultados a:hover {
+    text-decoration: underline;
     cursor: pointer;
 }

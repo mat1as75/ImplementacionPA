@@ -6,7 +6,7 @@
 <%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -16,7 +16,7 @@
     </head>
 
     <jsp:include page="headerIndex.jsp"/>
-
+    
     <%
         Fabrica fb = Fabrica.getInstance();
         HttpSession sesion = request.getSession(false);
@@ -29,6 +29,7 @@
             <jsp:include page="ConsultaPerfilArtista.jsp"/>
     <%  }  %>
     
+</html>
 
         
 

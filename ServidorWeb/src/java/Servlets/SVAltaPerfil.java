@@ -60,7 +60,7 @@ public class SVAltaPerfil extends HttpServlet {
         return null;
     }
     private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
-    private static final String DIRECCION_BASE = "Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
+    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

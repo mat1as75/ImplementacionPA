@@ -333,9 +333,10 @@ public class ControladoraPersistencia {
 
         // Nombre de AlbumesPublicados del Artista
         List<Album> listaAlbumesPublicados = a.getMisAlbumesPublicados();
-        ArrayList<String> nombresAlbumesPublicados = new ArrayList<>();
-        for (Album nomAlbumesP : listaAlbumesPublicados) {
-            nombresAlbumesPublicados.add(nomAlbumesP.getNombreAlbum());
+        Map<Long, String> nombresAlbumesPublicados = new HashMap<>();
+        
+        for (Album album : listaAlbumesPublicados) {
+            nombresAlbumesPublicados.put(album.getIdAlbum(), album.getNombreAlbum());
         }
 
         DTDatosArtista DTDatosA = new DTDatosArtista(a.getNickname(),
@@ -392,16 +393,16 @@ public class ControladoraPersistencia {
 
         // Nombres de Albumes Favoritos del Cliente
         List<Album> listaAlbumesFavoritos = c.getMisAlbumesFav();
-        ArrayList<String> nombresAlbumesFavoritos = new ArrayList<>();
-        for (Album alb : listaAlbumesFavoritos) {
-            nombresAlbumesFavoritos.add(alb.getNombreAlbum());
+        Map<Long, String> nombresAlbumesFavoritos = new HashMap<>();
+        for (Album album : listaAlbumesFavoritos) {
+            nombresAlbumesFavoritos.put(album.getIdAlbum(), album.getNombreAlbum());
         }
 
         // Nombres de Temas Favoritos del Cliente
         List<Tema> listaTemasFavoritos = c.getMisTemasFav();
-        ArrayList<String> nombresTemasFavoritos = new ArrayList<>();
+        Map<Long, String> nombresTemasFavoritos = new HashMap<>();
         for (Tema tema : listaTemasFavoritos) {
-            nombresTemasFavoritos.add(tema.getNombreTema());
+            nombresTemasFavoritos.put(tema.getIdTema(), tema.getNombreTema());
         }
 
         Suscripcion suscripcionC = c.getMiSuscripcion();
@@ -1479,16 +1480,16 @@ public class ControladoraPersistencia {
 
             // Nombres de Albumes Favoritos del Cliente
             List<Album> listaAlbumesFavoritos = ((Cliente) u).getMisAlbumesFav();
-            ArrayList<String> nombresAlbumesFavoritos = new ArrayList<>();
-            for (Album alb : listaAlbumesFavoritos) {
-                nombresAlbumesFavoritos.add(alb.getNombreAlbum());
+            Map<Long, String> nombresAlbumesFavoritos = new HashMap<>();
+            for (Album album : listaAlbumesFavoritos) {
+                nombresAlbumesFavoritos.put(album.getIdAlbum(), album.getNombreAlbum());
             }
 
             // Nombres de Temas Favoritos del Cliente
             List<Tema> listaTemasFavoritos = ((Cliente) u).getMisTemasFav();
-            ArrayList<String> nombresTemasFavoritos = new ArrayList<>();
+            Map<Long, String> nombresTemasFavoritos = new HashMap<>();
             for (Tema tema : listaTemasFavoritos) {
-                nombresTemasFavoritos.add(tema.getNombreTema());
+                nombresTemasFavoritos.put(tema.getIdTema(), tema.getNombreTema());
             }
 
             Suscripcion suscripcionC = ((Cliente) u).getMiSuscripcion();
@@ -1522,9 +1523,9 @@ public class ControladoraPersistencia {
 
             // Nombre de AlbumesPublicados del Artista
             List<Album> listaAlbumesPublicados = ((Artista) u).getMisAlbumesPublicados();
-            ArrayList<String> nombresAlbumesPublicados = new ArrayList<>();
-            for (Album nomAlbumesP : listaAlbumesPublicados) {
-                nombresAlbumesPublicados.add(nomAlbumesP.getNombreAlbum());
+            Map<Long, String> nombresAlbumesPublicados = new HashMap<>();
+            for (Album album : listaAlbumesPublicados) {
+                nombresAlbumesPublicados.put(album.getIdAlbum(), album.getNombreAlbum());
             }
 
             datosUsuario = new DTDatosArtista(((Artista) u).getNickname(),

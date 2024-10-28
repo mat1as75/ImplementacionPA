@@ -84,19 +84,31 @@ public class SVBarraBusqueda extends HttpServlet {
             }
             
             // Buscar Temas
-            String jpqlTemas = "SELECT t.idTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
-            TypedQuery<Long> consultaTemas = em.createQuery(jpqlTemas, Long.class);
+            String jpqlTemas = "SELECT t.idTema, t.nombreTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<Object[]> consultaTemas = em.createQuery(jpqlTemas, Object[].class);
             consultaTemas.setParameter("query", "%" + consulta + "%");
-            for (Long idTema : consultaTemas.getResultList()) {
-                resultados.put("Tema", idTema.toString());
+            
+            for (Object[] result : consultaTemas.getResultList()) {
+                Long idTema = (Long) result[0];
+                String nombreTema = (String) result[1];
+                
+                // Concatenar idTema y nombreTema
+                String value = idTema + ", " + nombreTema;
+                resultados.put("Tema", value);
             }
             
             // Buscar Albumes
-            String jpqlAlbumes = "SELECT a.idAlbum FROM Album a WHERE a.nombreAlbum LIKE :query AND LENGTH(a.nombreAlbum) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
-            TypedQuery<Long> consultaAlbumes = em.createQuery(jpqlAlbumes, Long.class);
+            String jpqlAlbumes = "SELECT a.idAlbum, a.nombreAlbum FROM Album a WHERE a.nombreAlbum LIKE :query AND LENGTH(a.nombreAlbum) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<Object[]> consultaAlbumes = em.createQuery(jpqlAlbumes, Object[].class);
             consultaAlbumes.setParameter("query", "%" + consulta + "%");
-            for (Long idAlbum : consultaAlbumes.getResultList()) {
-                resultados.put("Album", idAlbum.toString());
+            
+            for (Object[] result : consultaAlbumes.getResultList()) {
+                Long idAlbum = (Long) result[0];
+                String nombreAlbum = (String) result[1];
+                
+                // Concatenar idAlbum y nombreAlbum
+                String value = idAlbum + ", " + nombreAlbum;
+                resultados.put("Album", value);
             }
             
             // Buscar ListaReproduccion
@@ -106,6 +118,52 @@ public class SVBarraBusqueda extends HttpServlet {
             for (String nombreListaR : consultaListasR.getResultList()) {
                 resultados.put("Lista", nombreListaR);
             }
+            
+            // Buscar por Genero
+            // - Tema
+            String jpqlTemaGenero = "SELECT t.idTema, t.nombreTema FROM "
+                    + "(((ALBUM a, TEMA t), ALBUM_GENERO ag), GENERO g) WHERE "
+                    + "a.idAlbum = t.miAlbum_IDALBUM AND "
+                    + "a.idAlbum = ag.misAlbumes_IDALBUM AND ag.misGeneros_NOMBREGENERO = g.nombreGenero AND "
+                    + "g.nombreGenero LIKE :query";
+            TypedQuery<Object[]> consultaTemaGenero = em.createQuery(jpqlTemaGenero, Object[].class);
+            consultaTemaGenero.setParameter("query", "%" + consulta + "%");
+            for (Object[] result : consultaTemaGenero.getResultList()) {
+                Long idTema = (Long) result[0];
+                String nombreTema = (String) result[1];
+                
+                // Concatenar idTema y nombreTema
+                String value = idTema + " " + nombreTema;
+                resultados.put("Tema", value);
+            }
+            
+            // - Album
+            String jpqlAlbumGenero = "SELECT t.idTema, t.nombreTema FROM "
+                    + "ALBUM a JOIN TEMA t ON a.idAlbum = t.miAlbum_IDALBUM JOIN "
+                    + "ALBUM_GENERO ag ON a.idAlbum = ag.misAlbumes_IDALBUM JOIN "
+                    + "GENERO g ON ag.misGeneros_NOMBREGENERO = g.nombreGenero WHERE g.nombreGenero LIKE :query";
+            TypedQuery<Object[]> consultaAlbumGenero = em.createQuery(jpqlAlbumGenero, Object[].class);
+            consultaAlbumGenero.setParameter("query", "%" + consulta + "%");
+            for (Object[] result : consultaAlbumGenero.getResultList()) {
+                Long idAlbum = (Long) result[0];
+                String nombreAlbum = (String) result[1];
+                
+                // Concatenar idAlbum y nombreAlbum
+                String value = idAlbum + " " + nombreAlbum;
+                resultados.put("Album", value);
+            }
+            
+            // - ListaReproduccion
+            String jpqlListaRGenero = "SELECT l.NOMBRELISTA FROM "
+                    + "LISTAPORDEFECTO l, GENERO g WHERE l.MIGENERO_NOMBREGENERO = g.NOMBREGENERO AND "
+                    + "g.NOMBREGENERO LIKE :query";
+            TypedQuery<String> consultaListasRGenero = em.createQuery(jpqlListaRGenero, String.class);
+            consultaListasRGenero.setParameter("query", "%" + consulta + "%");
+            for (String nombreListaR : consultaListasRGenero.getResultList()) {
+                resultados.put("Lista", nombreListaR);
+            }
+            
+        
         } catch (Exception e) {
             
             throw e;
@@ -162,7 +220,7 @@ public class SVBarraBusqueda extends HttpServlet {
         request.setAttribute("n_Resultados", resultados.size());
         
         // Redirigir a la pagina de resultados
-        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("resultadosBusqueda.jsp");
         dispatcher.forward(request, response); 
     }
 
