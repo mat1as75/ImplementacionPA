@@ -35,6 +35,7 @@ import espotify.logica.Usuario;
 import espotify.persistencia.exceptions.DatabaseUpdateException;
 import espotify.persistencia.exceptions.InvalidDataException;
 import espotify.persistencia.exceptions.NonexistentEntityException;
+import espotify.persistencia.exceptions.PreexistingEntityException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1629,18 +1630,29 @@ public class ControladoraPersistencia {
             throw new NonexistentEntityException("No se encontró el cliente");
         }
         
+        Suscripcion suscripcionDeCliente = cliente.getMiSuscripcion();
+        if (suscripcionDeCliente != null) {
+            throw new PreexistingEntityException("El cliente ya tiene una suscripcion");
+        }
+        
+        if (tipoSuscripcion == null) {
+            throw new InvalidDataException("El tipo de suscripcion es null");
+        }
+        
         Suscripcion nuevaSuscripcion = new Suscripcion(
                 tipoSuscripcion,
                 EstadoSuscripcion.Pendiente,
                 new Date(),
                 cliente
         );
-        this.suscripcionJpa.create(nuevaSuscripcion);
         
-        cliente.setMiSuscripcion(nuevaSuscripcion);
         try {
+            this.suscripcionJpa.create(nuevaSuscripcion);
+            cliente.setMiSuscripcion(nuevaSuscripcion);
             this.cliJpa.edit(cliente);
         } catch (Exception ex) {
+            cliente.setMiSuscripcion(null);
+            this.cliJpa.edit(cliente);
             this.suscripcionJpa.destroy(nuevaSuscripcion.getIdSuscripcion());
             throw new DatabaseUpdateException("No se pudo ingresar la suscripcion");
         }
