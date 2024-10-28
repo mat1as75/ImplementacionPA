@@ -42,7 +42,7 @@
     DTDatosUsuario datosU = null;
     DTDatosCliente datosC = null;
     String estadoSuscripcionSesion = null;
-    
+
     if ("Cliente".equals(rolSesion) && nicknameSesion != null) {
         try {
             datosU = iControlador.getDatosUsuario(nicknameSesion);
@@ -59,7 +59,6 @@
 %>
 
 <head>
-    <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
           rel="stylesheet" 
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
@@ -71,10 +70,10 @@
     <link rel="stylesheet" href="styles/variablesGlobales.css"/>
     <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
     <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
+    <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
 </head>
 <jsp:include page="headerIndex.jsp"/>
 <body>
-    <%@include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
     <div class="container">
         <div class="lista-detalles">
             <div class="info-container">
@@ -151,7 +150,8 @@
                                 <%
                                     String url = (temaRutaOUrl != null) ? temaRutaOUrl.getUrlTema() : null;
                                     String ruta = (temaRutaOUrl != null) ? temaRutaOUrl.getRutaTema() : null;
-
+                                    System.out.println("context: " + request.getContextPath());
+                                    System.out.println("ruta " + ruta);
                                     // "Ver enlace"
                                     if (url != null && !url.isEmpty()) {
                                         if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -163,16 +163,22 @@
                                     }
                                     // "Descargar"
                                     if (ruta != null && !ruta.isEmpty()) {
-                                        if (puedeDescargar) {%>
-                                <a href="<%= request.getContextPath() + "/" + ruta%>" download>Descargar</a>
-                                <% } else { %>
+                                        ruta = ruta.substring(ruta.lastIndexOf("Resource/"));
+
+                                        if (puedeDescargar) {
+                                %>
+                                <a href="<%= request.getContextPath() + "/" + ruta%>" download="<%= tema.getNombreTema()%>.mp3">Descargar</a>
+                                <%
+                                } else { %>
                                 <a href="#" onclick="alert('Debe tener una suscripción vigente para descargar el tema.'); return false;">Descargar</a>
-                                <% }
+                                <%
+                                        }
                                     }
-                                    // "-"
+                                    // Si no hay URL ni archivo disponible
                                     if ((ruta == null || ruta.isEmpty()) && (url == null || url.isEmpty())) { %>
                                 <span>-</span>
-                                <% }
+                                <%
+                                    }
                                 %>
                             </td>
                         </tr>
@@ -183,6 +189,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="reproductor-contenedor">
+            <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
         </div>
     </div>
 </body>
