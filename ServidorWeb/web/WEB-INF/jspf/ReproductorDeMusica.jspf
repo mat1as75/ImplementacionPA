@@ -35,7 +35,7 @@
         nombreTema es opcional, se usa para mostrar el nombre del tema en reproduccion
         srcPortada es opcional, se usa para cargar la foto de portada del album o lista que se desea mostrar
 -->
-<div id="audioFilePlayerContainer" data-idTema="" class="audioPlayerContainer">    
+<div id="audioFilePlayerContainer" data-idtema="" class="audioPlayerContainer">    
     <img  class="portada" id="filePlayerImg" src="imagenes/spotifyLogo.png" alt="Logo de spotify"/>
     <p id="nombreTemaFile" class="pNombreTema" >Tema</p>
     <audio id="audioFilePlayer" autoplay controls controlslist="nofullscreen" type="audio/mpeg" src="" >
@@ -56,13 +56,14 @@
     </div>
 </div>
 
-<div id="audioLinkPlayerContainer" class="audioPlayerContainer" data-idTema="">
+<div id="audioLinkPlayerContainer" class="audioPlayerContainer" data-idtema="">
     <iframe id="linkPlayerIframe" 
         anonymous   
         referrerpolicy="strict-origin-when-cross-origin"
         src="">
         El cliente no soporta este tipo de audio
     </iframe> 
+    
     <p id="nombreTemaLink" class="pNombreTema">Tema</p>
     <p class="pLink"><a id="linkTema" href="">Enlace</a></p>
     <p id="errorAudioLinkPlayer" class="pError"></p>
