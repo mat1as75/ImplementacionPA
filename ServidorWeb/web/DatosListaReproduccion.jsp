@@ -75,7 +75,7 @@
 </head>
 <jsp:include page="headerIndex.jsp"/>
 <body>
-    <div class="container">
+    <div class="containerMain">
         <div class="lista-detalles">
             <div class="info-container">
                 <div class="lista-fotoLista">
@@ -189,9 +189,7 @@
                 </table>
             </div>
         </div>
-        <div class="reproductor-contenedor">
-            <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
-        </div>
+        <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
     </div>
 </body>
 

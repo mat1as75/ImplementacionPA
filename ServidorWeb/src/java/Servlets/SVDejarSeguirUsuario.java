@@ -28,10 +28,10 @@ public class SVDejarSeguirUsuario extends HttpServlet {
         
         String nicknameSeguidor = request.getParameter("nicknameSesion");
         String nicknameSeguido = request.getParameter("nicknameConsultado");
-        
-        System.out.println("seguidor: " + request.getParameter("nicknameSesion"));
-        System.out.println("seguido: " + request.getParameter("nicknameConsultado"));
-        
+
+        System.out.println("nicknameSesion: " + request.getParameter("nicknameSesion"));
+        System.out.println("nicknameConsultado: " + request.getParameter("nicknameConsultado"));
+
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();
         

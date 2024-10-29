@@ -61,43 +61,64 @@ public class SVAltaPerfil extends HttpServlet {
     }
     private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
     private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Obtener el archivo de la solicitud
         Part filePart = request.getPart("imagen");
+        String fotoPerfil = "";
+        String fileName;
+        if (filePart != null && filePart.getSize() > 0) {
+            fileName = extractFileName(filePart);
 
-        // Obtener el nombre del archivo desde el header "content-disposition"
-        String fileName = extractFileName(filePart);
+            if (fileName != null && !fileName.isEmpty()) {
+                String baseName;
+                String extension;
 
-        // Construir la ruta de carga usando el contexto de la aplicación
+                if (fileName.contains(".")) {
+                    baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+                    extension = fileName.substring(fileName.lastIndexOf('.'));
+                } else {
+                    baseName = fileName;
+                    extension = ""; // O asigna una extensión predeterminada si es necesario
+                }
+
+                // Construir la ruta de carga
+                String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir(); // Crear el directorio si no existe
+                }
+
+                // Verificar si el archivo ya existe y generar un nuevo nombre si es necesario
+                File file = new File(uploadDir, fileName);
+                int count = 1;
+
+                while (file.exists()) {
+                    fileName = baseName + "_" + count + extension; // Cambiar el nombre
+                    file = new File(uploadDir, fileName);
+                    count++;
+                }
+
+                // Guardar el archivo en el directorio
+                try (InputStream input = filePart.getInputStream()) {
+                    Files.copy(input, file.toPath());
+                }
+
+                
+            } else {
+                throw new ServletException("El nombre del archivo es inválido.");
+            }
+        } else {
+            fileName=null;
+        }
+        fotoPerfil = DIRECCION_BASE + "/" + fileName;
         
-        ///home/usuario/Documentos/GitHub/ImplementacionPA/ServidorWeb/web/index.jsp
-        String uploadPath =getServletContext().getRealPath("")+UPLOAD_DIR;
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir(); // Crear el directorio si no existe
-        }
-
-        // Verificar si el archivo ya existe y generar un nuevo nombre si es necesario
-        File file = new File(uploadDir, fileName);
-        int count = 1;
-        String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
-        String extension = fileName.substring(fileName.lastIndexOf('.'));
-
-        while (file.exists()) {
-            fileName = baseName + "_" + count + extension; // Cambiar el nombre
-            file = new File(uploadDir, fileName);
-            count++;
-        }
-
-        // Guardar el archivo en el directorio
-        try (InputStream input = filePart.getInputStream()) {
-            Files.copy(input, file.toPath());
-        }
-
-        String fotoPerfil = DIRECCION_BASE+"/"+fileName;
-    
+        
+        
+        
+        
         String fechaNacimientoStr = request.getParameter("fechaNacimiento");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaNacimiento = null;

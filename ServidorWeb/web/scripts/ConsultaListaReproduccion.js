@@ -14,7 +14,7 @@ function mostrarPorGenero() {
     document.getElementById('mosaicoListasPorDefecto').style.display = 'none';
     document.getElementById('mosaicoListasParticulares').style.display = 'none';
 
-    // Cargar generos 
+    // Cargar generos principales 
     fetch('SVConsultaListaReproduccion?tipoDeLista=PorGenero')
             .then(response => response.json())
             .then(data => {
@@ -68,7 +68,7 @@ function mostrarPorListaPorDefecto(nombreGenero) {
     document.getElementById('mosaicoListasParticulares').style.display = 'none';
     document.getElementById('mosaicoGeneros').style.display = 'none';
 
-    // Cargar listas por defecto 
+    // Cargar listas por defecto del genero seleccionado y de sus subgeneros 
     fetch('SVConsultaListaReproduccion?tipoDeLista=PorListaPorDefecto&nombre=' + encodeURIComponent(nombreGenero))
             .then(response => response.json())
             .then(data => {

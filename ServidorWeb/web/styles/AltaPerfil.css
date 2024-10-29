@@ -83,6 +83,7 @@ button:hover {
 .error {
     color: red;
     font-size: 0.9em;
+    background-color:#d3d3d3; 
 }
 
 .artista-info {
