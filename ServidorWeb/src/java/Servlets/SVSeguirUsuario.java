@@ -32,48 +32,25 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            response.setContentType("application/json");
-        String seguidor = request.getParameter("seguidor");
-
-        Fabrica f = Fabrica.getInstance();
-        IControlador i = f.getControlador();
-        List<String> Usuarios = i.getUsuariosSinEste(seguidor);
-        List<String> nicknamesUsuarios=new ArrayList<String>();
-        for(String u:Usuarios){
-            String seguido=u;
-            boolean existeRelacion = i.existeRelacion(seguidor, seguido);
-            if(!existeRelacion){
-                nicknamesUsuarios.add(u);
-            }
-        
-        }
-        // Convertimos la lista de usuarios a formato JSON
-        Gson gson = new Gson();
-        String json = gson.toJson(nicknamesUsuarios);
-
-        // Enviamos la respuesta JSON al cliente
-        PrintWriter out = response.getWriter();
-        out.print(json);
-        out.flush();
-    }
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Obtener el valor del combo box después de que se envíe el formulario
-        String Seguidor = request.getParameter("Seguidor");
-        String Seguido = request.getParameter("Seguido");
-        if((Seguidor!=null)&&(!Seguidor.isEmpty())&&(Seguido!=null)&&(!Seguido.isEmpty())){
-             Fabrica f = Fabrica.getInstance();
-             IControlador i = f.getControlador();
-             i.setSeguidorSeguido(Seguidor, Seguido);
+        
+        String nicknameSeguidor = request.getParameter("nicknameSeguidor");
+        String nicknameSeguido = request.getParameter("nicknameSeguido");
+       
+        System.out.println("seguidor: " + request.getParameter("nicknameSesion"));
+        System.out.println("seguido: " + request.getParameter("nicknameConsultado"));
+        
+        Fabrica fb = Fabrica.getInstance();
+        IControlador control = fb.getControlador();
+        
+        try {
+            control.setSeguidorSeguido(nicknameSeguidor, nicknameSeguido);
+        } catch (Exception ex) {
+            throw ex;
         }
-        if(Seguidor!=null){
-            request.setAttribute("Seguidor", Seguidor);
-            
-            request.getRequestDispatcher("SeguirUsuario.jsp").forward(request, response);
-        }
+        
+        response.sendRedirect("ConsultaPerfilUsuario.jsp");
 
     }
 

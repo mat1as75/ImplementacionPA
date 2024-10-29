@@ -84,10 +84,14 @@
                         if (usuarioSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
                             if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
                                 <form action="SVSeguirUsuario" method="POST">
+                                    <input type="hidden" name="nicknameSeguidor" value="<%= nicknameSesion %>"/>
+                                    <input type="hidden" name="nicknameSeguido" value="<%= nicknameConsultado %>"/>
                                     <button type="submit" class="boton-seguimiento">Seguir</button>
                                 </form>
                             <% } else { %>
-                                <form action="SVDejarSeguirAUsuario" method="POST">
+                                <form action="SVDejarSeguirUsuario" method="POST">
+                                    <input type="hidden" name="nicknameSeguidor" value="<%= nicknameSesion %>"/>
+                                    <input type="hidden" name="nicknameSeguido" value="<%= nicknameConsultado %>"/>
                                     <button type="submit" class="boton-seguimiento">Siguiendo</button>
                                 </form>
                             <% } %>

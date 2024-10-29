@@ -20,7 +20,7 @@ public class Cliente extends Usuario{
     @JoinTable(name = "cliente_seguidos",
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
             inverseJoinColumns = @JoinColumn(name = "nickname_usuario"))
-    private List<Usuario> misSeguidos;
+    private List<Usuario> misSeguidos = null;
     
     @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
     @JoinTable(
