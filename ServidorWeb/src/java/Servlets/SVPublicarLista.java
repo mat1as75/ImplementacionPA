@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 
 @WebServlet("/SVPublicarLista")
@@ -35,45 +36,30 @@ public class SVPublicarLista extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    // Obtener el nickname desde la solicitud GET
-    String nickname = request.getParameter("nickname");
     
-    Fabrica f = Fabrica.getInstance();
-    IControlador i = f.getControlador();
-
-    // Simulamos la obtención de listas privadas basadas en el nickname
-    List<String> listasPrivadas = i.listasCreadasEstadoPrivadoTrue(nickname);
-    
-    // Configurar la respuesta en formato HTML
-    response.setContentType("text/html");
-    PrintWriter out = response.getWriter();
-
-    // Enviar la respuesta como HTML (listas privadas)
-    out.println("<ul>");
-    for (String lista : listasPrivadas) {
-        out.println("<li class='selectable' onclick='handlePrivateListSelection(\"" + lista + "\")'>" + lista + "</li>");
-    }
-    out.println("</ul>");
-
-    out.close();
 }
 @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nicknameCliente = request.getParameter("nickname"); 
-        String listaPrivada = request.getParameter("listaPrivada");
+        HttpSession sesion = request.getSession();
+        String nicknameCliente = (String) sesion.getAttribute("nickname"); 
+        // Obtener el valor de la lista seleccionada
+        String listaSeleccionada = request.getParameter("listaOculta");
+
         Fabrica f = Fabrica.getInstance();
         IControlador controlador = f.getControlador();
         
-        if ((nicknameCliente != null) &&(listaPrivada != null)) {
-            controlador.setPrivadafalse(nicknameCliente, listaPrivada);
+        if ((nicknameCliente != null) &&(listaSeleccionada != null)) {
+            controlador.setPrivadafalse(nicknameCliente, listaSeleccionada);
                     // Establecer un mensaje
-            String mensaje = nicknameCliente+" ahora no tiene lista privada "+listaPrivada;
+            String mensaje = nicknameCliente+" ahora no tiene lista privada "+listaSeleccionada;
             request.setAttribute("mensaje", mensaje);
             request.getRequestDispatcher("PublicarLista.jsp").forward(request, response);
 
         }
-    }
+        
+    }   
+     
     @Override
     public String getServletInfo() {
         return "Short description";

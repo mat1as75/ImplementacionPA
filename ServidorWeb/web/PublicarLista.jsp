@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="espotify.logica.IControlador"%>
@@ -9,97 +10,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicar Lista</title>
     <link rel="stylesheet" href="styles/PublicarLista.css">
+    <script>
+        function validarSeleccion() {
+            const selectedValue = document.querySelector('input[name="listaSeleccionada"]:checked');
+            if (!selectedValue) {
+                alert("Por favor, selecciona una lista.");
+                return false;
+            }
+            document.getElementById('listaOculta').value = selectedValue.value;
+            return true;
+        }
+    </script>
 </head>
 <body>
-    
-      <%  
-        HttpSession sesion = request.getSession();
-        String nicknameSesion = (String) sesion.getAttribute("nickname");
-        String rolSesion = (String) sesion.getAttribute("rol");
-        Fabrica f = Fabrica.getInstance();
-        IControlador i = f.getControlador();
-        
-        boolean vigente = false; // Declarar la variable antes de usarla
-        
-        if ((nicknameSesion!=null)&&(rolSesion!=null)&&(rolSesion.equals("Cliente"))) {
-            DTDatosCliente datosC = (DTDatosCliente) i.getDatosUsuario(nicknameSesion);
-            if((datosC!=null)&&(datosC.getSuscripcion()!=null)){
-                String estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
-                vigente = estadoSuscripcionSesion.equals("Vigente");
-            }
-            
-            if (!vigente) {
-    %>                <script type="text/javascript">
-                    function mostrarPopup() {
-                        const userConfirmed = confirm("No tienes subscripciones vigentes");
-                        // Redirige a la página deseada
-                        window.location.href = "index.jsp";
-                    }
-                    window.onload = mostrarPopup; // Llama a la función para mostrar el popup
-                </script>
- <%
-            }
-        }
-    %>
 
-    <% if (vigente) { %>
-    <header>
-            
-            <div class="main-container">
-                    <h1>Publicar Lista</h1>
-                </div>
-            </header> 
-        <% String mensaje=(String)request.getAttribute("mensaje");
-        if(mensaje!=null){%>
-            <div id="felisidades" class="error" style="color: red;"><%=mensaje%></div>
-      <%}%>
-            
-            <form id="miFormulario" action="SVPublicarLista" method="POST" onsubmit="return validarSeleccion();">
-                <div class="contenedor-listas">
-                    <div class="lista-contenedor">
-                        <h3>Nickname de Clientes</h3>
-                        <ul>
-                            <%
+<%
+    HttpSession sesion = request.getSession();
+    String nicknameSesion = (String) sesion.getAttribute("nickname");
+   // Solo para pruebas, elimina esto en producción
+    Fabrica f = Fabrica.getInstance();
+    IControlador i = f.getControlador();
+%>           
+<header>
+    <div class="main-container">
+        <h1>Publicar Lista</h1>
+    </div>
+</header> 
+<% String mensaje = (String) request.getAttribute("mensaje");
+if (mensaje != null) {%>
+<div id="felisidades" class="error" style="color: red;"><%=mensaje%></div>
+<%}%>
 
-                                ArrayList<String> nicknamesClientes = i.getNicknamesClientesListasPrivadas();
-                                for (String nickname : nicknamesClientes) { %>
-                                    <li class="selectable" onclick="seleccionarNickname(this, '<%= nickname %>')" ><%= nickname %></li>
-                                <% } %>
-                        </ul>
-                    </div>
+<form id="miFormulario" action="SVPublicarLista" method="POST" onsubmit="return validarSeleccion();">
+    <input type="hidden" name="listaOculta" id="listaOculta" value="">
 
-                    <div class="lista-contenedor">
-                        <h3>Listas Privadas</h3>
-                        <ul id="listasPrivadas">
-                            <!-- Aquí se actualizarán las listas privadas -->
-                        </ul>
-                    </div>
-                </div>
+    <div class="contenedor-listas">
+        <div class="lista-contenedor nickname">
+            <h3>Nickname de Cliente</h3>
+            <p><%=nicknameSesion%></p>
+        </div>
 
-                <!-- Campos ocultos para almacenar los valores seleccionados -->
-                <input type="hidden" name="nickname" id="inputNickname">
-                <input type="hidden" name="listaPrivada" id="inputListaPrivada">
+        <div class="lista-contenedor listas-privadas">
+            <h3>Listas Privadas</h3>
+            <% List<String> listasPrivadas = i.listasCreadasEstadoPrivadoTrue(nicknameSesion); %>
+            <ul id="listasPrivadas">
+                <%
+                    for (String lista : listasPrivadas) {
+                %>
+                <li>
+                    <label>
+                        <input type="radio" name="listaSeleccionada" value="<%= lista%>">
+                        <%= lista%>
+                    </label>
+                </li>
+                <% }%>
+            </ul>
+        </div>
+    </div>
 
-                <button type="submit">Enviar</button>
-            </form>
-            <script src="scripts/PublicarLista.js"></script>
-             <script>
-                function validarSeleccion() {
-                    var nickname = document.getElementById('inputNickname').value;
-                    var listaPrivada = document.getElementById('inputListaPrivada').value;
 
-                    if (!nickname) {
-                        alert("Por favor, selecciona un nickname de cliente.");
-                        return false;
-                    }
-                    if (!listaPrivada) {
-                        alert("Por favor, selecciona una lista privada.");
-                        return false;
-                    }
-                    return true; // Permitir el envío del formulario si ambas selecciones son válidas.
-                }
-
-            </script>
-        <%}%>
+    <button type="submit">Enviar</button>
+</form>
 </body>
 </html>
