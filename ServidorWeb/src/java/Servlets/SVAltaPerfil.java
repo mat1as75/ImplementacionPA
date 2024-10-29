@@ -68,9 +68,9 @@ public class SVAltaPerfil extends HttpServlet {
         // Obtener el archivo de la solicitud
         Part filePart = request.getPart("imagen");
         String fotoPerfil = "";
-
+        String fileName;
         if (filePart != null && filePart.getSize() > 0) {
-            String fileName = extractFileName(filePart);
+            fileName = extractFileName(filePart);
 
             if (fileName != null && !fileName.isEmpty()) {
                 String baseName;
@@ -106,14 +106,19 @@ public class SVAltaPerfil extends HttpServlet {
                     Files.copy(input, file.toPath());
                 }
 
-                fotoPerfil = DIRECCION_BASE + "/" + fileName;
+                
             } else {
                 throw new ServletException("El nombre del archivo es inválido.");
             }
         } else {
-            fotoPerfil = DIRECCION_BASE + "/";
+            fileName=null;
         }
-
+        fotoPerfil = DIRECCION_BASE + "/" + fileName;
+        
+        
+        
+        
+        
         String fechaNacimientoStr = request.getParameter("fechaNacimiento");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaNacimiento = null;
