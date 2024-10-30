@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publicar Lista</title>
     <link rel="stylesheet" href="styles/PublicarLista.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
         function validarSeleccion() {
             const selectedValue = document.querySelector('input[name="listaSeleccionada"]:checked');
@@ -31,11 +32,9 @@
     Fabrica f = Fabrica.getInstance();
     IControlador i = f.getControlador();
 %>           
-<header>
-    <div class="main-container">
-        <h1>Publicar Lista</h1>
-    </div>
-</header> 
+
+<jsp:include page="headerIndex.jsp"/>
+
 <% String mensaje = (String) request.getAttribute("mensaje");
 if (mensaje != null) {%>
 <div id="felisidades" class="error" style="color: red;"><%=mensaje%></div>

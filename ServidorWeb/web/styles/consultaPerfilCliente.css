@@ -213,6 +213,29 @@ p {
     margin-top: -30px;
 }
 
+/*-----Publicar Lista-----*/
+.publicar-lista {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.publicar-lista form a {
+    padding: 10px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #F8F9FA;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-family: 'Montserrat', monospace;
+    color: #000;
+    text-decoration: none;
+}
+
+.publicar-lista form a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 /*-----Tabla Preferencias-----*/
 .tabla-preferencias {
     width: 100%;

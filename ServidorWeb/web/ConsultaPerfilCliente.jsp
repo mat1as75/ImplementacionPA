@@ -269,6 +269,11 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="publicar-lista">
+                                    <form>
+                                        <a href="PublicarLista.jsp">Publicar Mis Listas</a>
+                                    </form>
+                                </div>
                         <% } %>
 
                         <div class="tabla-preferencias">
