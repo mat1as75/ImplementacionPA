@@ -42,7 +42,7 @@ public class SVPublicarLista extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String nicknameCliente = (String) sesion.getAttribute("nickname"); 
+        String nicknameCliente = (String) sesion.getAttribute("nickname");
         // Obtener el valor de la lista seleccionada
         String listaSeleccionada = request.getParameter("listaOculta");
 
