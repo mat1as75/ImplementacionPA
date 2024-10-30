@@ -225,7 +225,7 @@ p {
 }
 
 .tabla-preferencias td {
-    cursor: pointer;
+    
 }
 
 .tabla-preferencias a {
@@ -235,6 +235,7 @@ p {
 
 .tabla-preferencias a:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .tabla-preferencias th, .tabla-preferencias td {

@@ -30,24 +30,6 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-//        Fabrica fb = Fabrica.getInstance();
-//        IControlador control = fb.getControlador();
-//        
-//        /* Obtengo datos del Cliente */
-//        DTDatosCliente user = control.ConsultarPerfilCliente(request.getParameter("nickname"));
-//        
-//        /* Traigo la Session del Usuario y setteo al
-//        atributo de la misma los datos de dicho Cliente */
-//        HttpSession miSesion = request.getSession(false);
-//        miSesion.setAttribute("user", user);
-//        
-//        /* Redirecciono a ConsultarPerfilUsuario que pertenezca */
-//        if (user.getClass().equals(Cliente.class)) {
-//            response.sendRedirect("ConsultarPerfilCliente.jsp");
-//        } else {
-//            response.sendRedirect("ConsultarPerfilArtista.jsp");
-//        }
-        
     }
 
     @Override
@@ -84,50 +66,6 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
             sesion.setAttribute("DTusuarioConsultado", (DTDatosArtista) datosUsuario);
         }
 
-        
-//        /* DATOS DE PERFIL CONSULTADO */
-//        String nicknameUsuarioConsultado = (String) sesion.getAttribute("perfilConsultado");
-//        System.out.println("Nickname Perfil Consultado: " + nicknameUsuarioConsultado);
-//        DTDatosUsuario datosUsuarioConsultado = control.getDatosUsuario(nicknameUsuarioConsultado);
-//        DTDatosCliente datosClienteConsultado = null;
-//        DTDatosArtista datosArtistaConsultado = null;
-//        ArrayList<String> nombresListasRPublicas = null, nicknamesSeguidoresConsultados = null;
-//        
-//        //DTDatosUsuario datosUsr = control.getDatosUsuario(nicknameUsuarioSesion);
-//        System.out.println("DATOS USR: " + nicknameUsuarioSesion);
-//        request.setAttribute("datosUsr", datosUsr);
-        /* ------------------ */
-        
-        // Sesion no pertenece a un Visitante
-//        if (tipoUsuarioSesion.equals("Visitante")) {
-//            datosUsuarioSesion = (DTDatosUsuario) sesion.getAttribute("usuario");
-//            nicknameUsuarioSesion = datosUsuarioSesion.getNicknameUsuario();
-//            
-//            // ConsultaPerfilCliente
-//            if (tipoUsuarioSesion.equals("Cliente")) { 
-//                datosClienteConsultado = (DTDatosCliente) sesion.getAttribute("perfilConsultado");
-//                
-//                // Cliente no se ConsultaPerfil propio
-//                if (!nicknameUsuarioSesion.equals(nicknameUsuarioConsultado)) {
-//                    
-//                    nicknamesSeguidoresConsultados = datosUsuarioSesion.getNicknamesSeguidores();
-//                    // Sesion es Seguidor del que se consulta
-//                    if (nicknamesSeguidoresConsultados.contains(nicknameUsuarioSesion)) {
-//                        
-//                        // Lista Reproduccion Particular Publicas
-//                        nombresListasRPublicas = datosClienteConsultado.getNombresListasRCreadasPublicas();
-//                    }
-//                }
-//                
-//                
-//                
-//            }
-//        }
-        
-        // Si la sesion pertenece a un Cliente o Artista
-//        if (rolSesion.equals("Cliente") || rolSesion.equals("Artista")) {
-//            
-//        }
         response.sendRedirect("ConsultaPerfilUsuario.jsp");
 
     }
@@ -150,13 +88,5 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    public void ConsultaPerfilCliente(String nicknameCliente) {
-        
-    }
-    
-    public void ConsultaPerfilArtista(String nicknameArtista) {
-        
-    }
     
 }
