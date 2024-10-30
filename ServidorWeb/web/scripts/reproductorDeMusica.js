@@ -72,7 +72,7 @@ async function verifyGetRequest(url) {
 
 //Muestra el reproductor de archivos de musica
 function showFilePlayer(idTema, nombreTema, url, srcPortada) {
-    
+    const downloadAnchor = document.querySelector("#downloadAnchor");
     //oculto el iframe y remuevo el atributo src y data-idtema
     audioLinkPlayer.setAttribute("src", "");
     audioLinkPlayerContainer.classList.add("hidden");
@@ -82,6 +82,12 @@ function showFilePlayer(idTema, nombreTema, url, srcPortada) {
     linkTema.innerText = "";
     linkTema.setAttribute("href", "");
     linkTema.classList.add("hidden");
+    
+    //cambio el src del link de descarga si esta disponible para el usuario
+    if (downloadAnchor.getAttribute("data-available") === "true") {
+        downloadAnchor.setAttribute("href", url);
+        downloadAnchor.setAttribute("download", nombreTema || "tema");
+    }
     
     //remuevo mensaje de error anterior si lo hubiera
     errorAudioFilePlayer.innerText = "";

@@ -22,9 +22,12 @@
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/errorPage.css"/>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/nav.css"/>
+
     </head>
     <body class="bodyContainer">
         <jsp:include page="../headerIndex.jsp"/>
+        <%@ include file="../WEB-INF/jspf/Nav.jspf"%>
 
         <section class="sectionContainer roundedContainer">
             <h1>Error <%= errCodeObj == null ? 500 : errCodeObj.toString() %></h1>

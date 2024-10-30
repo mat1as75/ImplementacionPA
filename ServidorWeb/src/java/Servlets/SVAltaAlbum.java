@@ -1,7 +1,6 @@
 package Servlets;
 
 import espotify.DataTypes.DTAlbum_SinDTArtista;
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;

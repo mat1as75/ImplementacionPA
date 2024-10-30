@@ -306,6 +306,7 @@ function validarSeleccionGeneros(generos) {
     if (generos.length < 1) {
         errorSpan.innerText = errorMsgs.sinGeneros;
         spanContainer.classList.remove("d-none");
+        errorSpan.scrollIntoView({ behavior: "smooth"});
         return false;
     }
     errorSpan.innerText = "";

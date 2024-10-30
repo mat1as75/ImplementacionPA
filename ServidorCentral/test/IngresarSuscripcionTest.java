@@ -99,7 +99,7 @@ public class IngresarSuscripcionTest {
     @Test
     public void nuevaSuscripcionMensual() {
         
-        String nicknameCliente = "benKenobi";
+        String nicknameCliente = "scarlettO";
         Suscripcion.TipoSuscripcion tipoSuscripcion = Suscripcion.TipoSuscripcion.Mensual;
         
         assertTrue(ingresarSuscripcion(
