@@ -15,7 +15,7 @@
     <div class="barra-busqueda">
         <form action="SVBarraBusqueda" method="GET">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" name="consulta" placeholder="Buscar Tema, Álbum, Lista o Usuario ..."required>
+            <input type="text" name="consulta" placeholder="Buscar Tema, Álbum, Lista o Usuario ..." required>
             <button type="submit" class="boton-buscar">Buscar</button>
         </form>
     </div>

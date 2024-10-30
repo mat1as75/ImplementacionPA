@@ -502,5 +502,15 @@ public class Controlador implements IControlador{
         return this.contpersis.getListaDTDatosListaReproduccionDeCliente(nicknameCliente);
     }
 
+    @Override
+    public Boolean actualizarSuscripcionVencida(Long idSuscripcion) {
+        return this.contpersis.actualizarSuscripcionVencida(idSuscripcion);
+    }
+    
+    @Override
+    public void actualizarSuscripcionesVencidas() {
+        this.contpersis.actualizarSuscripcionesVencidas();
+    }
+
 }
 
