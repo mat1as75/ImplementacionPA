@@ -2,7 +2,6 @@ package Servlets;
 
 import com.google.gson.Gson;
 import espotify.DataTypes.DTDatosListaReproduccion;
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;

@@ -9,20 +9,32 @@
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/actualizarSuscripcion.css"/>
-
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/nav.css"/>
     </head>
     
     <% 
         String estadoSuscripcion = (String) request.getAttribute("estadoSuscripcion");
+        String tipoSuscripcion = (String) request.getAttribute("tipoSuscripcion");
+        String fechaSuscripcion = (String) request.getAttribute("fechaSuscripcion");
     %>
     
     <jsp:include page="../headerIndex.jsp"/>
-    
+    <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
+
     <body class="bodyContainer">
-        <h1 class="textAligned titlePrimary">Modificar Suscripción</h1>
         <section class="sectionContainer">
             <div class="opcionesContainer">
-                <h2 class="textAligned">Mi suscripción: <span id="estadoSuscripcion" class=""><%=estadoSuscripcion%></span></h2>
+                <h1 class="textAligned">
+                    Mi suscripción: 
+                   <span id="estadoSuscripcion" class=""><%=estadoSuscripcion%></span>
+                </h1>
+                <p class="datosSuscripcion">Tipo: <%=tipoSuscripcion%></p>
+                
+                <% if (estadoSuscripcion.equals("Pendiente")) { %>
+                    <p class="datosSuscripcion">Fecha de solicitud: <%=fechaSuscripcion%></p>
+                <% } else { %>
+                    <p class="datosSuscripcion">Fecha de contratación: <%=fechaSuscripcion%></p>
+                <% } %>
                 <div class="btnsContainer" id="btnsOpciones">
                     
                     <% if (estadoSuscripcion.equals("Pendiente") || estadoSuscripcion.equals("Vencida")) { %>
@@ -32,7 +44,7 @@
                             </button>
                         <% } %>
                         <button id="btnPagarSuscripcion" class="btncustom btnPrimary">
-                            <%=estadoSuscripcion.equals("Vencida") ? "Renovar Suscripción" : "Pagar Suscripción"%>
+                            <%=estadoSuscripcion.equals("Vencida") ? "Renovar" : "Pagar Suscripción"%>
                         </button>
                      <% } else {%>
                         <p>

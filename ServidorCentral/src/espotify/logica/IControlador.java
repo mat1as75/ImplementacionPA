@@ -111,6 +111,8 @@ public interface IControlador {
     public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
     public abstract DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception;
     public abstract void ingresarNuevaSuscripcion(String nickname, TipoSuscripcion tipoSuscripcion) throws Exception;
+    public abstract Boolean actualizarSuscripcionVencida(Long idSuscripcion);
+    public abstract void actualizarSuscripcionesVencidas();
     
     public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
     public abstract List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception;

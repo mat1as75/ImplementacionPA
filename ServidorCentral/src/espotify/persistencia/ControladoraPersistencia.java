@@ -36,6 +36,8 @@ import espotify.persistencia.exceptions.DatabaseUpdateException;
 import espotify.persistencia.exceptions.InvalidDataException;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import espotify.persistencia.exceptions.PreexistingEntityException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1078,7 +1080,14 @@ public class ControladoraPersistencia {
 
         try {
             tema.setMisReproducciones(listaRep);
+            
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+            emf.getCache().evictAll();
+
             this.temaJpa.edit(tema);
+            emf.getCache().evictAll();
+
+            
         } catch (Exception ex) {
             throw new DatabaseUpdateException(
                     "Ocurrio un error al agregar el tema ["
@@ -1207,9 +1216,12 @@ public class ControladoraPersistencia {
             break;
         }
 
-        try {
-            this.temaJpa.edit(tema);
+        try {            
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+            emf.getCache().evictAll();
             this.lreprodccJpa.edit(listaRep);
+            emf.getCache().evictAll();
+            
         } catch (Exception ex) {
             throw new DatabaseUpdateException("Ocurrio un error al quitar el tema ["
                     + tema.getIdTema() + "] de la lista "
@@ -1529,7 +1541,9 @@ public class ControladoraPersistencia {
     }
 
     public ArrayList<DTSuscripcion> getDTSuscripciones() {
-
+        //revisa todas las suscripciones y setea como vencida aquellas cuya fecha de vencimiento sea mayor a la fecha actual
+        this.actualizarSuscripcionesVencidas();
+        
         List<Suscripcion> listaSuscripciones = suscripcionJpa.findSuscripcionEntities();
         ArrayList<DTSuscripcion> dataSuscripciones = new ArrayList<>();
         // Recorro todos los Temas del Sistema
@@ -1540,18 +1554,85 @@ public class ControladoraPersistencia {
         return dataSuscripciones;
     }
 
+    public void actualizarSuscripcionesVencidas() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf.getCache().evictAll();
+        List<Suscripcion> suscripciones = suscripcionJpa.findSuscripcionEntities();
+        for (Suscripcion s : suscripciones) {
+            actualizarSuscripcionVencida(s.getIdSuscripcion());
+        }
+        emf.getCache().evictAll();
+    }
+    
+    public Boolean actualizarSuscripcionVencida(Long idSuscripcion) {
+        Suscripcion suscripcion = suscripcionJpa.findSuscripcion(idSuscripcion);
+        if (suscripcion == null) {
+            Logger.getLogger(
+                    ControladoraPersistencia.class.getName()).log(
+                            Level.SEVERE, 
+                            "No se encontro la suscripcion con id {0}", 
+                            idSuscripcion);
+            return false;
+        }
+        
+        Suscripcion.EstadoSuscripcion estadoSuscripcion = suscripcion.getEstadoSuscripcion();
+        
+        if (estadoSuscripcion.equals(Suscripcion.EstadoSuscripcion.Vigente)) {
+            String tipoSuscripcion = suscripcion.getTipoSuscripcion().toString();
+            Date fechaDePagoDate = suscripcion.getFechaSuscripcion();
+            
+            //convierto la fecha de formato Date a LocalDate
+            LocalDate fechaDePagoLocalDate = LocalDate.ofInstant(
+                    fechaDePagoDate.toInstant(), 
+                    ZoneId.systemDefault());
+            LocalDate fechaActual = LocalDate.now();
+            LocalDate fechaVencimiento = null;
+            
+            //Asigno el valor de la fecha de vencimiento de la suscripcion segun el plan a partir de la fecha de pago
+            switch (tipoSuscripcion) {
+                case "Anual" -> fechaVencimiento = fechaDePagoLocalDate.plusYears(1);
+                case "Mensual" -> fechaVencimiento = fechaDePagoLocalDate.plusMonths(1);
+                case "Semanal" -> fechaVencimiento = fechaDePagoLocalDate.plusWeeks(1);   
+            }
+            
+            //si la fecha actual es superior a la fecha de vencimiento, retorno false
+            if (fechaActual.compareTo(fechaVencimiento) > 0) {
+
+                try {
+                    suscripcion.setEstadoSuscripcion(Suscripcion.EstadoSuscripcion.Vencida);
+                    suscripcionJpa.edit(suscripcion);
+                } catch (Exception e) {
+                    Logger.getLogger(
+                            ControladoraPersistencia.class.getName()).log(
+                                    Level.SEVERE, 
+                                    "Error al actualizar la suscripción vencida " + idSuscripcion, 
+                                    e);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     public DTSuscripcion getDTSuscripcion(Long id) {
+        //revisa todas las suscripciones y setea como vencida aquellas cuya fecha de vencimiento sea mayor a la fecha actual
+        this.actualizarSuscripcionesVencidas();
+        
         Suscripcion s = suscripcionJpa.findSuscripcion(id);
 
-        return new DTSuscripcion(s.getIdSuscripcion(),
+        if (s != null) {
+            return new DTSuscripcion(s.getIdSuscripcion(),
                 s.getTipoSuscripcion().toString(),
                 s.getEstadoSuscripcion().toString(),
                 s.getFechaSuscripcion(),
                 s.getMiCliente().getDTCliente());
+        } else {
+            return null;
+        }
     }
 
     public void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion) throws Exception {
-        try {
+        try {            
             Suscripcion s = suscripcionJpa.findSuscripcion(idSuscripcion);
             s.setEstadoSuscripcion(estadoSuscripcion);
             s.setFechaSuscripcion(fechaSuscripcion);
@@ -1580,6 +1661,10 @@ public class ControladoraPersistencia {
     }
     
     public List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws NonexistentEntityException {
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf.getCache().evictAll();
+        
         Cliente cliente = this.cliJpa.findCliente(nicknameCliente);
         if (cliente == null) {
             throw new NonexistentEntityException("No se encontró el cliente");
@@ -1598,19 +1683,22 @@ public class ControladoraPersistencia {
     }
     
     public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        //revisa todas las suscripciones y setea como vencida aquellas cuya fecha de vencimiento sea mayor a la fecha actual
+        actualizarSuscripcionesVencidas();
+        
         Cliente cliente = this.cliJpa.findCliente(nickname);
         if (cliente == null) {
             throw new NonexistentEntityException("No se encontró el cliente");
         }
-        
-        DTSuscripcion dataSus = null;
-        
+        //obtengo la suscripcion del cliente
+        DTSuscripcion dataSuscripcion = null;
         Suscripcion sus = cliente.getMiSuscripcion();
+        
         if (sus != null) {
-            dataSus = sus.getDataSuscripcion();
+            dataSuscripcion = sus.getDataSuscripcion();
         }
         
-        return dataSus;
+        return dataSuscripcion;
     }
     
     public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {

@@ -76,9 +76,19 @@
 }
 
 .btnsPlaylist i {
+    display: inline-block;
     font-size: 1.4em;
+    margin: 0 20px;
     font-weight: bold;
     color: #000;
+}
+
+.btnsPlaylist #downloadAnchor {
+    display:inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
 .dropdownMenu {
@@ -88,17 +98,18 @@
 
 .dropdownContent {
     position: absolute;
+    left: -200px;
+    top: -100px;
     background-color: var(--l-bg-color-2);
     border: 1px solid var(--l-color-grey-accent);
     border-radius: var(--l-border-radius-containers);
     color: #000;
-    z-index: 1;
+    z-index: 999;
     padding: .5rem 1rem;
     min-width: 200px;
     max-width: 300px;
     overflow: auto;
     box-shadow: -3px 3px 3px rgba(0,0,0,0.20);
-
 }
 
 .dropdownContent a {

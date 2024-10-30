@@ -13,11 +13,11 @@ body {
 
 
 .lista-detalles {
-    flex-grow: 2;
     padding: 10px;
     margin: 1rem 2rem;
     border: 1px solid black;
     border-radius: 5px;
+    max-width: 60%;
 }
 
 .lista-fotoLista {
