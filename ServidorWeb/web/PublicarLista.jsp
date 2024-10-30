@@ -27,7 +27,7 @@
 <%
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
-   // Solo para pruebas, elimina esto en producción
+    // Solo para pruebas, elimina esto en producción
     Fabrica f = Fabrica.getInstance();
     IControlador i = f.getControlador();
 %>           
@@ -52,7 +52,8 @@ if (mensaje != null) {%>
 
         <div class="lista-contenedor listas-privadas">
             <h3>Listas Privadas</h3>
-            <% List<String> listasPrivadas = i.listasCreadasEstadoPrivadoTrue(nicknameSesion); %>
+            <% 
+                List<String> listasPrivadas = i.listasCreadasEstadoPrivadoTrue(nicknameSesion); %>
             <ul id="listasPrivadas">
                 <%
                     for (String lista : listasPrivadas) {
