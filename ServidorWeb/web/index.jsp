@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.Map"%>
@@ -12,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<<<<<<< HEAD
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts/index.js"></script>
 
@@ -72,6 +74,90 @@
                     <ul class="generos-list">
                         <!-- Aquí se llenarán los géneros -->
                     </ul>
+=======
+        <jsp:include page="headerIndex.jsp" />
+            
+        <body>
+            <%  /* Mensaje de InicioSesion */
+                String mensajeInicioSesion = request.getParameter("mensaje");
+                if ("abierta".equals(mensajeInicioSesion)) {
+            %>
+                    <script>
+                        mostrarMensajeInicioSesion("Sesion Iniciada de forma exitosa!");
+                    </script>
+            <%  }  %>
+            
+            <%  /* Mensaje de CierreSesion */
+                String mensajeCierreSesion = request.getParameter("mensaje");
+                if ("cerrada".equals(mensajeCierreSesion)) {
+            %>
+                    <script>
+                        mostrarMensajeCierreSesion("Sesion Cerrada de forma exitosa!");
+                    </script>
+            <%  }  %>
+            
+            <%  /* Muestra Resultados de la SearchBar */
+                Map<String, String> resultados = (Map<String, String>) request.getAttribute("resultados");
+                if (resultados != null) {
+            %>
+                    <jsp:include page="resultadosBusqueda.jsp" />
+            <%  }  %>
+            
+            <%
+            /*
+                PONER ESTILOS DE DIV-CONTENT PARA QUE LOS DIVS TABS Y REPRODUCTOR QUEDEN EN COLUMNA
+            */
+            %>
+            
+            
+                <!-- TABS-CONTENT -->
+                <div class="tabs">
+                    <ul class="tab-links">
+                        <li class="active"><a href="#tab1">Generos</a></li>
+                        <li><a href="#tab2">Artistas</a></li>
+                        <li><a href="#tab3">Suscripcion</a></li>
+                        <li><a href="#tab4">Listas Particulares</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="tab1" class="tab active">
+                            <div class="lista-Albumes"></div>
+                            <div class="lista-ListasR"></div>
+                            
+                        </div>
+                        <div id="tab2" class="tab">
+                            <p>Tab #2 content goes here!</p>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <p>Tab #3 content goes here!</p>
+                        </div>
+                        <div id="tab4" class="tab">
+                            <h1>Consulta Lista Particular</h1>
+                            <div class="mosaico-container"> 
+                                <div class="mosaico" id="mosaicoListasParticulares">
+                                    <% 
+                                        Fabrica fabrica = Fabrica.getInstance();
+                                        IControlador controlador = fabrica.getControlador();
+                
+                                        List<String> listasPublicas = controlador.getNombresListasParticularesPublicas();
+                                        if (listasPublicas != null && !listasPublicas.isEmpty()) {
+                                            for (String lista : listasPublicas) {
+                                    %>
+                                    <div class="mosaico-item" onclick="DatosListaReproduccion('<%= lista %>')"><%= lista %></div>
+                                    <% 
+                                            }
+                                        } else { 
+                                    %>
+                                    <p>No hay listas de reproducción disponibles.</p>
+                                    <% 
+                                        } 
+                                    %>
+                                </div>
+                            </div> 
+                            <link rel="stylesheet" href="styles/ConsultaListaReproduccion.css">
+                        </div>
+                    </div>
+>>>>>>> mateo2
                 </div>
                 <div class="tabs-container">
                     <!-- Aquí se agregarán las nuevas pestañas para álbumes y listas de reproducción -->
