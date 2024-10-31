@@ -295,9 +295,7 @@ String nombreLista = request.getParameter("nombreLista");
 
     </div>
 
-    <<<<<<< HEAD
-
-    =======
+   
     <%
 //                    ArrayList<String> nombresAlbumes = new ArrayList<>();
 //                    ArrayList<String> nombresListasR = new ArrayList<>();
@@ -305,7 +303,7 @@ String nombreLista = request.getParameter("nombreLista");
 //                    String nombreGenero = null;
 //                    
 //                    <% if () { %>
-    >>>>>>> main
+  
 
 
 

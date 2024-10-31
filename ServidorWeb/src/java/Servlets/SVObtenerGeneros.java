@@ -4,27 +4,24 @@
  */
 package Servlets;
 
-import espotify.DataTypes.DTAlbum;
-import espotify.DataTypes.DTDatosUsuario;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.google.gson.Gson;
+import espotify.logica.Fabrica;
+import espotify.logica.IControlador;
 
 /**
  *
  * @author brisa
  */
-@WebServlet(name = "SVGenerosArtistas", urlPatterns = {"/SVGenerosArtistas"})
-public class SVGenerosArtistas extends HttpServlet {
+@WebServlet(name = "SVObtenerGeneros", urlPatterns = {"/SVObtenerGeneros"})
+public class SVObtenerGeneros extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +34,20 @@ public class SVGenerosArtistas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet SVObtenerGeneros</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet SVObtenerGeneros at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
-            
-   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -52,33 +59,25 @@ public class SVGenerosArtistas extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    
-    Fabrica fb = Fabrica.getInstance();
-    IControlador control = fb.getControlador();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        Fabrica f = Fabrica.getInstance();
+        IControlador iControlador = f.getControlador(); 
+        // Ejemplo de obtención de géneros desde el sistema (base de datos, etc.)
+        List<String> generos = iControlador.getNombresGenerosPadre(); // `obtenerGeneros` es un ejemplo de método en tu sistema
 
-    // Obtener géneros y artistas
-    
-    // Devuelve lista de géneros disponibles
-    ArrayList<String> generos = control.getNombresGenerosPadre();
-    for(String Gh : control.getNombresGenerosHijos()){
-        generos.addLast(Gh);
+        // Convertir la lista de géneros a JSON
+        String generosJson = new Gson().toJson(generos);
+        
+        // Configurar la respuesta
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        PrintWriter out = response.getWriter();
+        out.print(generosJson);
+        out.flush();
     }
     
-    // Devuelve lista de artistas disponibles
-    ArrayList<String> artistas = control.getNicknamesArtistas(); 
 
-    // Enviar géneros y artistas como atributos de la solicitud
-    request.setAttribute("generos", generos);
-    request.setAttribute("artistas", artistas);
-
-    // Redireccionar a la página JSP donde se mostrará la información
-    request.getRequestDispatcher("/GenerosArtistas.jsp").forward(request, response);
-}
-
-            
- 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -90,7 +89,7 @@ public class SVGenerosArtistas extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
+        processRequest(request, response);
     }
 
     /**

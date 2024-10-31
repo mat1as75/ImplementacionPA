@@ -4,6 +4,10 @@
     Author     : brisa
 --%>
 
+<%@page import="espotify.DataTypes.DTGenero"%>
+<%@page import="java.util.List"%>
+<%@page import="espotify.DataTypes.DTAlbum"%>
+<%@page import="espotify.DataTypes.DTArtista"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,74 +18,84 @@
     </head>
     <body>
             <main>
-                <div class="album-info">
-                    <img src="${album.fotoAlbum}" alt="${album.nombreAlbum}" class="album-cover"/>
-                    <h1>${album.nombreAlbum}</h1>
-                    <p>Artista: ${album.miArtista}</p>
-                    <p>Año: ${album.anioCreacion}</p>
-                    <p>Géneros: 
-                        <c:forEach var="genero" items="${album.misGeneros}">
-                            <span class="genre">${genero}</span>
-                        </c:forEach>
-                    </p>
-                    
-                    <!-- Botón Play que usa el reproductor.jspf -->
-                    <form action="reproductor.jspf" method="post" target="reproductorFrame">
-                        <input type="hidden" name="albumId" value="${album.id}" />
-                        <button type="submit">Play</button>
+                <% DTAlbum datosAlbum = (DTAlbum) request.getAttribute("datosAlbum"); %>
+<div class="info-container">
+    <div class="album-fotoAlbum">
+        <img src="<%= request.getContextPath() + "/" + (datosAlbum.getFotoAlbum() != null ? datosAlbum.getFotoAlbum().substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg") %>" alt="Imagen del álbum" />
+    </div>
+
+    <div class="album-info">
+        <h1><%= datosAlbum.getNombreAlbum()%></h1> 
+        <p><span>Artista:</span> <%= datosAlbum.getMiArtista().getNombreUsuario()%></p>
+        <% 
+    List<DTGenero> generos = datosAlbum.getMisgeneros(); 
+    StringBuilder generosConcat = new StringBuilder();
+    for (int i = 0; i < generos.size(); i++) {
+        generosConcat.append(generos.get(i).getNombreGenero());
+        if (i < generos.size() - 1) {
+            generosConcat.append(", ");
+        }
+    }
+%>
+<p><span>Género:</span> <%= generosConcat.toString() %></p>
+
+    </div>
+</div>
+
+<div class="temas-album">
+    <!-- Tabla de temas del álbum -->
+    <table class="tabla-temas">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Agregar</th>
+                <th>Tema</th>
+                <th>Duración</th>
+                <th>Ruta/Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% int nroTema = 1; %>
+            <% if (datosAlbum != null) {
+                    for (DTTemaSimple tema : datosAlbum.getTemas()) {
+                        int duracionSegundos = tema.getDuracionSegundos();
+                        int minutos = duracionSegundos / 60;
+                        int segundos = duracionSegundos % 60;
+
+                        DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
+                        String srcPortada = datosAlbum.getFotoAlbum();
+            %>
+            <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
+                <td><%= nroTema++%></td>
+                <td>
+                    <form action="SVGuardarTemaFavorito" method="post">
+                        <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
+                        <button type="submit" class="agregar">+</button> 
                     </form>
-
-                    <!-- Mostrar el botón "Guardar" solo si el usuario es un cliente con suscripción vigente -->
-                    <c:if test="${userRole == 'cliente' && suscripcionValida}">
-                        <form action="SVGuardarAlbumFavorito" method="post">
-                            <input type="hidden" name="albumId" value="${album.id}" />
-                            <button type="submit">Guardar</button>
-                        </form>
-                    </c:if>
-                </div>
-
-                <!-- Lista de temas -->
-                <section class="tracks">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tema</th>
-                                <th>Duración</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="tema" items="${album.misTemas}" varStatus="status">
-                                <tr>
-                                    <!-- Número de tema -->
-                                    <td>${status.index + 1}</td>
-                                    
-                                    <!-- Nombre del tema -->
-                                    <td>${tema.nombreTema}</td>
-                                    
-                                    <!-- Duración del tema -->
-                                    <td>${tema.duracionSegundos}</td>
-
-                                    <!-- Botones -->
-                                    <td>
-                                        <!-- Mostrar el botón "+" solo si el usuario es un cliente con suscripción vigente -->
-                                        <c:if test="${userRole == 'cliente' && suscripcionValida}">
-                                            <form action="SVGuardarTemaFavorito" method="post" style="display:inline;">
-                                                <input type="hidden" name="temaId" value="${tema.id}" />
-                                                <button type="submit">+</button>
-                                            </form>
-                                        </c:if>
-                                        <!-- Mostrar el enlace de descarga solo si el usuario es un cliente con suscripción vigente -->
-                                        <c:if test="${userRole == 'cliente' && suscripcionValida && tema.url != null}">
-                                            <a href="${tema.url}">Descargar</a>
-                                        </c:if>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </section>
-            </main>
+                </td>
+                <td><%= tema.getNombreTema()%></td>
+                <td><%= String.format("%d:%02d", minutos, segundos)%></td>
+                <td class="ruta-link">  
+                    <% String url = (temaRutaOUrl != null) ? temaRutaOUrl.getUrlTema() : null;
+                       String ruta = (temaRutaOUrl != null) ? temaRutaOUrl.getRutaTema() : null;
+                       if (url != null && !url.isEmpty()) { 
+                           if (!url.startsWith("http://") && !url.startsWith("https://")) { url = "http://" + url; }
+                    %>
+                    <a href="<%= url%>" target="_blank">Ver enlace</a>
+                    <% } if (ruta != null && !ruta.isEmpty()) {
+                           ruta = ruta.substring(ruta.lastIndexOf("Resource/"));
+                           if (puedeDescargar) { %>
+                    <a href="<%= request.getContextPath() + "/" + ruta%>" download="<%= tema.getNombreTema()%>.mp3">Descargar</a>
+                    <% } else { %>
+                    <a href="#" onclick="alert('Debe tener una suscripción vigente para descargar el tema.'); return false;">Descargar</a>
+                    <% } } if ((ruta == null || ruta.isEmpty()) && (url == null || url.isEmpty())) { %>
+                    <span>-</span>
+                    <% } %>
+                </td>
+            </tr>
+            <% } } %>
+        </tbody>
+    </table>
+</div>
     </body>
 </html>
