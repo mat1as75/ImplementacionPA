@@ -38,15 +38,18 @@ public class CargarDatosTest {
         em.getTransaction().commit();
         return true;
     }
-    
+  
+    //cargo todos los datos de prueba a partir de los inserts del archio SQL
     public Boolean cargarDatosDePrueba() {
         return leerSQLdeArchivo(rutaDatosDePruebaSQL);
     }
     
+    //borro todos los datos de prueba a partir de las sentencias delete del archivo SQL
     public Boolean borrarDatosDePrueba() {
         return leerSQLdeArchivo(rutaDeleteDatosSQL);
     }
     
+    //Hago un reset, si los datos se borran correctamente entonces los cargo de nuevo
     public Boolean resetDatosDePrueba() {
         //borro todos los datos de la base de datos
         if (borrarDatosDePrueba()) {
@@ -56,11 +59,7 @@ public class CargarDatosTest {
             return false;
         }
     }
-
-    /*
-        comentar este test cuando se quiera ver el resultado de las inserciones y modificaciones en la BD,
-        de lo contrario se resetea la base de datos al ejecutar este test
-    */    
+   
     @Test
     public void testCargarDatos(){
         assertTrue(resetDatosDePrueba());

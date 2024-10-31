@@ -14,7 +14,6 @@ public class GuardarAlbumFavoritoTest {
     private static ControladoraPersistencia cp;
     private static CargarDatosTest cdt;
     
-    
     public GuardarAlbumFavoritoTest() {
         cp = new ControladoraPersistencia();
         cdt = new CargarDatosTest();

@@ -1,8 +1,6 @@
-import espotify.DataTypes.DTArtista;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
+import espotify.DataTypes.DTDatosCliente;
+import espotify.DataTypes.DTDatosUsuario;
 import espotify.persistencia.ControladoraPersistencia;
-import javax.swing.JOptionPane;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,30 +8,27 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author usuario
- */
 public class SeguirUsuarioTest {
     private static ControladoraPersistencia cp;
-    private static Fabrica f=Fabrica.getInstance();
-    private static IControlador i=f.getControlador();
+    private static CargarDatosTest cdt;
     
     public SeguirUsuarioTest() {
-        cp=new ControladoraPersistencia();
+        cp = new ControladoraPersistencia();
+        cdt = new CargarDatosTest();
     }
-    public Boolean comprobarAsignacion(String Seguidor,String Seguido, String test, Boolean expected) {
+    
+    public Boolean comprobarAsignacion(String seguidor,String seguido, String test, Boolean expected) {
+       
+        cp.setSeguidorSeguido(seguidor, seguido);
+        DTDatosCliente dtClienteSeguidor = cp.getDatosCliente(seguidor);
+        DTDatosUsuario dtUsuarioSeguido = cp.getDatosUsuario(seguido);
         
-        Boolean fueCreado = false;
-        try {
-            cp.setSeguidorSeguido(Seguidor, Seguido);
-            fueCreado = true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            fueCreado = false;
-        }
-            
-        if (fueCreado.equals(expected)) {
+        Boolean usuariosExisten = dtClienteSeguidor != null && dtUsuarioSeguido != null;
+        Boolean existeRelacion = cp.existeRelacion(seguidor, seguido);
+        
+        Boolean actualizacionCorrecta = usuariosExisten && existeRelacion;
+        
+        if (actualizacionCorrecta.equals(expected)) {
             System.out.println("Test: " + test + ". OK");
             return true;
         } else {
@@ -41,42 +36,6 @@ public class SeguirUsuarioTest {
             return false;
         }
     }
-    @Test
-    public void Cliente1SigueACliente2() {
-        String Seguidor="Eleven11";
-        String Seguido="cbochinche";
-         boolean existeRelacion = i.existeRelacion(Seguidor, Seguido);
-        if (existeRelacion) {
-            assertTrue(comprobarAsignacion(Seguidor,Seguido, "Cliente "+Seguidor+" Sigue a Cliente "+Seguido, false));
-        }else{
-            assertTrue(comprobarAsignacion(Seguidor,Seguido, "Cliente "+Seguidor+" Sigue a Cliente "+Seguido, true));
-        }
-        
-    }
-     @Test
-    public void Cliente2SigueACliente1() {
-        String Seguidor="cbochinche";
-        String Seguido="Eleven11"; 
-        boolean existeRelacion = i.existeRelacion(Seguidor, Seguido);
-        if (existeRelacion) {
-            assertTrue(comprobarAsignacion(Seguidor,Seguido, "Cliente "+Seguidor+" Sigue a Cliente "+Seguido, false));
-        }else{
-            assertTrue(comprobarAsignacion(Seguidor,Seguido, "Cliente "+Seguidor+" Sigue a Cliente "+Seguido, true));
-        }
-    }
-    @Test
-    public void ClienteSigueArtista() {
-        String Seguidor="el_padrino";
-        String Seguido="alcides";
-        boolean existeRelacion = i.existeRelacion(Seguidor, Seguido);
-        if (existeRelacion) {
-            assertTrue(comprobarAsignacion(Seguidor,Seguido, "Cliente "+Seguidor+" Sigue a Cliente "+Seguido, false));
-        }else{
-            assertTrue(comprobarAsignacion(Seguidor,Seguido, "Cliente "+Seguidor+" Sigue a Cliente "+Seguido, true));
-        }
-   
-    }
-    
     
     @BeforeClass
     public static void setUpClass() {
@@ -84,20 +43,64 @@ public class SeguirUsuarioTest {
     
     @AfterClass
     public static void tearDownClass() {
+        cdt.resetDatosDePrueba();
     }
     
     @Before
     public void setUp() {
-        
+        cdt.resetDatosDePrueba();
     }
     
     @After
     public void tearDown() {
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    
+    @Test
+    public void seguirUsuarioDatosValidos1() {
+        String seguidor = "Eleven11";
+        String seguido = "cbochinche";
+        
+        assertTrue(comprobarAsignacion(
+                seguidor, seguido, 
+                "Eleven11 sigue a cbochinche", 
+                true
+        ));
+    }
+    
+    @Test
+    public void seguirUsuarioDatosValidos2() {
+        String seguidor = "cbochinche";
+        String seguido = "Eleven11";
+        
+        assertTrue(comprobarAsignacion(
+                seguidor, seguido, 
+                "cbochinche sigue a Eleven11", 
+                true
+        ));
+    }
+ 
+    @Test
+    public void seguirUsuarioDatosValidos3() {
+        String seguidor = "cbochinche";
+        String seguido = "clauper";
+        
+        assertTrue(comprobarAsignacion(
+                seguidor, seguido, 
+                "cbochinche sigue a clauper", 
+                true
+        ));
+    }
+    
+    @Test
+    public void seguirUsuarioDatosValidos4() {
+        String seguidor = "el_padrino";
+        String seguido = "alcides";
+        
+        assertTrue(comprobarAsignacion(
+                seguidor, seguido, 
+                "el_padrino sigue a alcides", 
+                true
+        ));
+    }
+    
 }

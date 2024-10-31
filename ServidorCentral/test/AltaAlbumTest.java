@@ -74,11 +74,11 @@ public class AltaAlbumTest {
     
     public void crearArtistaDePrueba() {
         DTArtista dtArtista = new DTArtista(
-                "nickArtistaDePrueba", 
+                "nickArtistaDePruebaAltaAlbum", 
                 "nombre", 
                 "apellido", 
                 "1234", 
-                null, 
+                "emaildepruebaaltaalbum@gmail.com", 
                 null, 
                 null, 
                 null, 
