@@ -4,6 +4,11 @@
     Author     : brisa
 --%>
 
+<%@page import="espotify.DataTypes.DTTemaGenerico"%>
+<%@page import="espotify.logica.IControlador"%>
+<%@page import="espotify.logica.Fabrica"%>
+<%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
+<%@page import="espotify.DataTypes.DTTemaSimple"%>
 <%@page import="espotify.DataTypes.DTGenero"%>
 <%@page import="java.util.List"%>
 <%@page import="espotify.DataTypes.DTAlbum"%>
@@ -11,6 +16,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    Fabrica fabrica = Fabrica.getInstance();
+    IControlador iControlador = fabrica.getControlador();
+
+
+%>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -57,19 +69,19 @@
         <tbody>
             <% int nroTema = 1; %>
             <% if (datosAlbum != null) {
-                    for (DTTemaSimple tema : datosAlbum.getTemas()) {
+                    for (DTTemaGenerico tema : datosAlbum.getMisTemas()) {
                         int duracionSegundos = tema.getDuracionSegundos();
                         int minutos = duracionSegundos / 60;
                         int segundos = duracionSegundos % 60;
 
-                        DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
+                        DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getId());
                         String srcPortada = datosAlbum.getFotoAlbum();
             %>
-            <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
+            <tr class="row-hover" onclick="play('<%= tema.getId()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                 <td><%= nroTema++%></td>
                 <td>
                     <form action="SVGuardarTemaFavorito" method="post">
-                        <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
+                        <input type="hidden" name="idTema" value="<%= tema.getId()%>"/> 
                         <button type="submit" class="agregar">+</button> 
                     </form>
                 </td>

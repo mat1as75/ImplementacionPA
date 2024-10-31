@@ -46,24 +46,36 @@ public class SVConsultaAlbum extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Obtener el controlador
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
-        
-        // Obtener el ID del álbum desde la solicitud
-        String albumIdStr = request.getParameter("albumId");
-        
-        if (albumIdStr != null) {
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    
+    // Obtener el controlador
+    Fabrica fb = Fabrica.getInstance();
+    IControlador control = fb.getControlador();
+    
+    // Obtener el ID del álbum desde la solicitud
+    String albumIdStr = request.getParameter("albumId");
+    
+    if (albumIdStr != null) {
+        try {
             Long albumId = Long.parseLong(albumIdStr);
             DTAlbum album = control.ConsultaAlbum(albumId);
-            request.setAttribute("album", album);
-            request.getRequestDispatcher("detalleAlbum.jsp").forward(request, response);
-        } else {
+            
+            if (album != null) {
+                request.setAttribute("album", album);
+                request.getRequestDispatcher("detalleAlbum.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Álbum no encontrado");
+            }
+        } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de álbum inválido");
         }
+    } else {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de álbum no proporcionado");
     }
+}
+
 
     /**
      * Handles the HTTP <code>POST</code> method.
