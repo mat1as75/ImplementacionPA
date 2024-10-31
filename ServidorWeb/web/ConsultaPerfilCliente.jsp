@@ -22,9 +22,13 @@
     String estadoSuscripcionSesion = null;
     
     DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
-    DTDatosUsuario usuarioConsultado = control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario());
+    DTDatosUsuario usuarioConsultado = null;
     DTDatosCliente clienteConsultado = null;
-    
+    if (DTusuarioConsultado != null)
+        usuarioConsultado = control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario());
+    else
+        usuarioConsultado = control.getDatosUsuario(nicknameSesion);
+
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
     ArrayList<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
             nombresListasRFavConsultadas = null, nombresListasRConsultadas = null, nombresListasPublicasConsultadas = null;

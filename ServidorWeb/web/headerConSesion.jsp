@@ -29,6 +29,7 @@
         HttpSession sesion = request.getSession(false);
         String nicknameSesion = (String) sesion.getAttribute("nickname");
         String rolSesion = (String) sesion.getAttribute("rol");
+        System.out.println("rol: " + rolSesion);
 
         DTDatosUsuario datosUsuario = control.getDatosUsuario(nicknameSesion);
         String nombreSesion = null;

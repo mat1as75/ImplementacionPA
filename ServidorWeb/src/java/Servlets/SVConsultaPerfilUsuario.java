@@ -48,6 +48,7 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
 
         // Recupero el parametro enviado desde el formulario en resultados.jsp
         String usuarioConsultado = request.getParameter("usuario-Consultar");
+        System.out.println("nick: " + usuarioConsultado);
         
         if (usuarioConsultado == null) {
             // ConsultaPerfilUsuario propio de la Sesion
@@ -55,19 +56,18 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         } else {
             // ConsultaPerfilUsuario desde SearchBar
             datosUsuario = control.getDatosUsuario(usuarioConsultado);
-        }
-        
-        if (datosUsuario instanceof espotify.DataTypes.DTDatosCliente) {
-            System.out.println("SVCONSULTA " + datosUsuario.getClass());
-            // Envio un DataType con los datos del Usuario consultado
-            sesion.setAttribute("DTusuarioConsultado", (DTDatosCliente) datosUsuario);
-        } else {
-            // Envio un DataType con los datos del Usuario consultado
-            sesion.setAttribute("DTusuarioConsultado", (DTDatosArtista) datosUsuario);
+            
+            if (datosUsuario instanceof DTDatosCliente) {
+                // Envio un DataType con los datos del Usuario consultado
+                sesion.setAttribute("DTusuarioConsultado", (DTDatosCliente) datosUsuario);
+            } else {
+                // Envio un DataType con los datos del Usuario consultado
+                sesion.setAttribute("DTusuarioConsultado", (DTDatosArtista) datosUsuario);
+                System.out.println("ACA: " + sesion.getAttribute("DTusuarioConsultado"));
+            }
         }
 
         response.sendRedirect("ConsultaPerfilUsuario.jsp");
-
     }
     
     @Override

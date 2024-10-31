@@ -35,6 +35,8 @@ public class SVBarraBusqueda extends HttpServlet {
 
     private EntityManagerFactory emf;
     
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         

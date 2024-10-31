@@ -68,7 +68,7 @@ public class SVInicioSesion extends HttpServlet {
             miSesion.setAttribute("nickname", (String) dtUser.getNickname());
             miSesion.setAttribute("DTusuarioConsultado", null);
 
-            if (dtUser instanceof DTCliente){
+            if (dtUser instanceof espotify.DataTypes.DTCliente){
                 miSesion.setAttribute("rol", "Cliente");
             }else{
                 miSesion.setAttribute("rol", "Artista");

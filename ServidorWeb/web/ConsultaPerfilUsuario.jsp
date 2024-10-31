@@ -20,14 +20,25 @@
     <%
         Fabrica fb = Fabrica.getInstance();
         HttpSession sesion = request.getSession(false);
-        DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+        String rolSesion = (String) sesion.getAttribute("rol");
+        DTDatosUsuario usuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
     %>
     
-    <%  if (DTusuarioConsultado instanceof espotify.DataTypes.DTDatosCliente) { %>
-            <jsp:include page="ConsultaPerfilCliente.jsp"/>
-    <%  } else {  %>
-            <jsp:include page="ConsultaPerfilArtista.jsp"/>
+    <%  // ConsultaUsuario de un tercero
+        if (usuarioConsultado != null) {  %>
+        <%  if (usuarioConsultado instanceof DTDatosCliente) { // Usuario tercero es Cliente %>
+                <jsp:include page="ConsultaPerfilCliente.jsp"/>
+        <%  } else { // Usuario tercero es Artista %>
+                <jsp:include page="ConsultaPerfilArtista.jsp"/>
+        <%  }  %>
+    <%  } else {  // ConsultaUsuario propio  %>
+        <%  if (rolSesion.equals("Cliente")) { // Sesion es Cliente %>
+                <jsp:include page="ConsultaPerfilCliente.jsp"/>
+        <%  } else { // Sesion es Artista %>
+                <jsp:include page="ConsultaPerfilArtista.jsp"/>
+        <%  }  %>
     <%  }  %>
+    
     
 </html>
 

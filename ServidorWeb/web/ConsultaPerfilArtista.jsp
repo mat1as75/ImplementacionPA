@@ -15,14 +15,21 @@
     Fabrica fb = Fabrica.getInstance();
     IControlador control = fb.getControlador();
     
-    HttpSession sesion = request.getSession();
+    HttpSession sesion = request.getSession(false);
     String nicknameSesion = (String) sesion.getAttribute("nickname");
+    System.out.println("ACA2: " + (String) sesion.getAttribute("nickname"));
     String rolSesion = (String) sesion.getAttribute("rol");
+    System.out.println("ACA3: " + rolSesion);
     String estadoSuscripcionSesion = null;
     DTDatosUsuario usuarioSesion = null;
     
-    DTDatosUsuario usuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosUsuario usuarioConsultado = null;
     DTDatosArtista artistaConsultado = null;
+    if (DTusuarioConsultado != null)
+        usuarioConsultado = control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario());
+    else
+        usuarioConsultado = control.getDatosUsuario(nicknameSesion);
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, 
             fechaNacConsultado = null, fotoPerfilConsultado = null, biografiaConsultado = null,
@@ -48,7 +55,8 @@
     albumesPublicadosConsultados = artistaConsultado.getNombresAlbumesPublicados();
 
     // Si UsuarioSesion != ArtistaConsultado => Obtengo DatosUsuarioSesion, caso contrario null
-    usuarioSesion = (!nicknameSesion.equals(nicknameConsultado)) ? control.getDatosUsuario(nicknameSesion) : null;
+    if (rolSesion != null) {
+        usuarioSesion = (!nicknameSesion.equals(nicknameConsultado)) ? control.getDatosUsuario(nicknameSesion) : null;
     
     // Sesion es Cliente
     if (rolSesion.equals("Cliente")) {
