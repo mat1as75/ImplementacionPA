@@ -84,6 +84,13 @@ public class ControladoraPersistencia {
     }
 
     public void AltaArtista(DTArtista dtArtista) {
+        
+        if (dtArtista.getNickname() == null 
+                || dtArtista.getEmail() == null
+                || dtArtista.getContrasenaUsuario() == null) {
+            return;
+        }
+        
         try {
             Artista art = new Artista(
                     dtArtista.getNickname(),
@@ -103,6 +110,13 @@ public class ControladoraPersistencia {
     }
 
     public void AltaCliente(DTCliente dtCliente) {
+        
+        if (dtCliente.getNickname() == null 
+                || dtCliente.getEmail() == null
+                || dtCliente.getContrasenaUsuario() == null) {
+            return;
+        }
+        
         try {
             Cliente cli = new Cliente(
                     dtCliente.getNickname(),
@@ -427,6 +441,7 @@ public class ControladoraPersistencia {
     public void setSeguidorSeguido(String Seguidor, String Seguido) {
         Cliente c = this.cliJpa.findCliente(Seguidor);
         Usuario u = this.usuJpa.findUsuario(Seguido);
+                
         c.setMisSeguidos(u);
         u.setMisSeguidores(c);
         try {
@@ -936,14 +951,32 @@ public class ControladoraPersistencia {
     }
 
     public void setPrivadafalse(String cliente, String lista) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf.getCache().evictAll();
+        
         Cliente c = cliJpa.findCliente(cliente);
+        ListaParticular lp = this.lpartJpa.findListaParticular(lista);
+        //retorna sin hacer un cambio si no se encuentra la lista o el cliente
+        if (c == null || lp == null) return;
+        
+        //busco si la lista particular recibida le pertenece al cliente
+        Boolean listaEsDeCliente = false;
+        for (ListaParticular listaParticular : c.getMisListasReproduccionCreadas()) {
+            if (listaParticular.getNombreLista().equals(lista)) {
+                listaEsDeCliente = true;
+                break;
+            }
+        }
+        //si la lista no le pertenece al cliente retorno sin hacer cambios
+        if (!listaEsDeCliente) return;
+        
         c.setPrivadafalse(lista);
         try {
             cliJpa.edit(c);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ListaParticular lp = this.lpartJpa.findListaParticular(lista);
+        
         lp.setsoyPrivada(false);
         try {
             this.lpartJpa.edit(lp);
@@ -1682,6 +1715,8 @@ public class ControladoraPersistencia {
     }
     
     public boolean existeArtista(String nicknameArtista) {
+        if (nicknameArtista == null) return false;
+        
         Artista art = this.artJpa.findArtista(nicknameArtista);
         return art != null;
     }
