@@ -848,10 +848,14 @@ public class ControladoraPersistencia {
         Cliente c = cliJpa.findCliente(nicknameCliente);
         Tema tema = temaJpa.findTema(idTema);
 
+        if (c == null || tema == null) {
+            throw new NonexistentEntityException("No se encontró el cliente o el tema.");
+        }
+        
         List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
         for (Tema t : temasFavoritosDelCliente) {
             if (tema.getIdTema().equals(t.getIdTema())) {
-                throw new Exception("El cliente ya tiene este tema en su lista de favoritos.");
+                throw new PreexistingEntityException("El cliente ya tiene este tema en su lista de favoritos.");
             }
         }
 
@@ -868,11 +872,15 @@ public class ControladoraPersistencia {
         Cliente c = cliJpa.findCliente(nicknameCliente);
         ListaReproduccion listaR = lreprodccJpa.findListaReproduccion(nombreListaR);
 
+        if (c == null || listaR == null) {
+            throw new NonexistentEntityException("No se encontró el cliente o la lista.");
+        }
+        
         List<ListaReproduccion> listasFavoritasDelCliente = c.getMisListasReproduccionFav();
 
         for (ListaReproduccion lr : listasFavoritasDelCliente) {
             if (lr.getNombreLista().equals(listaR.getNombreLista())) {
-                throw new Exception("Este cliente ya tiene esta lista en sus favoritos.");
+                throw new PreexistingEntityException("Este cliente ya tiene esta lista en sus favoritos.");
             }
         }
 
@@ -889,11 +897,15 @@ public class ControladoraPersistencia {
         Cliente c = cliJpa.findCliente(nicknameCliente);
         Album album = albJpa.findAlbum(idAlbum);
 
+        if (c == null || album == null) {
+            throw new NonexistentEntityException("No se encontró el album o el cliente.");
+        }
+        
         List<Album> albumsFavoritosDelCliente = c.getMisAlbumesFav();
 
         for (Album a : albumsFavoritosDelCliente) {
             if (a.getIdAlbum().equals(album.getIdAlbum())) {
-                throw new Exception("Este cliente ya tiene a este album en sus favoritos.");
+                throw new PreexistingEntityException("Este cliente ya tiene a este album en sus favoritos.");
             }
         }
 
@@ -1085,9 +1097,7 @@ public class ControladoraPersistencia {
             emf.getCache().evictAll();
 
             this.temaJpa.edit(tema);
-            emf.getCache().evictAll();
-
-            
+            emf.getCache().evictAll(); 
         } catch (Exception ex) {
             throw new DatabaseUpdateException(
                     "Ocurrio un error al agregar el tema ["
@@ -1565,6 +1575,17 @@ public class ControladoraPersistencia {
     }
     
     public Boolean actualizarSuscripcionVencida(Long idSuscripcion) {
+        /*  
+            Esta funcion verifica si una suscripcion Vigente dada ya cumplio con su plazo de vigencia.
+            Si la fecha de contratacion mas el tiempo determinado por el tipo de suscripcion
+            es mayor a la fecha actual, cambia el estado de dicha suscripcion a Vencida.
+            
+            Retorna true si la operacion termina exitosamente sin errores
+            (haya actualizado o no)
+        
+            Retorna false si ocurrio un error en la actualizacion 
+            (si no se encontro la suscripcion o si fallo el update de la base de datos)
+        */
         Suscripcion suscripcion = suscripcionJpa.findSuscripcion(idSuscripcion);
         if (suscripcion == null) {
             Logger.getLogger(
@@ -1577,6 +1598,7 @@ public class ControladoraPersistencia {
         
         Suscripcion.EstadoSuscripcion estadoSuscripcion = suscripcion.getEstadoSuscripcion();
         
+        //Solo reviso la suscripcion si esta en estado Vigente
         if (estadoSuscripcion.equals(Suscripcion.EstadoSuscripcion.Vigente)) {
             String tipoSuscripcion = suscripcion.getTipoSuscripcion().toString();
             Date fechaDePagoDate = suscripcion.getFechaSuscripcion();
@@ -1631,9 +1653,26 @@ public class ControladoraPersistencia {
         }
     }
 
-    public void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion) throws Exception {
+    public void ActualizarEstadoSuscripcion(
+            Long idSuscripcion, 
+            EstadoSuscripcion estadoSuscripcion, 
+            Date fechaSuscripcion) throws Exception {
+        
+        Suscripcion s = suscripcionJpa.findSuscripcion(idSuscripcion);
+        
+        if (s == null) {
+            throw new NonexistentEntityException("No se encontró la suscripcion.");
+        }
+        
+        if (s.getEstadoSuscripcion().equals(Suscripcion.EstadoSuscripcion.Cancelada)) {
+            throw new Exception("No se puede modificar una suscripción cancelada.");
+        }
+        
+        if (estadoSuscripcion == null || fechaSuscripcion == null) {
+            throw new InvalidDataException("No se aceptan valores nulos.");
+        }
+        
         try {            
-            Suscripcion s = suscripcionJpa.findSuscripcion(idSuscripcion);
             s.setEstadoSuscripcion(estadoSuscripcion);
             s.setFechaSuscripcion(fechaSuscripcion);
             suscripcionJpa.edit(s);
@@ -1702,6 +1741,9 @@ public class ControladoraPersistencia {
     }
     
     public void ingresarNuevaSuscripcion(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) throws Exception {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf.getCache().evictAll();
+        
         Cliente cliente = this.cliJpa.findCliente(nickname);
         if (cliente == null) {
             throw new NonexistentEntityException("No se encontró el cliente");
