@@ -27,7 +27,7 @@ public abstract class Usuario implements Serializable{
     @JoinTable(name = "usuario_seguidores",
             joinColumns = @JoinColumn(name = "nickname_Usuario"),
             inverseJoinColumns = @JoinColumn(name = "nickname_Seguidor"))
-    protected List<Usuario> misSeguidores;
+    protected List<Usuario> misSeguidores = null;
     
     // Contructores
     public Usuario() {

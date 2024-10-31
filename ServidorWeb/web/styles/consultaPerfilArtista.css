@@ -166,6 +166,7 @@ p {
 
 .lista-albumesP a:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .registros {

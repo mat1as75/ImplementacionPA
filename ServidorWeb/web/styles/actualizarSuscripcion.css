@@ -33,7 +33,12 @@
     margin: 1rem 0;
 }
 
+.datosSuscripcion {
+    text-align: center;
+}
+
 .btnsContainer {
+    margin-top: 1rem;
     display:flex;
     flex-direction: row;
     justify-content: space-around;

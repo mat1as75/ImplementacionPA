@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", evt => {
 
 btnVolver.addEventListener("click", evt => {
     modalResultado.classList.add("hidden");
+    window.location.reload();
 });
 
 btnAceptar.addEventListener("click", evt => {

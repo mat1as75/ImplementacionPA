@@ -18,11 +18,13 @@
         
         <link rel="stylesheet" href="styles/index.css"/> <!-- CSS DEL BODY -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="styles/nav.css"/>
         <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
     </head>
 
         <jsp:include page="headerIndex.jsp" />
-            
+        <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
+   
         <body>
             <%  /* Mensaje de InicioSesion */
                 String mensajeInicioSesion = request.getParameter("mensaje");

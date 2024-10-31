@@ -1,12 +1,10 @@
 
 package Servlets;
 
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

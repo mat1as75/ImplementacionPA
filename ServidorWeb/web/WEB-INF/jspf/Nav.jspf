@@ -1,0 +1,43 @@
+<%@ page pageEncoding="UTF-8" %>
+
+<!--
+    COMO INCLUIR:
+    1) Agregar el siguiente include despues del include del header:
+    <    %@ include file="../WEB-INF/jspf/Nav.jspf" %>
+    
+    2) Agregar el siguiente estilo de css despues del resto de los estilos
+    <link rel="stylesheet" href="styles/nav.css"/>
+
+    Si el jsp desde el cual se realiza el import esta en otra carpeta incluir el css de la siguiente forma:
+    <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/nav.css"/>
+
+-->
+
+
+<% 
+    HttpSession sesion = request.getSession(false);
+    String rol = null;
+    
+    if (sesion != null) {
+        rol = (String) sesion.getAttribute("rol");
+    }
+    
+%>
+
+<% if (rol != null) { %>
+
+<nav class="navCustom">
+    <ul class="navCustomUl">
+       
+        <% if (rol.equals("Cliente")) { %>
+            <li><a href="IngresarSuscripcion">Contratar suscripción</a></li>
+            <li><a href="ActualizarSuscripcion">Mi suscripción</a></li>
+        <% } %>
+        
+        <% if (rol.equals("Artista")) { %>
+            <li><a href="AltaAlbum">Subir nuevo álbum</a></li>
+        <% } %>
+    </ul>
+</nav>
+
+<% } %>

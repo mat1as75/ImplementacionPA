@@ -1,7 +1,6 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
@@ -9,7 +8,12 @@ import espotify.logica.Suscripcion;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -104,9 +108,21 @@ public class SVActualizarSuscripcion extends HttpServlet {
                 SVError.redirectNotFound(request, response);
                 return;
             }
-
+            
+            if  (ictrl.actualizarSuscripcionVencida(dtSuscripcion.getIdSuscripcion())) {
+                DTSuscripcion suscripcionVencida = ictrl.getDTSuscripcion(dtSuscripcion.getIdSuscripcion());
+                request.setAttribute("estadoSuscripcion", suscripcionVencida.getEstadoSuscripcion());
+            } else {
+                request.setAttribute("estadoSuscripcion", dtSuscripcion.getEstadoSuscripcion());
+            }
+            
+            LocalDate fechaLocalDate = LocalDate.ofInstant(
+                    dtSuscripcion.getFechaSuscripcion().toInstant(), 
+                    ZoneId.systemDefault());            
+            request.setAttribute("tipoSuscripcion", dtSuscripcion.getTipoSuscripcion());
+            request.setAttribute("fechaSuscripcion", fechaLocalDate.format(DateTimeFormatter.ISO_DATE));
+            
             //Paso el estado de la suscripcion al request para manejar este valor en el JSP
-            request.setAttribute("estadoSuscripcion", dtSuscripcion.getEstadoSuscripcion());
         } catch (Exception e) {
             //El request recibio un cliente inexistente
             if (e instanceof NonexistentEntityException) {

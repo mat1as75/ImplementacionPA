@@ -10,9 +10,11 @@
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/ingresarNuevaSuscripcion.css"/>
+        <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/nav.css"/>
     </head>
     <jsp:include page="../headerIndex.jsp"/>
-    
+    <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
+
     <body class="bodyContainer">
         <section id="section" class="sectionContainer">
             <h1 class="titlePrimary textAligned">Suscripciones</h1>

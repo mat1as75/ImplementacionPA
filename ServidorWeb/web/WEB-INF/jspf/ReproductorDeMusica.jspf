@@ -1,3 +1,6 @@
+<%@page import="espotify.DataTypes.DTSuscripcion"%>
+<%@page import="espotify.logica.IControlador"%>
+<%@page import="espotify.logica.Fabrica"%>
 <%@ page pageEncoding="UTF-8" %>
 
 <!--
@@ -35,6 +38,24 @@
         nombreTema es opcional, se usa para mostrar el nombre del tema en reproduccion
         srcPortada es opcional, se usa para cargar la foto de portada del album o lista que se desea mostrar
 -->
+
+<% 
+
+    HttpSession sesionEnReproductor = request.getSession();
+    String nicknameSesionDeReproductor = (String) sesionEnReproductor.getAttribute("nickname");
+    Fabrica fabricaEnReproductor = Fabrica.getInstance();
+    IControlador ictrlEnReproductor = fabricaEnReproductor.getControlador();
+
+    DTSuscripcion suscripcionDeCliente = ictrlEnReproductor.getDTSuscripcionDeCliente(nicknameSesionDeReproductor);
+    String estadoSuscripcion = null;
+    if (suscripcionDeCliente != null) {
+        estadoSuscripcion = suscripcionDeCliente.getEstadoSuscripcion();
+    }
+    
+
+%>
+
+
 <div id="audioFilePlayerContainer" data-idtema="" class="audioPlayerContainer">    
     <img  class="portada" id="filePlayerImg" src="imagenes/spotifyLogo.png" alt="Logo de spotify"/>
     <p id="nombreTemaFile" class="pNombreTema" >Tema</p>
@@ -50,9 +71,19 @@
                id="iconAddToPlaylist_FilePlayer"
                >  
             </i>
+            <% if (estadoSuscripcion.equals("Vigente")) { %>
+                <a id="downloadAnchor" target="_blank" data-available="true">
+                    <i class="bi bi-download"></i>
+                </a>
+            <% } else { %>
+                <a id="downloadAnchor" target="_blank" data-available="false" style="display:none">
+                    <i class="bi bi-download"></i>
+                </a>
+            <% } %>
             <div class="dropdownContent hidden" id="dropdownContent1" >
             </div>
         </span>
+        
     </div>
 </div>
 
