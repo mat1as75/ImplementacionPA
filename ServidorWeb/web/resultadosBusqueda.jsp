@@ -5,7 +5,7 @@
 <html lang="es">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="scripts/resultadosBusqueda.js"></script>
+        
         <link rel="stylesheet" href="styles/resultadosBusqueda.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
@@ -31,7 +31,7 @@
 
                 <div class="opciones">
                     <label id="label-opciones" for="ordenar">Ordenar por:</label>
-                    <select id="ordenar" name="opcion" oncharge="mostrarResultados(orderByAlhpabetical(resultados, consulta => consulta.value))">
+                    <select id="ordenar" name="opcion">
                         <option selected disabled hidden>(seleccione una opción)</option>
                         <option value="alfabetico">Alfabéticamente (A-Z a-z)</option>
                         <option value="anio">Año (descendente)</option>
@@ -49,10 +49,12 @@
                 <%
                     } else { 
                         // Convertir el Map en una lista para procesarlo en JavaScript
-                        String jsonResultados = new Gson().toJson(resultados);
+                        Gson gson = new Gson();
+                        String jsonResultados = gson.toJson(resultados);
                 %>
+                    <script src="scripts/resultadosBusqueda.js"></script>
                     <script>
-                        var resultados = <%= jsonResultados %>;
+                        let resultados = <%= jsonResultados %>;
                         mostrarResultados(resultados); // Mostrar resultados iniciales
                         console.log(resultados);
                     </script>
@@ -62,6 +64,6 @@
             </div>
         </div>
 
-
+        
     </body>
 </html>
