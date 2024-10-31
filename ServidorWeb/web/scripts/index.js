@@ -20,15 +20,3 @@ jQuery(document).ready(function () {
     });
 });
 
-function mostrarPorListaParticular() {
-            document.getElementById('mosaicoListasParticulares').style.display = 'grid';
-        }
-
-        function DatosListaReproduccion(nombreLista) {
-            window.location.href = 'DatosListaReproduccion.jsp?nombreLista=' + encodeURIComponent(nombreLista);
-        }
-
-        // Mostrar listas particulares al cargar la página
-        document.addEventListener("DOMContentLoaded", function () {
-            mostrarPorListaParticular();
-});
