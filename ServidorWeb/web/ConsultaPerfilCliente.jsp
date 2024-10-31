@@ -22,8 +22,16 @@
     String estadoSuscripcionSesion = null;
     
     DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
-    DTDatosUsuario usuarioConsultado = control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario());
+    DTDatosUsuario usuarioConsultado = null;
     DTDatosCliente clienteConsultado = null;
+    
+    /* Si el atributo DTusuarioConsultado de la sesion de distinto de null, 
+        es porq se consulto a otro Usuario. En caso contrario, es porq se 
+            consulto su propio perfil */
+    usuarioConsultado = (DTusuarioConsultado != null) ? 
+                        control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario()) : 
+                        control.getDatosUsuario(nicknameSesion);
+    
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
     ArrayList<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 

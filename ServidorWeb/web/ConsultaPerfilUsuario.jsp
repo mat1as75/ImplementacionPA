@@ -20,13 +20,38 @@
     <%
         Fabrica fb = Fabrica.getInstance();
         HttpSession sesion = request.getSession(false);
+        String rolSesion = (String) sesion.getAttribute("rol");
         DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
     %>
+    <%
+        boolean autoConsulta = false;
+        boolean esCliente = false;
+        
+        /* Sesion consulto perfil propio */
+        if (DTusuarioConsultado == null) { 
+            autoConsulta = true;
+            if (rolSesion.equals("Cliente")) {
+                esCliente = true;
+            }
+        } else { /* Sesion consulto perfil de un tercero */
+            if (DTusuarioConsultado.getClass() == DTDatosCliente.class) {
+                esCliente = true;
+            }
+        }
+    %>
     
-    <%  if (DTusuarioConsultado instanceof espotify.DataTypes.DTDatosCliente) { %>
+    <%  if (autoConsulta) {
+            if (esCliente) { %>
             <jsp:include page="ConsultaPerfilCliente.jsp"/>
-    <%  } else {  %>
+        <%  } else {  %>
             <jsp:include page="ConsultaPerfilArtista.jsp"/>
+        <%  } %> 
+    <%  } else {  %>
+        <%  if (esCliente) { %>
+            <jsp:include page="ConsultaPerfilCliente.jsp"/>
+        <%  } else {  %>
+            <jsp:include page="ConsultaPerfilArtista.jsp"/>
+        <%  } %> 
     <%  }  %>
     
 </html>
