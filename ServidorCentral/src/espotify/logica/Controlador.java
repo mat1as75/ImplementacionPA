@@ -434,10 +434,6 @@ public class Controlador implements IControlador{
     public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
         return this.contpersis.getDTAlbumesSimplePorGenero(genero);
     }
-     @Override
-    public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorArtista(String artista) {
-        return this.contpersis.getDTAlbumesSimplePorArtista(artista);
-    }
 
     @Override
     public List<String> getUsuariosSinEste(String nickname){

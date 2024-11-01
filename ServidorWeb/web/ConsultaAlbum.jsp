@@ -83,7 +83,6 @@ try {
         <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="styles/DatosAlbum.css"/>
     </head>
-    <jsp:include page="headerIndex.jsp"/>
     <body>
         <div class="containerMain">
         <div class="album-detalles">
@@ -123,22 +122,12 @@ try {
 
                     <p><span>Año:</span> <%= album != null ? album.getAnioCreacion() : "N/A"%></p>
                     
-                   <%
-                       if(rolSesion != null && puedeDescargar){
-                       %>
-                       
+
                     <!-- Agregar album a favoritos -->
                     <form action="SVGuardarAlbumFavorito" method="post">
-                        <%
-                            System.out.println("Aca"+albumId);
-                            %>
                         <input type="hidden" name="albumId" value="<%= albumId %>"/>
-                        <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
                         <button type="submit" class="boton-agregar">Guardar</button>
                     </form>
-                    <%
-                    }
-                    %>
                 </div>
 
             </div>
@@ -170,23 +159,13 @@ try {
                                     String srcPortada = fotoAlbum;
                                     %>
                         <!-- Escuchar tema por fila -->
-                        <%
-                            System.out.println("Aca"+tema.getIdTema());
-                            %>
                         <tr class="row-hover"onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
-                                <%
-                                    if(rolSesion != null && puedeDescargar){
-                                %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
-                                    <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
-                                <%
-                                }
-                                %>
                             </td>
                             <td><%= tema.getNombreTema()%></td>
                             <td><%= String.format("%d:%02d", minutos, segundos)%></td>
