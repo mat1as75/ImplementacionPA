@@ -328,6 +328,44 @@ public class ControladoraPersistencia {
         }
         return false;
     }
+    
+    public String buscarListaPorDefectoPorNombre(String nombreLista){
+       
+        if (nombreLista == null) return null;
+
+        String nomLista = null;
+        ListaReproduccion lista = this.lxdefcJpa.findListaPorDefecto(nombreLista);
+
+        if (lista != null) {
+            List<ListaPorDefecto> listaPorDefectos = lxdefcJpa.findListaPorDefectoEntities();
+            for (ListaPorDefecto l : listaPorDefectos) {
+                if (l.getNombreLista().equalsIgnoreCase(nombreLista)) {
+                    nomLista = l.getNombreLista();
+                }
+            }
+        }
+
+        return nomLista;
+    }
+    
+    public String buscarListaParticularPorNombre(String nombreLista){
+        
+        if (nombreLista == null) return null;
+        
+        String nomLista = null;
+        ListaReproduccion lista = this.lpartJpa.findListaParticular(nombreLista);
+
+        if (lista != null) {
+            List<ListaParticular> listaParticulars = lpartJpa.findListaParticularEntities();
+            for (ListaParticular l : listaParticulars) {
+                if (l.getNombreLista().equalsIgnoreCase(nombreLista)) {
+                    nomLista = l.getNombreLista();
+                }
+            }
+        }
+
+        return nomLista;
+    }
 
     /* A partir del Nickname de un Artista, se retorna 
     toda su informacion dentro de un DTDatosArtista 
@@ -536,9 +574,12 @@ public class ControladoraPersistencia {
 
     public void CrearListaPorDefecto(String nombreLista, String fotoLista, String nombreGenero) {
 
+        if (nombreLista == null || nombreGenero == null) return;
+        
         // Buscar genero por su nombre
         Genero gen = this.genJpa.findGenero(nombreGenero);
-
+        if (gen == null) return;
+        
         // Crear la nueva lista por defecto
         ListaPorDefecto nuevaLista = new ListaPorDefecto(nombreLista, fotoLista, gen);
         try {
@@ -553,9 +594,12 @@ public class ControladoraPersistencia {
 
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, boolean esPrivada) {
 
+        if (nombreLista == null || nicknameCliente == null) return;
+
         // Buscar cliente por su nickname
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
-
+        if (cli == null) return;
+        
         // Crear la nueva lista particular
         ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, esPrivada);
         try {
@@ -570,8 +614,11 @@ public class ControladoraPersistencia {
    
     public void CrearListaParticular(String nombreLista, String fotoLista, String nicknameCliente, Date fechaCreacion, boolean esPrivada) {
     
+        if (nombreLista == null || nicknameCliente == null) return;
+        
         // Buscar cliente por su nickname
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
+        if (cli == null) return;
 
         // Crear la nueva lista particular
         ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion,null, esPrivada);
@@ -655,6 +702,10 @@ public class ControladoraPersistencia {
                 String fotoLista = listaParticular.getFotoLista();
                 String nicknameCliente = listaParticular.getCliente().getNickname();
                 Boolean privacidad = listaParticular.soyPrivada();
+                Date fechaCreacion = 
+                        listaParticular.getFechaCreacion() == null 
+                        ? new Date() 
+                        : listaParticular.getFechaCreacion();
 
                 // Convertir los temas a DTTemaSimple
                 List<DTTemaSimple> temas = new ArrayList<>();
@@ -668,6 +719,7 @@ public class ControladoraPersistencia {
                         nombreListaReproduccion,
                         fotoLista,
                         tipoDeLista,
+                        fechaCreacion,
                         temas,
                         nicknameCliente,
                         privacidad
