@@ -1,3 +1,4 @@
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.logica.Cliente;
 import espotify.logica.Suscripcion;
@@ -16,6 +17,7 @@ public class IngresarSuscripcionTest {
     
     private static ControladoraPersistencia cp;
     private static CargarDatosTest cdt;
+    private static String nicknameClienteDePrueba = null;
     
     public IngresarSuscripcionTest() {
         cp = new ControladoraPersistencia();
@@ -40,6 +42,15 @@ public class IngresarSuscripcionTest {
     @After
     public void tearDown() {}
 
+    public void crearClienteDePrueba() {
+        DTCliente dtClienteDePrueba = new DTCliente("clienteDePrueba", "1234");
+        cp.AltaCliente(dtClienteDePrueba);
+        
+        if (cp.ExisteCliente(dtClienteDePrueba.getNickname())) {
+            nicknameClienteDePrueba = dtClienteDePrueba.getNickname();
+        }
+    }
+    
     public Boolean comprobarIngreso(String nickname, Suscripcion.TipoSuscripcion tipoSuscripcion) {
         DTSuscripcion dtSuscripcion = null;
         try {
@@ -84,9 +95,16 @@ public class IngresarSuscripcionTest {
     }
     
     @Test
-    public void nuevaSuscripcionSemanal() {
-        
-        String nicknameCliente = "Heisenberg";
+    public void nuevaSuscripcionSemanal() {        
+        crearClienteDePrueba();
+
+        String nicknameCliente;
+        if (nicknameClienteDePrueba != null) {
+            nicknameCliente = nicknameClienteDePrueba;
+        } else {
+            nicknameCliente = "Heisenberg";
+        }
+
         Suscripcion.TipoSuscripcion tipoSuscripcion = Suscripcion.TipoSuscripcion.Semanal;
         
         assertTrue(ingresarSuscripcion(
@@ -98,8 +116,14 @@ public class IngresarSuscripcionTest {
     
     @Test
     public void nuevaSuscripcionMensual() {
-        
-        String nicknameCliente = "scarlettO";
+        crearClienteDePrueba();
+
+        String nicknameCliente;
+        if (nicknameClienteDePrueba != null) {
+            nicknameCliente = nicknameClienteDePrueba;
+        } else {
+            nicknameCliente = "cbochinche";
+        }
         Suscripcion.TipoSuscripcion tipoSuscripcion = Suscripcion.TipoSuscripcion.Mensual;
         
         assertTrue(ingresarSuscripcion(
@@ -111,8 +135,15 @@ public class IngresarSuscripcionTest {
     
     @Test
     public void nuevaSuscripcionAnual() {
-        
-        String nicknameCliente = "cbochinche";
+        crearClienteDePrueba();
+
+        String nicknameCliente;
+        if (nicknameClienteDePrueba != null) {
+            nicknameCliente = nicknameClienteDePrueba;
+        } else {
+            nicknameCliente = "cbochinche";
+        }
+
         Suscripcion.TipoSuscripcion tipoSuscripcion = Suscripcion.TipoSuscripcion.Anual;
         
         assertTrue(ingresarSuscripcion(
