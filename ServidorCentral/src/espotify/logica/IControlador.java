@@ -116,5 +116,6 @@ public interface IControlador {
     
     public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
     public abstract List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception;
+    public abstract List<DTArtista> getArtistas();
 
 }
