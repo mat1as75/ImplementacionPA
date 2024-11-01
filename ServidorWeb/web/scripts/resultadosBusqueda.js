@@ -29,10 +29,8 @@ function mostrarResultados(resultados) {
                 const[idAlbum, nombreAlbum] = album.split(', ');
        
                 resultadoDiv.innerHTML += `
-                        <form action="SVConsultaAlbum" method="GET">
-                            <input type="hidden" name="album-Consultar" value="${encodeURIComponent(value)}">
-                            <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum}">${nombreAlbum} - ${key}</button>
-                        </form>
+                        <input type="hidden" name="album-Consultar" value="${encodeURIComponent(value)}">
+                        <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum}">${nombreAlbum} - ${key}</button>
                 `;
                 break;
             default: // ConsultaTema
@@ -41,10 +39,8 @@ function mostrarResultados(resultados) {
                 const[idAlbum_Tema, nombreTema] = tema.split(', ');
                 
                 resultadoDiv.innerHTML += `            
-                        <form action="SVConsultaAlbum" method="GET">
-                            <input type="hidden" name="tema-Consultar" value="${encodeURIComponent(value)}">
-                            <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum_Tema}">${nombreTema} - ${key}</button>
-                        </form>
+                        <input type="hidden" name="tema-Consultar" value="${encodeURIComponent(value)}">
+                        <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum_Tema}">${nombreTema} - ${key}</button>
                 `;
                 break;
             }
