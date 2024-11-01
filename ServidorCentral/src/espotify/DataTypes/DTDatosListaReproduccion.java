@@ -1,5 +1,6 @@
 package espotify.DataTypes;
 
+import java.util.Date;
 import java.util.List;
 
 public class DTDatosListaReproduccion {
@@ -8,6 +9,7 @@ public class DTDatosListaReproduccion {
     private String tipoDeLista;
     private List<DTTemaSimple> temas;
     private String genero; // Solo para listas por defecto
+    private Date fechaCreacion; // Solo para listas particulares
     private String cliente; // Solo para listas particulares
     private Boolean privacidad; // Solo para listas particulares
 
@@ -23,10 +25,11 @@ public class DTDatosListaReproduccion {
     }
 
     // Constructor para listas particulares
-    public DTDatosListaReproduccion(String nombreLista, String fotoLista, String tipoDeLista, List<DTTemaSimple> temas, String cliente, Boolean privacidad) {
+    public DTDatosListaReproduccion(String nombreLista, String fotoLista, String tipoDeLista, Date fechaCreacion, List<DTTemaSimple> temas, String cliente, Boolean privacidad) {
         this.nombreLista = nombreLista;
         this.fotoLista = fotoLista;
         this.tipoDeLista = tipoDeLista;
+        this.fechaCreacion = fechaCreacion;
         this.temas = temas;
         this.genero = null;
         this.cliente = cliente;
@@ -56,6 +59,14 @@ public class DTDatosListaReproduccion {
 
     public void setTipoDeLista(String tipoDeLista) {
         this.tipoDeLista = tipoDeLista;
+    }
+
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     public List<DTTemaSimple> getTemas() {

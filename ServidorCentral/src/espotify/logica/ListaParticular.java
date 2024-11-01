@@ -67,6 +67,7 @@ public class ListaParticular extends ListaReproduccion{
         this.getNombreLista(),
         this.getFotoLista(),
         "ListaParticular",
+                fechaCreacion,
         listaDtTemas,
         this.getCliente().getNickname(),
         this.soyPrivada()

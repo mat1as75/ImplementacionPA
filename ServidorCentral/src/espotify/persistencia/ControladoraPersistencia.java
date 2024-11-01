@@ -328,6 +328,40 @@ public class ControladoraPersistencia {
         }
         return false;
     }
+    
+    public String buscarListaPorDefectoPorNombre(String nombreLista){
+       
+        String nomLista = null;
+        ListaReproduccion lista = this.lxdefcJpa.findListaPorDefecto(nombreLista);
+
+        if (lista != null) {
+            List<ListaPorDefecto> listaPorDefectos = lxdefcJpa.findListaPorDefectoEntities();
+            for (ListaPorDefecto l : listaPorDefectos) {
+                if (l.getNombreLista().equalsIgnoreCase(nombreLista)) {
+                    nomLista = l.getNombreLista();
+                }
+            }
+        }
+
+        return nomLista;
+    }
+    
+    public String buscarListaParticularPorNombre(String nombreLista){
+       
+        String nomLista = null;
+        ListaReproduccion lista = this.lpartJpa.findListaParticular(nombreLista);
+
+        if (lista != null) {
+            List<ListaParticular> listaParticulars = lpartJpa.findListaParticularEntities();
+            for (ListaParticular l : listaParticulars) {
+                if (l.getNombreLista().equalsIgnoreCase(nombreLista)) {
+                    nomLista = l.getNombreLista();
+                }
+            }
+        }
+
+        return nomLista;
+    }
 
     /* A partir del Nickname de un Artista, se retorna 
     toda su informacion dentro de un DTDatosArtista 
@@ -652,6 +686,7 @@ public class ControladoraPersistencia {
                 String fotoLista = listaParticular.getFotoLista();
                 String nicknameCliente = listaParticular.getCliente().getNickname();
                 Boolean privacidad = listaParticular.soyPrivada();
+                Date fechaCreacion = new Date();
 
                 // Convertir los temas a DTTemaSimple
                 List<DTTemaSimple> temas = new ArrayList<>();
@@ -665,6 +700,7 @@ public class ControladoraPersistencia {
                         nombreListaReproduccion,
                         fotoLista,
                         tipoDeLista,
+                        fechaCreacion,
                         temas,
                         nicknameCliente,
                         privacidad
