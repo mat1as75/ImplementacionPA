@@ -1,22 +1,11 @@
 
 import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
-import espotify.DataTypes.DTGenero;
-import espotify.DataTypes.DTListaReproduccion;
-import espotify.DataTypes.DTTemaConRuta;
-import espotify.DataTypes.DTTemaConURL;
-import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaSimple;
-import espotify.logica.Cliente;
-import espotify.logica.Tema;
-import espotify.logica.Genero;
-import espotify.logica.ListaReproduccion;
 import espotify.persistencia.ControladoraPersistencia;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -38,10 +27,34 @@ public class CrearListaReproduccionTest {
     }
 
     public List<DTTemaSimple> crearDataTemasDePrueba() {
-        DTTemaSimple tema1 = new DTTemaSimple(1L, "tema1", 120, 1, "nombreAlbum1", "nombreArtista1");
-        DTTemaSimple tema2 = new DTTemaSimple(2L, "tema2", 120, 2, "nombreAlbum2", "nombreArtista2");
-        DTTemaSimple tema3 = new DTTemaSimple(3L, "tema3", 120, 3, "nombreAlbum3", "nombreArtista3");
-        DTTemaSimple tema4 = new DTTemaSimple(4L, "tema4", 120, 4, "nombreAlbum4", "nombreArtista4");
+        DTTemaSimple tema1 = new DTTemaSimple(
+                1L, 
+                "tema1", 
+                120, 
+                1, 
+                "nombreAlbum1", 
+                "nombreArtista1");
+        DTTemaSimple tema2 = new DTTemaSimple(
+                2L, 
+                "tema2", 
+                120, 
+                2, 
+                "nombreAlbum2", 
+                "nombreArtista2");
+        DTTemaSimple tema3 = new DTTemaSimple(
+                3L, 
+                "tema3", 
+                120, 
+                3, 
+                "nombreAlbum3", 
+                "nombreArtista3");
+        DTTemaSimple tema4 = new DTTemaSimple(
+                4L, 
+                "tema4", 
+                120, 
+                4, 
+                "nombreAlbum4", 
+                "nombreArtista4");
 
         List<DTTemaSimple> dataTemas = new ArrayList();
         dataTemas.add(tema1);
@@ -86,7 +99,12 @@ public class CrearListaReproduccionTest {
         return nombreNuevaLista;
     }
 
-    public Boolean comprobarCreacionListaPorDef(String nombreLista, String fotoLista, String nombreGenero, String test, Boolean expected) {
+    public Boolean comprobarCreacionListaPorDef(
+            String nombreLista, 
+            String fotoLista, 
+            String nombreGenero, 
+            String test, 
+            Boolean expected) {
 
         String nomLista = null;
         Boolean fueCreado = false;
@@ -108,7 +126,7 @@ public class CrearListaReproduccionTest {
 
     @Before
     public void setUp() {
-        //con @Before esta funcion se ejecuta antes de cada test
+        cdt.resetDatosDePrueba();
     }
 
     @AfterClass
@@ -129,7 +147,12 @@ public class CrearListaReproduccionTest {
                 "Rock"
         );
 
-        assertTrue(comprobarCreacionListaPorDef(dtDatosLista.getNombreLista(), dtDatosLista.getFotoLista(), dtDatosLista.getGenero(), "Datos correctos Lista Por Defecto", true));
+        assertTrue(comprobarCreacionListaPorDef(
+                dtDatosLista.getNombreLista(), 
+                dtDatosLista.getFotoLista(), 
+                dtDatosLista.getGenero(), 
+                "Datos correctos Lista Por Defecto", 
+                true));
     }
 
     @Test
@@ -144,14 +167,30 @@ public class CrearListaReproduccionTest {
                 "Rock"
         );
 
-        assertTrue(comprobarCreacionListaPorDef(dtDatosLista.getNombreLista(), dtDatosLista.getFotoLista(), dtDatosLista.getGenero(), "Datos correctos Lista Por Defecto 2", true));
+        assertTrue(comprobarCreacionListaPorDef(
+                dtDatosLista.getNombreLista(), 
+                dtDatosLista.getFotoLista(), 
+                dtDatosLista.getGenero(), 
+                "Datos correctos Lista Por Defecto 2", 
+                true));
     }
 
-    public String crearListaPart(String nombreLista, String fotoLista, String miCliente, Date fechaCreacion, boolean soyPrivada) {
+    public String crearListaPart(
+            String nombreLista, 
+            String fotoLista, 
+            String miCliente, 
+            Date fechaCreacion, 
+            boolean soyPrivada) {
+        
         String nombreNuevaLista = null;
 
         try {
-            cp.CrearListaParticular(nombreLista, fotoLista, miCliente, fechaCreacion, soyPrivada);
+            cp.CrearListaParticular(
+                    nombreLista, 
+                    fotoLista, 
+                    miCliente, 
+                    fechaCreacion, 
+                    soyPrivada);
             nombreNuevaLista = cp.buscarListaParticularPorNombre(nombreLista);
         } catch (Exception e) {
             throw e;
@@ -159,7 +198,14 @@ public class CrearListaReproduccionTest {
         return nombreNuevaLista;
     }
 
-    public Boolean comprobarCreacionListaPart(String nombreLista, String fotoLista, String miCliente, Date fechaCreacion, boolean soyPrivada, String test, Boolean expected) {
+    public Boolean comprobarCreacionListaPart(
+            String nombreLista, 
+            String fotoLista, 
+            String miCliente, 
+            Date fechaCreacion, 
+            boolean soyPrivada, 
+            String test, 
+            Boolean expected) {
 
         String nomLista = null;
         Boolean fueCreado = false;
@@ -193,7 +239,14 @@ public class CrearListaReproduccionTest {
                 true
         );
 
-        assertTrue(comprobarCreacionListaPart(dtDatosListaPart.getNombreLista(), dtDatosListaPart.getFotoLista(), dtDatosListaPart.getCliente(), dtDatosListaPart.getFechaCreacion(), dtDatosListaPart.getPrivacidad(), "Datos correctos Lista Particular", true));
+        assertTrue(comprobarCreacionListaPart(
+                dtDatosListaPart.getNombreLista(), 
+                dtDatosListaPart.getFotoLista(), 
+                dtDatosListaPart.getCliente(), 
+                dtDatosListaPart.getFechaCreacion(), 
+                dtDatosListaPart.getPrivacidad(), 
+                "Datos correctos Lista Particular", 
+                true));
     }
 
     @Test
@@ -210,7 +263,14 @@ public class CrearListaReproduccionTest {
                 true
         );
 
-        assertTrue(comprobarCreacionListaPart(dtDatosListaPart.getNombreLista(), dtDatosListaPart.getFotoLista(), dtDatosListaPart.getCliente(), dtDatosListaPart.getFechaCreacion(), dtDatosListaPart.getPrivacidad(), "Datos correctos Lista Particular 2", true));
+        assertTrue(comprobarCreacionListaPart(
+                dtDatosListaPart.getNombreLista(), 
+                dtDatosListaPart.getFotoLista(), 
+                dtDatosListaPart.getCliente(), 
+                dtDatosListaPart.getFechaCreacion(), 
+                dtDatosListaPart.getPrivacidad(), 
+                "Datos correctos Lista Particular 2", 
+                true));
     }
 
     @Test
@@ -230,7 +290,14 @@ public class CrearListaReproduccionTest {
                 true
         );
 
-        assertTrue(comprobarCreacionListaPart(dtDatosListaPart.getNombreLista(), dtDatosListaPart.getFotoLista(), dtDatosListaPart.getCliente(), dtDatosListaPart.getFechaCreacion(), dtDatosListaPart.getPrivacidad(), "Datos correctos cliente nuevo", true));
+        assertTrue(comprobarCreacionListaPart(
+                dtDatosListaPart.getNombreLista(), 
+                dtDatosListaPart.getFotoLista(), 
+                dtDatosListaPart.getCliente(), 
+                dtDatosListaPart.getFechaCreacion(), 
+                dtDatosListaPart.getPrivacidad(), 
+                "Datos correctos cliente nuevo", 
+                true));
     }
 
     @Test
@@ -250,7 +317,14 @@ public class CrearListaReproduccionTest {
                 true
         );
 
-        assertTrue(comprobarCreacionListaPart(dtDatosListaPart.getNombreLista(), dtDatosListaPart.getFotoLista(), dtDatosListaPart.getCliente(), dtDatosListaPart.getFechaCreacion(), dtDatosListaPart.getPrivacidad(), "Datos correctos cliente nuevo 2", true));
+        assertTrue(comprobarCreacionListaPart(
+                dtDatosListaPart.getNombreLista(), 
+                dtDatosListaPart.getFotoLista(), 
+                dtDatosListaPart.getCliente(), 
+                dtDatosListaPart.getFechaCreacion(), 
+                dtDatosListaPart.getPrivacidad(), 
+                "Datos correctos cliente nuevo 2", 
+                true));
     }
 
     @Test
@@ -268,7 +342,14 @@ public class CrearListaReproduccionTest {
                 true
         );
         //la creacion de una lista con cliente en null debe tirar un error
-        assertTrue(comprobarCreacionListaPart(dtDatosListaPart.getNombreLista(), dtDatosListaPart.getFotoLista(), dtDatosListaPart.getCliente(), dtDatosListaPart.getFechaCreacion(), dtDatosListaPart.getPrivacidad(), "Cliente null", false));
+        assertTrue(comprobarCreacionListaPart(
+                dtDatosListaPart.getNombreLista(), 
+                dtDatosListaPart.getFotoLista(), 
+                dtDatosListaPart.getCliente(), 
+                dtDatosListaPart.getFechaCreacion(), 
+                dtDatosListaPart.getPrivacidad(), 
+                "Cliente null", 
+                false));
     }
 
     @Test
@@ -283,7 +364,12 @@ public class CrearListaReproduccionTest {
                 "Rock"
         );
         //la creacion de una lista con nombre en null debe tirar un error
-        assertTrue(comprobarCreacionListaPorDef(dtDatosLista.getNombreLista(), dtDatosLista.getFotoLista(), dtDatosLista.getGenero(), "Nombre lista null", false));
+        assertTrue(comprobarCreacionListaPorDef(
+                dtDatosLista.getNombreLista(), 
+                dtDatosLista.getFotoLista(), 
+                dtDatosLista.getGenero(), 
+                "Nombre lista null", 
+                false));
     }
 
     @Test
@@ -300,7 +386,14 @@ public class CrearListaReproduccionTest {
                 true
         );
         //la creacion de una lista con nombre en null debe tirar un error
-        assertTrue(comprobarCreacionListaPart(dtDatosListaPart.getNombreLista(), dtDatosListaPart.getFotoLista(), dtDatosListaPart.getCliente(), dtDatosListaPart.getFechaCreacion(), dtDatosListaPart.getPrivacidad(), "Nombre lista null", false));
+        assertTrue(comprobarCreacionListaPart(
+                dtDatosListaPart.getNombreLista(), 
+                dtDatosListaPart.getFotoLista(), 
+                dtDatosListaPart.getCliente(), 
+                dtDatosListaPart.getFechaCreacion(), 
+                dtDatosListaPart.getPrivacidad(), 
+                "Nombre lista null", 
+                false));
     }
 
     @Test
@@ -315,7 +408,12 @@ public class CrearListaReproduccionTest {
                 null
         );
         //la creacion de una lista con genero en null debe tirar un error
-        assertTrue(comprobarCreacionListaPorDef(dtDatosLista.getNombreLista(), dtDatosLista.getFotoLista(), dtDatosLista.getGenero(), "Nombre lista null", false));
+        assertTrue(comprobarCreacionListaPorDef(
+                dtDatosLista.getNombreLista(), 
+                dtDatosLista.getFotoLista(), 
+                dtDatosLista.getGenero(), 
+                "Nombre lista null", 
+                false));
     }
     
     @Test
@@ -332,7 +430,14 @@ public class CrearListaReproduccionTest {
                 true
         );
         //la creacion de una lista con un cliente que no existe debe tirar un error
-        assertTrue(comprobarCreacionListaPart(dtDatosListaPart.getNombreLista(), dtDatosListaPart.getFotoLista(), dtDatosListaPart.getCliente(), dtDatosListaPart.getFechaCreacion(), dtDatosListaPart.getPrivacidad(), "Cliente inexistente", false));
+        assertTrue(comprobarCreacionListaPart(
+                dtDatosListaPart.getNombreLista(), 
+                dtDatosListaPart.getFotoLista(), 
+                dtDatosListaPart.getCliente(), 
+                dtDatosListaPart.getFechaCreacion(), 
+                dtDatosListaPart.getPrivacidad(), 
+                "Cliente inexistente", 
+                false));
     }
 
     @Test
@@ -347,7 +452,12 @@ public class CrearListaReproduccionTest {
                 "Rock"
         );
         //la creacion de una lista con un nombre de lista repetido debe tirar un error
-        assertTrue(comprobarCreacionListaPorDef(dtDatosLista.getNombreLista(), dtDatosLista.getFotoLista(), dtDatosLista.getGenero(), "Lista Repetida", false));
+        assertTrue(comprobarCreacionListaPorDef(
+                dtDatosLista.getNombreLista(), 
+                dtDatosLista.getFotoLista(), 
+                dtDatosLista.getGenero(), 
+                "Lista Repetida", 
+                false));
     }
     
     @Test
@@ -362,6 +472,11 @@ public class CrearListaReproduccionTest {
                 "generoInexistente"
         );
         //la creacion de una lista con un genero inexistente debe tirar un error
-        assertTrue(comprobarCreacionListaPorDef(dtDatosLista.getNombreLista(), dtDatosLista.getFotoLista(), dtDatosLista.getGenero(), "Genero inexistente", false));
+        assertTrue(comprobarCreacionListaPorDef(
+                dtDatosLista.getNombreLista(), 
+                dtDatosLista.getFotoLista(), 
+                dtDatosLista.getGenero(), 
+                "Genero inexistente", 
+                false));
     }
 }
