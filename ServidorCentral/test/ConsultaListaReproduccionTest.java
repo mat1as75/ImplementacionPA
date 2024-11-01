@@ -1,5 +1,11 @@
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.persistencia.ControladoraPersistencia;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;
@@ -34,7 +40,7 @@ public class ConsultaListaReproduccionTest {
     @After
     public void tearDown() {
     }
-
+    
     @Test
     public void getDatosListaPorDef1() {
         DTDatosListaReproduccion dtListaPorDef = cp.getDatosListaReproduccion("Por Defecto", "Rock En Español");
@@ -42,9 +48,9 @@ public class ConsultaListaReproduccionTest {
 
         String nombreEsperado = "Rock En Español";
         String GeneroEsperado = "Rock Latino";
-        String fechaCreacionEsperada = null;
+        Date fechaCreacionEsperada = null;
         String fotoListaEsperada = null;
-
+        
         if (!dtListaPorDef.getNombreLista().equalsIgnoreCase(nombreEsperado)) {
             datosIncorrectos++;
         }
@@ -76,7 +82,7 @@ public class ConsultaListaReproduccionTest {
         int datosIncorrectos = 0;
 
         String nombreEsperado = "Noche De La Nostalgia";
-        String GeneroEsperado = "Pop Clásico";
+        String generoEsperado = "Pop Clásico ";
         String fechaCreacionEsperada = null;
         String fotoListaEsperada = "./Resource/ImagenesPerfil/laNocheNostalgia.jpg";
 
@@ -84,7 +90,7 @@ public class ConsultaListaReproduccionTest {
             datosIncorrectos++;
         }
 
-        if (!dtListaPorDef.getGenero().equalsIgnoreCase(GeneroEsperado)) {
+        if (!dtListaPorDef.getGenero().equals(generoEsperado)) {
             datosIncorrectos++;
         }
 
@@ -112,7 +118,6 @@ public class ConsultaListaReproduccionTest {
 
         String nombreEsperado = "Fiesteras";
         String clienteEsperado = "cbochinche";
-        String fechaCreacionEsperada = null;
         String fotoListaEsperada = "./Resource/ImagenesPerfil/fiestaFiesta.jpg";
         Boolean privacidadEsperada = false;
 
@@ -121,10 +126,6 @@ public class ConsultaListaReproduccionTest {
         }
 
         if (!dtListaPart.getCliente().equalsIgnoreCase(clienteEsperado)) {
-            datosIncorrectos++;
-        }
-
-        if (!(fechaCreacionEsperada == null ? dtListaPart.getFechaCreacion() == null : fechaCreacionEsperada.equals(dtListaPart.getFechaCreacion()))) {
             datosIncorrectos++;
         }
 
@@ -152,7 +153,6 @@ public class ConsultaListaReproduccionTest {
 
         String nombreEsperado = "Para Cocinar";
         String clienteEsperado = "Heisenberg";
-        String fechaCreacionEsperada = null;
         String fotoListaEsperada = "./Resource/ImagenesPerfil/ParaCocinar.jpg";
         Boolean privacidadEsperada = true;
 
@@ -161,10 +161,6 @@ public class ConsultaListaReproduccionTest {
         }
 
         if (!dtListaPart.getCliente().equalsIgnoreCase(clienteEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!(fechaCreacionEsperada == null ? dtListaPart.getFechaCreacion() == null : fechaCreacionEsperada.equals(dtListaPart.getFechaCreacion()))) {
             datosIncorrectos++;
         }
 

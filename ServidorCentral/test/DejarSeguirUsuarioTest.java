@@ -62,7 +62,7 @@ public class DejarSeguirUsuarioTest {
         
         assertTrue(comprobarDesasignacion(
                 seguidor, seguido, 
-                "benKenobi dejo de seguir a cbochinche", 
+                "benKenobi dejo de seguir a alcides", 
                 true
         ));
     }
@@ -74,7 +74,7 @@ public class DejarSeguirUsuarioTest {
         
         assertTrue(comprobarDesasignacion(
                 seguidor, seguido, 
-                "el_padrino dejo de seguir a alcides", 
+                "el_padrino dejo de seguir a benKenobi", 
                 true
         ));
     }
@@ -86,7 +86,7 @@ public class DejarSeguirUsuarioTest {
         
         assertTrue(comprobarDesasignacion(
                 seguidor, seguido, 
-                "ppArgento dejo de seguir a alcides", 
+                "ppArgento dejo de seguir a cbochinche", 
                 true
         ));
     }
@@ -98,7 +98,7 @@ public class DejarSeguirUsuarioTest {
         
         assertTrue(comprobarDesasignacion(
                 seguidor, seguido, 
-                "Heisenberg sigue a alcides", 
+                "Heisenberg sigue a dmode", 
                 true
         ));
     }
