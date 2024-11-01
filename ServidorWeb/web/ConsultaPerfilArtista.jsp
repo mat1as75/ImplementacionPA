@@ -21,8 +21,16 @@
     String estadoSuscripcionSesion = null;
     DTDatosUsuario usuarioSesion = null;
     
-    DTDatosUsuario usuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DTDatosUsuario usuarioConsultado = null;
     DTDatosArtista artistaConsultado = null;
+    
+    /* Si el atributo DTusuarioConsultado de la sesion de distinto de null, 
+        es porq se consulto a otro Usuario. En caso contrario, es porq se 
+            consulto su propio perfil */
+    usuarioConsultado = (DTusuarioConsultado != null) ? 
+            control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario()) :
+            control.getDatosUsuario(nicknameSesion);
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, 
             fechaNacConsultado = null, fotoPerfilConsultado = null, biografiaConsultado = null,
@@ -46,22 +54,27 @@
   
     nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
     albumesPublicadosConsultados = artistaConsultado.getNombresAlbumesPublicados();
-
-    // Si UsuarioSesion != ArtistaConsultado => Obtengo DatosUsuarioSesion, caso contrario null
-    usuarioSesion = (!nicknameSesion.equals(nicknameConsultado)) ? control.getDatosUsuario(nicknameSesion) : null;
     
-    // Sesion es Cliente
-    if (rolSesion.equals("Cliente")) {
-        // Tiene Suscripcion
-        if (((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
-            estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+    // Si existe una sesion consigo sus datos
+    if (rolSesion != null) {
+        usuarioSesion = control.getDatosUsuario(nicknameSesion);
+        
+        // Sesion es Cliente
+        if (rolSesion.equals("Cliente")) {
+            // Tiene Suscripcion
+            if (((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
+                estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+            }
         }
     }
+    
+System.out.println("SIZE ALBUMES PUBLICADOS: " + albumesPublicadosConsultados.size());
+
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="scripts/consultaPerfilUsuario.js defer"></script>
+<script src="scripts/consultaPerfilUsuario.js" defer></script>
 <link rel="stylesheet" href="styles/consultaPerfilArtista.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 

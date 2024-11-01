@@ -18,12 +18,20 @@
     HttpSession sesion = request.getSession(false);
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
-    DTDatosUsuario usuarioSesion = null;
     String estadoSuscripcionSesion = null;
+    DTDatosUsuario usuarioSesion = null;
     
     DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
-    DTDatosUsuario usuarioConsultado = control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario());
+    DTDatosUsuario usuarioConsultado = null;
     DTDatosCliente clienteConsultado = null;
+    
+    /* Si el atributo DTusuarioConsultado de la sesion de distinto de null, 
+        es porq se consulto a otro Usuario. En caso contrario, es porq se 
+            consulto su propio perfil */
+    usuarioConsultado = (DTusuarioConsultado != null) ? 
+                        control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario()) : 
+                        control.getDatosUsuario(nicknameSesion);
+    
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
     ArrayList<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
@@ -269,11 +277,32 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="publicar-lista">
-                                    <form>
-                                        <a href="PublicarLista.jsp">Publicar Mis Listas</a>
-                                    </form>
-                                </div>
+                                        
+                                <%
+                                    boolean autoConsulta = false;
+                                    
+                                    // Existe sesion
+                                    if (rolSesion != null) {
+                                        // UsuarioConsultado != null
+                                        // UsuarioConsultado.nickname == Sesion.nickname
+                                        if (DTusuarioConsultado != null && DTusuarioConsultado.getNicknameUsuario().equals(nicknameSesion)) {
+                                            /* Se auto-consulto el perfil desde la barra de busqueda */
+                                            autoConsulta = true;
+                                        }
+                                    }
+                                %>
+                                        
+                                <% 
+                                    // Existe una Sesion y se autoConsulto su perfil
+                                    // No existe una Sesion
+                                    System.out.println("???: " + autoConsulta + " " + rolSesion);
+                                    if (autoConsulta) { %>
+                                        <div class="publicar-lista">
+                                            <form>
+                                                <a href="PublicarLista.jsp">Publicar Mis Listas</a>
+                                            </form>
+                                        </div>
+                                <%  }  %>
                         <% } %>
 
                         <div class="tabla-preferencias">

@@ -115,5 +115,13 @@ public abstract class Tema implements Serializable {
         );
     }
     
+    public DTTemaSimple getDTTema() {
+        return new DTTemaSimple(
+                this.getIdTema(),
+                this.getNombreTema(),
+                this.getMiAlbum().getIdAlbum()
+        );
+    }
+    
     public abstract DTTemaGenericoConRutaOUrl getDTTemaConRutaOUrl();
 }

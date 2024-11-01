@@ -79,11 +79,6 @@ public class SVInicioSesion extends HttpServlet {
             cookie.setMaxAge(60 * 60 * 24); // 1 dia
             response.addCookie(cookie);
             
-//            if (datosUsuario.getClass().equals(DTDatosCliente.class))
-//                miSesion.setAttribute("rol", "Cliente");
-//            else
-//                miSesion.setAttribute("rol", "Artista");
-            
             /* Establezco el Nickname del Usuario como atributo de la Cookie */
             Cookie cookieMiSesion = new Cookie("nickname", (String) miSesion.getAttribute("nickname"));
             response.addCookie(cookieMiSesion);

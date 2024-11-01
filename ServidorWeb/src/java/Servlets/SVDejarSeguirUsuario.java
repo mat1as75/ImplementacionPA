@@ -26,11 +26,8 @@ public class SVDejarSeguirUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String nicknameSeguidor = request.getParameter("nicknameSesion");
-        String nicknameSeguido = request.getParameter("nicknameConsultado");
-
-        System.out.println("nicknameSesion: " + request.getParameter("nicknameSesion"));
-        System.out.println("nicknameConsultado: " + request.getParameter("nicknameConsultado"));
+        String nicknameSeguidor = request.getParameter("nicknameSeguidor");
+        String nicknameSeguido = request.getParameter("nicknameSeguido");
 
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();
