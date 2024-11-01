@@ -1,8 +1,4 @@
-function mostrarMensajeCierreSesion(mensaje) {
-    alert(mensaje);
-}
-
-function mostrarMensajeInicioSesion(mensaje) {
+function mostrarPopupSesion(mensaje) {
     alert(mensaje);
 }
 

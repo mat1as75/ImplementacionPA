@@ -31,7 +31,7 @@
                 if ("abierta".equals(mensajeInicioSesion)) {
             %>
                     <script>
-                        mostrarMensajeInicioSesion("Sesion Iniciada de forma exitosa!");
+                        mostrarPopupSesion("Sesion Iniciada de forma exitosa!");
                     </script>
             <%  }  %>
             
@@ -40,7 +40,7 @@
                 if ("cerrada".equals(mensajeCierreSesion)) {
             %>
                     <script>
-                        mostrarMensajeCierreSesion("Sesion Cerrada de forma exitosa!");
+                        mostrarPopupSesion("Sesion Cerrada de forma exitosa!");
                     </script>
             <%  }  %>
             

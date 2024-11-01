@@ -37,9 +37,6 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
         
         String nicknameSeguidor = request.getParameter("nicknameSeguidor");
         String nicknameSeguido = request.getParameter("nicknameSeguido");
-       
-        System.out.println("seguidor: " + request.getParameter("nicknameSesion"));
-        System.out.println("seguido: " + request.getParameter("nicknameConsultado"));
         
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();

@@ -9,6 +9,7 @@ public class DTTemaSimple {
     private int duracionSegundos;
     private int posicionEnAlbum;
     private String nombreAlbum;
+    private Long idAlbum;
     private String nombreCompletoArtista;
     private List<String> generosDeTema;
     
@@ -21,6 +22,12 @@ public class DTTemaSimple {
         this.posicionEnAlbum = posicionEnAlbum;
         this.nombreAlbum = nombreAlbum;
         this.nombreCompletoArtista = nombreCompletoArtista;
+    }
+    
+    public DTTemaSimple(Long idTema, String nombreTema, Long idAlbum) {
+        this.idTema = idTema;
+        this.nombreTema = nombreTema;
+        this.idAlbum = idAlbum;
     }
 
     public DTTemaSimple(
@@ -79,6 +86,14 @@ public class DTTemaSimple {
 
     public void setNombreAlbum(String nombreAlbum) {
         this.nombreAlbum = nombreAlbum;
+    }
+    
+    public Long getIdAlbum() {
+        return this.idAlbum;
+    }
+
+    public void setIdAlbum(Long idAlbum) {
+        this.idAlbum = idAlbum;
     }
 
     public String getNombreCompletoArtista() {

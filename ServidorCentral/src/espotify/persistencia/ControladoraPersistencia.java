@@ -504,8 +504,11 @@ public class ControladoraPersistencia {
         EntityTransaction t = em.getTransaction();
 
         t.begin();
+        System.out.println("CLIENTE : " + C + " " + "USUARIO: " + U);
         Cliente cliente = this.cliJpa.findCliente(C);
+        System.out.println("#CLIENTE: " + cliente.getNickname());
         Usuario usuario = this.usuJpa.findUsuario(U);
+        System.out.println("#USUARIO: " + usuario.getNickname());
 
         ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
 
@@ -784,6 +787,22 @@ public class ControladoraPersistencia {
             mapDtTemas.put(
                     t.getIdTema(),
                     t.getDTTemaSimple()
+            );
+        }
+
+        return mapDtTemas;
+    }
+    
+    public Map<Long, DTTemaSimple> getDTTemasDisponiblesConAlbum() {
+        
+        List<Tema> listaTemas = temaJpa.findTemaEntities();
+        Map<Long, DTTemaSimple> mapDtTemas = new HashMap<>();
+        // Recorro todos los Temas del Sistema
+        for (Tema t : listaTemas) {
+
+            mapDtTemas.put(
+                    t.getIdTema(),
+                    t.getDTTema()
             );
         }
 
