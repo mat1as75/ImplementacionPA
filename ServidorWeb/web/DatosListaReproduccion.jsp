@@ -105,6 +105,7 @@
                     <!-- Agregar lista a favoritos -->
                     <form action="SVGuardarListaFavorito" method="post">
                         <input type="hidden" name="nombreLista" value="<%= nombreLista%>"/>
+                        <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
                         <button type="submit" class="boton-agregar">Guardar</button>
                     </form>
                 </div>
