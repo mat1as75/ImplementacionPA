@@ -12,7 +12,3 @@ jQuery(document).ready(function () {
         e.preventDefault();
     });
 });
-
-function redirigirFavoritosCliente() {
-    window.location.href = "ConsultaPerfilUsuario.jsp#favoritos";
-}

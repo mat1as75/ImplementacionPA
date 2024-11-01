@@ -38,12 +38,12 @@ function mostrarResultados(resultados) {
             default: // ConsultaTema
                 
                 const tema = `${value}`;
-                const[idTema, nombreTema] = tema.split(', ');
+                const[idAlbum_Tema, nombreTema] = tema.split(', ');
                 
                 resultadoDiv.innerHTML += `            
-                        <form action="SVConsultaTema" method="GET">
+                        <form action="SVConsultaAlbum" method="GET">
                             <input type="hidden" name="tema-Consultar" value="${encodeURIComponent(value)}">
-                            <button type="submit"><a href="ConsultaTema.jsp?temaId=${idTema}">${nombreTema} - ${key}</button>
+                            <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum_Tema}">${nombreTema} - ${key}</button>
                         </form>
                 `;
                 break;

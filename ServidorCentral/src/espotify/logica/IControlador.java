@@ -51,6 +51,7 @@ public interface IControlador {
 
     public abstract Map<Long, String> getTemasDisponibles();
     public abstract Map<Long, DTTemaSimple> getDTTemasDisponibles();
+    public abstract Map<Long, DTTemaSimple> getDTTemasDisponiblesConAlbum();
     public abstract Map<Long, DTTemaSimple> getDTTemasDeListaParticular(String nombreListaReproduccion);
     public abstract Map<Long, DTTemaSimple> getDTTemasDeListaPorDefecto(String nombreListaReproduccion);
     public abstract Map<Long, DTTemaSimple> getDTTemasDeAlbum(Long idAlbum);

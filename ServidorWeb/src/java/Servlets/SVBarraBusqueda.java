@@ -6,6 +6,7 @@ package Servlets;
 
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosUsuario;
+import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
@@ -53,6 +54,15 @@ public class SVBarraBusqueda extends HttpServlet {
         }
     }
     
+    /*
+            ~ COSAS QUE MODIFICAR ~
+        
+        - Agregar boton a la barra de busqueda para filtrar por Tema, Album, Lista o Usuario.
+        - Dividir en 4 operaciones los Buscar y llamarlos en el doGet dependiendo del parametro
+            que me llegue desde el filtro creado en el punto anterior.
+        - Trabajar los Arrays con JSON unicos dependiendo del filtro.
+        - Implementar funciones JavaScript de ordenamiento por alfabeto y por anio.
+    */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -84,17 +94,20 @@ public class SVBarraBusqueda extends HttpServlet {
             }
             
             // Buscar Temas
-            String jpqlTemas = "SELECT t.idTema, t.nombreTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
-            TypedQuery<Object[]> consultaTemas = em.createQuery(jpqlTemas, Object[].class);
+            String jpqlTemas = "SELECT t.idTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            TypedQuery<Long> consultaTemas = em.createQuery(jpqlTemas, Long.class);
             consultaTemas.setParameter("query", "%" + consulta + "%");
             
-            for (Object[] result : consultaTemas.getResultList()) {
-                Long idTema = (Long) result[0];
-                String nombreTema = (String) result[1];
+            for (Long result : consultaTemas.getResultList()) {
+                Map<Long, DTTemaSimple> mapDtTemas = control.getDTTemasDisponiblesConAlbum();
                 
-                // Concatenar idTema y nombreTema
-                String value = idTema + ", " + nombreTema;
-                resultados.put("Tema", value);
+                for (Map.Entry<Long, DTTemaSimple> entrada : mapDtTemas.entrySet()) {
+                    // idTema del Map (mapDtTemas) == idTema del Objeto (results)
+                    if ((entrada.getValue().getIdTema()).equals(result)) {
+                        String value = String.valueOf(entrada.getValue().getIdAlbum()) + ", " + entrada.getValue().getNombreTema();
+                        resultados.put("Tema", value);
+                    }
+                }
             }
             
             // Buscar Albumes
