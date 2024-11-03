@@ -63,8 +63,7 @@
                     <ul class="tab-links">
                         <li class="active"><a href="#tab1">Generos</a></li>
                         <li><a href="#tab2">Artistas</a></li>
-                        <li><a href="#tab3">Suscripcion</a></li>
-                        <li><a href="#tab4">Listas Particulares</a></li>
+                        <li><a href="#tab3">Listas Particulares</a></li>
                     </ul>
 
                     <div class="tab-content">
@@ -77,9 +76,6 @@
                             <p>Tab #2 content goes here!</p>
                         </div>
                         <div id="tab3" class="tab">
-                            <p>Tab #3 content goes here!</p>
-                        </div>
-                        <div id="tab4" class="tab">
                             <h1>Consulta Lista Particular</h1>
                             <div class="mosaico-container"> 
                                 <div class="mosaico" id="mosaicoListasParticulares">
@@ -107,10 +103,6 @@
                     </div>
                 </div>
 
-                <!-- REPRODUCTOR-CONTENT -->
-                <div class="reproductor">
-
-                </div>
                 
                 <%
 //                    ArrayList<String> nombresAlbumes = new ArrayList<>();
