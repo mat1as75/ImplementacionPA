@@ -110,10 +110,11 @@ public class SVAltaPerfil extends HttpServlet {
             } else {
                 throw new ServletException("El nombre del archivo es inválido.");
             }
+            fotoPerfil = DIRECCION_BASE + "/" + fileName;
         } else {
-            fileName=null;
+            fotoPerfil=null;
         }
-        fotoPerfil = DIRECCION_BASE + "/" + fileName;
+        
         
         
         
@@ -152,7 +153,7 @@ public class SVAltaPerfil extends HttpServlet {
             i.AltaCliente(dtcli);
         }
         // Establecer un mensaje
-        String mensaje = "Felicidades te logueaste en nuestra pagina.";
+        String mensaje = "Su registro se ha completado de forma exitosa!";
         request.setAttribute("mensaje", mensaje);
         
         // Redirigir al JSP

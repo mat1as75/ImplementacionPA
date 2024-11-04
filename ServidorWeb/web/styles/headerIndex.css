@@ -64,6 +64,33 @@ header {
     color: #000;              /* Color del icono */
 }
 
+/* SELECT FILTRO */
+#filtro {
+    padding: 5px 2px 5px 2px;
+    position: absolute;
+    left: 405px;
+    text-align: center;
+    font-size: 10px;
+    background-color: #eee;
+    border: 1px solid #000;
+    border-radius: 20px;
+    appearance: none;
+}
+
+#filtro:hover {
+    cursor: pointer;
+}
+
+option {
+    font-family: 'Monospace';
+    font-size: 10px;
+    color: #000;
+}
+
+option:hover {
+    background-color: #F8F9FA;
+}
+
 .boton-buscar {
     padding: 10px 15px;     /* Espaciado interno */
     border: 1px solid #000;           /* Sin borde */

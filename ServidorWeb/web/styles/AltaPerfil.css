@@ -13,6 +13,23 @@ body {
     border-radius: 8px;
 }
 
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.logo i {
+    color: #000; /* Color del icono de Spotify */
+}
+
+#logoBanner {
+    cursor: pointer;
+    font-size: 2.5rem;
+    padding: 0;
+}
+
 /* Contenedor del formulario y canvas con fondo azul */
 .form-canvas-container {
     display: flex;
@@ -28,7 +45,15 @@ body {
 /* Otros estilos sin cambios */
 h1 {
     text-align: center;
-    color: #5a5a5a;
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #000;
+    font-weight: bold;
+    letter-spacing: -2px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    white-space: nowrap;
 }
 
 table {

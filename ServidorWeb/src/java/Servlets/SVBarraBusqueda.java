@@ -67,23 +67,39 @@ public class SVBarraBusqueda extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        // Opcion del ComboBox Filtro
+        String opcionFiltro = request.getParameter("combo");
+        
         // Consulta
         String consulta = request.getParameter("consulta");
         
         // Mapa para almacenar los resultados
         Map<String, String> resultados = new HashMap<>();
         
-        // Buscar Usuarios
-        resultados.putAll(buscarUsuarios(consulta));
+        if (opcionFiltro == null) {
+            response.sendRedirect("BarraBusqueda.jsp");
+        } else {
+            
         
-        // Buscar Temas
-        resultados.putAll(buscarTemas(consulta));
         
-        // Buscar Albumes
-        resultados.putAll(buscarAlbumes(consulta));
+        switch (opcionFiltro) {
+            case "tema" -> resultados.putAll(buscarTemas(consulta));
+            case "lista" -> resultados.putAll(buscarListasReproduccion(consulta));
+            case "album" -> resultados.putAll(buscarAlbumes(consulta));
+            case "usuario" -> resultados.putAll(buscarUsuarios(consulta));
+        }
         
-        // Buscar Listas
-        resultados.putAll(buscarListasReproduccion(consulta));
+//        // Buscar Usuarios
+//        resultados.putAll(buscarUsuarios(consulta));
+//        
+//        // Buscar Temas
+//        resultados.putAll(buscarTemas(consulta));
+//        
+//        // Buscar Albumes
+//        resultados.putAll(buscarAlbumes(consulta));
+//        
+//        // Buscar Listas
+//        resultados.putAll(buscarListasReproduccion(consulta));
         
         // Guardo resultados en el request
         request.setAttribute("resultados", resultados);
@@ -92,6 +108,7 @@ public class SVBarraBusqueda extends HttpServlet {
         // Redirigir a la pagina de resultados
         RequestDispatcher dispatcher = request.getRequestDispatcher("resultadosBusqueda.jsp");
         dispatcher.forward(request, response); 
+        }
     }
 
     @Override
