@@ -131,9 +131,9 @@ public class SVBarraBusqueda extends HttpServlet {
             ArrayList<String> nicknamesClientes = (ArrayList<String>) control.getNicknamesClientes();
             for (String nickname : consultaUsuarios.getResultList()) {
                 if (nicknamesClientes.contains(nickname))
-                    results.put("Cliente", nickname);
+                    results.put(nickname, "Cliente");
                 else
-                    results.put("Artista", nickname);
+                    results.put(nickname, "Artista");
             }
         } catch(Exception ex) {
             throw ex;
@@ -165,7 +165,7 @@ public class SVBarraBusqueda extends HttpServlet {
                     // idTema del Map (mapDtTemas) == idTema del Objeto (results)
                     if ((entrada.getValue().getIdTema()).equals(result)) {
                         String value = String.valueOf(entrada.getValue().getIdAlbum()) + ", " + entrada.getValue().getNombreTema();
-                        results.put("Tema", value);
+                        results.put(value, "Tema");
                     }
                 }
             }
@@ -196,7 +196,7 @@ public class SVBarraBusqueda extends HttpServlet {
                 
                 // Concatenar idAlbum y nombreAlbum
                 String value = idAlbum + ", " + nombreAlbum;
-                results.put("Album", value);
+                results.put(value, "Album");
             }
         } catch (Exception ex) {
             throw ex;
@@ -219,7 +219,7 @@ public class SVBarraBusqueda extends HttpServlet {
             TypedQuery<String> consultaListasR = em.createQuery(jpqlListasR, String.class);
             consultaListasR.setParameter("query", "%" + query + "%");
             for (String nombreListaR : consultaListasR.getResultList()) {
-                results.put("Lista", nombreListaR);
+                results.put(nombreListaR, "Lista");
             }
         } catch (Exception ex) {
             throw ex;

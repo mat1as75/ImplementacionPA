@@ -18,7 +18,7 @@
         <span class="logo-text">Espotify</span>
     </div>
     <div class="barra-busqueda">
-        <form action="SVBarraBusqueda" id="form-searchBar" method="GET">
+        <form action="SVBarraBusqueda" id="form-searchBar" method="GET" onsubmit="return validarFormulario()">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" name="consulta" placeholder="Buscar Tema, Álbum, Lista o Usuario ..." required>
             <select id="filtro" name="combo" required>
