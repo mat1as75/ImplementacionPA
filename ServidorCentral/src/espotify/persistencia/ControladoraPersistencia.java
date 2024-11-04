@@ -928,6 +928,20 @@ public class ControladoraPersistencia {
         }
         return dataAlbums;
     }
+    
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorArtista(String artista) {
+        ArrayList<DTAlbum_Simple> dataAlbums = new ArrayList<>();
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+
+        for (Album album : listaAlbumes) {
+
+            if (album.getMiArtista().getNickname().equals(artista)) {
+                dataAlbums.add(album.getDTAlbumSimple());
+            }
+        }
+        return dataAlbums;
+    }
+    
 
     public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
 

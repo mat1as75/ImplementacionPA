@@ -52,9 +52,9 @@
             <%  }  %>
             
             <%
-            /*
-                PONER ESTILOS DE DIV-CONTENT PARA QUE LOS DIVS TABS Y REPRODUCTOR QUEDEN EN COLUMNA
-            */
+            Fabrica fabrica = Fabrica.getInstance();
+            IControlador controlador = fabrica.getControlador();  
+
             %>
             
             
@@ -69,12 +69,89 @@
 
                     <div class="tab-content">
                         <div id="tab1" class="tab active">
-                            <div class="lista-Albumes"></div>
-                            <div class="lista-ListasR"></div>
+                            <h1>Generos</h1>
+                            <div class="mosaico-container">
+                                <div class="mosaico" id="mosaicoGeneros">
+                                    <%
+                                  
+                                    ArrayList<String> generos = controlador.getNombresGenerosPadre();
+                                    if(generos != null && !generos.isEmpty()){
+                                        for(String gen : generos){
+                                    %>
+                                    <div class="mosaico-item" onclick="CargaTabGenero('<%= gen %>')"><%= gen %></div>
+                                    <%    
+                                        }
+                                    }else{
+                                    %>
+                                    <p>No hay generos disponibles</p>
+                                    <%
+                                    }
+                                    %> 
+                                    
+                                </div>
+                                    <div class="mosaico" id="mosaicoAlbumesPorGenero" style="display:none;">
+                                        <h2>Albumes disponibles</h2>
+                                        
+                                        <c:if test="${empty albumesGenero}">
+                                            <c:forEach var="album" items="${albumesGenero}">
+                                                
+                                                <div class="mosaico-item" onclick="DatosAlbum('${album}')">${album}</div>
+                                            </c:forEach>
+                                        </c:if>
+                                            <c:if test="${empty albumesGenero}">
+                                                <p>No hay albumes de este genero</p>
+                                            </c:if>
+                                    </div>  
+                                    <div class="mosaico" id="mosaicoListasPorDefecto" style="display:none;">
+                                        <h2>Listas por Defecto para el Género Seleccionado</h2>
+                                        <c:if test="${not empty listaPorDefecto}">
+                                            <c:forEach var="lista" items="${listaPorDefecto}">
+                                                <div class="mosaico-item" onclick="DatosListaReproduccion('${lista}')">${lista}</div>
+                                            </c:forEach>
+                                        </c:if>
+                                        <c:if test="${empty listaPorDefecto}">
+                                            <p>No hay listas de reproducción por defecto disponibles para este género.</p>
+                                        </c:if>
+                                    </div>
+                            </div>
+                            
                             
                         </div>
                         <div id="tab2" class="tab">
-                            <p>Tab #2 content goes here!</p>
+                            <h1>Artistas</h1>
+                            <div class="mosaico-container">
+                                <div class="mosaico" id="mosaicoArtista">
+                                    <%
+                                  
+                                    ArrayList<String> artistas = controlador.getNicknamesArtistas();
+                                    if(artistas != null && !artistas.isEmpty()){
+                                        for(String art : artistas){
+                                    %>
+                                    <div class="mosaico-item" onclick="CargaTabArtista(<%= art %>)"><%= art %></div>
+                                    <%    
+                                        }
+                                    }else{
+                                    %>
+                                    <p>No hay artistas disponibles</p>
+                                    <%
+                                    }
+                                    %> 
+                                    
+                                </div> 
+                                    <div class="mosaico" id="mosaicoAlbumesPorArtista" style="display:none;">
+                                        <h2>Albumes disponibles</h2>
+                                        
+                                        <c:if test="${empty albumesArtista}">
+                                            <c:forEach var="album" items="${albumesArtista}">
+                                                
+                                                <div class="mosaico-item" onclick="DatosAlbum('${album}')">${album}</div>
+                                            </c:forEach>
+                                        </c:if>
+                                            <c:if test="${empty albumesArtista}">
+                                                <p>Este artista no tiene albumes publicados</p>
+                                            </c:if>
+                                    </div>
+                            </div>
                         </div>
                         <div id="tab3" class="tab">
                             <p>Tab #3 content goes here!</p>
@@ -84,9 +161,7 @@
                             <div class="mosaico-container"> 
                                 <div class="mosaico" id="mosaicoListasParticulares">
                                     <% 
-                                        Fabrica fabrica = Fabrica.getInstance();
-                                        IControlador controlador = fabrica.getControlador();
-                
+                                        
                                         List<String> listasPublicas = controlador.getNombresListasParticularesPublicas();
                                         if (listasPublicas != null && !listasPublicas.isEmpty()) {
                                             for (String lista : listasPublicas) {
@@ -106,21 +181,5 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- REPRODUCTOR-CONTENT -->
-                <div class="reproductor">
-
-                </div>
-                
-                <%
-//                    ArrayList<String> nombresAlbumes = new ArrayList<>();
-//                    ArrayList<String> nombresListasR = new ArrayList<>();
-//                    
-//                    String nombreGenero = null;
-//                    
-//                    <% if () { %>
-                
-                
-                
             
         </body>
