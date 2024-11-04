@@ -10,6 +10,7 @@ import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTTemaConRuta;
 import espotify.DataTypes.DTTemaConURL;
 import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaSimple;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Entity;
@@ -129,7 +130,9 @@ public class Album implements Serializable {
     public DTAlbum getDataAlbum() {
         ArrayList<DTGenero> auxDTG = new ArrayList<>();
         ArrayList<DTTemaGenerico> auxDTTG = new ArrayList<>();
+        ArrayList<DTTemaSimple> auxDTTS = new ArrayList<>();
         DTTemaConRuta dttcr;
+        DTTemaSimple dtts;
         DTTemaConURL dttcu;
         DTAlbum dta = new DTAlbum(
                 this.getIdAlbum(),
@@ -154,9 +157,15 @@ public class Album implements Serializable {
                 dttcr = new DTTemaConRuta(((TemaConRuta)t).getRutaTema(),t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum());
                 auxDTTG.add(dttcr);
             }
+            dtts = t.getDTTemaSimple();
+            auxDTTS.add(dtts);
            
         }
         dta.setMisTemas(auxDTTG);
+        dta.setMisTemasSimples(auxDTTS);
+        
+        
+        
         return dta;
     }
     

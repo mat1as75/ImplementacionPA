@@ -124,7 +124,7 @@ try {
                     <p><span>Año:</span> <%= album != null ? album.getAnioCreacion() : "N/A"%></p>
                     
                    <%
-                       if(rolSesion != null && puedeDescargar){
+                       if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                        %>
                        
                     <!-- Agregar album a favoritos -->
@@ -170,14 +170,12 @@ try {
                                     String srcPortada = fotoAlbum;
                                     %>
                         <!-- Escuchar tema por fila -->
-                        <%
-                            System.out.println("Aca"+tema.getIdTema());
-                            %>
-                        <tr class="row-hover"onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
+                        
+                        <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
                                 <%
-                                    if(rolSesion != null && puedeDescargar){
+                                    if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
