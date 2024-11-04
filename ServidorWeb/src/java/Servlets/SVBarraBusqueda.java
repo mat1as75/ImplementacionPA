@@ -117,7 +117,7 @@ public class SVBarraBusqueda extends HttpServlet {
         processRequest(request, response);
     }
     
-    // Funcion para buscar los Usuarios
+    // Buscar Usuarios
     private Map<String, String> buscarUsuarios(String query) {
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();

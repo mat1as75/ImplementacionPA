@@ -1,3 +1,4 @@
+<%@page import="java.util.TreeMap"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.Map"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -32,9 +33,11 @@
                 <div class="opciones">
                     <label id="label-opciones" for="ordenar">Ordenar por:</label>
                     <select id="ordenar" name="opcion">
-                        <option selected disabled hidden>(seleccione una opción)</option>
-                        <option value="alfabetico">Alfabéticamente (A-Z a-z)</option>
-                        <option value="anio">Año (descendente)</option>
+                        <form action="SVOrdenarResultadosBusqueda" method="GET">
+                            <option selected disabled hidden>(seleccione una opción)</option>
+                            <option value="alfabetico" type="submit">Alfabéticamente (A-Z a-z)</option>
+                            <option value="anio" type="submit">Año (descendente)</option>
+                        </form>
                     </select>
                 </div>
             </div>
@@ -59,6 +62,35 @@
                         console.log(resultados);
                     </script>
                 <%
+                        
+                        System.out.println("=============================");
+                        Map<String, String> orderByAlpha = new TreeMap<>(resultados);
+                        String value = resultados.values().toArray()[0].toString();
+                        System.out.println("TYPE: " + value);
+                        
+                        switch(value) {
+                            /* Le quito los primeros 3 caracteres */
+                            case "Tema":
+                            case "Album":
+                                System.out.print("ORDENADOS: ");
+                                for (String key : orderByAlpha.keySet()) {
+                                    System.out.print(key.substring(3) + " ");
+                                }
+                                break;
+                            case "Artista":
+                            case "Cliente":
+                            case "Lista":
+                                System.out.print("ORDENADOS: ");
+                                for (String key : orderByAlpha.keySet()) {
+                                    System.out.print(key + " ");
+                                }
+                                break;
+                        }
+                        System.out.print("\nNO ORDENADOS: ");
+                        for (String key : resultados.keySet()) {
+                            System.out.print(key + " ");
+                        }
+                        System.out.println("\n=============================");
                     }
                 %>
             </div>
