@@ -39,6 +39,7 @@
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
+        
     DTDatosUsuario datosU = null;
     DTDatosCliente datosC = null;
     String estadoSuscripcionSesion = null;
@@ -75,6 +76,7 @@
 </head>
 <jsp:include page="headerIndex.jsp"/>
 <body>
+    <% if (!"Artista".equals(rolSesion)) { %>
     <div class="containerMain">
         <div class="lista-detalles">
             <div class="info-container">
@@ -207,5 +209,6 @@
         </div>
         <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
     </div>
+    <% } %>
 </body>
 

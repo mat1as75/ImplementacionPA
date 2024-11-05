@@ -46,14 +46,16 @@ header {
 }
 
 .barra-busqueda input {
+    flex: 1;
     min-width: 150px;         /* No permite que el input de busqueda se achique a menos de 150px */
     width: 100%;              /* Ocupa todo el ancho del contenedor */
     padding: 10px 40px;      /* Espaciado interno */
     border: 1px solid #000;   /* Borde */
-    border-radius: 20px;      /* Esquinas redondeadas */
+    border-radius: 20px 0 0 20px;      /* Esquinas redondeadas */
     background-color: #fff; /* Fondo oscuro */
     color: #000;             /* Color del texto */
     font-size: 16px;          /* Tamaño de la fuente */
+    box-sizing: border-box;
 }
 
 .barra-busqueda i {
@@ -62,6 +64,35 @@ header {
     top: 20px;                 /* Centra verticalmente */
     transform: translateY(-50%); /* Ajusta para centrar */
     color: #000;              /* Color del icono */
+}
+
+/* SELECT FILTRO */
+#filtro {
+    padding: 12px 2px 12px 2px;
+    display :flex;
+    left: 350px;
+    text-align: center;
+    font-size: 10px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 0 20px 20px 0;
+    appearance: none;
+    border-left: none;
+    box-sizing: border-box;
+}
+
+#filtro:hover {
+    cursor: pointer;
+}
+
+option {
+    font-family: 'Monospace';
+    font-size: 10px;
+    color: #000;
+}
+
+option:hover {
+    background-color: #F8F9FA;
 }
 
 .boton-buscar {
@@ -75,7 +106,6 @@ header {
     margin-left: 8px;
     display: flex;          /* Asegúrate que el botón se alinee correctamente */
     align-items: center;    /* Centrar el contenido del botón */
-    
 }
 
 .boton-buscar:hover {

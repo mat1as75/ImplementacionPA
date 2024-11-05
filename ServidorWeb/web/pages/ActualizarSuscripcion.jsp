@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/actualizarSuscripcion.css"/>
         <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/nav.css"/>
+        <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     
     <% 

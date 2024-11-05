@@ -10,7 +10,9 @@ private String nombreAlbum;
 private int anioCreacion;
 private String fotoAlbum;
 private ArrayList<DTTemaGenerico> misTemas = new ArrayList<>();
+
 private ArrayList<DTTemaSimple> misTemasSimples = new ArrayList<>();
+
 private ArrayList<DTGenero>misgeneros = new ArrayList<>();
 private DTArtista miArtista;
 
@@ -44,9 +46,11 @@ private DTArtista miArtista;
     public ArrayList<DTTemaGenerico> getMisTemas() {
         return misTemas;
     }
+
     
     public ArrayList<DTTemaSimple> getMisTemasSimple() {
         return misTemasSimples;
+
     }
 
     public List<DTGenero> getMisgeneros() {
@@ -76,11 +80,12 @@ private DTArtista miArtista;
     public void setMisTemas(ArrayList<DTTemaGenerico> misTemas) {
         this.misTemas = misTemas;
     }
+
     
     public void setMisTemasSimples(ArrayList<DTTemaSimple> misTemas) {
         this.misTemasSimples = misTemas;
     }
-    
+
     public void setMiTema(DTTemaGenerico misTemas) {
         this.misTemas.addFirst(misTemas);
     }

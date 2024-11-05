@@ -134,6 +134,7 @@ public class Album implements Serializable {
         DTTemaConRuta dttcr;
         DTTemaSimple dtts;
         DTTemaConURL dttcu;
+        DTTemaSimple dtts;
         DTAlbum dta = new DTAlbum(
                 this.getIdAlbum(),
                 this.getNombreAlbum(),
@@ -149,7 +150,8 @@ public class Album implements Serializable {
         dta.setMisgeneros(auxDTG);
         
         for(Tema t: this.getMisTemas()){
-            
+            dtts = t.getDTTemaSimple();
+            auxDTTS.add(dtts);
             if(t.getClass().equals(TemaConURL.class)){
                  dttcu = new DTTemaConURL(t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum(),((TemaConURL)t).getUrlTema());
                 auxDTTG.add(dttcu);
@@ -162,10 +164,12 @@ public class Album implements Serializable {
            
         }
         dta.setMisTemas(auxDTTG);
+
         dta.setMisTemasSimples(auxDTTS);
         
         
         
+
         return dta;
     }
     

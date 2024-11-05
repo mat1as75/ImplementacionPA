@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
-import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -67,23 +61,38 @@ public class SVBarraBusqueda extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+
+        // Opcion del ComboBox Filtro
+        String opcionFiltro = request.getParameter("combo");
+        
+
+        HttpSession sesion = request.getSession(false);
+        
+        if (sesion != null) {
+          String rolSesion = (String) sesion.getAttribute("rol");
+            if (rolSesion != null && rolSesion.equals("Artista")) {
+                SVError.redirectUnauthorized(request, response);
+                return;
+            }
+        }
+      
+
         // Consulta
         String consulta = request.getParameter("consulta");
         
         // Mapa para almacenar los resultados
         Map<String, String> resultados = new HashMap<>();
         
-        // Buscar Usuarios
-        resultados.putAll(buscarUsuarios(consulta));
-        
-        // Buscar Temas
-        resultados.putAll(buscarTemas(consulta));
-        
-        // Buscar Albumes
-        resultados.putAll(buscarAlbumes(consulta));
-        
-        // Buscar Listas
-        resultados.putAll(buscarListasReproduccion(consulta));
+        if (opcionFiltro == null) {
+            response.sendRedirect("BarraBusqueda.jsp");
+        } else {
+
+        switch (opcionFiltro) {
+            case "tema" -> resultados.putAll(buscarTemas(consulta));
+            case "lista" -> resultados.putAll(buscarListasReproduccion(consulta));
+            case "album" -> resultados.putAll(buscarAlbumes(consulta));
+            case "usuario" -> resultados.putAll(buscarUsuarios(consulta));
+        }
         
         // Guardo resultados en el request
         request.setAttribute("resultados", resultados);
@@ -92,6 +101,7 @@ public class SVBarraBusqueda extends HttpServlet {
         // Redirigir a la pagina de resultados
         RequestDispatcher dispatcher = request.getRequestDispatcher("resultadosBusqueda.jsp");
         dispatcher.forward(request, response); 
+        }
     }
 
     @Override
@@ -100,7 +110,7 @@ public class SVBarraBusqueda extends HttpServlet {
         processRequest(request, response);
     }
     
-    // Funcion para buscar los Usuarios
+    // Buscar Usuarios
     private Map<String, String> buscarUsuarios(String query) {
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();
@@ -114,9 +124,9 @@ public class SVBarraBusqueda extends HttpServlet {
             ArrayList<String> nicknamesClientes = (ArrayList<String>) control.getNicknamesClientes();
             for (String nickname : consultaUsuarios.getResultList()) {
                 if (nicknamesClientes.contains(nickname))
-                    results.put("Cliente", nickname);
+                    results.put(nickname, "Cliente");
                 else
-                    results.put("Artista", nickname);
+                    results.put(nickname, "Artista");
             }
         } catch(Exception ex) {
             throw ex;
@@ -148,7 +158,7 @@ public class SVBarraBusqueda extends HttpServlet {
                     // idTema del Map (mapDtTemas) == idTema del Objeto (results)
                     if ((entrada.getValue().getIdTema()).equals(result)) {
                         String value = String.valueOf(entrada.getValue().getIdAlbum()) + ", " + entrada.getValue().getNombreTema();
-                        results.put("Tema", value);
+                        results.put(value, "Tema");
                     }
                 }
             }
@@ -179,7 +189,7 @@ public class SVBarraBusqueda extends HttpServlet {
                 
                 // Concatenar idAlbum y nombreAlbum
                 String value = idAlbum + ", " + nombreAlbum;
-                results.put("Album", value);
+                results.put(value, "Album");
             }
         } catch (Exception ex) {
             throw ex;
@@ -202,7 +212,7 @@ public class SVBarraBusqueda extends HttpServlet {
             TypedQuery<String> consultaListasR = em.createQuery(jpqlListasR, String.class);
             consultaListasR.setParameter("query", "%" + query + "%");
             for (String nombreListaR : consultaListasR.getResultList()) {
-                results.put("Lista", nombreListaR);
+                results.put(nombreListaR, "Lista");
             }
         } catch (Exception ex) {
             throw ex;

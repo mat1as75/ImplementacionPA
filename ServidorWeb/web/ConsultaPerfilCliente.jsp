@@ -340,7 +340,7 @@
                                                         Long idTema = entryTemaFav.getKey();
                                                         String nombreTema = entryTemaFav.getValue();
                                                     %>
-                                                    <td><a href="ConsultaTema?temaId=<%= idTema %>"><%= nombreTema %></td>
+                                                    <td><a href="ConsultaTema.jsp?idTema=<%= idTema %>"><%= nombreTema %></td>
                                                     <% sizeTemas--; %>
                                                 <% } else { %>
                                                     <td></td>
@@ -352,7 +352,7 @@
                                                         Long idAlbum = entryAlbumFav.getKey();
                                                         String nombreAlbum = entryAlbumFav.getValue();
                                                     %>
-                                                    <td><a href="ConsultaAlbum?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
+                                                    <td><a href="ConsultaAlbum.jsp?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
                                                     <% sizeAlbumes--; %>
                                                 <% } else { %>
                                                     <td></td>

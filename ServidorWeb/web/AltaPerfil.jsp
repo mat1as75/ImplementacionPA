@@ -9,10 +9,14 @@
     <title>Registrarte</title>
     <link rel="stylesheet" href="styles/AltaPerfil.css">
     <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <div class="main-container">
-    <h1>Formulario de Registro</h1>
+    <div class="logo">
+        <i onclick="window.location.href='index.jsp';" id="logoBanner" class="fa-brands fa-spotify"></i>
+    </div>
+    <h1>Regístrate en Espotify</h1>
 </div>
 
 

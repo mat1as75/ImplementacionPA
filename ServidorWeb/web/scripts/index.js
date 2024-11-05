@@ -16,6 +16,7 @@ jQuery(document).ready(function () {
     });
 });
 
+
 function mostrarPorListaParticular() {
             document.getElementById('mosaicoListasParticulares').style.display = 'grid';
         }
@@ -166,3 +167,4 @@ function VolverAArtistas() {
     
     limpiarMosaicos();
 }
+

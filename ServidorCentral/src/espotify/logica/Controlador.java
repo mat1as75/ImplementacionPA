@@ -521,6 +521,17 @@ public class Controlador implements IControlador{
     public void actualizarSuscripcionesVencidas() {
         this.contpersis.actualizarSuscripcionesVencidas();
     }
+    
+    @Override
+    public List<DTArtista> getArtistas(){
+        List<DTArtista> retorno = new ArrayList<>();
+        for(Artista a : this.contpersis.getArtistas()){
+            retorno.addLast(a.getDTArtista());
+        }
+        
+        return retorno;
+        
+    }
 
 }
 

@@ -1,3 +1,4 @@
+
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="espotify.logica.Fabrica" %>
@@ -41,8 +42,8 @@
             <ul class="tab-links">
                 <li class="active"><a href="#tab1">Géneros</a></li>
                 <li><a href="#tab2">Artistas</a></li>
-                <li><a href="#tab3">Suscripción</a></li>
-                <li><a href="#tab4">Listas Particulares</a></li>
+               
+                <li><a href="#tab3">Listas Particulares</a></li>
             </ul>
 
             <div class="tab-content">
@@ -86,6 +87,7 @@
                                 <c:if test="${empty albumesGenero}">
                                     <p>No hay álbumes de este género</p>
                                 </c:if>
+
                             </div> 
                             <div class="divisor d-none d-sm-block"></div>
                             <h3>Listas de Reproducción</h3>   
@@ -152,11 +154,10 @@
 
                 </div>
 
-                <div id="tab3" class="tab">
-                    <p>Tab #3 content goes here!</p>
-                </div>
 
-                <div id="tab4" class="tab">
+                
+
+                <div id="tab3" class="tab">
                     <h1>Consulta Lista Particular</h1>
                     <div class="mosaico-container"> 
                         <div class="mosaico" id="mosaicoListasParticulares">
@@ -184,3 +185,4 @@
         <script src="scripts/index.js"></script>
     </body>
 </html>
+
