@@ -79,9 +79,7 @@ public class SVBarraBusqueda extends HttpServlet {
         if (opcionFiltro == null) {
             response.sendRedirect("BarraBusqueda.jsp");
         } else {
-            
-        
-        
+
         switch (opcionFiltro) {
             case "tema" -> resultados.putAll(buscarTemas(consulta));
             case "lista" -> resultados.putAll(buscarListasReproduccion(consulta));

@@ -1,3 +1,5 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.TreeMap"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.Map"%>
@@ -33,11 +35,9 @@
                 <div class="opciones">
                     <label id="label-opciones" for="ordenar">Ordenar por:</label>
                     <select id="ordenar" name="opcion" onchange="sendData(this.value)">
-                        <form action="SVOrdenarResultadosBusqueda" method="POST" onclick="sendData()">
                             <option selected disabled hidden>(seleccione una opción)</option>
                             <option value="alfabetico" type="submit">Alfabéticamente (A-Z a-z)</option>
                             <option value="anio" type="submit">Año (descendente)</option>
-                        </form>
                     </select>
                 </div>
             </div>
@@ -48,81 +48,69 @@
                     Map<String, String> resultados = (Map<String, String>) request.getAttribute("resultados");
                     if (resultados.isEmpty()) {
                 %>
-                    <p>No se encontraron resultados.</p>
+                    <p id="sin-resultados">No se encontraron resultados.</p>
                 <%
                     } else {    
                         // Convertir el Map en una lista para procesarlo en JavaScript
                         Gson gson = new Gson();
                         String jsonResultados = gson.toJson(resultados);
                 %>
-                    <script src="scripts/resultadosBusqueda.js"></script>
-                    <script>
-                        let resultados = <%= jsonResultados %>;
-                        mostrarResultados(resultados); // Mostrar resultados iniciales
-                        console.log(resultados);
-                        
-                        // Funcion que envia la opcion y resultados a ordenar 
-                        function sendData(opcionOrden) {
-                            var select = document.getElementById("ordenar");
-                            var seleccion = select.options[select.selectedIndex].value;
-                            
-                            if (opcionOrden) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open("POST", "SVOrdenarResultadosBusqueda", true);
-                                xhr.setRequestHeader("Content-Type", "application/json");
-                                
-                                // Crear el objeto que se enviara
-                                var data = {
-                                    option: opcionOrden,
-                                    results: <%= jsonResultados %>
-                                };
+                        <script src="scripts/resultadosBusqueda.js"></script>
+                        <script>
+                            let resultados = <%= jsonResultados %>;
+                            mostrarResultados(resultados); // Mostrar resultados iniciales
+                            console.log(resultados);
 
-                                xhr.onreadystatechange() = function() {
-                                    if (xhr.readyState === 4 && xhr.status === 200) {
-                                        console.log("Respuesta del servidor: " + xhr.responseText);
-                                    }   
-                                };
+                            // Funcion que envia la opcion y resultados a ordenar 
+                            function sendData(opcionOrden) {
+                                if (opcionOrden) {
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "SVOrdenarResultadosBusqueda", true);
+                                    xhr.setRequestHeader("Content-Type", "application/json");
 
-                                // Enviar el JSON al servlet
-                                xhr.send(JSON.stringify(data));
+                                    // Crear el objeto que se enviara
+                                    var data = {
+                                        option: opcionOrden,
+                                        results: <%= jsonResultados %>
+                                    };
+
+                                    // Enviar el JSON al servlet
+                                    xhr.send(JSON.stringify(data));
+                                }
+                            }
+                        </script>
+                <%      
+                        String type = (String) request.getAttribute("type");
+                        System.out.println("TIPO2: " + type);
+                        if (type != null) {
+                            System.out.println("TIPO: " + type);
+                            String jsonResults = null;
+                            switch(type) {
+                                case "Artista":
+                                case "Cliente": 
+                                case "Lista":
+                                    Map<String, Date> results = (Map<String, Date>) request.getAttribute("resultsOrden");
+                                    jsonResults = gson.toJson(results);
+                                    System.out.println("ACA2: " + jsonResults);
+                %>                
+                                    <script>
+                                        let results = <%= jsonResults %>
+                                        mostrarResultados(results);
+                                    </script>
+                <%                
+                                    break;
+                                case "Tema": 
+                                case "Album": 
+                                    jsonResults = gson.toJson((Map<Long, Integer>) request.getAttribute("resultsOrden"));
+                %>                
+                                    <script>
+                                        let results = <%= jsonResults %>
+                                        mostrarResultados(results);
+                                    </script>
+                <%
+                                    break;
                             }
                         }
-                    </script>
-                <%
-                        
-                        String opcionOrden = request.getParameter("opcion");
-                        if (opcionOrden != null) {
-                            System.out.println("Opcion seleccionada: " + opcionOrden);
-                        }
-                    
-                        System.out.println("=============================");
-                        Map<String, String> orderByAlpha = new TreeMap<>(resultados);
-                        String value = resultados.values().toArray()[0].toString();
-                        System.out.println("TYPE: " + value);
-                        
-                        switch(value) {
-                            /* Le quito los primeros 3 caracteres */
-                            case "Tema":
-                            case "Album":
-                                System.out.print("ORDENADOS: ");
-                                for (String key : orderByAlpha.keySet()) {
-                                    System.out.print(key.substring(3) + " ");
-                                }
-                                break;
-                            case "Artista":
-                            case "Cliente":
-                            case "Lista":
-                                System.out.print("ORDENADOS: ");
-                                for (String key : orderByAlpha.keySet()) {
-                                    System.out.print(key + " ");
-                                }
-                                break;
-                        }
-                        System.out.print("\nNO ORDENADOS: ");
-                        for (String key : resultados.keySet()) {
-                            System.out.print(key + " ");
-                        }
-                        System.out.println("\n=============================");
                     }
                 %>
             </div>

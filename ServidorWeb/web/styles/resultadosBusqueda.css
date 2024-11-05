@@ -83,6 +83,12 @@ body {
     font-weight: bold;
 }
 
+.resultados #sin-resultados {
+    margin: 0 auto;
+    white-space: nowrap;
+    
+}
+
 .resultados p:hover {
     text-decoration: underline;
     cursor: pointer;
