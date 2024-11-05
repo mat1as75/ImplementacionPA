@@ -18,7 +18,7 @@
 <%
 String albumIdStr = request.getParameter("albumId");
  Long albumId = null;
-if(albumIdStr != null ){
+if(albumIdStr != null && !albumIdStr.isEmpty()){
         albumId = Long.valueOf(albumIdStr);
 }
 
@@ -180,6 +180,8 @@ try {
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
                                     <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
+                                    <input type="hidden" name="tipo" value="Album"/>
+                                    <input type="hidden" name="identificador" value="<%= albumId %>"/>
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
                                 <%

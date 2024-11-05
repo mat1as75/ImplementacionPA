@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SVCargarAlbumes", urlPatterns = {"/SVCargarAlbumes"})
 public class SVCargarAlbumes extends HttpServlet {
 
-     @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -38,37 +38,36 @@ public class SVCargarAlbumes extends HttpServlet {
         IControlador iControlador = f.getControlador();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        
-        if ("Genero".equals(tipo) && nombre != null && !nombre.isEmpty()){
+
+        ArrayList<Map<String, String>> albumesJson = new ArrayList<>();
+
+        if ("Genero".equals(tipo) && nombre != null && !nombre.isEmpty()) {
             ArrayList<DTAlbum_Simple> albumesGenero = iControlador.getDTAlbumesSimplePorGenero(nombre);
-            // Crear una lista para almacenar objetos con ID y nombre
-            ArrayList<Map<String, String>> albumesJson = new ArrayList<>();
             for (DTAlbum_Simple album : albumesGenero) {
                 Map<String, String> albumInfo = new HashMap<>();
                 albumInfo.put("id", album.getIdAlbum().toString());  
                 albumInfo.put("nombre", album.getNombreAlbum());
                 albumesJson.add(albumInfo);
             }
-    
-            String json = new Gson().toJson(albumesJson);
-            response.getWriter().write(json);
-        } else if ("Artista".equals(tipo)&& nombre != null && !nombre.isEmpty()) {
+        } else if ("Artista".equals(tipo) && nombre != null && !nombre.isEmpty()) {
             ArrayList<DTAlbum_Simple> albumesArtista = iControlador.getDTAlbumesSimplePorArtista(nombre);
-            // Crear una lista para almacenar objetos con ID y nombre
-            ArrayList<Map<String, String>> albumesJson = new ArrayList<>();
             for (DTAlbum_Simple album : albumesArtista) {
                 Map<String, String> albumInfo = new HashMap<>();
                 albumInfo.put("id", album.getIdAlbum().toString());  
                 albumInfo.put("nombre", album.getNombreAlbum());
                 albumesJson.add(albumInfo);
             }
-            
-            String json = new Gson().toJson(albumesArtista);
-            response.getWriter().write(json);
-            
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"error\": \"Tipo inválido o parámetros faltantes\"}");
+            return;
         }
+
         
-        
+        String json = new Gson().toJson(albumesJson);
+        try (PrintWriter out = response.getWriter()) {
+            out.write(json);
+        }
     }
     @Override
     public String getServletInfo() {

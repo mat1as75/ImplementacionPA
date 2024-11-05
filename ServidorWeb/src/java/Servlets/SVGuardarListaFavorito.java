@@ -94,9 +94,9 @@ public class SVGuardarListaFavorito extends HttpServlet {
         try {
             control.GuardarListaFavorito(user.getNicknameUsuario(), nombreLista);
         } catch (Exception ex) {
-            Logger.getLogger(SVGuardarAlbumFavorito.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SVGuardarListaFavorito.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        response.sendRedirect("DatosListaDeReproduccion.jsp?nombreLista="+ nombreLista);
        
     }
 

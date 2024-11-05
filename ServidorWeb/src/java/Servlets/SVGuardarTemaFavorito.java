@@ -68,9 +68,11 @@ public class SVGuardarTemaFavorito extends HttpServlet {
             // Obtener el controlador
         Fabrica fb = Fabrica.getInstance();
         IControlador control = fb.getControlador();
+        String tipo = request.getParameter("tipo");
+        String identificador = request.getParameter("identificador");
         
         
-        String temaIdStr = request.getParameter("albumId");
+        String temaIdStr = request.getParameter("idTema");
         Long temaId = null;
         if (temaIdStr != null) {
             temaId = Long.parseLong(temaIdStr);
@@ -97,9 +99,17 @@ public class SVGuardarTemaFavorito extends HttpServlet {
         //}
         
         try {
-            control.GuardarAlbumFavorito(user.getNicknameUsuario(), temaId);
+            control.GuardarTemaFavorito(user.getNicknameUsuario(), temaId);
         } catch (Exception ex) {
-            Logger.getLogger(SVGuardarAlbumFavorito.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SVGuardarTemaFavorito.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(tipo.equals("Lista")){
+            response.sendRedirect("DatosListaDeReproduccion.jsp?nombreLista="+ identificador);
+        }else if(tipo.equals("Album")){
+            Long id = Long.parseLong(identificador);
+            response.sendRedirect("ConsultaAlbum.jsp?albumId="+ id);
+            
         }
         
        

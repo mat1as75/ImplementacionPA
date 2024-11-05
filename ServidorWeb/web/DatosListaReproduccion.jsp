@@ -152,6 +152,9 @@
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
+                                    <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
+                                    <input type="hidden" name="tipo" value="Lista"/>
+                                    <input type="hidden" name="identificador" value="<%= nombreLista %>"/>
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
                                 <%
