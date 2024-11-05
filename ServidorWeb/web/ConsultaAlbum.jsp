@@ -168,6 +168,8 @@ try {
                         <% if (album != null) { %>
                                  <% for (DTTemaSimple tema : album.getMisTemasSimple()) { %>
                                      <%
+                                         
+                                         System.out.println(album.getMisTemasSimple().size());
                                     int duracionSegundos = tema.getDuracionSegundos();
                                     int minutos = duracionSegundos / 60;
                                     int segundos = duracionSegundos % 60;

@@ -40,7 +40,7 @@
             String rolSesionIndex = null;
 
             if (sesionIndex != null) {
-                rolSesionIndex = (String) sesion.getAttribute("rol");
+                rolSesionIndex = (String) sesionIndex.getAttribute("rol");
             }
         %>
 

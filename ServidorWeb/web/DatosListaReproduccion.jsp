@@ -73,8 +73,11 @@
     <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
     <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
     <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
+    <link rel="stylesheet" href="styles/nav.css"/>
+
 </head>
 <jsp:include page="headerIndex.jsp"/>
+<%@ include file="../WEB-INF/jspf/Nav.jspf" %>
 
 <body>
     <% if (!"Artista".equals(rolSesion)) { %>

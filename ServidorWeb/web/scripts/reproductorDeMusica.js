@@ -148,7 +148,7 @@ async function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
     
     //modifico el link del tema y lo muestro
     linkTema.innerText = "Visitar enlace";
-    linkTema.setAttribute("href", receivedUrl);
+    linkTema.setAttribute("href", "https://" + receivedUrl);
     linkTema.classList.remove("hidden");
     
     //muestro el reproductor de archivos y seteo el url

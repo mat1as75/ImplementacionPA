@@ -105,7 +105,7 @@ public class SVGuardarTemaFavorito extends HttpServlet {
         }
         
         if(tipo.equals("Lista")){
-            response.sendRedirect("DatosListaDeReproduccion.jsp?nombreLista="+ identificador);
+            response.sendRedirect("DatosListaReproduccion.jsp?nombreLista="+ identificador);
         }else if(tipo.equals("Album")){
             Long id = Long.parseLong(identificador);
             response.sendRedirect("ConsultaAlbum.jsp?albumId="+ id);
