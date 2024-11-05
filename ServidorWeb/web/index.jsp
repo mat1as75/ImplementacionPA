@@ -1,4 +1,3 @@
-<%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.Map"%>
@@ -8,25 +7,25 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="scripts/index.js"></script>
-        
-        <link rel="stylesheet" href="styles/index.css"/> <!-- CSS DEL BODY -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="styles/nav.css"/>
-        <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 
         <jsp:include page="headerIndex.jsp" />
         <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
    
         <body>
             <%  /* Mensaje de InicioSesion */
+                
+                HttpSession sesionIndex = request.getSession(false);
+                String rolSesionIndex = null;
+                
+                if (sesionIndex != null) {
+                    rolSesionIndex = (String) sesion.getAttribute("rol");
+                }
+                
                 String mensajeInicioSesion = request.getParameter("mensaje");
                 if ("abierta".equals(mensajeInicioSesion)) {
             %>
@@ -57,7 +56,7 @@
             */
             %>
             
-            
+            <% if (!"Artista".equals(rolSesionIndex)) { %>
                 <!-- TABS-CONTENT -->
                 <div class="tabs">
                     <ul class="tab-links">
@@ -103,16 +102,6 @@
                     </div>
                 </div>
 
-                
-                <%
-//                    ArrayList<String> nombresAlbumes = new ArrayList<>();
-//                    ArrayList<String> nombresListasR = new ArrayList<>();
-//                    
-//                    String nombreGenero = null;
-//                    
-//                    <% if () { %>
-                
-                
-                
             
         </body>
+

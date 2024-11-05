@@ -108,6 +108,7 @@ body {
 }
 
 .resultados a {
+    padding-left: 10px;
     width: 200px;
     font-family: 'Monospace';
     text-decoration: none;

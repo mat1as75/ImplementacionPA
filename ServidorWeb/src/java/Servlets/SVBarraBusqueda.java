@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
-import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -67,9 +61,22 @@ public class SVBarraBusqueda extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+
         // Opcion del ComboBox Filtro
         String opcionFiltro = request.getParameter("combo");
         
+
+        HttpSession sesion = request.getSession(false);
+        
+        if (sesion != null) {
+          String rolSesion = (String) sesion.getAttribute("rol");
+            if (rolSesion != null && rolSesion.equals("Artista")) {
+                SVError.redirectUnauthorized(request, response);
+                return;
+            }
+        }
+      
+
         // Consulta
         String consulta = request.getParameter("consulta");
         
@@ -86,18 +93,6 @@ public class SVBarraBusqueda extends HttpServlet {
             case "album" -> resultados.putAll(buscarAlbumes(consulta));
             case "usuario" -> resultados.putAll(buscarUsuarios(consulta));
         }
-        
-//        // Buscar Usuarios
-//        resultados.putAll(buscarUsuarios(consulta));
-//        
-//        // Buscar Temas
-//        resultados.putAll(buscarTemas(consulta));
-//        
-//        // Buscar Albumes
-//        resultados.putAll(buscarAlbumes(consulta));
-//        
-//        // Buscar Listas
-//        resultados.putAll(buscarListasReproduccion(consulta));
         
         // Guardo resultados en el request
         request.setAttribute("resultados", resultados);
