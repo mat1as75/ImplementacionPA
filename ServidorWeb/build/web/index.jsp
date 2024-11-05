@@ -18,6 +18,13 @@
             #post-seleccion, #volver, #volver2, #post-seleccion2 {
                 display: none;
             }
+            h1, h2, h3 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            #volver,#volver2{
+                font-size: 40 px;
+            }
         </style>
     </head>
     <body>
@@ -63,8 +70,9 @@
                         </div>
                     </div>
                     <div id="post-seleccion">
+                        <h2>Resultados del genero</h2>
                         <div class="mosaico-container">
-                            <div class="divisor d-none d-sm-block"></div>
+                            
                             <h3>Albumes</h3>  
                             <div class="mosaico" id="mosaicoAlbumesPorGenero" style="display:none;">
 
@@ -123,10 +131,10 @@
                         </div>
                     </div>
                     <div id="post-seleccion2">
-                        <h2>Albumes de <%art%></h2>
+                        <h2>Albumes del artista</h2>
                         <div class="mosaico-container">
                             <div class="mosaico" id="mosaicoAlbumesPorArtista" style="display:none;">
-                                <h2>Álbumes disponibles</h2>
+                                
                                 <c:if test="${not empty albumesArtista}">
                                     <c:forEach var="album" items="${albumesArtista}">
                                         <c:if test="${not empty album.nombre}">
