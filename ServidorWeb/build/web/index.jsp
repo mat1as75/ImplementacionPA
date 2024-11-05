@@ -65,7 +65,7 @@
             */
             %>
             
-            <% if (rolSesionIndex != null && !rolSesionIndex.equals("Artista")) { %>
+            <% if (!"Artista".equals(rolSesionIndex)) { %>
                 <!-- TABS-CONTENT -->
                 <div class="tabs">
                     <ul class="tab-links">
