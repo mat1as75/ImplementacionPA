@@ -158,8 +158,6 @@ public class Album implements Serializable {
                 dttcr = new DTTemaConRuta(((TemaConRuta)t).getRutaTema(),t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum());
                 auxDTTG.add(dttcr);
             }
-            dtts = t.getDTTemaSimple();
-            auxDTTS.add(dtts);
            
         }
         dta.setMisTemas(auxDTTG);
