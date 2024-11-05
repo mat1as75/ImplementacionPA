@@ -1,18 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Servlets;
 
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosUsuario;
-import espotify.logica.Cliente;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,6 +41,14 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
 
         // Recupero el parametro enviado desde el formulario en resultados.jsp
         String usuarioConsultado = request.getParameter("usuario-Consultar");
+        
+        String rolSesion = (String) sesion.getAttribute("rol");
+        if (rolSesion != null && rolSesion.equals("Artista")) {
+            if (usuarioConsultado != null && !usuarioConsultado.equals(nicknameUsuarioSesion)) {
+                SVError.redirectForbidden(request, response);
+                return;
+            }
+        }
         
         if (usuarioConsultado == null) {
             // ConsultaPerfilUsuario propio de la Sesion

@@ -18,6 +18,14 @@
    
         <body>
             <%  /* Mensaje de InicioSesion */
+                
+                HttpSession sesionIndex = request.getSession(false);
+                String rolSesionIndex = null;
+                
+                if (sesionIndex != null) {
+                    rolSesionIndex = (String) sesion.getAttribute("rol");
+                }
+                
                 String mensajeInicioSesion = request.getParameter("mensaje");
                 if ("abierta".equals(mensajeInicioSesion)) {
             %>
@@ -48,7 +56,7 @@
             */
             %>
             
-            
+            <% if (!"Artista".equals(rolSesionIndex)) { %>
                 <!-- TABS-CONTENT -->
                 <div class="tabs">
                     <ul class="tab-links">
@@ -71,20 +79,7 @@
         </div>
     </div>
 
-    <!-- REPRODUCTOR-CONTENT -->
-    <div class="reproductor">
-
-    </div>
-
-    <%
-//                    ArrayList<String> nombresAlbumes = new ArrayList<>();
-//                    ArrayList<String> nombresListasR = new ArrayList<>();
-//                    
-//                    String nombreGenero = null;
-//                    
-//                    <% if () { %>
-
-
+                <% } %>
 
 
 </body>
