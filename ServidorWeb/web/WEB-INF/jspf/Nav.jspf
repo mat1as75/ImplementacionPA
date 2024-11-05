@@ -30,7 +30,7 @@
     <ul class="navCustomUl">
        
         <% if (rolNav.equals("Cliente")) { %>
-            <li><a href="IngresarSuscripcion">Contratar suscripción</a></li>
+            <li><a href="IngresarSuscripcion">Planes</a></li>
             <li><a href="ActualizarSuscripcion">Mi suscripción</a></li>
             <li><a href="CrearListaReproduccion.jsp">Crear lista de reproducción</a></li>
         <% } %>
