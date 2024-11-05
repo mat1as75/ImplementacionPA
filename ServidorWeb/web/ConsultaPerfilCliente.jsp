@@ -340,7 +340,7 @@
                                                         Long idTema = entryTemaFav.getKey();
                                                         String nombreTema = entryTemaFav.getValue();
                                                     %>
-                                                    <td><a href="ConsultaTema.jsp?idTema=<%= idTema %>"><%= nombreTema %></td>
+                                                    <td><%= nombreTema %></td>
                                                     <% sizeTemas--; %>
                                                 <% } else { %>
                                                     <td></td>

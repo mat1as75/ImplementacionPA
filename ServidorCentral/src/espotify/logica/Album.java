@@ -134,7 +134,6 @@ public class Album implements Serializable {
         DTTemaConRuta dttcr;
         DTTemaSimple dtts;
         DTTemaConURL dttcu;
-        DTTemaSimple dtts;
         DTAlbum dta = new DTAlbum(
                 this.getIdAlbum(),
                 this.getNombreAlbum(),

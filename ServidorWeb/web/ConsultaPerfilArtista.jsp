@@ -178,7 +178,7 @@ System.out.println("SIZE ALBUMES PUBLICADOS: " + albumesPublicadosConsultados.si
                                         Long idAlbum = entryAlbumPublicado.getKey();
                                         String nombreAlbum = entryAlbumPublicado.getValue();
                                     %>
-                                    <td><a href="ConsultaAlbum?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
+                                    <td><a href="ConsultaAlbum.jsp?albumId=<%= idAlbum %>"><%= nombreAlbum %></a></td>
                                 </tr>
                                 <% } %>
                             </tbody>

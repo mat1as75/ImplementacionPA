@@ -40,19 +40,22 @@
 -->
 
 <% 
-
-    HttpSession sesionEnReproductor = request.getSession();
-    String nicknameSesionDeReproductor = (String) sesionEnReproductor.getAttribute("nickname");
-    Fabrica fabricaEnReproductor = Fabrica.getInstance();
-    IControlador ictrlEnReproductor = fabricaEnReproductor.getControlador();
-
-    DTSuscripcion suscripcionDeCliente = ictrlEnReproductor.getDTSuscripcionDeCliente(nicknameSesionDeReproductor);
+    HttpSession sesionEnReproductor = request.getSession(false);
     String estadoSuscripcion = null;
-    if (suscripcionDeCliente != null) {
-        estadoSuscripcion = suscripcionDeCliente.getEstadoSuscripcion();
-    }
     
+    if (sesionEnReproductor != null) {
+        String nicknameSesionDeReproductor = (String) sesionEnReproductor.getAttribute("nickname");
+        if (nicknameSesionDeReproductor != null) {
+            Fabrica fabricaEnReproductor = Fabrica.getInstance();
+            IControlador ictrlEnReproductor = fabricaEnReproductor.getControlador();
 
+            DTSuscripcion suscripcionDeCliente = ictrlEnReproductor.getDTSuscripcionDeCliente(nicknameSesionDeReproductor);
+
+            if (suscripcionDeCliente != null) {
+                estadoSuscripcion = suscripcionDeCliente.getEstadoSuscripcion();
+            }
+        }
+    }
 %>
 
 
@@ -71,7 +74,7 @@
                id="iconAddToPlaylist_FilePlayer"
                >  
             </i>
-            <% if (estadoSuscripcion.equals("Vigente")) { %>
+            <% if (estadoSuscripcion != null && estadoSuscripcion.equals("Vigente")) { %>
                 <a id="downloadAnchor" target="_blank" data-available="true">
                     <i class="bi bi-download"></i>
                 </a>

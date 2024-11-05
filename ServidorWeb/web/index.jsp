@@ -35,8 +35,16 @@
         <%  
             Fabrica fabrica = Fabrica.getInstance();
             IControlador controlador = fabrica.getControlador();  
+
+            HttpSession sesionIndex = request.getSession(false);
+            String rolSesionIndex = null;
+
+            if (sesionIndex != null) {
+                rolSesionIndex = (String) sesion.getAttribute("rol");
+            }
         %>
 
+        <% if (!"Artista".equals(rolSesionIndex)) { %>
         <!-- TABS-CONTENT -->
         <div class="tabs">
             <ul class="tab-links">
@@ -180,7 +188,8 @@
                 </div>
             </div>
         </div>
-
+        <% } %>
+                    
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="scripts/index.js"></script>
     </body>

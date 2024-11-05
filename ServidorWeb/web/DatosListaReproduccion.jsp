@@ -75,6 +75,7 @@
     <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
 </head>
 <jsp:include page="headerIndex.jsp"/>
+
 <body>
     <% if (!"Artista".equals(rolSesion)) { %>
     <div class="containerMain">
@@ -207,8 +208,9 @@
                 </table>
             </div>
         </div>
-        <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
     </div>
+    <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
+
     <% } %>
 </body>
 
