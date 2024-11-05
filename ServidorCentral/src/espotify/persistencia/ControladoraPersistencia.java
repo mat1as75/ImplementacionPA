@@ -876,6 +876,20 @@ public class ControladoraPersistencia {
         }
         return dataAlbums;
     }
+    
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorArtista(String artista) {
+        ArrayList<DTAlbum_Simple> dataAlbums = new ArrayList<>();
+        List<Album> listaAlbumes = albJpa.findAlbumEntities();
+
+        for (Album album : listaAlbumes) {
+
+            if (album.getMiArtista().getNickname().equals(artista)) {
+                dataAlbums.add(album.getDTAlbumSimple());
+            }
+        }
+        return dataAlbums;
+    }
+    
 
     public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
 
@@ -1603,8 +1617,6 @@ public class ControladoraPersistencia {
     }
 
     public ArrayList<DTSuscripcion> getDTSuscripciones() {
-        //revisa todas las suscripciones y setea como vencida aquellas cuya fecha de vencimiento sea mayor a la fecha actual
-        this.actualizarSuscripcionesVencidas();
         
         List<Suscripcion> listaSuscripciones = suscripcionJpa.findSuscripcionEntities();
         ArrayList<DTSuscripcion> dataSuscripciones = new ArrayList<>();
@@ -1688,10 +1700,7 @@ public class ControladoraPersistencia {
         return true;
     }
     
-    public DTSuscripcion getDTSuscripcion(Long id) {
-        //revisa todas las suscripciones y setea como vencida aquellas cuya fecha de vencimiento sea mayor a la fecha actual
-        this.actualizarSuscripcionesVencidas();
-        
+    public DTSuscripcion getDTSuscripcion(Long id) {        
         Suscripcion s = suscripcionJpa.findSuscripcion(id);
 
         if (s != null) {
@@ -1776,8 +1785,6 @@ public class ControladoraPersistencia {
     }
     
     public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
-        //revisa todas las suscripciones y setea como vencida aquellas cuya fecha de vencimiento sea mayor a la fecha actual
-        actualizarSuscripcionesVencidas();
         
         Cliente cliente = this.cliJpa.findCliente(nickname);
         if (cliente == null) {

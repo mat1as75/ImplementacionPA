@@ -15,26 +15,27 @@
 
 
 <% 
-    HttpSession sesion = request.getSession(false);
-    String rol = null;
+    HttpSession sesionNav = request.getSession(false);
+    String rolNav = null;
     
-    if (sesion != null) {
-        rol = (String) sesion.getAttribute("rol");
+    if (sesionNav != null) {
+        rolNav = (String) sesionNav.getAttribute("rol");
     }
     
 %>
 
-<% if (rol != null) { %>
+<% if (rolNav != null) { %>
 
 <nav class="navCustom">
     <ul class="navCustomUl">
        
-        <% if (rol.equals("Cliente")) { %>
-            <li><a href="IngresarSuscripcion">Contratar suscripción</a></li>
+        <% if (rolNav.equals("Cliente")) { %>
+            <li><a href="IngresarSuscripcion">Planes</a></li>
             <li><a href="ActualizarSuscripcion">Mi suscripción</a></li>
+            <li><a href="CrearListaReproduccion.jsp">Crear lista de reproducción</a></li>
         <% } %>
         
-        <% if (rol.equals("Artista")) { %>
+        <% if (rolNav.equals("Artista")) { %>
             <li><a href="AltaAlbum">Subir nuevo álbum</a></li>
         <% } %>
     </ul>

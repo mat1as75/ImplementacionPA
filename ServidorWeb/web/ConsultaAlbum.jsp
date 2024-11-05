@@ -18,7 +18,9 @@
 <%
 String albumIdStr = request.getParameter("albumId");
  Long albumId = null;
-if(albumIdStr != null ){
+
+if(albumIdStr != null && !albumIdStr.isEmpty()){
+
         albumId = Long.valueOf(albumIdStr);
 }
 
@@ -83,6 +85,9 @@ try {
         <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="styles/DatosAlbum.css"/>
     </head>
+
+    <jsp:include page="headerIndex.jsp"/>
+
     <body>
         <div class="containerMain">
         <div class="album-detalles">
@@ -123,11 +128,23 @@ try {
                     <p><span>Año:</span> <%= album != null ? album.getAnioCreacion() : "N/A"%></p>
                     
 
+                   <%
+                       if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                       %>
+                       
                     <!-- Agregar album a favoritos -->
                     <form action="SVGuardarAlbumFavorito" method="post">
+                        <%
+                            System.out.println("Aca"+albumId);
+                            %>
                         <input type="hidden" name="albumId" value="<%= albumId %>"/>
+                        <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
                         <button type="submit" class="boton-agregar">Guardar</button>
                     </form>
+                    <%
+                    }
+                    %>
+
                 </div>
 
             </div>
@@ -151,6 +168,8 @@ try {
                         <% if (album != null) { %>
                                  <% for (DTTemaSimple tema : album.getMisTemasSimple()) { %>
                                      <%
+                                         
+                                         System.out.println(album.getMisTemasSimple().size());
                                     int duracionSegundos = tema.getDuracionSegundos();
                                     int minutos = duracionSegundos / 60;
                                     int segundos = duracionSegundos % 60;
@@ -159,13 +178,25 @@ try {
                                     String srcPortada = fotoAlbum;
                                     %>
                         <!-- Escuchar tema por fila -->
-                        <tr class="row-hover"onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
+
+                        
+                        <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
+                                <%
+                                    if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
+                                    <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
+                                    <input type="hidden" name="tipo" value="Album"/>
+                                    <input type="hidden" name="identificador" value="<%= albumId %>"/>
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
+                                <%
+                                }
+                                %>
+
                             </td>
                             <td><%= tema.getNombreTema()%></td>
                             <td><%= String.format("%d:%02d", minutos, segundos)%></td>
@@ -215,4 +246,6 @@ try {
         <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
     </div>
     </body>
+
 </html>
+

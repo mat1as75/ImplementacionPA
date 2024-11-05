@@ -73,8 +73,12 @@
     <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
     <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
     <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
+    <link rel="stylesheet" href="styles/nav.css"/>
+
 </head>
 <jsp:include page="headerIndex.jsp"/>
+<%@ include file="../WEB-INF/jspf/Nav.jspf" %>
+
 <body>
     <% if (!"Artista".equals(rolSesion)) { %>
     <div class="containerMain">
@@ -103,12 +107,19 @@
                     <% } else if ("Particular".equals(tipoLista)) {%>
                     <p><span>Cliente:</span> <%= datosLista != null ? datosLista.getCliente() : "N/A"%></p>
                     <% }%>
-
+                       <%
+                       if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                       %>
                     <!-- Agregar lista a favoritos -->
+                   
                     <form action="SVGuardarListaFavorito" method="post">
                         <input type="hidden" name="nombreLista" value="<%= nombreLista%>"/>
+                        <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
                         <button type="submit" class="boton-agregar">Guardar</button>
                     </form>
+                    <%
+                    }
+                    %>
                 </div>
 
             </div>
@@ -139,13 +150,22 @@
                                     String srcPortada = fotoLista;
                         %>
                         <!-- Escuchar tema por fila -->
-                        <tr class="row-hover"onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
+                        <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
+                                 <%
+                                    if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
+                                    <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
+                                    <input type="hidden" name="tipo" value="Lista"/>
+                                    <input type="hidden" name="identificador" value="<%= nombreLista %>"/>
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
+                                <%
+                                }
+                                %>
                             </td>
                             <td><%= tema.getNombreTema()%></td>
                             <td><%= String.format("%d:%02d", minutos, segundos)%></td>
@@ -191,8 +211,9 @@
                 </table>
             </div>
         </div>
-        <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
     </div>
+    <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
+
     <% } %>
 </body>
 

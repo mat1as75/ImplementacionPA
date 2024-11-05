@@ -5,8 +5,6 @@
 
 document.addEventListener("DOMContentLoaded", evt => {
     document.getElementById("audioLinkPlayerContainer").classList.add("hidden");
+
 });
-
-
-
 

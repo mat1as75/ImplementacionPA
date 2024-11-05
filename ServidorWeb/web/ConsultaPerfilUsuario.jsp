@@ -13,10 +13,13 @@
         <script src="scripts/consultaPerfilUsuario.js" defer></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
+        <link rel="stylesheet" href="styles/nav.css"/>
         <title>Consulta Perfil Usuario</title>
     </head>
 
     <jsp:include page="headerIndex.jsp"/>
+    <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
+
          
     <%
         Fabrica fb = Fabrica.getInstance();

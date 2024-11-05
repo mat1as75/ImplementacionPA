@@ -1,11 +1,7 @@
 import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTSuscripcion;
-import espotify.logica.Cliente;
 import espotify.logica.Suscripcion;
 import espotify.persistencia.ControladoraPersistencia;
-import espotify.persistencia.exceptions.DatabaseUpdateException;
-import espotify.persistencia.exceptions.NonexistentEntityException;
-import espotify.persistencia.exceptions.PreexistingEntityException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

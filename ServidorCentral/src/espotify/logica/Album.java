@@ -132,8 +132,8 @@ public class Album implements Serializable {
         ArrayList<DTTemaGenerico> auxDTTG = new ArrayList<>();
         ArrayList<DTTemaSimple> auxDTTS = new ArrayList<>();
         DTTemaConRuta dttcr;
-        DTTemaConURL dttcu;
         DTTemaSimple dtts;
+        DTTemaConURL dttcu;
         DTAlbum dta = new DTAlbum(
                 this.getIdAlbum(),
                 this.getNombreAlbum(),
@@ -161,7 +161,12 @@ public class Album implements Serializable {
            
         }
         dta.setMisTemas(auxDTTG);
-        dta.setMisTemasSimple(auxDTTS);
+
+        dta.setMisTemasSimples(auxDTTS);
+        
+        
+        
+
         return dta;
     }
     
