@@ -66,6 +66,7 @@ public interface IControlador {
     public abstract ArrayList<DTAlbum> getDTAlbumesDisponibles();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero);
+    public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorArtista(String artista);
     public abstract ArrayList<DTGenero_Simple> getListaDTGeneroSimple();
     public abstract DTTemaGenerico getTemaPorLista(String nombreLista, String tipoDeLista, String nombreTema);
     public abstract List<DTGenero> getGenerosjTree();
@@ -117,5 +118,6 @@ public interface IControlador {
     
     public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
     public abstract List<DTDatosListaReproduccion> getListaDTDatosListaReproduccionDeCliente(String nicknameCliente) throws Exception;
+    public abstract List<DTArtista> getArtistas();
 
 }

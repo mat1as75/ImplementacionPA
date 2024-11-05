@@ -434,6 +434,11 @@ public class Controlador implements IControlador{
     public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorGenero(String genero) {
         return this.contpersis.getDTAlbumesSimplePorGenero(genero);
     }
+    @Override
+    public ArrayList<DTAlbum_Simple> getDTAlbumesSimplePorArtista(String artista) {
+        return this.contpersis.getDTAlbumesSimplePorArtista(artista);
+    }
+    
 
     @Override
     public List<String> getUsuariosSinEste(String nickname){
@@ -515,6 +520,17 @@ public class Controlador implements IControlador{
     @Override
     public void actualizarSuscripcionesVencidas() {
         this.contpersis.actualizarSuscripcionesVencidas();
+    }
+    
+    @Override
+    public List<DTArtista> getArtistas(){
+        List<DTArtista> retorno = new ArrayList<>();
+        for(Artista a : this.contpersis.getArtistas()){
+            retorno.addLast(a.getDTArtista());
+        }
+        
+        return retorno;
+        
     }
 
 }

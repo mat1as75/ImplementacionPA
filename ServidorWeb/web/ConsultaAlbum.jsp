@@ -1,45 +1,57 @@
+<%-- 
+    Document   : ConsultaAlbum.jsp
+    Created on : 31 oct. 2024, 10:08:08 p. m.
+    Author     : brisa
+--%>
+<%@page import="espotify.DataTypes.DTGenero"%>
 <%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <%@page import="java.util.List" %>
-<%@page import="espotify.DataTypes.DTDatosListaReproduccion" %>
+<%@page import="espotify.DataTypes.DTAlbum" %>
 <%@page import="espotify.DataTypes.DTTemaSimple"%>
 <%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
 <%@ page import="espotify.logica.Fabrica" %>
 <%@ page import="espotify.logica.IControlador" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<html>
 <%
-    String nombreLista = request.getParameter("nombreLista");
-    Fabrica f = Fabrica.getInstance();
-    IControlador iControlador = f.getControlador();
-    DTDatosListaReproduccion datosLista = null;
-    String tipoLista = null;
-    String errorMsg = null;
+String albumIdStr = request.getParameter("albumId");
+ Long albumId = null;
 
-    try {
-        List<String> nombresListasParticulares = iControlador.getNombresListasParticulares();
-        List<String> nombresListasPorDefecto = iControlador.getNombresListasPorDefecto();
+if(albumIdStr != null && !albumIdStr.isEmpty()){
 
-        if (nombresListasParticulares.contains(nombreLista)) {
-            tipoLista = "Particular";
-        } else if (nombresListasPorDefecto.contains(nombreLista)) {
-            tipoLista = "Por Defecto";
+        albumId = Long.valueOf(albumIdStr);
+}
+
+String errorMsg = null;
+
+Fabrica f = Fabrica.getInstance();
+IControlador iControlador = f.getControlador();
+DTAlbum album = null;
+String artista = null;
+
+
+try {
+    album = iControlador.ConsultaAlbum(albumId);
+    
+    
+    if (album != null) {
+        String fotoAlbum = album.getFotoAlbum();
+        if (fotoAlbum != null && !fotoAlbum.isEmpty()) {
+            fotoAlbum = fotoAlbum.substring(2);
+        } else {
+            fotoAlbum = "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
         }
-        if (tipoLista != null) {
-            datosLista = iControlador.ConsultarListaReproduccion(tipoLista, nombreLista);
-        }
-        String fotoLista = datosLista != null ? datosLista.getFotoLista() : null;
-        if (fotoLista != null) {
-            fotoLista = fotoLista.substring(2);
-        }
-    } catch (Exception e) {
-        errorMsg = "Error al obtener los datos de la lista: " + e.getMessage();
     }
+} catch (Exception e) {
+    errorMsg = "Error al obtener los datos del album: " + e.getMessage();
+}
+
     // Comprobar suscripcion vigente
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
-        
     DTDatosUsuario datosU = null;
     DTDatosCliente datosC = null;
     String estadoSuscripcionSesion = null;
@@ -58,71 +70,88 @@
     // Comprobar si puede descargar
     boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
 %>
-
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
           rel="stylesheet" 
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
           crossorigin="anonymous"
           >
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="scripts/reproductorDeMusica.js" defer></script>
-    <script src="scripts/ConsultaListaReproduccion.js" defer></script>
-    <link rel="stylesheet" href="styles/variablesGlobales.css"/>
-    <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
-    <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
-    <link rel="stylesheet" href="styles/DatosListaReproduccion.css"/>
-</head>
-<jsp:include page="headerIndex.jsp"/>
-<body>
-    <% if (!"Artista".equals(rolSesion)) { %>
-    <div class="containerMain">
-        <div class="lista-detalles">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <script src="scripts/reproductorDeMusica.js" defer></script>
+        <script src="scripts/ConsultaAlbum.js" defer></script>
+        <link rel="stylesheet" href="styles/variablesGlobales.css"/>
+        <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
+        <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
+        <link rel="stylesheet" href="styles/DatosAlbum.css"/>
+    </head>
+
+    <jsp:include page="headerIndex.jsp"/>
+
+    <body>
+        <div class="containerMain">
+        <div class="album-detalles">
             <div class="info-container">
-                <div class="lista-fotoLista">
-                    <!-- Foto de la lista-->
+                <div class="album-fotoAlbum">
+                    <!-- Foto del album-->
                     <%
-                        String fotoLista = datosLista != null ? datosLista.getFotoLista() : null;
-                        if (fotoLista != null && !fotoLista.isEmpty()) {
-                            fotoLista = fotoLista.substring(2);
+                        String fotoAlbum = album != null ? album.getFotoAlbum() : null;
+                        if (fotoAlbum != null && !fotoAlbum.isEmpty()) {
+                            fotoAlbum = fotoAlbum.substring(2);
                         } else {
-                            fotoLista = "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+                            fotoAlbum = "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
                         }
                     %>
-                    <img src="<%= request.getContextPath() + "/" + fotoLista%>" alt="Imagen de la lista" />
+                    <img src="<%= request.getContextPath() + "/" + fotoAlbum%>" alt="Imagen del album" />
                 </div>
 
 
-                <div class="lista-info">
-                    <!-- Nombre, Tipo y Genero/Cliente de la lista -->
-                    <h1><%= datosLista != null ? datosLista.getNombreLista() : "Lista no encontrada"%></h1> 
-                    <p><span>Tipo:</span> <%= tipoLista != null ? tipoLista : "Desconocido"%></p>
-                    <% if ("Por Defecto".equals(tipoLista)) {%>
-                    <p><span>Género:</span> <%= datosLista != null ? datosLista.getGenero() : "N/A"%></p>
-                    <% } else if ("Particular".equals(tipoLista)) {%>
-                    <p><span>Cliente:</span> <%= datosLista != null ? datosLista.getCliente() : "N/A"%></p>
-                    <% }%>
-                       <%
+                <div class="album-info">
+                    <!-- Nombre, Artista y Generos del album -->
+                    <h1><%= album != null ? album.getNombreAlbum() : "Album no encontrado"%></h1> 
+                    <p><span>Artista:</span> <%= artista != null ? artista : "Desconocido"%></p>
+                    <% 
+                        StringBuilder generosConcat = new StringBuilder();
+                        if(album != null){
+                            List<DTGenero> generos = album.getMisgeneros(); 
+                        
+                            for (int i = 0; i < generos.size(); i++) {
+                                generosConcat.append(generos.get(i).getNombreGenero());
+                                if (i < generos.size() - 1) {
+                                    generosConcat.append(", ");
+                                }
+                            }
+                        }
+                    %>
+                    <p><span>Géneros:</span> <%= album != null ? generosConcat.toString() : "N/A"%></p>
+
+                    <p><span>Año:</span> <%= album != null ? album.getAnioCreacion() : "N/A"%></p>
+                    
+
+                   <%
                        if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                        %>
-                    <!-- Agregar lista a favoritos -->
-                   
-                    <form action="SVGuardarListaFavorito" method="post">
-                        <input type="hidden" name="nombreLista" value="<%= nombreLista%>"/>
+                       
+                    <!-- Agregar album a favoritos -->
+                    <form action="SVGuardarAlbumFavorito" method="post">
+                        <%
+                            System.out.println("Aca"+albumId);
+                            %>
+                        <input type="hidden" name="albumId" value="<%= albumId %>"/>
                         <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
                         <button type="submit" class="boton-agregar">Guardar</button>
                     </form>
                     <%
                     }
                     %>
+
                 </div>
 
             </div>
 
             <div class="separador"></div>
 
-            <div class="temas-lista">
+            <div class="temas-album">
                 <!-- Temas de la lista -->
                 <table class="tabla-temas">
                     <thead>
@@ -134,34 +163,38 @@
                             <th>Ruta/Link</th> 
                         </tr>
                     </thead>
-                    <tbody>
+                    
                         <% int nroTema = 1; %>
-                        <% if (datosLista != null) {
-                                for (DTTemaSimple tema : datosLista.getTemas()) {
+                        <% if (album != null) { %>
+                                 <% for (DTTemaSimple tema : album.getMisTemasSimple()) { %>
+                                     <%
                                     int duracionSegundos = tema.getDuracionSegundos();
                                     int minutos = duracionSegundos / 60;
                                     int segundos = duracionSegundos % 60;
 
                                     DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
-                                    String srcPortada = fotoLista;
-                        %>
+                                    String srcPortada = fotoAlbum;
+                                    %>
                         <!-- Escuchar tema por fila -->
+
+                        
                         <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
-                                 <%
+                                <%
                                     if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
                                     <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
-                                    <input type="hidden" name="tipo" value="Lista"/>
-                                    <input type="hidden" name="identificador" value="<%= nombreLista %>"/>
+                                    <input type="hidden" name="tipo" value="Album"/>
+                                    <input type="hidden" name="identificador" value="<%= albumId %>"/>
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
                                 <%
                                 }
                                 %>
+
                             </td>
                             <td><%= tema.getNombreTema()%></td>
                             <td><%= String.format("%d:%02d", minutos, segundos)%></td>
@@ -203,12 +236,14 @@
                                 }
                             }
                         %>
-                    </tbody>
+                    
                 </table>
             </div>
         </div>
+        
         <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
     </div>
-    <% } %>
-</body>
+    </body>
+
+</html>
 
