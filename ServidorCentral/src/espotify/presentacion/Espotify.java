@@ -3,9 +3,7 @@ package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
-import espotify.presentacion.AltaPerfil;
-import espotify.presentacion.ConsultaPerfilCliente;
-import javax.swing.ImageIcon;
+import webservices.NuevoWebService;
 
 public class Espotify extends javax.swing.JFrame {
 
@@ -13,6 +11,9 @@ public class Espotify extends javax.swing.JFrame {
     
     public Espotify() {
         initComponents();
+        
+        NuevoWebService service = new NuevoWebService();
+        service.publishEndpoint();
         
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
