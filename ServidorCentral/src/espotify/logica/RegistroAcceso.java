@@ -14,7 +14,7 @@ public class RegistroAcceso implements Serializable{
     // Atributos
     @Id
     private Long idRegistro;
-    private Long ipRegistro;
+    private String ipRegistro;
     private String urlRegistro;
     private String browserRegistro;
     private String soRegistro;
@@ -24,7 +24,7 @@ public class RegistroAcceso implements Serializable{
     public RegistroAcceso() {
     }
 
-    public RegistroAcceso(Long idRegistro, Long ipRegistro, String urlRegistro, String browserRegistro, String soRegistro, Date fechaRegistro) {
+    public RegistroAcceso(Long idRegistro, String ipRegistro, String urlRegistro, String browserRegistro, String soRegistro, Date fechaRegistro) {
         this.idRegistro = idRegistro;
         this.ipRegistro = ipRegistro;
         this.urlRegistro = urlRegistro;
@@ -41,11 +41,11 @@ public class RegistroAcceso implements Serializable{
         this.idRegistro = idRegistro;
     }
 
-    public Long getIpRegistro() {
+    public String getIpRegistro() {
         return ipRegistro;
     }
 
-    public void setIpRegistro(Long ipRegistro) {
+    public void setIpRegistro(String ipRegistro) {
         this.ipRegistro = ipRegistro;
     }
 
