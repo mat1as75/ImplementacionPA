@@ -22,7 +22,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author tecnologo
+ * @author mat1as
  */
 public class ArtistaJpaController implements Serializable {
 

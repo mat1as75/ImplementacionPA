@@ -22,14 +22,14 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author ms
+ * @author mat1as
  */
 public class UsuarioJpaController implements Serializable {
 
     public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-     public UsuarioJpaController() {
+    public UsuarioJpaController() {
         this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
     }
     private EntityManagerFactory emf = null;
@@ -209,7 +209,7 @@ public class UsuarioJpaController implements Serializable {
         
         return pattern.matcher(identificador).matches();
     }
-
+    
     public int getUsuarioCount() {
         EntityManager em = getEntityManager();
         try {
