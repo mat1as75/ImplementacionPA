@@ -15,6 +15,7 @@ import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTSuscripcion;
+import espotify.DataTypes.DTTemaConPuntaje;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
@@ -892,8 +893,12 @@ public class ControladoraPersistencia {
     }
     
 
-    public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
+    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
 
+        if (nicknameCliente == null || idTema == null) {
+            throw new InvalidDataException("El nickname o el id del tema son nulos.");
+        }
+        
         Cliente c = cliJpa.findCliente(nicknameCliente);
         Tema tema = temaJpa.findTema(idTema);
 
@@ -908,10 +913,12 @@ public class ControladoraPersistencia {
             }
         }
 
+        tema.incrementarCantidadFavoritos();
         c.setMisTemasFav(tema);
 
         try {
             cliJpa.edit(c);
+            temaJpa.edit(tema);
         } catch (Exception ex) {
             throw ex;
         }
@@ -943,6 +950,11 @@ public class ControladoraPersistencia {
     }
 
     public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        
+        if (nicknameCliente == null || idAlbum == null) {
+            throw new InvalidDataException("El nickname o el id del album son nulos.");
+        }
+        
         Cliente c = cliJpa.findCliente(nicknameCliente);
         Album album = albJpa.findAlbum(idAlbum);
 
@@ -1215,19 +1227,36 @@ public class ControladoraPersistencia {
         return nicknamesClientesLPrivadas;
     }
 
-    public void EliminarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
+    public void EliminarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
+        if (nicknameCliente == null || idTema == null) {
+            throw new InvalidDataException("El nickname o el id del tema son nulos.");
+        }
+        
         Cliente c = cliJpa.findCliente(nicknameCliente);
+        
+        if (c == null) {
+            throw new NonexistentEntityException("No se encontró el cliente.");
+        }
+        
+        Tema tema = null;
         List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
         for (Tema t : temasFavoritosDelCliente) {
             if (t.getIdTema().equals(idTema)) {
+                tema = t;
+                tema.decrementarCantidadFavoritos();
                 temasFavoritosDelCliente.remove(t);
                 break;
                 //c.setMisTemasFavLista(temasFavoritosDelCliente);
             }
         }
-
+        
+        if (tema == null) {
+            throw new NonexistentEntityException("El cliente no tiene el tema en sus favoritos");
+        }
+        
         try {
             cliJpa.edit(c);
+            temaJpa.edit(tema);
         } catch (Exception ex) {
             throw ex;
         }
@@ -1837,6 +1866,50 @@ public class ControladoraPersistencia {
             this.cliJpa.edit(cliente);
             this.suscripcionJpa.destroy(nuevaSuscripcion.getIdSuscripcion());
             throw new DatabaseUpdateException("No se pudo ingresar la suscripcion");
+        }
+    }
+    
+    public List<DTTemaConPuntaje> getTopTemas(int cantidadEsperada) {
+        List<Tema> temas = this.temaJpa.findTemaEntities();
+        temas.sort( (t1, t2) -> t2.getPuntajeTema().compareTo(t1.getPuntajeTema()));
+        
+        int contadorTemasAgregados = 0;
+        
+        List<DTTemaConPuntaje> temasConPuntaje = new ArrayList();
+        for (Tema t : temas) {
+            temasConPuntaje.add(t.getDTTemaConPuntaje());
+            contadorTemasAgregados++;
+            if (contadorTemasAgregados == cantidadEsperada) break;
+        }
+        
+        return temasConPuntaje;
+    }
+    
+    public void incrementarReproduccionesDeTema(Long idTema) throws Exception {
+        if (idTema == null) throw new InvalidDataException("El id del tema es null.");
+        
+        Tema tema = this.temaJpa.findTema(idTema);
+        if (tema == null) throw new NonexistentEntityException("No se encontró un tema con el id " +idTema);
+        
+        tema.incrementarReproducciones();
+        try {
+            this.temaJpa.edit(tema);
+        } catch (Exception e) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void incrementarDescargasOVisitasDeTema(Long idTema) throws Exception {
+        if (idTema == null) throw new InvalidDataException("El id del tema es null.");
+        
+        Tema tema = this.temaJpa.findTema(idTema);
+        if (tema == null) throw new NonexistentEntityException("No se encontró un tema con el id " +idTema);
+        
+        tema.incrementarDescargasOVisitas();
+        try {
+            this.temaJpa.edit(tema);
+        } catch (Exception e) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }
