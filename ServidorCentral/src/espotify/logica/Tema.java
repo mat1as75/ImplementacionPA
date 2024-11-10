@@ -2,6 +2,7 @@ package espotify.logica;
 
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
+import espotify.DataTypes.DTTemaConPuntaje;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,10 @@ public abstract class Tema implements Serializable {
     protected String nombreTema;
     protected int duracionSegundos;
     protected int posicionEnAlbum;
+    protected Long cantidadReproducciones;
+    protected Long cantidadDescargasOVisitas;
+    protected Long cantidadFavoritos;
+   
     @ManyToOne
     protected Album miAlbum;
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -41,6 +46,10 @@ public abstract class Tema implements Serializable {
         this.duracionSegundos = duracionSegundos;
         this.posicionEnAlbum = posicionEnAlbum;
         this.miAlbum = album;
+        this.misReproducciones = null;
+        this.cantidadDescargasOVisitas = 0L;
+        this.cantidadReproducciones = 0L;
+        this.cantidadFavoritos = 0L;
     }    
 
     //getters y setters
@@ -91,6 +100,59 @@ public abstract class Tema implements Serializable {
     public void setMisReproducciones(ListaReproduccion lr) {
         this.misReproducciones.add(lr);
     }
+
+    public Long getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+
+    public void setCantidadReproducciones(Long cantidadReproducciones) {
+        this.cantidadReproducciones = cantidadReproducciones;
+    }
+
+    public Long getCantidadDescargasOVisitas() {
+        return cantidadDescargasOVisitas;
+    }
+
+    public void setCantidadDescargasOVisitas(Long cantidadDescargasOVisitas) {
+        this.cantidadDescargasOVisitas = cantidadDescargasOVisitas;
+    }
+
+    public Long getCantidadFavoritos() {
+        return cantidadFavoritos;
+    }
+
+    public void setCantidadFavoritos(Long cantidadFavoritos) {
+        this.cantidadFavoritos = cantidadFavoritos;
+    }
+    
+    public void incrementarCantidadFavoritos() {
+        this.cantidadFavoritos++;
+    }
+    
+    public void decrementarCantidadFavoritos() {
+        this.cantidadFavoritos--;
+    }
+    
+    public void incrementarReproducciones() {
+        this.cantidadReproducciones++;
+    }
+    
+    public void incrementarDescargasOVisitas() {
+        this.cantidadDescargasOVisitas++;
+    }
+    
+    public Float getPuntajeTema() {
+        int cantidadDeListas = this.getMisReproducciones() == null 
+            ? 0 
+            : this.getMisReproducciones().size();
+    
+        Float puntaje = this.getCantidadDescargasOVisitas() * 0.2f 
+                + this.getCantidadReproducciones() * 0.3f
+                + cantidadDeListas * 0.2f
+                + this.getCantidadFavoritos() * 0.3f;
+        
+        return puntaje;
+    }
     
     public DTTemaSimple getDTTemaSimple() {
         
@@ -120,6 +182,20 @@ public abstract class Tema implements Serializable {
                 this.getIdTema(),
                 this.getNombreTema(),
                 this.getMiAlbum().getIdAlbum()
+        );
+    }
+    
+    public DTTemaConPuntaje getDTTemaConPuntaje() {
+        return new DTTemaConPuntaje(
+                this.getIdTema(),
+                this.getNombreTema(),
+                this.getDuracionSegundos(),
+                this.getPosicionEnAlbum(),
+                this.getMiAlbum().getIdAlbum(),
+                this.getMiAlbum().getNombreAlbum(),
+                this.getMiAlbum().getMiArtista().getNombreCompletoToString(),
+                this.getMiAlbum().getMisGenerosString(),
+                this.getPuntajeTema()
         );
     }
     
