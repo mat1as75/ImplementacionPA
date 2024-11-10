@@ -26,10 +26,10 @@ public class ServletPrueba extends HttpServlet {
         
         NuevoWebServiceService service = new NuevoWebServiceService();
         NuevoWebService ws = service.getNuevoWebServicePort();
-        
+        Boolean existe = ws.existeCliente("cbochinche");
         String resultado = ws.getPepe();
         
-        response.getWriter().write("<h1>"+resultado+"</h1>");
+        response.getWriter().write("<h1>"+resultado+"| " + existe +"</h1>");
     }
 
     @Override
