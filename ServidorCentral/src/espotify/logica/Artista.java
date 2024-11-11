@@ -16,6 +16,9 @@ public class Artista extends Usuario{
     @Lob
     private String biografia;
     private String dirSitioWeb;
+    private Boolean activo;
+    @Temporal(TemporalType.DATE)
+    private Date fechaBaja;
     
     // Referencias
     @OneToMany (mappedBy="miArtista")
@@ -29,6 +32,8 @@ public class Artista extends Usuario{
         super( nickname, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil );
         this.biografia = biografia;
         this.dirSitioWeb = dirSitioWeb;
+        this.activo = true;
+        this.fechaBaja = null;
     }
     
     // Getters & Setters
@@ -45,6 +50,21 @@ public class Artista extends Usuario{
     public void setDirSitioWeb(String dirSitioWeb) {
         this.dirSitioWeb = dirSitioWeb;
     }
+    
+    public Boolean getActivo() {
+        return activo;
+    }
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public Date getFechaBaja() {
+        return fechaBaja;
+    }
+    public void setFechaBaja(Date fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+    
     
     public List<Album> getMisAlbumesPublicados() {
         return this.misAlbumesPublicados;

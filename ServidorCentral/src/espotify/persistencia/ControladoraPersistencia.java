@@ -358,6 +358,7 @@ public class ControladoraPersistencia {
                 a.getNombreUsuario(), a.getApellidoUsuario(),
                 a.getContrasenaUsuario(), a.getEmail(), a.getFecNac(),
                 a.getFotoPerfil(), a.getBiografia(), a.getDirSitioWeb(),
+                a.getActivo(), a.getFechaBaja(), 
                 cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
 
         return DTDatosA;
@@ -1638,6 +1639,7 @@ public class ControladoraPersistencia {
                     ((Artista) u).getContrasenaUsuario(), ((Artista) u).getEmail(),
                     ((Artista) u).getFecNac(), ((Artista) u).getFotoPerfil(),
                     ((Artista) u).getBiografia(), ((Artista) u).getDirSitioWeb(),
+                    ((Artista) u).getActivo(), ((Artista) u).getFechaBaja(), 
                     cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
 
         }
