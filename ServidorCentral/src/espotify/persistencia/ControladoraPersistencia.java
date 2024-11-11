@@ -472,11 +472,8 @@ public class ControladoraPersistencia {
         EntityTransaction t = em.getTransaction();
 
         t.begin();
-        System.out.println("CLIENTE : " + C + " " + "USUARIO: " + U);
         Cliente cliente = this.cliJpa.findCliente(C);
-        System.out.println("#CLIENTE: " + cliente.getNickname());
         Usuario usuario = this.usuJpa.findUsuario(U);
-        System.out.println("#USUARIO: " + usuario.getNickname());
 
         ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
 
