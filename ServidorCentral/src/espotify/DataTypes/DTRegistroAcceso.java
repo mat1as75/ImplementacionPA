@@ -1,34 +1,21 @@
-package espotify.logica;
+package espotify.DataTypes;
 
-import espotify.DataTypes.DTRegistroAcceso;
-import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
-@Entity
-public class RegistroAcceso implements Serializable{
+public class DTRegistroAcceso {
     
     // Atributos
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRegistro;
     private String ipRegistro;
     private String urlRegistro;
     private String browserRegistro;
     private String soRegistro;
-    @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
+    
+    public DTRegistroAcceso() {};
 
-    public RegistroAcceso() {
-    }
-
-    public RegistroAcceso(Long idRegistro, String ipRegistro, String urlRegistro, String browserRegistro, String soRegistro, Date fechaRegistro) {
+    public DTRegistroAcceso(Long idRegistro, String ipRegistro, String urlRegistro, String browserRegistro, String soRegistro, Date fechaRegistro) {
         this.idRegistro = idRegistro;
         this.ipRegistro = ipRegistro;
         this.urlRegistro = urlRegistro;
@@ -85,15 +72,5 @@ public class RegistroAcceso implements Serializable{
         this.fechaRegistro = fechaRegistro;
     }
     
-    public DTRegistroAcceso getDTRegistroAcceso() {
-        return new DTRegistroAcceso(
-                this.getIdRegistro(),
-                this.getIpRegistro(),
-                this.getUrlRegistro(),
-                this.getBrowserRegistro(),
-                this.getSoRegistro(),
-                this.getFechaRegistro()
-        );
-    }
     
 }

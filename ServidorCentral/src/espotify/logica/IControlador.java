@@ -11,6 +11,7 @@ import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTGenero_Simple;
+import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaConPuntaje;
 import espotify.DataTypes.DTTemaGenerico;
@@ -124,4 +125,6 @@ public interface IControlador {
     public abstract List<DTTemaConPuntaje> getTopTemas(int cantidadEsperada);
     public abstract void incrementarReproduccionesDeTema(Long idTema) throws Exception;
     public abstract void incrementarDescargasOVisitasDeTema(Long idTema) throws Exception;
+    
+    public abstract ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles();
 }

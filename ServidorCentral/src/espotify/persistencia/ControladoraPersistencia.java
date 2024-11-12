@@ -14,6 +14,7 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero_Simple;
+import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaConPuntaje;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
@@ -30,6 +31,7 @@ import espotify.logica.TemaConURL;
 import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
+import espotify.logica.RegistroAcceso;
 import espotify.logica.Suscripcion;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.logica.Usuario;
@@ -67,6 +69,7 @@ public class ControladoraPersistencia {
     public TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     public TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
     public SuscripcionJpaController suscripcionJpa = new SuscripcionJpaController();
+    public RegistroAccesoJpaController registroAccesoJpa = new RegistroAccesoJpaController();
 
     public ControladoraPersistencia() {}
     
@@ -1908,5 +1911,16 @@ public class ControladoraPersistencia {
         } catch (Exception e) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+    
+    public ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles() {
+        List<RegistroAcceso> listaRegistros = registroAccesoJpa.findRegistroAccesoEntities();
+        ArrayList<DTRegistroAcceso> dtRegistros = new ArrayList<>();
+        
+        for (RegistroAcceso registro : listaRegistros) {
+            dtRegistros.add(registro.getDTRegistroAcceso());
+        }
+        
+        return dtRegistros;
     }
 }
