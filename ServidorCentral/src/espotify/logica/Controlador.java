@@ -548,5 +548,9 @@ public class Controlador implements IControlador{
         this.contpersis.incrementarDescargasOVisitasDeTema(idTema);
     }
 
+    @Override
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
+        this.contpersis.darDeBajaArtista(nicknameArtista);
+    }
 }
 

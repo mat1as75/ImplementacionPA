@@ -124,4 +124,6 @@ public interface IControlador {
     public abstract List<DTTemaConPuntaje> getTopTemas(int cantidadEsperada);
     public abstract void incrementarReproduccionesDeTema(Long idTema) throws Exception;
     public abstract void incrementarDescargasOVisitasDeTema(Long idTema) throws Exception;
+    
+    public abstract void darDeBajaArtista(String nicknameArtista) throws Exception;
 }

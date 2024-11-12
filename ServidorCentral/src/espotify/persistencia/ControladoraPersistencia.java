@@ -1909,4 +1909,89 @@ public class ControladoraPersistencia {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
+        if (nicknameArtista == null) {
+            throw new InvalidDataException("El nickname recibido es null.");
+        }
+        
+        Artista art = this.artJpa.findArtista(nicknameArtista);
+        if (art == null) {
+            throw new NonexistentEntityException("No se encontró el artista.");
+        }
+        //baja logica
+        art.setActivo(false);
+        art.setFechaBaja(new Date());
+        
+        List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
+        List<Cliente> clientes = this.cliJpa.findClienteEntities();
+        //Recorro todos los clientes para remover las relaciones con: 
+        //el artista, sus albums o sus temas
+        for (Cliente c : clientes) {
+            
+            //remuevo al artista de los seguidos del cada cliente
+            List<Usuario> seguidosDelCliente = c.getMisSeguidos();
+            seguidosDelCliente.remove(art);
+//            seguidosDelCliente.removeIf(
+//                    usuario -> usuario.getNickname().equals(art.getNickname())
+//            );
+            
+            //por cada album del artista remuevo el album y los temas de los favoritos del cliente
+            List<Album> albumsFavoritos = c.getMisAlbumesFav();
+            List<Tema> temasFavoritos = c.getMisTemasFav();
+            for (Album a : albumsDeArtista) {
+                //remuevo los albums de favoritos
+//                albumsFavoritos.removeIf(
+//                        album -> album.getIdAlbum().equals(a.getIdAlbum())
+//                );
+                albumsFavoritos.remove(a);
+                //remuevo los temas de cada album de los favoritos
+                for (Tema t : a.getMisTemas()) {
+//                    temasFavoritos.removeIf(
+//                        tema -> tema.getIdTema().equals(t.getIdTema())
+//                    );
+                      temasFavoritos.remove(t);
+                }
+            }
+            
+            try {
+                this.cliJpa.edit(c);
+            } catch (Exception e) {
+                System.out.println("Error al editar el cliente " + c.getNickname());
+            }
+        }
+        
+        List<ListaReproduccion> listasRep = this.lreprodccJpa.findListaReproduccionEntities();
+        for (ListaReproduccion lr : listasRep) {
+            for (Album a : albumsDeArtista) {
+                for (Tema t : a.getMisTemas()) {
+                    lr.removerTema(t);
+                }
+            }
+            try {
+                this.lreprodccJpa.edit(lr);
+            } catch (Exception e) {
+                System.out.println("Error al editar la lista de reproduccion " + lr.getNombreLista());
+            }
+        }
+        
+        List<Genero> generos = this.genJpa.findGeneroEntities();
+        for (Genero g : generos) {
+            for (Album a : albumsDeArtista) {
+                g.getMisAlbumes().remove(a);
+            }
+            try {
+                this.genJpa.edit(g);
+            } catch (Exception e) {
+                System.out.println("Error al editar el genero " + g.getNombreGenero());
+            }
+        }
+        
+        try {
+            this.artJpa.edit(art);
+        } catch (Exception e) {
+            System.out.println("Error al editar el artista");
+            throw e;
+        }
+    }
 }
