@@ -6,13 +6,13 @@ package espotify.persistencia;
 
 import espotify.logica.RegistroAcceso;
 import espotify.persistencia.exceptions.NonexistentEntityException;
-import espotify.persistencia.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -25,24 +25,22 @@ public class RegistroAccesoJpaController implements Serializable {
     public RegistroAccesoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    public RegistroAccesoJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("EspotifyPU");
+    }
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(RegistroAcceso registroAcceso) throws PreexistingEntityException, Exception {
+    public void create(RegistroAcceso registroAcceso) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(registroAcceso);
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findRegistroAcceso(registroAcceso.getIdRegistro()) != null) {
-                throw new PreexistingEntityException("RegistroAcceso " + registroAcceso + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
