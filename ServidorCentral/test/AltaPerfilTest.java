@@ -30,6 +30,8 @@ public class AltaPerfilTest {
                 null, 
                 null, 
                 null, 
+                null, 
+                null, 
                 null
         );
         return dtArtista;
@@ -125,6 +127,8 @@ public class AltaPerfilTest {
                 null, 
                 null, 
                 null, 
+                null, 
+                null, 
                 null
         );
         
@@ -140,6 +144,8 @@ public class AltaPerfilTest {
     public void altaArtistaDatosNull2() {
         DTArtista dtArtista = new DTArtista(
                 "nicknameArtistaDePrueba2", 
+                null, 
+                null, 
                 null, 
                 null, 
                 null, 
@@ -173,6 +179,8 @@ public class AltaPerfilTest {
                 null, 
                 null, 
                 null, 
+                null, 
+                null, 
                 null
         );
         
@@ -191,6 +199,8 @@ public class AltaPerfilTest {
                 null, 
                 null, 
                 "1234", 
+                null, 
+                null, 
                 null, 
                 null, 
                 null, 

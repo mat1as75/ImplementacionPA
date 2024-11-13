@@ -84,6 +84,8 @@ public class AltaAlbumTest {
                 null, 
                 null, 
                 null, 
+                null, 
+                null, 
                 null
         );
         

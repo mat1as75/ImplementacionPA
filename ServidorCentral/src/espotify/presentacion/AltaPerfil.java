@@ -409,6 +409,8 @@ public class AltaPerfil extends javax.swing.JInternalFrame {
                         null,
                         biografia, 
                         webPromocion,
+                        true, 
+                        null, 
                         null
                 );
                 i.AltaArtista(dtArtista);

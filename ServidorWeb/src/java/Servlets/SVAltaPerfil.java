@@ -145,7 +145,7 @@ public class SVAltaPerfil extends HttpServlet {
         Fabrica f=Fabrica.getInstance();
         IControlador i=f.getControlador();
         if ("artista".equals(userType)) {
-            DTArtista dtart=new DTArtista(nickname, nombre,apellido,password,email,fechaNacimiento,fotoPerfil,null, biografia,sitioWeb,null);
+            DTArtista dtart=new DTArtista(nickname, nombre,apellido,password,email,fechaNacimiento,fotoPerfil,null, biografia,sitioWeb,null,null,null);
             i.AltaArtista(dtart);
         }
         if("cliente".equals(userType)){

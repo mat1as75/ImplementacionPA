@@ -126,6 +126,12 @@ public class Album implements Serializable {
     public void setMiArtista(Artista artista) {
         this.miArtista = artista;
     }
+    
+    //un album esta disponible si su artista esta activo 
+    //y deja de estar activo cuando el artista se da de baja
+    public Boolean estaDisponible() {
+        return this.miArtista.getActivo();
+    }
 
     public DTAlbum getDataAlbum() {
         ArrayList<DTGenero> auxDTG = new ArrayList<>();
@@ -165,7 +171,7 @@ public class Album implements Serializable {
         dta.setMisTemasSimples(auxDTTS);
         
         
-        
+        dta.setEstaDisponible(this.estaDisponible());
 
         return dta;
     }
@@ -176,7 +182,8 @@ public class Album implements Serializable {
                 this.getNombreAlbum(),
                 this.getAnioCreacion(),
                 this.getMiArtista().getNombreCompletoToString(),
-                this.getMisGenerosString()
+                this.getMisGenerosString(),
+                this.estaDisponible()
         );
     }
 }

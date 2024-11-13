@@ -11,7 +11,9 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero;
+import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
+import espotify.DataTypes.DTTemaConPuntaje;
 import espotify.DataTypes.DTTemaGenerico;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
@@ -530,8 +532,31 @@ public class Controlador implements IControlador{
         }
         
         return retorno;
-        
     }
 
+    @Override
+    public List<DTTemaConPuntaje> getTopTemas(int cantidadEsperada) {
+        return this.contpersis.getTopTemas(cantidadEsperada);
+    }
+    
+    @Override
+    public void incrementarReproduccionesDeTema(Long idTema) throws Exception {
+        this.contpersis.incrementarReproduccionesDeTema(idTema);
+    }
+    
+    @Override
+    public void incrementarDescargasOVisitasDeTema(Long idTema) throws Exception {
+        this.contpersis.incrementarDescargasOVisitasDeTema(idTema);
+    }
+
+    @Override
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
+        this.contpersis.darDeBajaArtista(nicknameArtista);
+    }
+  
+    @Override
+    public ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles() {
+        return this.contpersis.getDTRegistrosAccesoDisponibles();
+    }
 }
 

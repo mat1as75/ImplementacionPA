@@ -2,11 +2,16 @@ package espotify.DataTypes;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 public class DTArtista extends DTUsuario{
         // Atributos
     private String biografia;
     private String dirSitioWeb;
+    private Boolean activo;
+    @Temporal(TemporalType.DATE)
+    private Date fechaBaja;
     
     // Referencias
     private List<DTAlbum> misAlbumesPublicados;
@@ -30,10 +35,14 @@ public class DTArtista extends DTUsuario{
             List<DTUsuario> misSeguidores, 
             String biografia, 
             String dirSitioWeb, 
+            Boolean activo, 
+            Date fechaBaja, 
             List<DTAlbum> misAlbumesPublicados) {
         super(nickname,nombreUsuario,apellidoUsuario,contrasenaUsuario,email,fecNac,fotoPerfil);
         this.biografia = biografia;
         this.dirSitioWeb = dirSitioWeb;
+        this.activo = activo;
+        this.fechaBaja = fechaBaja;
         this.misAlbumesPublicados = misAlbumesPublicados;
     }
 
@@ -60,6 +69,22 @@ public class DTArtista extends DTUsuario{
         return this.dirSitioWeb;
     }
 
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public Date getFechaBaja() {
+        return fechaBaja;
+    }
+
+    public void setFechaBaja(Date fechaBaja) {
+        this.fechaBaja = fechaBaja;
+    }
+    
     public List<DTAlbum> getMisAlbumesPublicados() {
         return this.misAlbumesPublicados;
     }

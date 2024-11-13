@@ -12,6 +12,8 @@ public class DTDatosArtista extends DTDatosUsuario {
     
     private String biografia;
     private String dirSitioWeb;
+    private Boolean activo;
+    private Date fechaBaja;
     
     private int contidadSeguidores;
     private Map<Long, String> nombresAlbumesPublicados;
@@ -22,13 +24,15 @@ public class DTDatosArtista extends DTDatosUsuario {
     
     public DTDatosArtista(String nicknameUsuario, String nombreUsuario, String apellidoUsuario, 
             String contrasenaUsuario, String email, Date fecNac, String fotoPerfil, String biografia, 
-            String dirSitioWeb, int cantidadSeguidores, 
+            String dirSitioWeb, Boolean activo, Date fechaBaja, int cantidadSeguidores, 
             ArrayList<String> nicknamesSeguidores, Map<Long, String> nombresAlbumesPublicados) {
         
         super( nicknameUsuario, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil, nicknamesSeguidores );
 
         this.biografia = biografia;
         this.dirSitioWeb = dirSitioWeb;
+        this.activo = activo;
+        this.fechaBaja = fechaBaja;
         this.contidadSeguidores = cantidadSeguidores;
         this.nicknamesSeguidores = nicknamesSeguidores;
         this.nombresAlbumesPublicados = nombresAlbumesPublicados;
@@ -37,6 +41,10 @@ public class DTDatosArtista extends DTDatosUsuario {
     public String getBiografia() { return biografia; }
 
     public String getDirSitioWeb() { return dirSitioWeb; }
+    
+    public Boolean getActivo() { return activo; }
+    
+    public Date getFechaBaja() { return fechaBaja; }
     
     public int getCantidadSeguidores() { return contidadSeguidores; }
     

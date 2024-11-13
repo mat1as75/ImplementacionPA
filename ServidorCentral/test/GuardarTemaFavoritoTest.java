@@ -38,7 +38,7 @@ public class GuardarTemaFavoritoTest {
     public void tearDown() {
     }
 
-    public Boolean verificarGuardadoTema(String nickname, Long idTema) throws Exception {
+    public Boolean verificarGuardadoTema(String nickname, Long idTema, Long cantPreviaFavoritos) throws Exception {
         Cliente cliente = cp.cliJpa.findCliente(nickname);
         
         if (cliente == null) {
@@ -48,7 +48,7 @@ public class GuardarTemaFavoritoTest {
         List<Tema> temasFavoritos = cliente.getMisTemasFav();
         
         for (Tema t : temasFavoritos) {
-            if (t.getIdTema().equals(idTema)) {
+            if (t.getIdTema().equals(idTema) && t.getCantidadFavoritos() > cantPreviaFavoritos) {
                 return true;
             }
         }
@@ -59,9 +59,17 @@ public class GuardarTemaFavoritoTest {
         
         Boolean fueGuardado = false;
         
+        Long cantPreviaFavoritos = 0L;
+        if (idTema != null) {
+            Tema tema = cp.temaJpa.findTema(idTema);
+            if (tema != null) {
+                cantPreviaFavoritos = tema.getCantidadFavoritos();
+            }
+        }
+        
         try {
-            cp.GuardarTemaFavorito(nickname, idTema);
-            fueGuardado = verificarGuardadoTema(nickname, idTema);
+           cp.GuardarTemaFavorito(nickname, idTema);
+           fueGuardado = verificarGuardadoTema(nickname, idTema, cantPreviaFavoritos);
         } catch (Exception e) {
             fueGuardado = false;
         }

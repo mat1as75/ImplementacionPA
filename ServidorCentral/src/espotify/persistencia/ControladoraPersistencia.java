@@ -14,7 +14,9 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero_Simple;
+import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
+import espotify.DataTypes.DTTemaConPuntaje;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
@@ -29,6 +31,7 @@ import espotify.logica.TemaConURL;
 import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
+import espotify.logica.RegistroAcceso;
 import espotify.logica.Suscripcion;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.logica.Usuario;
@@ -66,6 +69,7 @@ public class ControladoraPersistencia {
     public TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     public TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
     public SuscripcionJpaController suscripcionJpa = new SuscripcionJpaController();
+    public RegistroAccesoJpaController registroAccesoJpa = new RegistroAccesoJpaController();
 
     public ControladoraPersistencia() {}
     
@@ -357,6 +361,7 @@ public class ControladoraPersistencia {
                 a.getNombreUsuario(), a.getApellidoUsuario(),
                 a.getContrasenaUsuario(), a.getEmail(), a.getFecNac(),
                 a.getFotoPerfil(), a.getBiografia(), a.getDirSitioWeb(),
+                a.getActivo(), a.getFechaBaja(), 
                 cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
 
         return DTDatosA;
@@ -470,11 +475,8 @@ public class ControladoraPersistencia {
         EntityTransaction t = em.getTransaction();
 
         t.begin();
-        System.out.println("CLIENTE : " + C + " " + "USUARIO: " + U);
         Cliente cliente = this.cliJpa.findCliente(C);
-        System.out.println("#CLIENTE: " + cliente.getNickname());
         Usuario usuario = this.usuJpa.findUsuario(U);
-        System.out.println("#USUARIO: " + usuario.getNickname());
 
         ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
 
@@ -891,8 +893,12 @@ public class ControladoraPersistencia {
     }
     
 
-    public void GuardarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
+    public void GuardarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
 
+        if (nicknameCliente == null || idTema == null) {
+            throw new InvalidDataException("El nickname o el id del tema son nulos.");
+        }
+        
         Cliente c = cliJpa.findCliente(nicknameCliente);
         Tema tema = temaJpa.findTema(idTema);
 
@@ -907,10 +913,12 @@ public class ControladoraPersistencia {
             }
         }
 
+        tema.incrementarCantidadFavoritos();
         c.setMisTemasFav(tema);
 
         try {
             cliJpa.edit(c);
+            temaJpa.edit(tema);
         } catch (Exception ex) {
             throw ex;
         }
@@ -942,6 +950,11 @@ public class ControladoraPersistencia {
     }
 
     public void GuardarAlbumFavorito(String nicknameCliente, Long idAlbum) throws Exception {
+        
+        if (nicknameCliente == null || idAlbum == null) {
+            throw new InvalidDataException("El nickname o el id del album son nulos.");
+        }
+        
         Cliente c = cliJpa.findCliente(nicknameCliente);
         Album album = albJpa.findAlbum(idAlbum);
 
@@ -1214,19 +1227,36 @@ public class ControladoraPersistencia {
         return nicknamesClientesLPrivadas;
     }
 
-    public void EliminarTemaFavorito(String nicknameCliente, long idTema) throws Exception {
+    public void EliminarTemaFavorito(String nicknameCliente, Long idTema) throws Exception {
+        if (nicknameCliente == null || idTema == null) {
+            throw new InvalidDataException("El nickname o el id del tema son nulos.");
+        }
+        
         Cliente c = cliJpa.findCliente(nicknameCliente);
+        
+        if (c == null) {
+            throw new NonexistentEntityException("No se encontró el cliente.");
+        }
+        
+        Tema tema = null;
         List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
         for (Tema t : temasFavoritosDelCliente) {
             if (t.getIdTema().equals(idTema)) {
+                tema = t;
+                tema.decrementarCantidadFavoritos();
                 temasFavoritosDelCliente.remove(t);
                 break;
                 //c.setMisTemasFavLista(temasFavoritosDelCliente);
             }
         }
-
+        
+        if (tema == null) {
+            throw new NonexistentEntityException("El cliente no tiene el tema en sus favoritos");
+        }
+        
         try {
             cliJpa.edit(c);
+            temaJpa.edit(tema);
         } catch (Exception ex) {
             throw ex;
         }
@@ -1609,6 +1639,7 @@ public class ControladoraPersistencia {
                     ((Artista) u).getContrasenaUsuario(), ((Artista) u).getEmail(),
                     ((Artista) u).getFecNac(), ((Artista) u).getFotoPerfil(),
                     ((Artista) u).getBiografia(), ((Artista) u).getDirSitioWeb(),
+                    ((Artista) u).getActivo(), ((Artista) u).getFechaBaja(), 
                     cantSeguidores, nicknamesSeguidores, nombresAlbumesPublicados);
 
         }
@@ -1836,5 +1867,138 @@ public class ControladoraPersistencia {
             this.suscripcionJpa.destroy(nuevaSuscripcion.getIdSuscripcion());
             throw new DatabaseUpdateException("No se pudo ingresar la suscripcion");
         }
+    }
+    
+    public List<DTTemaConPuntaje> getTopTemas(int cantidadEsperada) {
+        List<Tema> temas = this.temaJpa.findTemaEntities();
+        temas.sort( (t1, t2) -> t2.getPuntajeTema().compareTo(t1.getPuntajeTema()));
+        
+        int contadorTemasAgregados = 0;
+        
+        List<DTTemaConPuntaje> temasConPuntaje = new ArrayList();
+        for (Tema t : temas) {
+            temasConPuntaje.add(t.getDTTemaConPuntaje());
+            contadorTemasAgregados++;
+            if (contadorTemasAgregados == cantidadEsperada) break;
+        }
+        
+        return temasConPuntaje;
+    }
+    
+    public void incrementarReproduccionesDeTema(Long idTema) throws Exception {
+        if (idTema == null) throw new InvalidDataException("El id del tema es null.");
+        
+        Tema tema = this.temaJpa.findTema(idTema);
+        if (tema == null) throw new NonexistentEntityException("No se encontró un tema con el id " +idTema);
+        
+        tema.incrementarReproducciones();
+        try {
+            this.temaJpa.edit(tema);
+        } catch (Exception e) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void incrementarDescargasOVisitasDeTema(Long idTema) throws Exception {
+        if (idTema == null) throw new InvalidDataException("El id del tema es null.");
+        
+        Tema tema = this.temaJpa.findTema(idTema);
+        if (tema == null) throw new NonexistentEntityException("No se encontró un tema con el id " +idTema);
+        
+        tema.incrementarDescargasOVisitas();
+        try {
+            this.temaJpa.edit(tema);
+        } catch (Exception e) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
+        if (nicknameArtista == null) {
+            throw new InvalidDataException("El nickname recibido es null.");
+        }
+        
+        Artista art = this.artJpa.findArtista(nicknameArtista);
+        if (art == null) {
+            throw new NonexistentEntityException("No se encontró el artista.");
+        }
+        
+        //baja logica
+        art.setActivo(false);
+        art.setFechaBaja(new Date());
+        art.desvincularSeguidores();
+        
+        List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
+        List<Cliente> clientes = this.cliJpa.findClienteEntities();
+        
+        //Recorro todos los clientes para remover las relaciones con: 
+        //el artista, sus albums o sus temas
+        for (Cliente c : clientes) {
+            //remuevo al artista de los seguidos de cada cliente
+            c.removerUsuarioSeguido(art.getNickname());
+            //remuevo los albums de los favoritos de cada cliente
+            for (Album a : albumsDeArtista) {
+                c.removerAlbumFavorito(a.getIdAlbum());
+                //remuevo los temas de cada album de los favoritos de cada cliente
+                for (Tema t : a.getMisTemas()) {
+                    c.removerTemaFavorito(t.getIdTema());
+                }
+            }
+            
+            try {
+                this.cliJpa.edit(c);
+            } catch (Exception e) {
+                throw new DatabaseUpdateException("Error al editar el cliente " + c.getNickname());
+            }
+        }
+        
+        //recorro todas las listas para eliminar de sus temas los temas del artista
+        List<ListaReproduccion> listasRep = this.lreprodccJpa.findListaReproduccionEntities();
+        for (ListaReproduccion lr : listasRep) {
+            for (Album a : albumsDeArtista) {
+                for (Tema t : a.getMisTemas()) {
+                    //remuevo los temas de cada album del artista de cada lista
+                    lr.removerTema(t);
+                }
+            }
+            try {
+                this.lreprodccJpa.edit(lr);
+            } catch (Exception e) {
+                throw new DatabaseUpdateException("Error al editar la lista " + lr.getNombreLista());
+            }
+        }
+        
+        //modifico los temas para eliminar las asociaciones con las listas y las rutas a los archivos
+        for (Album a : albumsDeArtista) {
+            for (Tema t : a.getMisTemas()) {
+                t.desvincularListasDeReproduccion();
+                if (t instanceof TemaConRuta temaConRuta) {
+                    temaConRuta.setRutaTema(null);
+                }
+                try {
+                    this.temaJpa.edit(t);
+                } catch (Exception e) {
+                    throw new DatabaseUpdateException("Error al editar el tema " + t.getIdTema());
+                }
+            }
+        }
+        
+        //edito las modificaciones del artista
+        try {
+            this.artJpa.edit(art);            
+        } catch (Exception e) {
+            throw new DatabaseUpdateException("Error al editar el artista " + art.getNickname());
+        }
+    }  
+  
+    public ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles() {
+        List<RegistroAcceso> listaRegistros = registroAccesoJpa.findRegistroAccesoEntities();
+        ArrayList<DTRegistroAcceso> dtRegistros = new ArrayList<>();
+        
+        for (RegistroAcceso registro : listaRegistros) {
+            dtRegistros.add(registro.getDTRegistroAcceso());
+        }
+        
+        return dtRegistros;
     }
 }
