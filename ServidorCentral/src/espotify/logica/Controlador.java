@@ -550,6 +550,11 @@ public class Controlador implements IControlador{
     }
 
     @Override
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
+        this.contpersis.darDeBajaArtista(nicknameArtista);
+    }
+  
+    @Override
     public ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles() {
         return this.contpersis.getDTRegistrosAccesoDisponibles();
     }

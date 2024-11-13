@@ -1913,6 +1913,84 @@ public class ControladoraPersistencia {
         }
     }
     
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
+        if (nicknameArtista == null) {
+            throw new InvalidDataException("El nickname recibido es null.");
+        }
+        
+        Artista art = this.artJpa.findArtista(nicknameArtista);
+        if (art == null) {
+            throw new NonexistentEntityException("No se encontró el artista.");
+        }
+        
+        //baja logica
+        art.setActivo(false);
+        art.setFechaBaja(new Date());
+        art.desvincularSeguidores();
+        
+        List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
+        List<Cliente> clientes = this.cliJpa.findClienteEntities();
+        
+        //Recorro todos los clientes para remover las relaciones con: 
+        //el artista, sus albums o sus temas
+        for (Cliente c : clientes) {
+            //remuevo al artista de los seguidos de cada cliente
+            c.removerUsuarioSeguido(art.getNickname());
+            //remuevo los albums de los favoritos de cada cliente
+            for (Album a : albumsDeArtista) {
+                c.removerAlbumFavorito(a.getIdAlbum());
+                //remuevo los temas de cada album de los favoritos de cada cliente
+                for (Tema t : a.getMisTemas()) {
+                    c.removerTemaFavorito(t.getIdTema());
+                }
+            }
+            
+            try {
+                this.cliJpa.edit(c);
+            } catch (Exception e) {
+                throw new DatabaseUpdateException("Error al editar el cliente " + c.getNickname());
+            }
+        }
+        
+        //recorro todas las listas para eliminar de sus temas los temas del artista
+        List<ListaReproduccion> listasRep = this.lreprodccJpa.findListaReproduccionEntities();
+        for (ListaReproduccion lr : listasRep) {
+            for (Album a : albumsDeArtista) {
+                for (Tema t : a.getMisTemas()) {
+                    //remuevo los temas de cada album del artista de cada lista
+                    lr.removerTema(t);
+                }
+            }
+            try {
+                this.lreprodccJpa.edit(lr);
+            } catch (Exception e) {
+                throw new DatabaseUpdateException("Error al editar la lista " + lr.getNombreLista());
+            }
+        }
+        
+        //modifico los temas para eliminar las asociaciones con las listas y las rutas a los archivos
+        for (Album a : albumsDeArtista) {
+            for (Tema t : a.getMisTemas()) {
+                t.desvincularListasDeReproduccion();
+                if (t instanceof TemaConRuta temaConRuta) {
+                    temaConRuta.setRutaTema(null);
+                }
+                try {
+                    this.temaJpa.edit(t);
+                } catch (Exception e) {
+                    throw new DatabaseUpdateException("Error al editar el tema " + t.getIdTema());
+                }
+            }
+        }
+        
+        //edito las modificaciones del artista
+        try {
+            this.artJpa.edit(art);            
+        } catch (Exception e) {
+            throw new DatabaseUpdateException("Error al editar el artista " + art.getNickname());
+        }
+    }  
+  
     public ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles() {
         List<RegistroAcceso> listaRegistros = registroAccesoJpa.findRegistroAccesoEntities();
         ArrayList<DTRegistroAcceso> dtRegistros = new ArrayList<>();

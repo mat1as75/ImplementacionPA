@@ -148,6 +148,36 @@ public class Cliente extends Usuario{
        }
     }
 
+    public Boolean removerUsuarioSeguido(String nickname) {
+        for (Usuario u : misSeguidos) {
+            if (u.getNickname().equals(nickname)) {
+                misSeguidos.remove(u);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Boolean removerAlbumFavorito(Long idAlbum) {
+        for (Album a : misAlbumesFav) {
+            if (a.getIdAlbum().equals(idAlbum)) {
+                misAlbumesFav.remove(a);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Boolean removerTemaFavorito(Long idTema) {
+        for (Tema t : misTemasFav) {
+            if (t.getIdTema().equals(idTema)) {
+                misTemasFav.remove(t);
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public Suscripcion getMiSuscripcion() {
         return miSuscripcion;
     }
