@@ -1919,79 +1919,72 @@ public class ControladoraPersistencia {
         if (art == null) {
             throw new NonexistentEntityException("No se encontró el artista.");
         }
+        
         //baja logica
         art.setActivo(false);
         art.setFechaBaja(new Date());
+        art.desvincularSeguidores();
         
         List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
         List<Cliente> clientes = this.cliJpa.findClienteEntities();
+        
         //Recorro todos los clientes para remover las relaciones con: 
         //el artista, sus albums o sus temas
         for (Cliente c : clientes) {
-            
-            //remuevo al artista de los seguidos del cada cliente
-            List<Usuario> seguidosDelCliente = c.getMisSeguidos();
-            seguidosDelCliente.remove(art);
-//            seguidosDelCliente.removeIf(
-//                    usuario -> usuario.getNickname().equals(art.getNickname())
-//            );
-            
-            //por cada album del artista remuevo el album y los temas de los favoritos del cliente
-            List<Album> albumsFavoritos = c.getMisAlbumesFav();
-            List<Tema> temasFavoritos = c.getMisTemasFav();
+            //remuevo al artista de los seguidos de cada cliente
+            c.removerUsuarioSeguido(art.getNickname());
+            //remuevo los albums de los favoritos de cada cliente
             for (Album a : albumsDeArtista) {
-                //remuevo los albums de favoritos
-//                albumsFavoritos.removeIf(
-//                        album -> album.getIdAlbum().equals(a.getIdAlbum())
-//                );
-                albumsFavoritos.remove(a);
-                //remuevo los temas de cada album de los favoritos
+                c.removerAlbumFavorito(a.getIdAlbum());
+                //remuevo los temas de cada album de los favoritos de cada cliente
                 for (Tema t : a.getMisTemas()) {
-//                    temasFavoritos.removeIf(
-//                        tema -> tema.getIdTema().equals(t.getIdTema())
-//                    );
-                      temasFavoritos.remove(t);
+                    c.removerTemaFavorito(t.getIdTema());
                 }
             }
             
             try {
                 this.cliJpa.edit(c);
             } catch (Exception e) {
-                System.out.println("Error al editar el cliente " + c.getNickname());
+                throw new DatabaseUpdateException("Error al editar el cliente " + c.getNickname());
             }
         }
         
+        //recorro todas las listas para eliminar de sus temas los temas del artista
         List<ListaReproduccion> listasRep = this.lreprodccJpa.findListaReproduccionEntities();
         for (ListaReproduccion lr : listasRep) {
             for (Album a : albumsDeArtista) {
                 for (Tema t : a.getMisTemas()) {
+                    //remuevo los temas de cada album del artista de cada lista
                     lr.removerTema(t);
                 }
             }
             try {
                 this.lreprodccJpa.edit(lr);
             } catch (Exception e) {
-                System.out.println("Error al editar la lista de reproduccion " + lr.getNombreLista());
+                throw new DatabaseUpdateException("Error al editar la lista " + lr.getNombreLista());
             }
         }
         
-        List<Genero> generos = this.genJpa.findGeneroEntities();
-        for (Genero g : generos) {
-            for (Album a : albumsDeArtista) {
-                g.getMisAlbumes().remove(a);
-            }
-            try {
-                this.genJpa.edit(g);
-            } catch (Exception e) {
-                System.out.println("Error al editar el genero " + g.getNombreGenero());
+        //modifico los temas para eliminar las asociaciones con las listas y las rutas a los archivos
+        for (Album a : albumsDeArtista) {
+            for (Tema t : a.getMisTemas()) {
+                t.desvincularListasDeReproduccion();
+                if (t instanceof TemaConRuta temaConRuta) {
+                    temaConRuta.setRutaTema(null);
+                }
+                try {
+                    this.temaJpa.edit(t);
+                } catch (Exception e) {
+                    throw new DatabaseUpdateException("Error al editar el tema " + t.getIdTema());
+                }
             }
         }
         
+        //edito las modificaciones del artista
         try {
-            this.artJpa.edit(art);
+            this.artJpa.edit(art);            
         } catch (Exception e) {
-            System.out.println("Error al editar el artista");
-            throw e;
+            throw new DatabaseUpdateException("Error al editar el artista " + art.getNickname());
         }
-    }
+    }  
 }

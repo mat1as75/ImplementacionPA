@@ -10,6 +10,7 @@ private String nombreAlbum;
 private int anioCreacion;
 private String nombreCompletoArtista;
 private List<String> generosDeAlbum;
+private Boolean estaDisponible;
 
     public DTAlbum_Simple() {
     }
@@ -27,6 +28,21 @@ private List<String> generosDeAlbum;
         this.anioCreacion = anioCreacion;
         this.nombreCompletoArtista = nombreCompletoArtista;
         this.generosDeAlbum = generosDeAlbum;
+    } 
+    
+    public DTAlbum_Simple(
+            Long idAlbum, 
+            String nombreAlbum, 
+            int anioCreacion, 
+            String nombreCompletoArtista, 
+            List<String>generosDeAlbum,
+            Boolean disponibilidad) {
+        this.idAlbum = idAlbum;
+        this.nombreAlbum = nombreAlbum;
+        this.anioCreacion = anioCreacion;
+        this.nombreCompletoArtista = nombreCompletoArtista;
+        this.generosDeAlbum = generosDeAlbum;
+        this.estaDisponible = disponibilidad;
     } 
 
     public List<String> getGenerosDeAlbum() {
@@ -72,6 +88,16 @@ private List<String> generosDeAlbum;
     public void setNombreCompletoArtista(String nombreCompletoArtista) {
         this.nombreCompletoArtista = nombreCompletoArtista;
     }
+
+    public Boolean getEstaDisponible() {
+        return estaDisponible;
+    }
+
+    public void setEstaDisponible(Boolean estaDisponible) {
+        this.estaDisponible = estaDisponible;
+    }
+    
+    
     
     public String datosToString() {
         return ("[" + this.getIdAlbum() + 

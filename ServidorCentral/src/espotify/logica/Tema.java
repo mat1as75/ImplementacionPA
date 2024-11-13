@@ -93,6 +93,20 @@ public abstract class Tema implements Serializable {
         return this.miAlbum;
     }
     
+    public Boolean removerListaReproduccion(String nombreLista) {
+        for (ListaReproduccion lr : misReproducciones) {
+            if (lr.getNombreLista().equals(nombreLista)) {
+                misReproducciones.remove(lr);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void desvincularListasDeReproduccion() {
+        this.misReproducciones.clear();
+    }
+    
     public List<ListaReproduccion> getMisReproducciones() {
         return misReproducciones;
     }

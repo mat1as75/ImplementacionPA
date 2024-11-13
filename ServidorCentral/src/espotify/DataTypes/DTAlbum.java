@@ -9,6 +9,7 @@ private Long idAlbum;
 private String nombreAlbum;
 private int anioCreacion;
 private String fotoAlbum;
+private Boolean estaDisponible;
 private ArrayList<DTTemaGenerico> misTemas = new ArrayList<>();
 
 private ArrayList<DTTemaSimple> misTemasSimples = new ArrayList<>();
@@ -25,6 +26,21 @@ private DTArtista miArtista;
         this.anioCreacion = anioCreacion;
         this.fotoAlbum = fotoAlbum;
         this.miArtista = miartista;
+    }
+    
+    public DTAlbum(
+            Long idAlbum, 
+            String nombreAlbum, 
+            int anioCreacion, 
+            String fotoAlbum, 
+            DTArtista miartista,
+            Boolean disponibilidad) {
+        this.idAlbum = idAlbum;
+        this.nombreAlbum = nombreAlbum;
+        this.anioCreacion = anioCreacion;
+        this.fotoAlbum = fotoAlbum;
+        this.miArtista = miartista;
+        this.estaDisponible = disponibilidad;
     }
 
     public Long getIdAlbum() {
@@ -99,6 +115,16 @@ private DTArtista miArtista;
     public void setMiArtista(DTArtista miArtista) {
         this.miArtista = miArtista;
     }
+
+    public Boolean getEstaDisponible() {
+        return estaDisponible;
+    }
+
+    public void setEstaDisponible(Boolean estaDisponible) {
+        this.estaDisponible = estaDisponible;
+    }
+    
+    
     
     public String toStringSimple() {
         return ("Id: " + this.getIdAlbum() + 
