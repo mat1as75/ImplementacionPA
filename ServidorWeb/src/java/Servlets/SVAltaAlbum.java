@@ -192,7 +192,7 @@ public class SVAltaAlbum extends HttpServlet {
             return;
         }
         
-        Boolean existeArtista = ictrl.existeArtista(nickname);
+        Boolean existeArtista = ictrl.ExisteArtista(nickname);
         //No se permite el acceso a un usuario que no sea artista
         if (!existeArtista) {
             SVError.redirectUnauthorized(request, response);

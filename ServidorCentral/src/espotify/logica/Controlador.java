@@ -65,7 +65,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public ArrayList<String>getNicknamesArtistas(){
+    public List<String>getNicknamesArtistas(){
         ArrayList<Artista> artistas = contpersis.getArtistas();
         ArrayList<String> nicknames = new ArrayList<>();
         for (Artista a : artistas) {
@@ -83,7 +83,7 @@ public class Controlador implements IControlador{
     @Override
     public List<String>getNicknamesClientes() {
         ArrayList<Cliente> clientes = contpersis.getClientes();
-        ArrayList<String> nicknames = new ArrayList<String>();
+        ArrayList<String> nicknames = new ArrayList<>();
 
         for (Cliente c : clientes) {
             nicknames.add(c.getNickname());
@@ -500,7 +500,7 @@ public class Controlador implements IControlador{
     }
     
     @Override
-    public boolean existeArtista(String nicknameArtista) {
+    public boolean ExisteArtista(String nicknameArtista) {
         return this.contpersis.existeArtista(nicknameArtista);
     }
     
