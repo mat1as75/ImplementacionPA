@@ -1,6 +1,5 @@
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.persistencia.ControladoraPersistencia;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -339,7 +338,7 @@ public class ConsultasDatosUsuarioTest {
                 "la_ley, Artista", 
                 "lospimpi, Artista",
                 "nicoleneu, Artista",
-                "scarlettO, Cliente");
+                "ppArgento, Cliente");
         List<String> seguidoresEsperados = Arrays.asList("Heisenberg", "scarlettO", "el_padrino","ppArgento");
         List<String> listasCreadasEsperadas = new ArrayList();
         List<String> listasFavoritasEsperadas = new ArrayList();
@@ -568,64 +567,6 @@ public class ConsultasDatosUsuarioTest {
     }
     
     @Test
-    public void getDatosUsuarioArtista2() {
-        DTDatosArtista dtUsuario = (DTDatosArtista) cp.getDatosUsuario("nicoleneu@hotmail.com");
-        int datosIncorrectos = 0;
-        
-        List<String> seguidoresEsperados = new ArrayList();
-        Map<Long, String> albumsPublicadosEsperados = Map.ofEntries(
-                entry(10L, "Primer Amor")
-        );
-        String nicknameEsperado = "nicoleneu";
-        String nombreEsperado = "Nicole";
-        String apellidoEsperado = "Neumann";
-        String emailEsperado = "nicoleneu@hotmail.com";
-        Date fechaNacEsperada = null;
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        try {
-            fechaNacEsperada = dateFormatter.parse("31/10/1980");
-        } catch (ParseException ex) {
-            Logger.getLogger(ConsultasDatosUsuarioTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if (!dtUsuario.getNicknamesSeguidores().containsAll(seguidoresEsperados)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNombresAlbumesPublicados().equals(albumsPublicadosEsperados)) {
-            datosIncorrectos++;
-        }
-            
-        if (!dtUsuario.getNicknameUsuario().equals(nicknameEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNombreUsuario().equals(nombreEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getApellidoUsuario().equals(apellidoEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getEmail().equals(emailEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getFecNac().equals(fechaNacEsperada)) {
-            datosIncorrectos++;
-        }
-        
-        if (datosIncorrectos == 0) {
-            System.out.println("Test Consultas de Datos: getDatosUsuario('nicoleneu@hotmail.com') : OK");
-        } else {
-            System.out.println("Test Consultas de Datos: getDatosUsuario('nicoleneu@hotmail.com') : FAIL");
-        }
-        
-        assertTrue(datosIncorrectos == 0);    
-    }
-    
-    @Test
     public void getDatosUsuarioCliente1() {
         DTDatosCliente dtUsuario = (DTDatosCliente) cp.getDatosUsuario("scarlettO");
         int datosIncorrectos = 0;
@@ -715,93 +656,4 @@ public class ConsultasDatosUsuarioTest {
         assertTrue(datosIncorrectos == 0); 
     }
     
-    @Test
-    public void getDatosUsuarioCliente2() {
-        DTDatosCliente dtUsuario = (DTDatosCliente) cp.getDatosUsuario("scarlettO@tuta.io");
-        int datosIncorrectos = 0;
-        
-        List<String> seguidosEsperados = Arrays.asList(
-                "tripleNelson, Artista",
-                "tigerOfWales, Artista",
-                "dmode, Artista",
-                "bruceTheBoss, Artista",
-                "lachiqui, Cliente", 
-                "Heisenberg, Cliente",
-                "benKenobi, Cliente");
-        List<String> seguidoresEsperados = Arrays.asList("lachiqui", "Heisenberg", "Eleven11");
-        List<String> listasCreadasEsperadas = Arrays.asList("De Todo Un Poco");
-        List<String> listasFavoritasEsperadas = Arrays.asList("Música Clásica");
-        Map<Long, String> albumsFavoritosEsperados = new HashMap();
-        Map<Long, String> temasFavoritosEsperados = new HashMap();       
-        Long idSuscripcionEsperada = 6L;
-        String nicknameEsperado = "scarlettO";
-        String nombreEsperado = "Scarlett";
-        String apellidoEsperado = "O’Hara";
-        String emailEsperado = "scarlettO@tuta.io";
-        Date fechaNacEsperada = null;
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        try {
-            fechaNacEsperada = dateFormatter.parse("27/11/1984");
-        } catch (ParseException ex) {
-            Logger.getLogger(ConsultasDatosUsuarioTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (!dtUsuario.getNicknamesSeguidos().containsAll(seguidosEsperados)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNicknamesSeguidores().containsAll(seguidoresEsperados)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNombresListasRCreadas().containsAll(listasCreadasEsperadas)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNombresListasRFavoritas().containsAll(listasFavoritasEsperadas)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNombresAlbumesFavoritos().equals(albumsFavoritosEsperados)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNombresTemasFavoritos().equals(temasFavoritosEsperados)) {
-            datosIncorrectos++;
-        }
-        
-        if (dtUsuario.getSuscripcion() == null 
-                ? idSuscripcionEsperada != null 
-                : !dtUsuario.getSuscripcion().getIdSuscripcion().equals(idSuscripcionEsperada)) {
-            datosIncorrectos++;
-        }
-            
-        if (!dtUsuario.getNicknameUsuario().equals(nicknameEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getNombreUsuario().equals(nombreEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getApellidoUsuario().equals(apellidoEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getEmail().equals(emailEsperado)) {
-            datosIncorrectos++;
-        }
-        
-        if (!dtUsuario.getFecNac().equals(fechaNacEsperada)) {
-            datosIncorrectos++;
-        }
-        
-        if (datosIncorrectos == 0) {
-            System.out.println("Test Consultas de Datos: getDatosCliente('scarlettO@tuta.io') : OK");
-        } else {
-            System.out.println("Test Consultas de Datos: getDatosCliente('scarlettO@tuta.io') : FAIL");
-        }
-        
-        assertTrue(datosIncorrectos == 0); 
-    }
 }

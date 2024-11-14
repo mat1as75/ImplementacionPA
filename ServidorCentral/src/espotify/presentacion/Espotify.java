@@ -3,9 +3,8 @@ package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
-import espotify.presentacion.AltaPerfil;
-import espotify.presentacion.ConsultaPerfilCliente;
-import javax.swing.ImageIcon;
+import espotify.webservices.PreferenciasService;
+import espotify.webservices.SuscripcionesService;
 
 public class Espotify extends javax.swing.JFrame {
 
@@ -13,6 +12,13 @@ public class Espotify extends javax.swing.JFrame {
     
     public Espotify() {
         initComponents();
+        
+        //Publicacion de Web Services
+        PreferenciasService PreferenciasWS = new PreferenciasService();
+        PreferenciasWS.publishEndpoint();
+        SuscripcionesService SuscripcionesWS = new SuscripcionesService();
+        SuscripcionesWS.publishEndpoint();
+        
         
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
@@ -42,6 +48,8 @@ public class Espotify extends javax.swing.JFrame {
         jMenuItemEliminarTemaListaAlbum = new javax.swing.JMenuItem();
         jMenuItemConsultaAlbum = new javax.swing.JMenuItem();
         jMenuItemConsultaListaReproducción = new javax.swing.JMenuItem();
+        jMenuMonitoreo = new javax.swing.JMenu();
+        jMenuConsultaRegistroAcceso = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Espotify");
@@ -207,6 +215,19 @@ public class Espotify extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuMultimedia);
 
+        jMenuMonitoreo.setForeground(new java.awt.Color(255, 255, 255));
+        jMenuMonitoreo.setText("Monitoreo");
+
+        jMenuConsultaRegistroAcceso.setText("Registros de Actividad");
+        jMenuConsultaRegistroAcceso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuConsultaRegistroAccesoActionPerformed(evt);
+            }
+        });
+        jMenuMonitoreo.add(jMenuConsultaRegistroAcceso);
+
+        jMenuBar1.add(jMenuMonitoreo);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -308,6 +329,12 @@ public class Espotify extends javax.swing.JFrame {
         escritorio.add(aes);
         aes.show();
     }//GEN-LAST:event_jMenuItemActualizarEstadoSuscripcionActionPerformed
+
+    private void jMenuConsultaRegistroAccesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuConsultaRegistroAccesoActionPerformed
+        ConsultaRegistroAcceso cra = new ConsultaRegistroAcceso();
+        escritorio.add(cra);
+        cra.show();
+    }//GEN-LAST:event_jMenuConsultaRegistroAccesoActionPerformed
     
     
     
@@ -327,6 +354,7 @@ public class Espotify extends javax.swing.JFrame {
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenu jMenuActualizarEstadoSuscripcion;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuConsultaRegistroAcceso;
     private javax.swing.JMenuItem jMenuItemActualizarEstadoSuscripcion;
     private javax.swing.JMenuItem jMenuItemAgregarTemaLista;
     private javax.swing.JMenuItem jMenuItemAltaAlbum;
@@ -343,6 +371,7 @@ public class Espotify extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemRegistrarUsuario;
     private javax.swing.JMenuItem jMenuItemSeguirUsuario;
     private javax.swing.JMenuItem jMenuItemlDejarSeguirUsuario;
+    private javax.swing.JMenu jMenuMonitoreo;
     private javax.swing.JMenu jMenuMultimedia;
     // End of variables declaration//GEN-END:variables
 }

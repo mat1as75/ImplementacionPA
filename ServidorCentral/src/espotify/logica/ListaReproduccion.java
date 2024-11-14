@@ -84,8 +84,7 @@ public abstract class ListaReproduccion implements Serializable {
     }
     
     public void removerTema(Tema tema) {
-        this.misTemas.remove(tema);
-
+        misTemas.removeIf(t -> t.getIdTema().equals(tema.getIdTema()));
     }
     
 }

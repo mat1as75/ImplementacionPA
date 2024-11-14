@@ -14,6 +14,7 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTGenero_Simple;
+import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaConPuntaje;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
@@ -30,6 +31,7 @@ import espotify.logica.TemaConURL;
 import espotify.logica.ListaParticular;
 import espotify.logica.ListaPorDefecto;
 import espotify.logica.ListaReproduccion;
+import espotify.logica.RegistroAcceso;
 import espotify.logica.Suscripcion;
 import espotify.logica.Suscripcion.EstadoSuscripcion;
 import espotify.logica.Usuario;
@@ -67,6 +69,7 @@ public class ControladoraPersistencia {
     public TemaConRutaJpaController temaconrutaJpa = new TemaConRutaJpaController();
     public TemaConURLJpaController temaurlJpa = new TemaConURLJpaController();
     public SuscripcionJpaController suscripcionJpa = new SuscripcionJpaController();
+    public RegistroAccesoJpaController registroAccesoJpa = new RegistroAccesoJpaController();
 
     public ControladoraPersistencia() {}
     
@@ -472,11 +475,8 @@ public class ControladoraPersistencia {
         EntityTransaction t = em.getTransaction();
 
         t.begin();
-        System.out.println("CLIENTE : " + C + " " + "USUARIO: " + U);
         Cliente cliente = this.cliJpa.findCliente(C);
-        System.out.println("#CLIENTE: " + cliente.getNickname());
         Usuario usuario = this.usuJpa.findUsuario(U);
-        System.out.println("#USUARIO: " + usuario.getNickname());
 
         ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
 
@@ -1911,5 +1911,94 @@ public class ControladoraPersistencia {
         } catch (Exception e) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+    
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
+        if (nicknameArtista == null) {
+            throw new InvalidDataException("El nickname recibido es null.");
+        }
+        
+        Artista art = this.artJpa.findArtista(nicknameArtista);
+        if (art == null) {
+            throw new NonexistentEntityException("No se encontró el artista.");
+        }
+        
+        //baja logica
+        art.setActivo(false);
+        art.setFechaBaja(new Date());
+        art.desvincularSeguidores();
+        
+        List<Album> albumsDeArtista = art.getMisAlbumesPublicados();
+        List<Cliente> clientes = this.cliJpa.findClienteEntities();
+        
+        //Recorro todos los clientes para remover las relaciones con: 
+        //el artista, sus albums o sus temas
+        for (Cliente c : clientes) {
+            //remuevo al artista de los seguidos de cada cliente
+            c.removerUsuarioSeguido(art.getNickname());
+            //remuevo los albums de los favoritos de cada cliente
+            for (Album a : albumsDeArtista) {
+                c.removerAlbumFavorito(a.getIdAlbum());
+                //remuevo los temas de cada album de los favoritos de cada cliente
+                for (Tema t : a.getMisTemas()) {
+                    c.removerTemaFavorito(t.getIdTema());
+                }
+            }
+            
+            try {
+                this.cliJpa.edit(c);
+            } catch (Exception e) {
+                throw new DatabaseUpdateException("Error al editar el cliente " + c.getNickname());
+            }
+        }
+        
+        //recorro todas las listas para eliminar de sus temas los temas del artista
+        List<ListaReproduccion> listasRep = this.lreprodccJpa.findListaReproduccionEntities();
+        for (ListaReproduccion lr : listasRep) {
+            for (Album a : albumsDeArtista) {
+                for (Tema t : a.getMisTemas()) {
+                    //remuevo los temas de cada album del artista de cada lista
+                    lr.removerTema(t);
+                }
+            }
+            try {
+                this.lreprodccJpa.edit(lr);
+            } catch (Exception e) {
+                throw new DatabaseUpdateException("Error al editar la lista " + lr.getNombreLista());
+            }
+        }
+        
+        //modifico los temas para eliminar las asociaciones con las listas y las rutas a los archivos
+        for (Album a : albumsDeArtista) {
+            for (Tema t : a.getMisTemas()) {
+                t.desvincularListasDeReproduccion();
+                if (t instanceof TemaConRuta temaConRuta) {
+                    temaConRuta.setRutaTema(null);
+                }
+                try {
+                    this.temaJpa.edit(t);
+                } catch (Exception e) {
+                    throw new DatabaseUpdateException("Error al editar el tema " + t.getIdTema());
+                }
+            }
+        }
+        
+        //edito las modificaciones del artista
+        try {
+            this.artJpa.edit(art);            
+        } catch (Exception e) {
+            throw new DatabaseUpdateException("Error al editar el artista " + art.getNickname());
+        }
+    }  
+  
+    public ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles() {
+        List<RegistroAcceso> listaRegistros = registroAccesoJpa.findRegistroAccesoEntities();
+        ArrayList<DTRegistroAcceso> dtRegistros = new ArrayList<>();
+        
+        for (RegistroAcceso registro : listaRegistros) {
+            dtRegistros.add(registro.getDTRegistroAcceso());
+        }
+        
+        return dtRegistros;
     }
 }

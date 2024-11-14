@@ -1,8 +1,11 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTRegistroAcceso;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,6 +16,7 @@ public class RegistroAcceso implements Serializable{
     
     // Atributos
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRegistro;
     private String ipRegistro;
     private String urlRegistro;
@@ -81,5 +85,15 @@ public class RegistroAcceso implements Serializable{
         this.fechaRegistro = fechaRegistro;
     }
     
+    public DTRegistroAcceso getDTRegistroAcceso() {
+        return new DTRegistroAcceso(
+                this.getIdRegistro(),
+                this.getIpRegistro(),
+                this.getUrlRegistro(),
+                this.getBrowserRegistro(),
+                this.getSoRegistro(),
+                this.getFechaRegistro()
+        );
+    }
     
 }

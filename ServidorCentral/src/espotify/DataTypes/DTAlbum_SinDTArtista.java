@@ -9,6 +9,7 @@ private String fotoAlbum;
 private List<DTTemaGenerico> misTemas;
 private List<DTGenero>misGeneros;
 private String miArtista;
+private Boolean estaDisponible;
 
     public DTAlbum_SinDTArtista() {
     }
@@ -20,13 +21,31 @@ private String miArtista;
             List<DTTemaGenerico> misTemas,
             List<DTGenero> misGeneros,
             String miArtista
-    ) {
+        ) {
         this.nombreAlbum = nombreAlbum;
         this.anioCreacion = anioCreacion;
         this.fotoAlbum = fotoAlbum;
         this.misTemas = misTemas;
         this.misGeneros = misGeneros;
         this.miArtista = miArtista;
+    }
+    
+    public DTAlbum_SinDTArtista(
+            String nombreAlbum, 
+            int anioCreacion, 
+            String fotoAlbum, 
+            List<DTTemaGenerico> misTemas,
+            List<DTGenero> misGeneros,
+            String miArtista,
+            Boolean disponibilidad
+        ) {
+        this.nombreAlbum = nombreAlbum;
+        this.anioCreacion = anioCreacion;
+        this.fotoAlbum = fotoAlbum;
+        this.misTemas = misTemas;
+        this.misGeneros = misGeneros;
+        this.miArtista = miArtista;
+        this.estaDisponible = disponibilidad;
     }
 
     public String getNombreAlbum() {
@@ -76,6 +95,13 @@ private String miArtista;
     public void setMiArtista(String miArtista) {
         this.miArtista = miArtista;
     }
-    
+
+    public Boolean getEstaDisponible() {
+        return estaDisponible;
+    }
+
+    public void setEstaDisponible(Boolean estaDisponible) {
+        this.estaDisponible = estaDisponible;
+    }
     
 }
