@@ -6,6 +6,7 @@ import espotify.persistencia.ControladoraPersistencia;
 import espotify.presentacion.AltaPerfil;
 import espotify.presentacion.ConsultaPerfilCliente;
 import javax.swing.ImageIcon;
+import webservices.UsuarioService;
 
 public class Espotify extends javax.swing.JFrame {
 
@@ -13,6 +14,10 @@ public class Espotify extends javax.swing.JFrame {
     
     public Espotify() {
         initComponents();
+        
+        // Publicar servicios de Usuarios
+        UsuarioService serviceUsuario = new UsuarioService();
+        serviceUsuario.publishEndpoint();
         
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();

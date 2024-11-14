@@ -9,6 +9,7 @@
     <class>espotify.logica.ListaParticular</class>
     <class>espotify.logica.ListaPorDefecto</class>
     <class>espotify.logica.ListaReproduccion</class>
+    <class>espotify.logica.RegistroAcceso</class>
     <class>espotify.logica.Suscripcion</class>
     <class>espotify.logica.Tema</class>
     <class>espotify.logica.TemaConRuta</class>
