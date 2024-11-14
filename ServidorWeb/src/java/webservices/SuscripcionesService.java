@@ -1,4 +1,3 @@
-
 package webservices;
 
 import jakarta.jws.WebMethod;
@@ -75,6 +74,19 @@ public interface SuscripcionesService {
         TipoSuscripcion arg1)
         throws Exception_Exception
     ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns espotify.webservices.DtSuscripcion
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/SuscripcionesService/getDTSuscripconRequest", output = "http://webservices.espotify/SuscripcionesService/getDTSuscripconResponse")
+    public DtSuscripcion getDTSuscripcon(
+        @WebParam(name = "arg0", partName = "arg0")
+        long arg0);
 
     /**
      * 
