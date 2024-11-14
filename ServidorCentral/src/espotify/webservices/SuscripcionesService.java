@@ -59,5 +59,9 @@ public class SuscripcionesService {
         ictrl.ActualizarEstadoSuscripcion(idSuscripcion, estadoSuscripcion, fechaSuscripcion);
     }
 
-
+    @WebMethod
+    public DTSuscripcion getDTSuscripcon(Long idSuscripcion) {
+        return ictrl.getDTSuscripcion(idSuscripcion);
+    }
+    
 }
