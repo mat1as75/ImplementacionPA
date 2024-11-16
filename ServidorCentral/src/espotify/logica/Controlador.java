@@ -68,8 +68,10 @@ public class Controlador implements IControlador{
     public ArrayList<String>getNicknamesArtistas(){
         ArrayList<Artista> artistas = contpersis.getArtistas();
         ArrayList<String> nicknames = new ArrayList<>();
-        for (Artista a : artistas) {
-            nicknames.add(a.getNickname());
+         if(artistas != null && !artistas.isEmpty()){
+            for (Artista a : artistas) {
+                    nicknames.add(a.getNickname());
+            }
         }
 
         return nicknames;
@@ -231,7 +233,9 @@ public class Controlador implements IControlador{
     
     @Override
     public ArrayList<String> getNombresListasPorDefecto() {
-        return this.contpersis.getNombresListasPorDefecto();
+       // return this.contpersis.getNombresListasPorDefecto();
+       ArrayList<String> retorno=new ArrayList<String> ();
+       return retorno;   
     }
     
     @Override

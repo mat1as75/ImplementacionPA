@@ -6,3 +6,6 @@
 /ServidorCentral/build/
 /ServidorCentral/dist/
 
+/TestConsumirApiSOAP/nbproject/private/
+/TestConsumirApiSOAP/build/
+/TestConsumirApiSOAP/dist/
