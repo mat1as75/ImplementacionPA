@@ -3,8 +3,12 @@ package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
+<<<<<<< HEAD
 import espotify.webservices.PreferenciasService;
 import espotify.webservices.SuscripcionesService;
+=======
+import webservices.NuevoWebService;
+>>>>>>> parent of 5226f67 (termine con)
 
 public class Espotify extends javax.swing.JFrame {
 
@@ -19,7 +23,10 @@ public class Espotify extends javax.swing.JFrame {
         SuscripcionesService SuscripcionesWS = new SuscripcionesService();
         SuscripcionesWS.publishEndpoint();
         
+<<<<<<< HEAD
         
+=======
+>>>>>>> parent of 5226f67 (termine con)
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
     }
