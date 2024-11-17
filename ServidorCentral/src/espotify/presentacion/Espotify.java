@@ -1,12 +1,10 @@
 package espotify.presentacion;
 
-import webservices.ListasReproduccionService;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
-import webservices.ListasReproduccionService;
-//import webservices.ListasReproduccionService;
-import webservices.NuevoWebService;
+import espotify.webservices.PreferenciasService;
+import espotify.webservices.SuscripcionesService;
 
 public class Espotify extends javax.swing.JFrame {
 
@@ -15,11 +13,12 @@ public class Espotify extends javax.swing.JFrame {
     public Espotify() {
         initComponents();
         
-        NuevoWebService service = new NuevoWebService();
-        service.publishEndpoint();
+        //Publicacion de Web Services
+        PreferenciasService PreferenciasWS = new PreferenciasService();
+        PreferenciasWS.publishEndpoint();
+        SuscripcionesService SuscripcionesWS = new SuscripcionesService();
+        SuscripcionesWS.publishEndpoint();
         
-        ListasReproduccionService service1 = new ListasReproduccionService();
-        service1.publishEndpoint();
         
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
