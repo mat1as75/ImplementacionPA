@@ -17,10 +17,13 @@ public class Espotify extends javax.swing.JFrame {
         //Publicacion de Web Services
         PreferenciasService PreferenciasWS = new PreferenciasService();
         PreferenciasWS.publishEndpoint();
+      
         SuscripcionesService SuscripcionesWS = new SuscripcionesService();
         SuscripcionesWS.publishEndpoint();
+
         RegistroService RegistroWS = new RegistroService();
         RegistroWS.publishEndpoint();
+
         
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
