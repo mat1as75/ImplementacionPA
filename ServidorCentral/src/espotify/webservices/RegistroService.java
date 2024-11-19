@@ -28,9 +28,9 @@ public class RegistroService {
         return endpoint;
     }
     
-    /*@WebMethod
-    public  guardarRegistroAcceso() {
-        return icontrolador.();
-    }/*
+    @WebMethod
+    public  guardarRegistroAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso) {
+        return icontrolador.guardarRegistroAcceso(direccionIP, url, navegador, sistemaOperativo, fechaAcceso);
+    }
     
 }
