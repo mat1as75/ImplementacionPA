@@ -42,7 +42,7 @@ import javax.swing.table.DefaultTableModel;
 public class ConsultaAlbum extends javax.swing.JInternalFrame {
     private IControlador controlador;
     int op=0; //1 si es por genero, 2 si es por Artista
-    private ArrayList<String> AoGlistaString= new ArrayList<>();
+    private List<String> AoGlistaString= new ArrayList<>();
     private Map<Long,String> AlbumsLista= new HashMap<>();
     private DTAlbum albumAMostrar;
     /**

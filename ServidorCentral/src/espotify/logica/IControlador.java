@@ -26,21 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface IControlador {
-    public abstract ArrayList<String>getNicknamesArtistas();
-    public abstract List<String>getNicknamesClientes();
+    
     public abstract void AltaGenero(String nombreGenero, String nomPadre);
-    public abstract void AltaArtista(DTArtista dtArtista);
-    public abstract void AltaCliente(DTCliente dtCliente);
     public abstract void AltaAlbum(DTAlbum_SinDTArtista dataAlbum) throws Exception;
-
-    public abstract DTDatosArtista ConsultarPerfilArtista(String nicknameArtista);
-    public abstract DTDatosCliente ConsultarPerfilCliente(String nicknameCliente);
-
-    public abstract boolean ExisteNickName(String nickname);
-    public abstract boolean ExisteCliente(String nicknameCliente);
-    public abstract boolean ExisteEmail(String email);
-    public abstract boolean existeArtista(String nicknameArtista);
-
+    
     public abstract boolean existeNombreLista(String nombreLista);
     public abstract void setSeguidorSeguido(String Seguidor, String Seguido);
     public abstract ArrayList<String> getSeguidosDeCliente(String nickname);
@@ -107,15 +96,9 @@ public interface IControlador {
     public abstract void SetGenero();
     public abstract List<String> getUsuariosSinEste(String nickname);
     
-    public abstract DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario);
-    public abstract DTDatosUsuario getDatosUsuario(String identificadorUsuario);
-    
+
     public abstract ArrayList<DTSuscripcion> getDTSuscripciones();
-    public abstract DTSuscripcion getDTSuscripcion(Long id);
-    public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
-    public abstract DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception;
-    public abstract void ingresarNuevaSuscripcion(String nickname, TipoSuscripcion tipoSuscripcion) throws Exception;
-    public abstract Boolean actualizarSuscripcionVencida(Long idSuscripcion);
+    
     public abstract void actualizarSuscripcionesVencidas();
     
     public abstract DTTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(Long idTema);
@@ -128,6 +111,36 @@ public interface IControlador {
     
     public abstract void darDeBajaArtista(String nicknameArtista) throws Exception;
     public abstract ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles();
+
     public abstract void guardarRegistroAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso);
+
+    
+    /* -----OPERACIONES DE USUARIO WEB SERVICE----- */
+    public abstract void AltaArtista(DTArtista dtArtista);
+    public abstract void AltaCliente(DTCliente dtCliente);
+    
+    public abstract List<String>getNicknamesArtistas();
+    public abstract List<String>getNicknamesClientes();
+    
+    public abstract DTDatosUsuario getDatosUsuario(String identificadorUsuario);
+    public abstract DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario);
+    
+    public abstract DTDatosArtista ConsultarPerfilArtista(String nicknameArtista);
+    public abstract DTDatosCliente ConsultarPerfilCliente(String nicknameCliente);
+    
+    public abstract boolean ExisteCliente(String nicknameCliente);
+    public abstract boolean ExisteArtista(String nicknameArtista);
+    
+    public abstract boolean ExisteNickName(String nickname);
+    public abstract boolean ExisteEmail(String email);
+    
+    /* ver si poner estas operaciones en RegistroService */
+    public abstract DTSuscripcion getDTSuscripcion(Long id);
+    public abstract DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception;
+    public abstract void ingresarNuevaSuscripcion(String nickname, TipoSuscripcion tipoSuscripcion) throws Exception;
+    public abstract void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion);
+    public abstract Boolean actualizarSuscripcionVencida(Long idSuscripcion);
+    
+    
 
 }
