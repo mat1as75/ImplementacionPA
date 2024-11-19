@@ -6,6 +6,7 @@ import espotify.persistencia.ControladoraPersistencia;
 import espotify.webservices.ContenidoService;
 import espotify.webservices.ListaReproduccionService;
 import espotify.webservices.PreferenciasService;
+import espotify.webservices.RegistroService;
 import espotify.webservices.SuscripcionesService;
 import espotify.webservices.DtAlbumsService;
 import espotify.webservices.RankingService;
@@ -23,15 +24,23 @@ public class Espotify extends javax.swing.JFrame {
         //Publicacion de Web Services
         PreferenciasService PreferenciasWS = new PreferenciasService();
         PreferenciasWS.publishEndpoint();
+      
         SuscripcionesService SuscripcionesWS = new SuscripcionesService();
         SuscripcionesWS.publishEndpoint();
+      
         ContenidoService ContenidoWS = new ContenidoService();
         ContenidoWS.publishEndpoint();
+      
         DtAlbumsService DtAlbumsWS = new DtAlbumsService();
         DtAlbumsWS.publishEndpoint();
+      
         RankingService RankingWS = new RankingService();
         RankingWS.publishEndpoint();
-        
+      
+        RegistroService RegistroWS = new RegistroService();
+        RegistroWS.publishEndpoint();
+      
+      
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
     }
