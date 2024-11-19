@@ -38,8 +38,9 @@ public class ListaReproduccionService {
     
     @WebMethod
     public NullableContainer ConsultarListaReproduccion(String tipoDeLista, String nombreLista) {
-        NullableContainer contenedor = new NullableContainer(); 
-        //contenedor.setObject(this.ictrl.ConsultarListaReproduccion(tipoDeLista, nombreLista));
+        NullableContainer contenedor = new NullableContainer();
+        DTDatosListaReproduccion dtDatosListaReproduccion = this.ictrl.ConsultarListaReproduccion(tipoDeLista, nombreLista);
+        contenedor.setDtDatosListaReproduccion(dtDatosListaReproduccion);
         
         return contenedor;
     }

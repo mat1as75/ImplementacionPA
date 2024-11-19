@@ -10,6 +10,7 @@ import espotify.webservices.RegistroService;
 import espotify.webservices.SuscripcionesService;
 import espotify.webservices.DtAlbumsService;
 import espotify.webservices.RankingService;
+import espotify.webservices.UsuarioService;
 
 public class Espotify extends javax.swing.JFrame {
 
@@ -22,6 +23,9 @@ public class Espotify extends javax.swing.JFrame {
         System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
         
         //Publicacion de Web Services
+        UsuarioService UsuarioWS = new UsuarioService();
+        UsuarioWS.publishEndpoint();
+        
         PreferenciasService PreferenciasWS = new PreferenciasService();
         PreferenciasWS.publishEndpoint();
       

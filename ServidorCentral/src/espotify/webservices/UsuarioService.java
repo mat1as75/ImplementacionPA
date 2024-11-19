@@ -27,6 +27,7 @@ public class UsuarioService {
     private final Fabrica fb = Fabrica.getInstance();
     private final IControlador control = fb.getControlador();
     private Endpoint endpoint = null;
+    
     public UsuarioService() {};
     
     @WebMethod(exclude = true)
@@ -60,23 +61,39 @@ public class UsuarioService {
     }
     
     @WebMethod
-    public DTDatosUsuario getDatosUsuario(String identificadorUsuario) {
-        return this.control.getDatosUsuario(identificadorUsuario);
+    public NullableContainer getDatosUsuario(String identificadorUsuario) {
+        NullableContainer contenedor = new NullableContainer();
+        DTDatosUsuario dtDatosUsuario = this.control.getDatosUsuario(identificadorUsuario);
+        contenedor.setDtDatosUsuario(dtDatosUsuario);
+        
+        return contenedor;
     }
     
     @WebMethod
-    public DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario) {
-        return this.control.getUsuarioAutentificado(identificador, contrasenaUsuario);
+    public NullableContainer getUsuarioAutentificado(String identificador, String contrasenaUsuario) {
+        NullableContainer contenedor = new NullableContainer();
+        DTUsuario dtUsuario = this.control.getUsuarioAutentificado(identificador, contrasenaUsuario);
+        contenedor.setDtUsuario(dtUsuario);
+        
+        return contenedor;
     }
     
     @WebMethod
-    public DTDatosArtista ConsultarPerfilArtista(String nicknameArtista) {
-        return this.control.ConsultarPerfilArtista(nicknameArtista);
+    public NullableContainer ConsultarPerfilArtista(String nicknameArtista) {
+        NullableContainer contenedor = new NullableContainer();
+        DTDatosArtista dtDatosArtista = this.control.ConsultarPerfilArtista(nicknameArtista);
+        contenedor.setDtDatosArtista(dtDatosArtista);
+        
+        return contenedor;
     }
     
     @WebMethod
-    public DTDatosCliente ConsultarPerfilCliente(String nicknameCliente) {
-        return this.control.ConsultarPerfilCliente(nicknameCliente);
+    public NullableContainer ConsultarPerfilCliente(String nicknameCliente) {
+        NullableContainer contenedor = new NullableContainer();
+        DTDatosCliente dtDatosCliente = this.control.ConsultarPerfilCliente(nicknameCliente);
+        contenedor.setDtDatosCliente(dtDatosCliente);
+        
+        return contenedor;
     }
     
     @WebMethod
@@ -100,14 +117,22 @@ public class UsuarioService {
     }
     
     @WebMethod
-    public DTSuscripcion getDTSuscripcion(Long id) {
-        return this.control.getDTSuscripcion(id);
+    public NullableContainer getDTSuscripcion(Long id) {
+        NullableContainer contenedor = new NullableContainer();
+        DTSuscripcion dtSuscripcion = this.control.getDTSuscripcion(id);
+        contenedor.setDtSuscripcion(dtSuscripcion);
+        
+        return contenedor;
     }
     
     @WebMethod
-    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception{
+    public NullableContainer getDTSuscripcionDeCliente(String nickname) throws Exception{
+        NullableContainer contenedor = new NullableContainer();
+        DTSuscripcion dtSuscripcion = this.control.getDTSuscripcionDeCliente(nickname);
+        contenedor.setDtSuscripcion(dtSuscripcion);
+        
         try {
-            return this.control.getDTSuscripcionDeCliente(nickname);
+            return contenedor;
         } catch (Exception e) {
             throw e;
         }
