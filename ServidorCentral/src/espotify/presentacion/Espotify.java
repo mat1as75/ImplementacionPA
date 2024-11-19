@@ -3,9 +3,13 @@ package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
+import espotify.webservices.ContenidoService;
+import espotify.webservices.ListaReproduccionService;
 import espotify.webservices.PreferenciasService;
 import espotify.webservices.RegistroService;
 import espotify.webservices.SuscripcionesService;
+import espotify.webservices.DtAlbumsService;
+import espotify.webservices.RankingService;
 
 public class Espotify extends javax.swing.JFrame {
 
@@ -13,6 +17,9 @@ public class Espotify extends javax.swing.JFrame {
     
     public Espotify() {
         initComponents();
+        //hace un system.out de la peticion del cliente asi se puede ver el contenido del body
+        System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "true");
+        System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
         
         //Publicacion de Web Services
         PreferenciasService PreferenciasWS = new PreferenciasService();
@@ -20,11 +27,20 @@ public class Espotify extends javax.swing.JFrame {
       
         SuscripcionesService SuscripcionesWS = new SuscripcionesService();
         SuscripcionesWS.publishEndpoint();
-
+      
+        ContenidoService ContenidoWS = new ContenidoService();
+        ContenidoWS.publishEndpoint();
+      
+        DtAlbumsService DtAlbumsWS = new DtAlbumsService();
+        DtAlbumsWS.publishEndpoint();
+      
+        RankingService RankingWS = new RankingService();
+        RankingWS.publishEndpoint();
+      
         RegistroService RegistroWS = new RegistroService();
         RegistroWS.publishEndpoint();
-
-        
+      
+      
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
     }

@@ -35,7 +35,11 @@ public class TemaConURL extends Tema {
                 this.getIdTema(),
                 this.getNombreTema(),
                 null,
-                this.getUrlTema()
+                this.getUrlTema(),
+                this.getCantidadReproducciones(),
+                this.getCantidadDescargasOVisitas(),
+                this.getCantidadFavoritos(),
+                this.getPuntajeTema()
         );
     }
     

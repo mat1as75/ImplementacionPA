@@ -65,7 +65,7 @@ public class SVExisteAlbum extends HttpServlet {
         response.setStatus(response.SC_OK);
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        if (idAlbum == null) {
+        if (idAlbum == 0L) {
             response.getWriter().write("No existe");
         } else {
             response.getWriter().write("Existe");

@@ -2,9 +2,7 @@ import espotify.DataTypes.DTAlbum;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTArtista;
 import espotify.DataTypes.DTGenero;
-import espotify.DataTypes.DTTemaConRuta;
-import espotify.DataTypes.DTTemaConURL;
-import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaConTipo;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.logica.Album;
 import espotify.logica.Genero;
@@ -35,13 +33,13 @@ public class AltaAlbumTest {
         cdt.resetDatosDePrueba();
     }
     
-    public List<DTTemaGenerico> crearDataTemasDePrueba() {
-        DTTemaGenerico tema1 = new DTTemaConRuta("rutaTema1", "tema1", 120, 1);
-        DTTemaGenerico tema2 = new DTTemaConRuta("rutaTema2", "tema2", 120, 2);
-        DTTemaGenerico tema3 = new DTTemaConURL("tema3", 120, 3, "urlTema3");
-        DTTemaGenerico tema4 = new DTTemaConURL("tema4", 120, 4, "urlTema4");
+    public List<DTTemaConTipo> crearDataTemasDePrueba() {
+        DTTemaConTipo tema1 = new DTTemaConTipo("ruta", "tema1", 120, 1, "rutaTema1");
+        DTTemaConTipo tema2 = new DTTemaConTipo("ruta", "tema2", 120, 2, "rutaTema2");
+        DTTemaConTipo tema3 = new DTTemaConTipo("url","tema3", 120, 3, "urlTema3");
+        DTTemaConTipo tema4 = new DTTemaConTipo("url","tema4", 120, 4, "urlTema4");
         
-        List<DTTemaGenerico> dataTemas = new ArrayList();
+        List<DTTemaConTipo> dataTemas = new ArrayList();
         dataTemas.add(tema1);
         dataTemas.add(tema2);
         dataTemas.add(tema3);
@@ -120,7 +118,7 @@ public class AltaAlbumTest {
         Boolean fueCreado = false;
         try {
             idAlb = crearAlbum(dtAlbum);
-            fueCreado = (idAlb != null);
+            fueCreado = (idAlb != 0L);
         } catch (Exception e) {
             fueCreado = false;
         }
@@ -147,7 +145,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testDatosCorrectos() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -164,7 +162,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testDatosCorrectos2() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba2();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -181,7 +179,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testDatosCorrectosArtistaNuevo() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         crearArtistaDePrueba();
@@ -200,7 +198,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testDatosCorrectosArtistaNuevo2() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba2();
         
         crearArtistaDePrueba();
@@ -219,7 +217,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testArtistaNull() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -236,7 +234,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testNombreAlbumNull() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -253,7 +251,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testGenerosNull() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
                 "albumPruebaGenerosNull",
@@ -269,7 +267,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testTemasNull() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -286,7 +284,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testTemasVacio() {
-        List<DTTemaGenerico> dataTemas = new ArrayList();
+        List<DTTemaConTipo> dataTemas = new ArrayList();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -303,7 +301,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testGenerosVacio() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = new ArrayList();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -320,7 +318,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testArtistaInexistente() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -337,7 +335,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testAlbumRepetido() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         
         DTAlbum_SinDTArtista dtAlbum = new DTAlbum_SinDTArtista(
@@ -354,7 +352,7 @@ public class AltaAlbumTest {
     
     @Test
     public void testGeneroInexistente() {
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = new ArrayList();
         DTGenero dg1 = new DTGenero("generoInexistente");
         DTGenero dg2 = new DTGenero("Rock Latino");
@@ -376,7 +374,7 @@ public class AltaAlbumTest {
     @Test
     public void testVerificarTemas() {
        
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         String test = "Test de Alta Album: Verificar temas. "; 
         
@@ -420,7 +418,7 @@ public class AltaAlbumTest {
     @Test
     public void testVerificarGeneros() {
     
-        List<DTTemaGenerico> dataTemas = crearDataTemasDePrueba();
+        List<DTTemaConTipo> dataTemas = crearDataTemasDePrueba();
         List<DTGenero> dataGeneros = crearDataGenerosDePrueba();
         String test = "Test de Alta Album: Verificar generos. "; 
         

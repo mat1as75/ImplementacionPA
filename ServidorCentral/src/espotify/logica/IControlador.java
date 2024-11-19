@@ -93,7 +93,7 @@ public interface IControlador {
 
     public abstract DTAlbum ConsultaAlbum(Long idAlbum);
     public abstract Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb);
-    public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);
+    public abstract Map<Long, String> getTemasFavCliente(String nicknameCliente);
     public abstract Map<Long, String> getAlbumsFavCliente(String nicknameCliente);
     public abstract ArrayList<String> getListasFavCliente(String nicknameCliente);
     

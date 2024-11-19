@@ -1,0 +1,165 @@
+package webservices;
+
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebResult;
+import jakarta.jws.WebService;
+import jakarta.jws.soap.SOAPBinding;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.ws.Action;
+import jakarta.xml.ws.FaultAction;
+import webservices.DataTypes.DtAlbumSinDTArtista;
+import webservices.DataTypes.DtTemaGenericoConRutaOUrl;
+
+@WebService(name = "ContenidoService", targetNamespace = "http://webservices.espotify/")
+@SOAPBinding(style = SOAPBinding.Style.RPC)
+@XmlSeeAlso({
+    ObjectFactory.class
+})
+public interface ContenidoService {
+
+
+    /**
+     * 
+     * @return
+     *     returns espotify.webservices.MapContainer
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/getTemasDisponiblesRequest", output = "http://webservices.espotify/ContenidoService/getTemasDisponiblesResponse")
+    public MapContainer getTemasDisponibles();
+
+    /**
+     * 
+     * @return
+     *     returns espotify.webservices.MapContainer
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/getDTTemasDisponiblesConAlbumRequest", output = "http://webservices.espotify/ContenidoService/getDTTemasDisponiblesConAlbumResponse")
+    public MapContainer getDTTemasDisponiblesConAlbum();
+
+    /**
+     * 
+     * @return
+     *     returns espotify.webservices.MapContainer
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/getAlbumesDisponiblesRequest", output = "http://webservices.espotify/ContenidoService/getAlbumesDisponiblesResponse")
+    public MapContainer getAlbumesDisponibles();
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns long
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/buscarAlbumPorNombreYArtistaRequest", output = "http://webservices.espotify/ContenidoService/buscarAlbumPorNombreYArtistaResponse")
+    public long buscarAlbumPorNombreYArtista(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns espotify.webservices.DtTemaGenericoConRutaOUrl
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/getDTTemaGenericoConRutaOUrlRequest", output = "http://webservices.espotify/ContenidoService/getDTTemaGenericoConRutaOUrlResponse")
+    public DtTemaGenericoConRutaOUrl getDTTemaGenericoConRutaOUrl(
+        @WebParam(name = "arg0", partName = "arg0")
+        long arg0);
+
+    /**
+     * 
+     * @return
+     *     returns espotify.webservices.ArrayListContainer
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/getListaDTGeneroSimpleRequest", output = "http://webservices.espotify/ContenidoService/getListaDTGeneroSimpleResponse")
+    public ArrayListContainer getListaDTGeneroSimple();
+
+    /**
+     * 
+     * @param arg0
+     * @throws Exception_Exception
+     */
+    @WebMethod(operationName = "AltaAlbum")
+    @Action(input = "http://webservices.espotify/ContenidoService/AltaAlbumRequest", output = "http://webservices.espotify/ContenidoService/AltaAlbumResponse", fault = {
+        @FaultAction(className = Exception_Exception.class, value = "http://webservices.espotify/ContenidoService/AltaAlbum/Fault/Exception")
+    })
+    public void altaAlbum(
+        @WebParam(name = "arg0", partName = "arg0")
+        DtAlbumSinDTArtista arg0)
+        throws Exception_Exception
+    ;
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @throws Exception_Exception
+     */
+    @WebMethod
+    @Action(input = "http://webservices.espotify/ContenidoService/quitarTemaDeListaRequest", output = "http://webservices.espotify/ContenidoService/quitarTemaDeListaResponse", fault = {
+        @FaultAction(className = Exception_Exception.class, value = "http://webservices.espotify/ContenidoService/quitarTemaDeLista/Fault/Exception")
+    })
+    public void quitarTemaDeLista(
+        @WebParam(name = "arg0", partName = "arg0")
+        long arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1)
+        throws Exception_Exception
+    ;
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @throws Exception_Exception
+     */
+    @WebMethod
+    @Action(input = "http://webservices.espotify/ContenidoService/agregarTemaAListaRequest", output = "http://webservices.espotify/ContenidoService/agregarTemaAListaResponse", fault = {
+        @FaultAction(className = Exception_Exception.class, value = "http://webservices.espotify/ContenidoService/agregarTemaALista/Fault/Exception")
+    })
+    public void agregarTemaALista(
+        @WebParam(name = "arg0", partName = "arg0")
+        long arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1)
+        throws Exception_Exception
+    ;
+
+    /**
+     * 
+     * @return
+     *     returns espotify.webservices.ArrayListContainer
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/getNombresGenerosPadreRequest", output = "http://webservices.espotify/ContenidoService/getNombresGenerosPadreResponse")
+    public ArrayListContainer getNombresGenerosPadre();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns espotify.webservices.NullableContainer
+     */
+    @WebMethod(operationName = "ConsultaAlbum")
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/ConsultaAlbumRequest", output = "http://webservices.espotify/ContenidoService/ConsultaAlbumResponse")
+    public NullableContainer consultaAlbum(
+        @WebParam(name = "arg0", partName = "arg0")
+        long arg0);
+
+}

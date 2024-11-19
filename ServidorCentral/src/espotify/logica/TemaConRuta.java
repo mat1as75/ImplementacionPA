@@ -36,7 +36,11 @@ public class TemaConRuta extends Tema {
                 this.getIdTema(),
                 this.getNombreTema(),
                 this.getRutaTema(),
-                null
+                null,
+                this.getCantidadReproducciones(),
+                this.getCantidadDescargasOVisitas(),
+                this.getCantidadFavoritos(),
+                this.getPuntajeTema()
         );
     }
 }

@@ -1,4 +1,3 @@
-
 package webservices.DataTypes;
 
 import java.util.ArrayList;
@@ -9,26 +8,27 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "dtAlbum", propOrder = {
+@XmlType(name = "dtAlbumSinDTArtista", propOrder = {
     "anioCreacion",
     "estaDisponible",
     "fotoAlbum",
-    "idAlbum",
     "miArtista",
     "misTemas",
+    "misgeneros",
     "nombreAlbum"
 })
-public class DtAlbum {
+public class DtAlbumSinDTArtista {
 
     protected int anioCreacion;
     protected Boolean estaDisponible;
     protected String fotoAlbum;
-    protected Long idAlbum;
-    protected DtArtista miArtista;
+    protected String miArtista;
     @XmlElement(nillable = true)
-    protected List<DtTemaGenerico> misTemas;
+    protected List<DtTemaConTipo> misTemas;
+    @XmlElement(nillable = true)
+    protected List<DtGenero> misgeneros;
     protected String nombreAlbum;
-
+    
     public int getAnioCreacion() {
         return anioCreacion;
     }
@@ -53,49 +53,26 @@ public class DtAlbum {
         this.fotoAlbum = value;
     }
 
-    public Long getIdAlbum() {
-        return idAlbum;
-    }
-
-    public void setIdAlbum(Long value) {
-        this.idAlbum = value;
-    }
-
-    public DtArtista getMiArtista() {
+    public String getMiArtista() {
         return miArtista;
     }
 
-    public void setMiArtista(DtArtista value) {
+    public void setMiArtista(String value) {
         this.miArtista = value;
     }
 
-    /**
-     * Gets the value of the misTemas property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the misTemas property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getMisTemas().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link DtTemaGenerico }
-     * 
-     * 
-     */
-    public List<DtTemaGenerico> getMisTemas() {
+    public List<DtTemaConTipo> getMisTemas() {
         if (misTemas == null) {
-            misTemas = new ArrayList<DtTemaGenerico>();
+            misTemas = new ArrayList<DtTemaConTipo>();
         }
         return this.misTemas;
+    }
+
+    public List<DtGenero> getMisgeneros() {
+        if (misgeneros == null) {
+            misgeneros = new ArrayList<DtGenero>();
+        }
+        return this.misgeneros;
     }
 
     public String getNombreAlbum() {
