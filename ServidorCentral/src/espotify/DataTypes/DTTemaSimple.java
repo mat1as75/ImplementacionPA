@@ -12,6 +12,11 @@ public class DTTemaSimple {
     private Long idAlbum;
     private String nombreCompletoArtista;
     private List<String> generosDeTema;
+    private Long cantidadReproducciones;
+    private Long cantidadDescargasOVisitas;
+    private Long cantidadFavoritos;
+    private float puntajeTema;
+
     
     public DTTemaSimple() {};
     
@@ -46,6 +51,35 @@ public class DTTemaSimple {
         this.nombreAlbum = nombreAlbum;
         this.nombreCompletoArtista = nombreCompletoArtista;
         this.generosDeTema = generosDeTema;
+    }
+    
+    //Con reproducciones/descargas/favoritos y puntaje
+    public DTTemaSimple(
+            Long idTema, 
+            String nombreTema, 
+            int duracionSegundos, 
+            int posicionEnAlbum, 
+            String nombreAlbum, 
+            Long idAlbum,
+            String nombreCompletoArtista,
+            List<String> generosDeTema,
+            Long cantidadReproducciones, 
+            Long cantidadDescargasOVisitas,
+            Long cantidadFavoritos,
+            float puntaje
+            ) {
+        this.idTema = idTema;
+        this.nombreTema = nombreTema;
+        this.duracionSegundos = duracionSegundos;
+        this.posicionEnAlbum = posicionEnAlbum;
+        this.nombreAlbum = nombreAlbum;
+        this.idAlbum = idAlbum;
+        this.nombreCompletoArtista = nombreCompletoArtista;
+        this.generosDeTema = generosDeTema;
+        this.cantidadReproducciones = cantidadReproducciones;
+        this.cantidadDescargasOVisitas = cantidadDescargasOVisitas;
+        this.cantidadFavoritos = cantidadFavoritos;
+        this.puntajeTema = puntaje;
     }
     
     public Long getIdTema() {
@@ -102,6 +136,38 @@ public class DTTemaSimple {
 
     public void setNombreCompletoArtista(String nombreCompletoArtista) {
         this.nombreCompletoArtista = nombreCompletoArtista;
+    }
+
+    public Long getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+
+    public void setCantidadReproducciones(Long cantidadReproducciones) {
+        this.cantidadReproducciones = cantidadReproducciones;
+    }
+
+    public Long getCantidadDescargasOVisitas() {
+        return cantidadDescargasOVisitas;
+    }
+
+    public void setCantidadDescargasOVisitas(Long cantidadDescargasOVisitas) {
+        this.cantidadDescargasOVisitas = cantidadDescargasOVisitas;
+    }
+
+    public Long getCantidadFavoritos() {
+        return cantidadFavoritos;
+    }
+
+    public void setCantidadFavoritos(Long cantidadFavoritos) {
+        this.cantidadFavoritos = cantidadFavoritos;
+    }
+
+    public float getPuntajeTema() {
+        return puntajeTema;
+    }
+
+    public void setPuntajeTema(float puntajeTema) {
+        this.puntajeTema = puntajeTema;
     }
     
     public String duracionToString() {

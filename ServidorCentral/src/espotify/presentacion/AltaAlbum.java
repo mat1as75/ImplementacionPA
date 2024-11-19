@@ -3,9 +3,7 @@ package espotify.presentacion;
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTGenero_Simple;
-import espotify.DataTypes.DTTemaConRuta;
-import espotify.DataTypes.DTTemaConURL;
-import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaConTipo;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import java.awt.Image;
@@ -40,7 +38,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     private List<DTGenero> dataGeneros = new ArrayList<DTGenero>();
     private DefaultListModel listaTemasAgregadosModel;
     private DefaultListModel listaGenerosAgregadosModel;
-    private List<DTTemaGenerico> dataTemas = new ArrayList<DTTemaGenerico>();
+    private List<DTTemaConTipo> dataTemas = new ArrayList<DTTemaConTipo>();
     private Map<String, Path> mapRutasDeTemasAgregados = new HashMap();
     private File archivoImagenAlbum = null;
     private List<File> directoriosCreados = new ArrayList<File>();
@@ -497,7 +495,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         Boolean posicionesSonValidas = true;
         int numeroTemas = this.dataTemas.size();
         
-        for (DTTemaGenerico dt : this.dataTemas) {
+        for (DTTemaConTipo dt : this.dataTemas) {
             if (dt.getPosicionEnAlbum() > numeroTemas) {
                 JOptionPane.showMessageDialog(
                         null, 
@@ -527,7 +525,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
     
     private Boolean validarNombreTemaRepetido(String nombre) {
         //verifico que no se agreguen nombres repetidos
-        for (DTTemaGenerico dt : this.dataTemas) {
+        for (DTTemaConTipo dt : this.dataTemas) {
             if (dt.getNombreTema().equals(nombre)) {
                 JOptionPane.showMessageDialog(
                         null, 
@@ -555,7 +553,7 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
                 return false;
             } else {
                 //verifico que no se agreguen posiciones repetidas
-                for (DTTemaGenerico dt : this.dataTemas) {
+                for (DTTemaConTipo dt : this.dataTemas) {
                     if (dt.getPosicionEnAlbum() == intPosicionTema) {
                         JOptionPane.showMessageDialog(
                         null, 
@@ -689,11 +687,11 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
             duracionTotalSegundos = duracionMinutos * 60 + duracionSegundos;
 
             //creo datatype
-            DTTemaGenerico nuevoDataTema;
+            DTTemaConTipo nuevoDataTema;
             if (checkboxAccesoURL.isSelected()) {
-                nuevoDataTema = new DTTemaConURL(nombre,duracionTotalSegundos,intPosicionTema,url);
+                nuevoDataTema = new DTTemaConTipo("url", nombre,duracionTotalSegundos,intPosicionTema,url);
             } else {
-                nuevoDataTema = new DTTemaConRuta(ruta, nombre, duracionTotalSegundos, intPosicionTema);
+                nuevoDataTema = new DTTemaConTipo("ruta", nombre, duracionTotalSegundos, intPosicionTema, ruta);
             }
             dataTemas.add(nuevoDataTema);
             if (temaSeleccionado != null) {
@@ -828,10 +826,10 @@ public class AltaAlbum extends javax.swing.JInternalFrame {
         
         if (indiceTemaSeleccionado != -1) {
             listaTemasAgregadosModel.remove(indiceTemaSeleccionado);
-            for (DTTemaGenerico dataTema : dataTemas) {
+            for (DTTemaConTipo dataTema : dataTemas) {
                 if (datosTemaSeleccionado.contains(dataTema.getNombreTema())) {
                     dataTemas.remove(dataTema);
-                    if (dataTema instanceof DTTemaConRuta) {
+                    if (dataTema.getTipo().equals("ruta")) {
                         removerArchivoTema(dataTema.getNombreTema());
                     }
                     break;

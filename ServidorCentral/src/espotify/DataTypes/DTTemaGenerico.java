@@ -9,6 +9,9 @@ public class DTTemaGenerico {
     protected int posicionEnAlbum;
     protected List<DTListaReproduccion> mislistasReproducc;
     protected DTAlbum miAlbum;
+    
+    public DTTemaGenerico(){};
+    
     public DTTemaGenerico(String nombreTema, int duracionSegundos, int posicionEnAlbum) {
         this.nombreTema = nombreTema;
         this.duracionSegundos = duracionSegundos;

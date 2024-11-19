@@ -2,9 +2,7 @@ package Servlets;
 
 import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero;
-import espotify.DataTypes.DTTemaConRuta;
-import espotify.DataTypes.DTTemaConURL;
-import espotify.DataTypes.DTTemaGenerico;
+import espotify.DataTypes.DTTemaConTipo;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.exceptions.InvalidDataException;
@@ -110,8 +108,8 @@ public class SVAltaAlbum extends HttpServlet {
         return archivoPortada.getPath();
     }
     
-    private List<DTTemaGenerico> crearListaDTTemas(Map<String, String> mapTemasConRutas, int cantidadTemas, HttpServletRequest request) {
-        List<DTTemaGenerico> dataTemas = new ArrayList();
+    private List<DTTemaConTipo> crearListaDTTemas(Map<String, String> mapTemasConRutas, int cantidadTemas, HttpServletRequest request) {
+        List<DTTemaConTipo> dataTemas = new ArrayList();
         for (int i=0; i<cantidadTemas; i++) {
             String parameterPrefix = "tema-" + i + "-";
             String nombreTema = convertToUTF8(request.getParameter(parameterPrefix + "nombre"));
@@ -130,15 +128,17 @@ public class SVAltaAlbum extends HttpServlet {
             if (tipoDeAcceso.equals("ruta")) {
                 String rutaTema = mapTemasConRutas.get(nombreTema);
                 dataTemas.add(
-                        new DTTemaConRuta(
-                                rutaTema, 
+                        new DTTemaConTipo(
+                                "ruta", 
                                 nombreTema, 
                                 duracionTotalSegundos, 
-                                posicionTema));
+                                posicionTema,
+                                rutaTema));
             }
             if (tipoDeAcceso.equals("url")) {
                 dataTemas.add(
-                        new DTTemaConURL(
+                        new DTTemaConTipo(
+                                "url",
                                 nombreTema, 
                                 duracionTotalSegundos, 
                                 posicionTema, 
@@ -258,7 +258,7 @@ public class SVAltaAlbum extends HttpServlet {
             return;
         }
         //Creo los DTTema con los datos del request y con las rutas de los archivos subidos en los que son con ruta
-        List<DTTemaGenerico> dataTemas = crearListaDTTemas(mapTemasConRutas, cantidadTemas, request);
+        List<DTTemaConTipo> dataTemas = crearListaDTTemas(mapTemasConRutas, cantidadTemas, request);
        
         String rutaPortada = null;
         //Subo la imagen de portada

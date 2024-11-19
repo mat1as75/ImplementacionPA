@@ -82,7 +82,7 @@ public interface IControlador {
 
     public abstract DTAlbum ConsultaAlbum(Long idAlbum);
     public abstract Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb);
-    public abstract Map<Long, String>  getTemasFavCliente(String nicknameCliente);
+    public abstract Map<Long, String> getTemasFavCliente(String nicknameCliente);
     public abstract Map<Long, String> getAlbumsFavCliente(String nicknameCliente);
     public abstract ArrayList<String> getListasFavCliente(String nicknameCliente);
     
@@ -111,6 +111,9 @@ public interface IControlador {
     
     public abstract void darDeBajaArtista(String nicknameArtista) throws Exception;
     public abstract ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles();
+
+    public abstract void guardarRegistroAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso);
+
     
     /* -----OPERACIONES DE USUARIO WEB SERVICE----- */
     public abstract void AltaArtista(DTArtista dtArtista);

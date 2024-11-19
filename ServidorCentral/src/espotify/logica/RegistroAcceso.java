@@ -28,8 +28,7 @@ public class RegistroAcceso implements Serializable{
     public RegistroAcceso() {
     }
 
-    public RegistroAcceso(Long idRegistro, String ipRegistro, String urlRegistro, String browserRegistro, String soRegistro, Date fechaRegistro) {
-        this.idRegistro = idRegistro;
+    public RegistroAcceso(String ipRegistro, String urlRegistro, String browserRegistro, String soRegistro, Date fechaRegistro) {
         this.ipRegistro = ipRegistro;
         this.urlRegistro = urlRegistro;
         this.browserRegistro = browserRegistro;

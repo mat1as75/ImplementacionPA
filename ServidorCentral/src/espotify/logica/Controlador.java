@@ -557,6 +557,16 @@ public class Controlador implements IControlador{
     @Override
     public ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles() {
         return this.contpersis.getDTRegistrosAccesoDisponibles();
+        
+    }
+    
+    @Override
+    public void guardarRegistroAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso) {
+        try {
+            this.contpersis.guardarRegistroAcceso(direccionIP, url, navegador, sistemaOperativo, fechaAcceso);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 }
 
