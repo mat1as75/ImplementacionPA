@@ -4,6 +4,7 @@ import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.webservices.PreferenciasService;
+import espotify.webservices.RegistroService;
 import espotify.webservices.SuscripcionesService;
 
 public class Espotify extends javax.swing.JFrame {
@@ -16,8 +17,13 @@ public class Espotify extends javax.swing.JFrame {
         //Publicacion de Web Services
         PreferenciasService PreferenciasWS = new PreferenciasService();
         PreferenciasWS.publishEndpoint();
+      
         SuscripcionesService SuscripcionesWS = new SuscripcionesService();
         SuscripcionesWS.publishEndpoint();
+
+        RegistroService RegistroWS = new RegistroService();
+        RegistroWS.publishEndpoint();
+
         
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
