@@ -6,7 +6,7 @@ public class DTAlbum_SinDTArtista {
 private String nombreAlbum;
 private int anioCreacion;
 private String fotoAlbum;
-private List<DTTemaGenerico> misTemas;
+private List<DTTemaConTipo> misTemas;
 private List<DTGenero>misGeneros;
 private String miArtista;
 private Boolean estaDisponible;
@@ -18,7 +18,7 @@ private Boolean estaDisponible;
             String nombreAlbum, 
             int anioCreacion, 
             String fotoAlbum, 
-            List<DTTemaGenerico> misTemas,
+            List<DTTemaConTipo> misTemas,
             List<DTGenero> misGeneros,
             String miArtista
         ) {
@@ -34,7 +34,7 @@ private Boolean estaDisponible;
             String nombreAlbum, 
             int anioCreacion, 
             String fotoAlbum, 
-            List<DTTemaGenerico> misTemas,
+            List<DTTemaConTipo> misTemas,
             List<DTGenero> misGeneros,
             String miArtista,
             Boolean disponibilidad
@@ -60,7 +60,7 @@ private Boolean estaDisponible;
         return fotoAlbum;
     }
 
-    public List<DTTemaGenerico> getMisTemas() {
+    public List<DTTemaConTipo> getMisTemas() {
         return misTemas;
     }
 
@@ -84,7 +84,7 @@ private Boolean estaDisponible;
         this.fotoAlbum = fotoAlbum;
     }
 
-    public void setMisTemas(List<DTTemaGenerico> misTemas) {
+    public void setMisTemas(List<DTTemaConTipo> misTemas) {
         this.misTemas = misTemas;
     }
 

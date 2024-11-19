@@ -172,11 +172,13 @@ public abstract class Tema implements Serializable {
         
         String nombreArtista = "";
         String nombreAlbum = "";
+        Long idAlbum = null;
         List<String> generosDeTema = new ArrayList<>();
         
         if (this.getMiAlbum() != null && this.getMiAlbum().getMiArtista() != null) {
             nombreArtista = this.getMiAlbum().getMiArtista().getNombreCompletoToString();
             nombreAlbum = this.getMiAlbum().getNombreAlbum();
+            idAlbum = this.getMiAlbum().getIdAlbum();
             generosDeTema = this.getMiAlbum().getMisGenerosString();
         }
         
@@ -186,8 +188,13 @@ public abstract class Tema implements Serializable {
                 this.getDuracionSegundos(),
                 this.getPosicionEnAlbum(),
                 nombreAlbum,
+                idAlbum,
                 nombreArtista,
-                generosDeTema
+                generosDeTema,
+                this.getCantidadReproducciones(),
+                this.getCantidadDescargasOVisitas(),
+                this.getCantidadFavoritos(),
+                this.getPuntajeTema()
         );
     }
     

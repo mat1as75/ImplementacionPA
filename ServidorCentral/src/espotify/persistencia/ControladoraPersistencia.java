@@ -17,6 +17,7 @@ import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTTemaConPuntaje;
+import espotify.DataTypes.DTTemaConTipo;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
@@ -146,7 +147,7 @@ public class ControladoraPersistencia {
                 || dataAlbum.getMisgeneros().isEmpty()) {
             throw new InvalidDataException("Existen campos requeridos nulos o vacíos.");
         }
-
+        
         //creo el album vacio
         Album nuevoAlbum = new Album();
         this.albJpa.create(nuevoAlbum);
@@ -186,10 +187,10 @@ public class ControladoraPersistencia {
 
         //creo los temas y los agrego a una lista
         List<Tema> temas = new ArrayList();
-        for (DTTemaGenerico dataTema : dataAlbum.getMisTemas()) {
-            if (dataTema instanceof DTTemaConRuta) {
+        for (DTTemaConTipo dataTema : dataAlbum.getMisTemas()) {
+            if (dataTema.getTipo().equals("ruta")) {
                 TemaConRuta nuevoTemaConRuta = new TemaConRuta(
-                        ((DTTemaConRuta) dataTema).getRutaTema(),
+                        dataTema.getRutaOurl(),
                         dataTema.getNombreTema(),
                         dataTema.getDuracionSegundos(),
                         dataTema.getPosicionEnAlbum(),
@@ -199,7 +200,7 @@ public class ControladoraPersistencia {
                 temas.add(nuevoTemaConRuta);
             } else {
                 TemaConURL nuevoTemaConURL = new TemaConURL(
-                        ((DTTemaConURL) dataTema).getUrlTema(),
+                        dataTema.getRutaOurl(),
                         dataTema.getNombreTema(),
                         dataTema.getDuracionSegundos(),
                         dataTema.getPosicionEnAlbum(),
@@ -768,7 +769,7 @@ public class ControladoraPersistencia {
 
             mapDtTemas.put(
                     t.getIdTema(),
-                    t.getDTTema()
+                    t.getDTTemaSimple()
             );
         }
 
@@ -871,7 +872,6 @@ public class ControladoraPersistencia {
         List<Album> listaAlbumes = albJpa.findAlbumEntities();
 
         for (Album album : listaAlbumes) {
-
             if (album.getMisGenerosString().contains(genero)) {
                 dataAlbums.add(album.getDTAlbumSimple());
             }
@@ -1514,7 +1514,7 @@ public class ControladoraPersistencia {
     }
 
     public Long buscarAlbumPorNombreYArtista(String nombreArt, String nombreAlb) {
-        Long idAlbum = null;
+        Long idAlbum = 0L;
         Artista art = this.artJpa.findArtista(nombreArt);
 
         if (art != null) {
@@ -1797,6 +1797,7 @@ public class ControladoraPersistencia {
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
         emf.getCache().evictAll();
+        List<DTDatosListaReproduccion> listaDeDtListas = new ArrayList();
         
         Cliente cliente = this.cliJpa.findCliente(nicknameCliente);
         if (cliente == null) {
@@ -1805,10 +1806,9 @@ public class ControladoraPersistencia {
 
         List<ListaParticular> particularesDeCliente = cliente.getMisListasReproduccionCreadas();
         if (particularesDeCliente == null || particularesDeCliente.isEmpty()) {
-            return null;
+            return listaDeDtListas;
         }
         
-        List<DTDatosListaReproduccion> listaDeDtListas = new ArrayList();
         for (ListaParticular lp : particularesDeCliente) {
             listaDeDtListas.add(lp.getDTDatosListaReproduccion());
         }

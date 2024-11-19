@@ -32,12 +32,16 @@ public class SuscripcionesService {
     }
     
     @WebMethod
-    public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+    public NullableContainer getDTSuscripcionDeCliente(String nickname) throws Exception {
+        NullableContainer contenedor = new NullableContainer();
+        
         try {
-            return ictrl.getDTSuscripcionDeCliente(nickname);
+            DTSuscripcion dtSuscripcion = ictrl.getDTSuscripcionDeCliente(nickname);
+            contenedor.setDtSuscripcion(dtSuscripcion);
         } catch (Exception e) {
             throw e;
         }
+        return contenedor;
     }
     
     @WebMethod
@@ -60,8 +64,12 @@ public class SuscripcionesService {
     }
 
     @WebMethod
-    public DTSuscripcion getDTSuscripcon(Long idSuscripcion) {
-        return ictrl.getDTSuscripcion(idSuscripcion);
+    public NullableContainer getDTSuscripcon(Long idSuscripcion) {
+        NullableContainer contenedor = new NullableContainer();
+        DTSuscripcion dtSuscripcion = ictrl.getDTSuscripcion(idSuscripcion);
+        contenedor.setDtSuscripcion(dtSuscripcion);
+        
+        return contenedor;
     }
     
 }
