@@ -5,14 +5,11 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import webservices.RegistroService;
-import webservices.RegistroServiceService;
 
 
 @WebServlet(name = "SVEjemplo", urlPatterns = {"/SVEjemplo"})
@@ -30,11 +27,6 @@ public class SVEjemplo extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        RegistroServiceService ServiceR = new RegistroServiceService();
-        RegistroService ServiceWS = ServiceR.getRegistroServicePort();
-        boolean existe = ServiceWS.existeCliente("ppArgento");
-        
-        response.getWriter().write("<h1>" + existe +"</h1>");
     }
 
     

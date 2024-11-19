@@ -14,6 +14,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import webservices.RegistroService;
+import webservices.RegistroServiceService;
 
 @WebFilter(filterName = "SVRegistroAccesoFiltro", urlPatterns = {"/*"})
 public class SVRegistroAccesoFiltro implements Filter {
@@ -127,7 +129,8 @@ public class SVRegistroAccesoFiltro implements Filter {
     }
     
     private void almacenarAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso) {
-        RegistroService service = new RegistroService();
+        RegistroServiceService serviceR = new RegistroServiceService();
+        RegistroService service = serviceR.getRegistroServicePort();
         
         try {
             service.guardarRegistroAcceso(
