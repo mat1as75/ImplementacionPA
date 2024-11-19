@@ -32,9 +32,6 @@ public class Espotify extends javax.swing.JFrame {
         RankingService RankingWS = new RankingService();
         RankingWS.publishEndpoint();
         
-        //ListaReproduccionService ListaReproduccionWS = new ListaReproduccionService();
-        //ListaReproduccionWS.publishEndpoint();
-        
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
     }
