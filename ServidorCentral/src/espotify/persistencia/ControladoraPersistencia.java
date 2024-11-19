@@ -2001,4 +2001,19 @@ public class ControladoraPersistencia {
         
         return dtRegistros;
     }
+    
+    public void guardarRegistroAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso) {
+        RegistroAcceso registro = new RegistroAcceso(
+                direccionIP, 
+                url, 
+                navegador, 
+                sistemaOperativo, 
+                fechaAcceso);
+        
+        try {
+            this.registroAccesoJpa.create(registro);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 }

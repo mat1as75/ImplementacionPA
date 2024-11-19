@@ -128,5 +128,6 @@ public interface IControlador {
     
     public abstract void darDeBajaArtista(String nicknameArtista) throws Exception;
     public abstract ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles();
+    public abstract void guardarRegistroAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso);
 
 }
