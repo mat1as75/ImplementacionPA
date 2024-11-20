@@ -23,8 +23,8 @@ public class Espotify extends javax.swing.JFrame {
         System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
         
         //Publicacion de Web Services
-        //UsuarioService UsuarioWS = new UsuarioService();
-        //UsuarioWS.publishEndpoint();
+        UsuarioService UsuarioWS = new UsuarioService();
+        UsuarioWS.publishEndpoint();
         
         PreferenciasService PreferenciasWS = new PreferenciasService();
         PreferenciasWS.publishEndpoint();
