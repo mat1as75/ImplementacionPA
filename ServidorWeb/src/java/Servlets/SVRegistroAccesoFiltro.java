@@ -132,16 +132,16 @@ public class SVRegistroAccesoFiltro implements Filter {
         RegistroServiceService serviceR = new RegistroServiceService();
         RegistroService service = serviceR.getRegistroServicePort();
         
-//        try {
-//            service.guardarRegistroAcceso(
-//                    direccionIP, 
-//                    url, 
-//                    navegador, 
-//                    sistemaOperativo, 
-//                    fechaAcceso);
-//        } catch (Exception ex) {
-//            throw ex;
-//        }
+        try {
+            service.guardarRegistroAcceso(
+                    direccionIP, 
+                    url, 
+                    navegador, 
+                    sistemaOperativo, 
+                    fechaAcceso);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     /**
