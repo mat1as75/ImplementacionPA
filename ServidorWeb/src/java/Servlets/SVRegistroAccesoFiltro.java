@@ -92,6 +92,7 @@ public class SVRegistroAccesoFiltro implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         
@@ -132,20 +133,21 @@ public class SVRegistroAccesoFiltro implements Filter {
         RegistroServiceService serviceR = new RegistroServiceService();
         RegistroService service = serviceR.getRegistroServicePort();
         
-//        try {
-//            service.guardarRegistroAcceso(
-//                    direccionIP, 
-//                    url, 
-//                    navegador, 
-//                    sistemaOperativo, 
-//                    fechaAcceso);
-//        } catch (Exception ex) {
-//            throw ex;
-//        }
+        try {
+            service.guardarRegistroAcceso(
+                    direccionIP, 
+                    url, 
+                    navegador, 
+                    sistemaOperativo, 
+                    fechaAcceso);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     /**
      * Return the filter configuration object for this filter.
+     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
