@@ -1,3 +1,4 @@
+<%@page import="java.time.Year"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -54,20 +55,64 @@
                 </div>
                 
                 <div class="btnConfirmarContainer">
-                <button type="button" id="btnConfirmar" class="btncustom btnPrimary">
-                    Confirmar
+                <button type="button" id="btnSeleccionar" class="btncustom btnPrimary">
+                    Seleccionar
                 </button>
             </div>
             </div>
             
-            
-            <div id="modalResultado" class="customModal hidden">
-                <div class="modalContainer">
-                    <p id="pResultado"></p>
-                    <button type="button" id="btnSalir" class="btncustom btnSecondary">Salir</button>
-                    <button type="button" id="btnContinuar" class="btncustom btnPrimary hidden">Continuar al pago</button>
-                </div>
-            </div>
         </section>
+        
+        <section class="sectionContainer">
+             <form id="paymentForm" class="formContainer hidden" method="POST">
+                
+                <div class="inputsContainer">
+                    <label for="inputCCN">Número de tarjeta:</label>
+                    <input id="inputCCN" name="CCN" 
+                           type="text" 
+                           class="inputValidated" 
+                           placeholder="1234123412341234"
+                           minlength="16" maxlength="16" required
+                           />
+                </div>
+                
+                <div class="inputsContainer">  
+                    <label for="inputCVV">CVV:</label>
+                    <input id="inputCVV" name="CVV" 
+                           type="text" 
+                           class="inputValidated" 
+                           placeholder="123"
+                           minlength="3" maxlength="3" required
+                           />
+                </div>
+                
+                <div class="inputsContainer">  
+                    <label for="inputVencimiento">Vencimiento:</label>
+                    <input id="inputVencimiento" name="vencimiento" 
+                           type="date"
+                           class="inputValidated" 
+                           min="<%=Year.now()%>" required
+                           />
+                </div>
+                           
+                <div class="inputsContainer">  
+                    <label for="inputPropietario">Nombre del propietario:</label>
+                    <input id="inputPropietario" name="propietario" 
+                           type="text" 
+                           class="inputValidated" 
+                           minlength="3" maxlength="255" required
+                           />
+                </div>
+                           
+                <button id="btnSubmitPago" class="btncustom btnPrimary" type="button">Confirmar</button>
+            </form>
+        </section>
+        <div id="modalResultado" class="customModal hidden">
+            <div class="modalContainer">
+                <p id="pResultado"></p>
+                <button type="button" id="btnAceptar" class="btncustom btnSecondary">Aceptar</button>
+                <button type="button" id="btnRegresarIndex" class="btncustom btnPrimary">Volver a la página principal</button>
+            </div>
+        </div>
     </body>
 </html>

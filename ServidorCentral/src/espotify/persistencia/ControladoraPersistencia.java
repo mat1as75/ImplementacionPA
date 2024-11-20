@@ -1816,6 +1816,8 @@ public class ControladoraPersistencia {
     }
     
     public DTSuscripcion getDTSuscripcionDeCliente(String nickname) throws Exception {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf.getCache().evictAll();
         
         Cliente cliente = this.cliJpa.findCliente(nickname);
         if (cliente == null) {
