@@ -15,6 +15,7 @@ import webservices.DataTypes.DtDatosCliente;
 import webservices.DataTypes.DtDatosListaReproduccion;
 import webservices.DataTypes.DtDatosUsuario;
 import webservices.DataTypes.DtGenero;
+import webservices.DataTypes.DtGeneroSimple;
 import webservices.DataTypes.DtParticulares;
 import webservices.DataTypes.DtSuscripcion;
 import webservices.DataTypes.DtTemaConPuntaje;
@@ -49,6 +50,11 @@ public class ObjectFactory {
         return new DtSuscripcion();
     }
 
+    public DtGeneroSimple createDtGeneroSimple() {
+        return new DtGeneroSimple();
+    }
+
+    
     public DtCliente createDtCliente() {
         return new DtCliente();
     }

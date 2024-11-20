@@ -119,6 +119,35 @@ public class ContenidoService {
         return contenedor;
     }
     
+    /**
+     * Esta operacion no es necesaria para consumir desde el Web Service Client, 
+     * pero aparentemente si el WebService no tiene visibilidad sobre el datatype 
+     * en tiempo de ejecucion el proxy no puede procesar la clase, haciendo que
+     * la operacion de getListaDTGeneroSimple no devuelva ninguna respuesta al Web Service Client, 
+     * por lo que ocurre un error al invocarla. 
+     * O al menos eso entendi de la documentacion ¯\_(ツ)_/¯
+     * Si encuentran otra forma de resolverlo es todo suyo
+     * 
+     * https://jakarta.ee/specifications/xml-web-services/3.0/jakarta-xml-ws-spec-3.0#protocolspecificfaults
+     * https://javadoc.io/static/com.sun.xml.ws/jaxws-rt/2.2.8/com/sun/xml/ws/client/sei/SEIStub.html
+     * https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html
+     * 
+     * Como no es necesaria para el WS Client no esta agregada a las clases del lado del cliente.
+     * El mismo problema ocurre con ListaReproduccionService 
+     * y por ese motivo cree la operacion getDTDatosListaReproduccion, 
+     * aunque esa si tiene algo mas de utilidad.
+    */
+    @WebMethod
+    public DTGenero_Simple getDTGeneroSimple(String nombreGenero) {
+        ArrayList<DTGenero_Simple> listaDtGenero = this.ictrl.getListaDTGeneroSimple();
+        for (DTGenero_Simple dg : listaDtGenero) {
+            if (dg.getNombreGenero().equals(nombreGenero)) {
+                return dg;
+            }
+        }
+        return new DTGenero_Simple();
+    }
+    
     @WebMethod
     public ArrayListContainer getNombresGenerosPadre() {
         ArrayList<String> listaGenPadre = this.ictrl.getNombresGenerosPadre();

@@ -36,6 +36,12 @@ public class ListaReproduccionService {
         this.ictrl.CrearListaParticular(nombreLista, fotoLista, nicknameCliente, fechaCreacion, esPrivada);
     }
     
+    /**
+     *  La operacion no es necesaria para el Web Service Client realmente, 
+     *  pero es necesaria para darle visibilidad sobre el Datatype en tiempo de ejecucion al
+     *  proxy que mapea la clase para generar la respuesta.
+     *  (Ver comentario de ContenidoService sobre la operacion 'getDTGeneroSimple')
+     */
     @WebMethod
     public DTDatosListaReproduccion getDTDatosListaReproduccion(String tipoDeLista, String nombreLista) {
         DTDatosListaReproduccion dt = this.ictrl.ConsultarListaReproduccion(tipoDeLista, nombreLista);

@@ -137,15 +137,14 @@ public class SVActualizarSuscripcion extends HttpServlet {
     /*
     Casos posibles de actualizacion:
     Validos permitidos:
-        Pendiente  -->  Vigente    (Confirmada)  : requiere datos de tarjeta de credito
-        Pendiente  -->  Cancelada  (Cancelada)   : no requiere datos
-        Vencida    -->  Vigente    (Renovada)    : requiere datos de tarjeta de credito
+        Pendiente  -->  Cancelada    (Cancelada)   : no requiere datos
+        Vencida    -->  Pendiente    (Renovada)    : requiere datos de tarjeta de credito
     
     Validos no contemplados:
         Vencida    -->  Cancelada  (Cancelada)   : deberia ser una rutina de eliminar vencidas 
                                                    despues de cierto tiempo y no manual por el usuario
         Vigente    -->  Vencida    (Vencida)     : idem anterior
-    
+        Pendiente  -->  Vigente    (Confirmada)  : accion realizada por un administrador
     No validos:
         [Estado X] --> [Estado X] : no se permite un intento de actualizacion hacia el mismo estado
         Pendiente  --> Vencida    : cambio de estado no valido segun la letra
@@ -221,18 +220,13 @@ public class SVActualizarSuscripcion extends HttpServlet {
             return;
         }
         
-        //  Pendiente --> Vigente 
-        //  Vencida   --> Vigente
-        if ((dtSuscripcion.getEstadoSuscripcion().equals("Pendiente") 
-                && jsonObject.getNuevoEstadoSuscripcion().equals("Vigente"))
-                    ||
-                (dtSuscripcion.getEstadoSuscripcion().equals("Vencida") 
-                && jsonObject.getNuevoEstadoSuscripcion().equals("Vigente"))) 
-        {
+        //  Vencida --> Pendiente
+        if ((dtSuscripcion.getEstadoSuscripcion().equals("Vencida") 
+                && jsonObject.getNuevoEstadoSuscripcion().equals("Pendiente"))) {
             //Verifico los datos de la tarjeta
             if (!validarDatosDeTarjeta(jsonObject)) {
                 setResponseToText(response, response.SC_BAD_REQUEST);
-                response.getWriter().write("Los datos de la tarjeta no son válidos.");
+                response.getWriter().write("Tarjeta rechazada, verifique los datos ingresados.");
                 return;
             } else {
                 //Actualizo la suscripcion hacia el estado vigente al corroborar los datos de pago
