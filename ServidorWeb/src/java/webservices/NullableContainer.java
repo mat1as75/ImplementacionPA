@@ -6,6 +6,8 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 import webservices.DataTypes.DtAlbum;
+import webservices.DataTypes.DtArtista;
+import webservices.DataTypes.DtCliente;
 import webservices.DataTypes.DtDatosArtista;
 import webservices.DataTypes.DtDatosCliente;
 import webservices.DataTypes.DtDatosListaReproduccion;
@@ -22,6 +24,8 @@ import webservices.DataTypes.DtUsuario;
     "dtDatosUsuario",
     "dtSuscripcion",
     "dtUsuario",
+    "dtArtista",
+    "dtCliente",
     "longObj"
 })
 public class NullableContainer {
@@ -40,6 +44,10 @@ public class NullableContainer {
     protected DtSuscripcion dtSuscripcion;
     @XmlElement(nillable = true) 
     protected DtUsuario dtUsuario;
+    @XmlElement(nillable = true) 
+    protected DtArtista dtArtista;
+    @XmlElement(nillable = true) 
+    protected DtCliente dtCliente;
     @XmlElement(nillable = true) 
     protected Long longObj;
 
@@ -98,6 +106,24 @@ public class NullableContainer {
     public void setDtUsuario(DtUsuario value) {
         this.dtUsuario = value;
     }
+
+    public DtArtista getDtArtista() {
+        return dtArtista;
+    }
+
+    public void setDtArtisa(DtArtista dtArtisa) {
+        this.dtArtista = dtArtisa;
+    }
+
+    public DtCliente getDtCliente() {
+        return dtCliente;
+    }
+
+    public void setDtCliente(DtCliente dtCliente) {
+        this.dtCliente = dtCliente;
+    }
+    
+    
 
     public Long getLongObj() {
         return longObj;
