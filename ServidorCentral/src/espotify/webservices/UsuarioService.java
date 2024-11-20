@@ -17,8 +17,8 @@ import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.ParameterStyle;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @WebService
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)
@@ -51,13 +51,19 @@ public class UsuarioService {
     }
     
     @WebMethod
-    public List<String> getNicknamesArtistas() {
-        return this.control.getNicknamesArtistas();
+    public ArrayListContainer getNicknamesArtistas() {
+        ArrayList<String> nicknamesArtistas = (ArrayList<String>) this.control.getNicknamesArtistas();
+        ArrayListContainer contenedor = new ArrayListContainer(nicknamesArtistas);
+        
+        return contenedor;
     }
     
     @WebMethod
-    public List<String> getNicknamesClientes() {
-        return this.control.getNicknamesClientes();
+    public ArrayListContainer getNicknamesClientes() {
+        ArrayList<String> nicknamesClientes = (ArrayList<String>) this.control.getNicknamesClientes();
+        ArrayListContainer contenedor = new ArrayListContainer(nicknamesClientes);
+        
+        return contenedor;
     }
     
     @WebMethod
