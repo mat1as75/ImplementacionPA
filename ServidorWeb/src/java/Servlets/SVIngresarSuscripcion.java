@@ -9,6 +9,7 @@ import espotify.logica.Suscripcion;
 import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,12 +20,57 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SVIngresarSuscripcion", urlPatterns = {"/IngresarSuscripcion"})
 public class SVIngresarSuscripcion extends HttpServlet {
 
-    class JsonData {
+    //datos de la suscripcion y tarjeta de credito
+    private class JsonData {
         private String tipoSuscripcion;
-        public JsonData(){};
-        public JsonData(String tipoSuscripcion) { this.tipoSuscripcion = tipoSuscripcion; };
+        private String nuevoEstadoSuscripcion;
+        private String CCN;
+        private String CVV;
+        private Date vencimiento;
+        private String propietario;
+        
+        public JsonData() {};
+        public JsonData(
+                String tipoSuscripcion, 
+                String nuevoEstadoSuscripcion, 
+                String CCN, String CVV, 
+                Date vencimiento, 
+                String propietario) {
+            this.tipoSuscripcion = tipoSuscripcion;
+            this.nuevoEstadoSuscripcion = nuevoEstadoSuscripcion;
+            this.CCN = CCN;
+            this.CVV = CVV;
+            this.vencimiento = vencimiento;
+            this.propietario = propietario;
+        }
         public String getTipoSuscripcion() { return this.tipoSuscripcion; }
+        public String getNuevoEstadoSuscripcion() { return this.nuevoEstadoSuscripcion; };
+        public String getCCN() { return this.CCN; };
+        public String getCVV() { return this.CVV; };
+        public Date getVencimiento() { return this.vencimiento; };
+        public String getPropietario() { return this.propietario; };
         public void setTipoSuscripcion(String tipoSuscripcion) { this.tipoSuscripcion = tipoSuscripcion; }
+        public void setNuevoEstadoSuscripcion(String nuevoEstadoSuscripcion) { this.nuevoEstadoSuscripcion = nuevoEstadoSuscripcion; };
+        public void setCCN(String CCN) { this.CCN = CCN; };
+        public void setCVV(String CVV) { this.CVV = CVV; };
+        public void setVencimiento(Date vencimiento) { this.vencimiento = vencimiento; };
+        public void setPropietario(String propietario) { this.propietario = propietario; };
+    }
+    
+    private Boolean validarDatosDeTarjeta(JsonData data) {
+        String CCN = data.getCCN();
+        String CVV = data.getCVV();
+        Date vencimiento = data.getVencimiento();
+        String propietario = data.getPropietario();
+        
+        if (CCN.length() != 16) return false;
+        if (CCN.matches(".*[^0-9].*")) return false;
+        if (CVV.length() != 3) return false;
+        if (CCN.matches(".*[^0-9].*")) return false;
+        if (vencimiento.getTime() < new Date().getTime()) return false;
+        if (propietario == null || propietario.isBlank() || propietario.isEmpty()) return false;
+        
+        return true;
     }
     
     private void setResponseToText(HttpServletResponse response, int httpCode) {
@@ -99,7 +145,7 @@ public class SVIngresarSuscripcion extends HttpServlet {
         reader.close();
 
         //Convierto el body a String
-        String requestBody = body.toString();
+        String requestBody = body.toString();        
         //Parse del body en formato Json
         //Creo un objeto json con los datos obtenidos
         Gson gson = new Gson();
@@ -121,6 +167,13 @@ public class SVIngresarSuscripcion extends HttpServlet {
             response.getWriter().write("Tipo de suscripción inválida");
             return;
         }
+        
+        if (!validarDatosDeTarjeta(jsonObject)) {
+            setResponseToText(response, response.SC_BAD_REQUEST);
+            response.getWriter().write("Tarjeta Rechazada, verifique los datos ingresados.");
+            return;
+        }
+
         //Ingreso la nueva suscripcion        
         try {
             ictrl.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
@@ -130,5 +183,8 @@ public class SVIngresarSuscripcion extends HttpServlet {
             this.setResponseToText(response, response.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("Error: " + e.getMessage());
         }
+        
+        response.setStatus(response.SC_NO_CONTENT);
+
     }
 }

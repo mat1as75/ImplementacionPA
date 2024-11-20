@@ -45,9 +45,12 @@
                                 Cancelar Suscripción
                             </button>
                         <% } %>
-                        <button id="btnPagarSuscripcion" class="btncustom btnPrimary">
-                            <%=estadoSuscripcion.equals("Vencida") ? "Renovar" : "Pagar Suscripción"%>
-                        </button>
+                        
+                        <% if (estadoSuscripcion.equals("Vencida")) { %>
+                            <button id="btnPagarSuscripcion" class="btncustom btnPrimary">
+                                Renovar Suscripción
+                            </button>
+                        <% } %>
                      <% } else {%>
                         <p>
                             No se puede modificar esta suscripción.
@@ -103,7 +106,7 @@
         <div id="modalResultado" class="customModal hidden">
             <div class="modalContainer">
                 <p id="pResultado"></p>
-                <button type="button" id="btnVolver" class="btncustom btnSecondary">Volver al formulario</button>
+                <button type="button" id="btnVolver" class="btncustom btnSecondary">Aceptar</button>
                 <button type="button" id="btnAceptar" class="btncustom btnPrimary">Volver a la página principal</button>
             </div>
         </div>

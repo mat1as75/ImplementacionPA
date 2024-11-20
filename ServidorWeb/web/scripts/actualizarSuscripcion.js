@@ -31,7 +31,7 @@ btnAceptar.addEventListener("click", evt => {
 
 document.getElementById("btnsOpciones").addEventListener("click", async (evt) => {
     if (evt.target.getAttribute("id") === "btnCancelarSuscripcion") {
-       const formData = createFormDataObject("CancelarSuscripcion");
+        const formData = createFormDataObject("CancelarSuscripcion");
     
         let result;
         if (formData) {
@@ -85,7 +85,7 @@ function createFormDataObject(option) {
     if (option === "PagarSuscripcion") {
         const data = getFormInputData();
         return {
-            nuevoEstadoSuscripcion: "Vigente",
+            nuevoEstadoSuscripcion: "Pendiente",
             CCN: data.CCN,
             CVV: data.CVV,
             vencimiento: data.vencimiento,

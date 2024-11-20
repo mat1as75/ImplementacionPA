@@ -1,10 +1,11 @@
+<%@page import="webservices.DataTypes.DtGeneroSimple"%>
+<%@page import="webservices.ContenidoService"%>
+<%@page import="webservices.ContenidoServiceService"%>
 <%@page import="java.time.Year"%>
 <%@page import="espotify.DataTypes.DTGenero_Simple"%>
 <%@page import="java.util.List"%>
 <%@page import="espotify.DataTypes.DTGenero"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="espotify.logica.IControlador"%>
-<%@page import="espotify.logica.Fabrica"%>
 
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -52,9 +53,15 @@
         <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
 
         <% 
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
-        ArrayList<DTGenero_Simple> generos = ictrl.getListaDTGeneroSimple();
+        ContenidoServiceService contenidoWS = new ContenidoServiceService();
+        ContenidoService contenidoPort = contenidoWS.getContenidoServicePort();
+        List<Object> generosObj = contenidoPort.getListaDTGeneroSimple().getColeccion();
+        List<DtGeneroSimple> generos = new ArrayList();
+        for (Object o : generosObj) {
+            DtGeneroSimple dg = (DtGeneroSimple) o;
+            generos.add(dg);
+        }
+        
         %>
         
         <h1 class="titlePrimary">Subir nuevo álbum</h1>
@@ -70,7 +77,7 @@
                 </div>
                 <div class="inputsContainer roundedContainer">
                     <label for="anioAlbum">Año: </label>
-                    <input type="number" id="anioAlbum" class="inputValidated" min="1900" max="<%=Year.now()%>" required/>
+                    <input type="number" id="anioAlbum" class="inputValidated" min="1500" max="<%=Year.now()%>" required/>
                 </div>
                 <div class="errorDiv d-none roundedContainer">                
                     <span class="spanError" id="errorAnioAlbum"></span>
@@ -91,14 +98,15 @@
                                 <summary>Géneros</summary>
                                 <ul>
                                     <%
-                                    for (DTGenero_Simple dg : generos) {
+                                    for (DtGeneroSimple dg : generos) {
                                         if (dg.getNombreGeneroPadre().equals("Genero")) {
 
                                             String nombreGenero = dg.getNombreGenero();
                                     %>
                                     <li>
                                         <details>
-                                            <summary> <label for="cbox-gen-<%=nombreGenero%>"> <%=nombreGenero%> </label>
+                                            <summary> 
+                                                <label for="cbox-gen-<%=nombreGenero%>"> <%=nombreGenero%> </label>
                                                 <input type="checkbox" name="cbox-<%=nombreGenero%>" data-group="cboxGeneros" data-name="<%=nombreGenero%>" id="cbox-gen-<%=nombreGenero%>"/>
                                             </summary>
                                             <%if (!dg.getSubgeneros().isEmpty()) { %>

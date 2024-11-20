@@ -1,6 +1,6 @@
-<%@page import="espotify.DataTypes.DTSuscripcion"%>
-<%@page import="espotify.logica.IControlador"%>
-<%@page import="espotify.logica.Fabrica"%>
+<%@page import="webservices.DataTypes.DtSuscripcion"%>
+<%@page import="webservices.SuscripcionesService"%>
+<%@page import="webservices.SuscripcionesServiceService"%>
 <%@ page pageEncoding="UTF-8" %>
 
 <!--
@@ -41,18 +41,20 @@
 
 <% 
     HttpSession sesionEnReproductor = request.getSession(false);
-    String estadoSuscripcion = null;
+    String estadoSuscripcion_reproductor = null;
     
     if (sesionEnReproductor != null) {
         String nicknameSesionDeReproductor = (String) sesionEnReproductor.getAttribute("nickname");
         if (nicknameSesionDeReproductor != null) {
-            Fabrica fabricaEnReproductor = Fabrica.getInstance();
-            IControlador ictrlEnReproductor = fabricaEnReproductor.getControlador();
-
-            DTSuscripcion suscripcionDeCliente = ictrlEnReproductor.getDTSuscripcionDeCliente(nicknameSesionDeReproductor);
-
-            if (suscripcionDeCliente != null) {
-                estadoSuscripcion = suscripcionDeCliente.getEstadoSuscripcion();
+            
+            SuscripcionesServiceService suscripcionesWS_reproductor = new SuscripcionesServiceService();
+            SuscripcionesService suscripcionesPort_reproductor = suscripcionesWS_reproductor.getSuscripcionesServicePort();
+            DtSuscripcion suscDeCliente_reproductor = suscripcionesPort_reproductor
+                .getDTSuscripcionDeCliente(nicknameSesionDeReproductor)
+                .getDtSuscripcion();
+            
+            if (suscDeCliente_reproductor != null) {
+                estadoSuscripcion_reproductor = suscDeCliente_reproductor.getEstadoSuscripcion();
             }
         }
     }
@@ -74,7 +76,7 @@
                id="iconAddToPlaylist_FilePlayer"
                >  
             </i>
-            <% if (estadoSuscripcion != null && estadoSuscripcion.equals("Vigente")) { %>
+            <% if (estadoSuscripcion_reproductor != null && estadoSuscripcion_reproductor.equals("Vigente")) { %>
                 <a id="downloadAnchor" target="_blank" data-available="true">
                     <i class="bi bi-download"></i>
                 </a>

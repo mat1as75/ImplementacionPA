@@ -24,6 +24,7 @@ import webservices.DataTypes.DtAlbumSimple;
 import webservices.DataTypes.DtAlbumSinDTArtista;
 import webservices.DataTypes.DtDatosListaReproduccion;
 import webservices.DataTypes.DtGenero;
+import webservices.DataTypes.DtGeneroSimple;
 import webservices.DataTypes.DtSuscripcion;
 import webservices.DataTypes.DtTemaConPuntaje;
 import webservices.DataTypes.DtTemaConTipo;
@@ -235,6 +236,17 @@ public class ServletPrueba extends HttpServlet {
             System.out.println("alta album ok");
         } catch (Exception_Exception e) {
             System.out.println(e.getFaultInfo().getMessage());
+        }
+    }
+    
+    private void testGetDtGeneroSimple(ContenidoService contenidoPort) {
+        System.out.println("Get lista dtgenerosimple...");
+        List<Object> listaGeneros = contenidoPort.getListaDTGeneroSimple().getColeccion();
+        for (Object o : listaGeneros) {
+            DtGeneroSimple dg = (DtGeneroSimple) o;
+            System.out.println(dg.getNombreGenero() 
+                    + " - Padre: " + dg.getNombreGeneroPadre() 
+                    + " - Subgeneros: " + dg.getSubgeneros());
         }
     }
     
@@ -487,6 +499,7 @@ public class ServletPrueba extends HttpServlet {
         this.testGetAlbumesDisponibles(contenidoPort);//OK
         this.testGetDTTemasDisponiblesConAlbum(contenidoPort);//OK
         this.testAltaAlbum(contenidoPort); //OK
+        this.testGetDtGeneroSimple(contenidoPort);//OK
         */
         
         //pruebas DataAlbumsService
