@@ -1,17 +1,15 @@
 
-package webservices;
+package espotify.webservices;
 
-import jakarta.jws.WebMethod;
-import jakarta.jws.WebParam;
-import jakarta.jws.WebResult;
-import jakarta.jws.WebService;
-import jakarta.jws.soap.SOAPBinding;
-import jakarta.xml.bind.annotation.XmlSeeAlso;
-import jakarta.xml.ws.Action;
-import jakarta.xml.ws.FaultAction;
-import java.util.Date;
-import webservices.DataTypes.DtArtista;
-import webservices.DataTypes.DtCliente;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.Action;
+import javax.xml.ws.FaultAction;
 
 
 /**
@@ -251,6 +249,6 @@ public interface UsuarioService {
         @WebParam(name = "arg1", partName = "arg1")
         EstadoSuscripcion arg1,
         @WebParam(name = "arg2", partName = "arg2")
-        Date arg2);
+        XMLGregorianCalendar arg2);
 
 }

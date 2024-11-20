@@ -24,6 +24,11 @@ public class DTArtista extends DTUsuario{
         this.nickname = nickname;
         this.contrasenaUsuario = contrasenaUsuario;
     }
+    public DTArtista(String nickname, String contrasenaUsuario, Boolean activo) {
+        this.nickname = nickname;
+        this.contrasenaUsuario = contrasenaUsuario;
+        this.activo = activo;
+    }
     public DTArtista(
             String nickname, 
             String nombreUsuario, 
