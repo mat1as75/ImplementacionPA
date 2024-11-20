@@ -26,8 +26,6 @@ import webservices.DataTypes.DtSuscripcion;
 import webservices.DataTypes.DtTemaConPuntaje;
 import webservices.DataTypes.DtTemaConTipo;
 import webservices.DataTypes.DtTemaSimple;
-import webservices.DtAlbumsService;
-import webservices.DtAlbumsServiceService;
 import webservices.EstadoSuscripcion;
 import webservices.Exception_Exception;
 import webservices.ListaReproduccionService;
@@ -101,37 +99,6 @@ public class ServletPrueba extends HttpServlet {
                     + e.getValue().getCantidadReproducciones() + " - Favoritos: "
                     + e.getValue().getCantidadFavoritos() + " - Duracion: "
                     + e.getValue().getDuracionSegundos());
-        }
-    }
-    
-    private void testGetTodosDTAlbumsSimple(DtAlbumsService dtAlbumsPort) {
-        System.out.println("Probando testService 2 - get todos los dtalbumsimple...");
-        List<Object> listaAlbums = dtAlbumsPort.getTodosDTAlbumsSimple().getColeccion();
-        for (Object o : listaAlbums) {
-            DtAlbumSimple dtalb = (DtAlbumSimple) o;
-            System.out.println(dtalb.getIdAlbum() + " - " + dtalb.getNombreAlbum() + " - " + dtalb.getNombreCompletoArtista());
-        }
-    }
-    
-     private void testGetAlbumesPorGenero(DtAlbumsService dtAlbumsPort) {
-        System.out.println("Lista de albums por genero ...");
-        List<Object> listaAlbums = dtAlbumsPort.getDTAlbumSimplePorGenero("Balada").getColeccion();
-        System.out.println("operacion ok");
-        for (Object o : listaAlbums) {
-            DtAlbumSimple dataAlbum = (DtAlbumSimple) o;
-            System.out.println(dataAlbum.getNombreAlbum() + " - " 
-                    + dataAlbum.getIdAlbum() + " - " 
-                    + dataAlbum.getAnioCreacion() + " - "
-                    + dataAlbum.getGenerosDeAlbum());
-        }
-    }
-    
-    private void testGetAlbumesPorArtista(DtAlbumsService dtAlbumsPort) {
-        System.out.println("Lista de albums por artista ...");
-        List<Object> listaAlbums = dtAlbumsPort.getDTAlbumSimplePorArtista("alcides").getColeccion();
-        for (Object o : listaAlbums) {
-            DtAlbumSimple dataAlbum = (DtAlbumSimple) o;
-            System.out.println(dataAlbum.getNombreAlbum() + " - " + dataAlbum.getIdAlbum());
         }
     }
     
@@ -332,8 +299,6 @@ public class ServletPrueba extends HttpServlet {
         PreferenciasServiceService preferenciasWS = new PreferenciasServiceService();
         PreferenciasService preferenciasPort = preferenciasWS.getPreferenciasServicePort();
         //DtAlbumsService
-        DtAlbumsServiceService DtAlbumsWS = new DtAlbumsServiceService();
-        DtAlbumsService dtAlbumsPort = DtAlbumsWS.getDtAlbumsServicePort();
         //RankingService
         RankingServiceService RankingWS = new RankingServiceService();
         RankingService rankingPort = RankingWS.getRankingServicePort();

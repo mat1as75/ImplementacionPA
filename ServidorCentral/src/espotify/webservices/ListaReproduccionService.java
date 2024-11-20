@@ -37,10 +37,21 @@ public class ListaReproduccionService {
     }
     
     @WebMethod
+    public DTDatosListaReproduccion getDTDatosListaReproduccion(String tipoDeLista, String nombreLista) {
+        DTDatosListaReproduccion dt = this.ictrl.ConsultarListaReproduccion(tipoDeLista, nombreLista);
+        //retorno un Datatype vacio en lugar de null si no se encuentra
+        if (dt == null) {
+            return new DTDatosListaReproduccion();
+        } else {
+            return dt;
+        }
+    }
+    
+    @WebMethod
     public NullableContainer ConsultarListaReproduccion(String tipoDeLista, String nombreLista) {
-        NullableContainer contenedor = new NullableContainer();
-        DTDatosListaReproduccion dtDatosListaReproduccion = this.ictrl.ConsultarListaReproduccion(tipoDeLista, nombreLista);
-        contenedor.setDtDatosListaReproduccion(dtDatosListaReproduccion);
+        NullableContainer contenedor = new NullableContainer(); 
+        DTDatosListaReproduccion dt = this.ictrl.ConsultarListaReproduccion(tipoDeLista, nombreLista);
+        contenedor.setDtDatosListaReproduccion(dt);
         
         return contenedor;
     }

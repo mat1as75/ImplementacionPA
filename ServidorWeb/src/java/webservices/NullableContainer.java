@@ -1,3 +1,4 @@
+
 package webservices;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -5,11 +6,13 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 import webservices.DataTypes.DtAlbum;
+import webservices.DataTypes.DtDatosListaReproduccion;
 import webservices.DataTypes.DtSuscripcion;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "nullableContainer", propOrder = {
     "dtAlbum",
+    "dtDatosListaReproduccion",
     "dtSuscripcion",
     "longObj"
 })
@@ -17,6 +20,8 @@ public class NullableContainer {
 
     @XmlElement(nillable = true)
     protected DtAlbum dtAlbum;
+    @XmlElement(nillable = true)
+    protected DtDatosListaReproduccion dtDatosListaReproduccion;
     @XmlElement(nillable = true)
     protected DtSuscripcion dtSuscripcion;
     @XmlElement(nillable = true)
@@ -28,6 +33,14 @@ public class NullableContainer {
 
     public void setDtAlbum(DtAlbum value) {
         this.dtAlbum = value;
+    }
+
+    public DtDatosListaReproduccion getDtDatosListaReproduccion() {
+        return dtDatosListaReproduccion;
+    }
+
+    public void setDtDatosListaReproduccion(DtDatosListaReproduccion value) {
+        this.dtDatosListaReproduccion = value;
     }
 
     public DtSuscripcion getDtSuscripcion() {
