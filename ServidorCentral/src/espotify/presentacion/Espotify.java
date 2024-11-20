@@ -4,11 +4,11 @@ import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
 import espotify.webservices.ContenidoService;
+import espotify.webservices.DataAlbumsService;
 import espotify.webservices.ListaReproduccionService;
 import espotify.webservices.PreferenciasService;
 import espotify.webservices.RegistroService;
 import espotify.webservices.SuscripcionesService;
-import espotify.webservices.DtAlbumsService;
 import espotify.webservices.RankingService;
 import espotify.webservices.UsuarioService;
 
@@ -23,8 +23,8 @@ public class Espotify extends javax.swing.JFrame {
         System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
         
         //Publicacion de Web Services
-        UsuarioService UsuarioWS = new UsuarioService();
-        UsuarioWS.publishEndpoint();
+        //UsuarioService UsuarioWS = new UsuarioService();
+        //UsuarioWS.publishEndpoint();
         
         PreferenciasService PreferenciasWS = new PreferenciasService();
         PreferenciasWS.publishEndpoint();
@@ -35,7 +35,7 @@ public class Espotify extends javax.swing.JFrame {
         ContenidoService ContenidoWS = new ContenidoService();
         ContenidoWS.publishEndpoint();
       
-        DtAlbumsService DtAlbumsWS = new DtAlbumsService();
+        DataAlbumsService DtAlbumsWS = new DataAlbumsService();
         DtAlbumsWS.publishEndpoint();
       
         RankingService RankingWS = new RankingService();
@@ -44,6 +44,8 @@ public class Espotify extends javax.swing.JFrame {
         RegistroService RegistroWS = new RegistroService();
         RegistroWS.publishEndpoint();
       
+        ListaReproduccionService ListaReproduccionWS = new ListaReproduccionService();
+        ListaReproduccionWS.publishEndpoint();
       
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();

@@ -11,6 +11,8 @@ public class DTDatosListaReproduccion {
     private String cliente; // Solo para listas particulares
     private Boolean privacidad; // Solo para listas particulares
 
+    public DTDatosListaReproduccion() {};
+    
     // Constructor para listas por defecto
     public DTDatosListaReproduccion(String nombreLista, String fotoLista, String tipoDeLista, List<DTTemaSimple> temas, String genero) {
         this.nombreLista = nombreLista;

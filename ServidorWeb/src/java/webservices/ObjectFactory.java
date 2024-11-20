@@ -10,7 +10,10 @@ import webservices.DataTypes.DtAlbumSimple;
 import webservices.DataTypes.DtAlbumSinDTArtista;
 import webservices.DataTypes.DtArtista;
 import webservices.DataTypes.DtCliente;
+import webservices.DataTypes.DtDatosArtista;
+import webservices.DataTypes.DtDatosCliente;
 import webservices.DataTypes.DtDatosListaReproduccion;
+import webservices.DataTypes.DtDatosUsuario;
 import webservices.DataTypes.DtGenero;
 import webservices.DataTypes.DtParticulares;
 import webservices.DataTypes.DtSuscripcion;
@@ -86,6 +89,18 @@ public class ObjectFactory {
         return new MapContainer.MapLongDatatype();
     }
 
+    public DtDatosArtista createDtDatosArtista() {
+        return new DtDatosArtista();
+    }
+
+    public DtDatosUsuario createDtDatosUsuario() {
+        return new DtDatosUsuario();
+    }
+    
+    public DtDatosCliente createDtDatosCliente() {
+        return new DtDatosCliente();
+    }
+    
     public DtTemaSimple createDtTemaSimple() {
         return new DtTemaSimple();
     }
