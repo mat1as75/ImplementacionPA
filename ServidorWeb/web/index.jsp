@@ -124,7 +124,7 @@
                         <div class="mosaico-container">
                             <div class="mosaico" id="mosaicoArtista">
                                 <%
-                                    ArrayList<String> artistas = controlador.getNicknamesArtistas();
+                                    List<String> artistas = controlador.getNicknamesArtistas();
                                     if (artistas != null && !artistas.isEmpty()) {
                                         for (String art : artistas) {
                                 %>

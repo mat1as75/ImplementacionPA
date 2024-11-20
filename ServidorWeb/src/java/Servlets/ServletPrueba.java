@@ -18,6 +18,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import webservices.ContenidoService;
 import webservices.ContenidoServiceService;
+import webservices.DataAlbumsService;
+import webservices.DataAlbumsServiceService;
 import webservices.DataTypes.DtAlbumSimple;
 import webservices.DataTypes.DtAlbumSinDTArtista;
 import webservices.DataTypes.DtDatosListaReproduccion;
@@ -100,6 +102,70 @@ public class ServletPrueba extends HttpServlet {
                     + e.getValue().getCantidadFavoritos() + " - Duracion: "
                     + e.getValue().getDuracionSegundos());
         }
+    }
+    
+    private void testGet1DTAlbumSimple(DataAlbumsService dtAlbumsPort) {
+        System.out.println("Probando get de 1 DTAlbumSimple existente...");
+        DtAlbumSimple dta1 = dtAlbumsPort.getDTAlbumSimplePorId(1L);
+        System.out.println(dta1.getIdAlbum() + " - " 
+                    + dta1.getNombreAlbum() + " - " 
+                    + dta1.getNombreCompletoArtista() + " - " 
+                    + dta1.getAnioCreacion() + " - " 
+                    + dta1.getGenerosDeAlbum());
+        
+        System.out.println("Probando get de 1 DTAlbumSimple inexistente...");
+        DtAlbumSimple dta2 = dtAlbumsPort.getDTAlbumSimplePorId(999L);
+        System.out.println("dta2 esta vacio? id del album: " + dta2.getIdAlbum());
+
+    }
+    
+    private void testGetTodosDTAlbumsSimple(DataAlbumsService dtAlbumsPort) {
+        System.out.println("Probando get todos los dtalbumsimple...");
+        List<Object> listaAlbums = dtAlbumsPort.getDTAlbumesSimple().getColeccion();
+        for (Object o : listaAlbums) {
+            DtAlbumSimple dtalb = (DtAlbumSimple) o;
+            System.out.println(dtalb.getIdAlbum() + " - " 
+                    + dtalb.getNombreAlbum() + " - " 
+                    + dtalb.getNombreCompletoArtista() + " - " 
+                    + dtalb.getAnioCreacion() + " - " 
+                    + dtalb.getGenerosDeAlbum());
+        }
+    }
+    
+     private void testGetAlbumesPorGenero(DataAlbumsService dtAlbumsPort) {
+        System.out.println("Lista de albums por genero Balada ...");
+        List<Object> listaAlbums = dtAlbumsPort.getDTAlbumesSimplePorGenero("Balada").getColeccion();
+        for (Object o : listaAlbums) {
+            DtAlbumSimple dtalb = (DtAlbumSimple) o;
+            System.out.println(dtalb.getIdAlbum() + " - " 
+                    + dtalb.getNombreAlbum() + " - " 
+                    + dtalb.getNombreCompletoArtista() + " - " 
+                    + dtalb.getAnioCreacion() + " - " 
+                    + dtalb.getGenerosDeAlbum());
+        }
+        
+        System.out.println("Lista de albums por genero inexistente...");
+        List<Object> listaAlbums2 = dtAlbumsPort.getDTAlbumesSimplePorGenero("asdfasd").getColeccion();
+        System.out.println("tamaño lista: " + listaAlbums2.size());
+        System.out.println("operacion ok");
+        
+    }
+    
+    private void testGetAlbumesPorArtista(DataAlbumsService dtAlbumsPort) {
+        System.out.println("Lista de albums por artista alcides ...");
+        List<Object> listaAlbums = dtAlbumsPort.getDTAlbumesSimplePorArtista("alcides").getColeccion();
+        for (Object o : listaAlbums) {
+            DtAlbumSimple dtalb = (DtAlbumSimple) o;
+            System.out.println(dtalb.getIdAlbum() + " - " 
+                    + dtalb.getNombreAlbum() + " - " 
+                    + dtalb.getNombreCompletoArtista() + " - " 
+                    + dtalb.getAnioCreacion() + " - " 
+                    + dtalb.getGenerosDeAlbum());
+        }
+        
+        System.out.println("Lista de albums por artista inexistente ...");
+        List<Object> listaAlbums2 = dtAlbumsPort.getDTAlbumesSimplePorArtista("asdf").getColeccion();
+        System.out.println("Tamaño de coleccion: " + listaAlbums2.size());
     }
     
     private void testGetGenerosPadre(ContenidoService contenidoPort) {
@@ -280,6 +346,110 @@ public class ServletPrueba extends HttpServlet {
         } 
     }
     
+    
+    private void testConsultaListaReproduccion(ListaReproduccionService listaRepPort) {
+        DtDatosListaReproduccion dtLR = (DtDatosListaReproduccion) listaRepPort.consultarListaReproduccion("Particular", "Fiesteras").getDtDatosListaReproduccion();
+        System.out.println("Lista particular - " + dtLR.getNombreLista());
+        List<DtTemaSimple> dataTemas = dtLR.getTemas();
+        for (DtTemaSimple dttema : dataTemas) {
+            System.out.println("Tema " + dttema.getNombreTema() + " - " + dttema.getCantidadReproducciones());
+        }
+        //
+        DtDatosListaReproduccion dtLR2 = (DtDatosListaReproduccion) listaRepPort.consultarListaReproduccion("Por Defecto", "Noche De La Nostalgia").getDtDatosListaReproduccion();
+        System.out.println("Lista por defecto - " + dtLR2.getNombreLista());
+        List<DtTemaSimple> dataTemas2 = dtLR2.getTemas();
+        for (DtTemaSimple dttema : dataTemas2) {
+            System.out.println("Tema " + dttema.getNombreTema() + " - " + dttema.getCantidadReproducciones());
+        }
+        
+        System.out.println("Probando consultar lista con tipo lista invalido...");
+        DtDatosListaReproduccion dtLR3 = (DtDatosListaReproduccion) listaRepPort.consultarListaReproduccion("asd", "Fiesteras").getDtDatosListaReproduccion();
+        System.out.println("data type es null? : " + (dtLR3 == null));
+    }
+    
+    private void testNombresListasParticularesPublicas(ListaReproduccionService listaRepPort) {
+        System.out.println("Listas particulares publicas...");
+        List<Object> listasPublicas = listaRepPort.getNombresListasParticularesPublicas().getColeccion();
+        for (Object o : listasPublicas) {
+            String s = (String) o;
+            System.out.println(s);
+        }
+    }
+    
+    private void testgetDTListaRepDeCliente(ListaReproduccionService listaRepPort) {
+        System.out.println("Listas de cbochinche...");
+        try {
+            List<Object> listasDeCliente = listaRepPort
+                    .getListaDTDatosListaReproduccionDeCliente("cbochinche")
+                    .getColeccion();
+            for (Object o : listasDeCliente) {
+                DtDatosListaReproduccion dataLr = (DtDatosListaReproduccion) o;
+                System.out.println("DTDatosListaRep: " + dataLr.getNombreLista() + " - Tipo: " + dataLr.getTipoDeLista());
+            }
+        } catch (Exception_Exception ex) {
+            System.out.println(ex.getFaultInfo().getMessage());
+        }
+        //
+        System.out.println("Listas de cliente inexistente...");
+        try {
+            List<Object> listasDeCliente = listaRepPort
+                    .getListaDTDatosListaReproduccionDeCliente("asdfasd")
+                    .getColeccion();
+            for (Object o : listasDeCliente) {
+                DtDatosListaReproduccion dataLr = (DtDatosListaReproduccion) o;
+                System.out.println("DTDatosListaRep: " + dataLr.getNombreLista() + " - Tipo: " + dataLr.getTipoDeLista());
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    private void testGetNombresListasPrivadasDeCliente(ListaReproduccionService listaRepPort) {
+        System.out.println("Listas privadas de Heisenberg...");
+        List<Object> listasPrivDeHeisenberg = listaRepPort.getNombresDeListasPrivadasDeCliente("Heisenberg").getColeccion();
+        for (Object o : listasPrivDeHeisenberg) {
+            String lista = (String) o;
+            System.out.println(lista);
+        }
+        
+        System.out.println("Listas privadas de cbochinche...");
+        List<Object> listasPrivDecbochinche = listaRepPort.getNombresDeListasPrivadasDeCliente("cbochinche").getColeccion();
+        for (Object o : listasPrivDecbochinche) {
+            String lista = (String) o;
+            System.out.println(lista);
+        }
+        
+        System.out.println("Listas privadas de cliente inexistente...");
+        List<Object> listasPriv = listaRepPort.getNombresDeListasPrivadasDeCliente("asdfasd").getColeccion();
+        for (Object o : listasPriv) {
+            String lista = (String) o;
+            System.out.println(lista);
+        }
+    }
+    
+    private void testCrearListaParticular(ListaReproduccionService listaRepPort) {
+        System.out.println("Creando lista reproduccion...");
+        XMLGregorianCalendar xmlDate = null;
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+        try {
+            xmlDate =  DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+        } catch (DatatypeConfigurationException ex) {
+            Logger.getLogger(ServletPrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        listaRepPort.crearListaParticular("listanueva", "", "cbochinche", xmlDate, true);
+    }
+    
+    private void testListasReproduccionDisponibles(ListaReproduccionService listaRepPort) {
+        System.out.println("Listas reproduccion disponibles...");
+        List<Object> listasDisponibles = listaRepPort.getListasReproduccionDisponibles().getColeccion();
+        for (Object o : listasDisponibles) {
+            String lista = (String) o;
+            System.out.println("Lista: " + lista);
+        }
+    }
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -299,26 +469,34 @@ public class ServletPrueba extends HttpServlet {
         PreferenciasServiceService preferenciasWS = new PreferenciasServiceService();
         PreferenciasService preferenciasPort = preferenciasWS.getPreferenciasServicePort();
         //DtAlbumsService
+        DataAlbumsServiceService DtAlbumsWS = new DataAlbumsServiceService();
+        DataAlbumsService dtAlbumsPort = DtAlbumsWS.getDataAlbumsServicePort();
         //RankingService
         RankingServiceService RankingWS = new RankingServiceService();
         RankingService rankingPort = RankingWS.getRankingServicePort();
+        //ListaReproduccionService
+        ListaReproduccionServiceService ListaReproduccionWS = new ListaReproduccionServiceService();
+        ListaReproduccionService listaReproduccionPort = ListaReproduccionWS.getListaReproduccionServicePort();
         
         
         //pruebas ContenidoService
         /*
         this.testAgregarTemaALista(contenidoPort); //OK
         this.testBuscarAlbumPorNombreYArtista(contenidoPort);//OK
-        this.testQuitarTemaDeLista(contenidoPort);//Ok
+        this.testQuitarTemaDeLista(contenidoPort);//OK
         this.testGetAlbumesDisponibles(contenidoPort);//OK
         this.testGetDTTemasDisponiblesConAlbum(contenidoPort);//OK
         this.testAltaAlbum(contenidoPort); //OK
         */
-
-        //pruebas DtAlbumsService
-        //this.testGetAlbumesPorGenero(dtAlbumsPort);
-        //this.testGetAlbumesPorArtista(dtAlbumsPort);
-        //this.testGetTodosDTAlbumsSimple(dtAlbumsPort);
         
+        //pruebas DataAlbumsService
+        /*
+        this.testGet1DTAlbumSimple(dtAlbumsPort);//OK
+        this.testGetAlbumesPorGenero(dtAlbumsPort);//OK
+        this.testGetAlbumesPorArtista(dtAlbumsPort);//OK
+        this.testGetTodosDTAlbumsSimple(dtAlbumsPort);//OK
+        */
+                
         //pruebas RankingService
         /*
         this.testGetTopTema(rankingPort);//OK
@@ -337,7 +515,14 @@ public class ServletPrueba extends HttpServlet {
         this.testGetDTSuscDeCliente2(suscripcionesPort);//OK
         */
         
-        
+        //pruebas ListaReproduccionService
+        /*
+        this.testConsultaListaReproduccion(listaReproduccionPort);//OK
+        this.testGetNombresListasPrivadasDeCliente(listaReproduccionPort);//OK
+        this.testListasReproduccionDisponibles(listaReproduccionPort);//OK
+        this.testNombresListasParticularesPublicas(listaReproduccionPort);//OK
+        this.testgetDTListaRepDeCliente(listaReproduccionPort);//OK
+        */
     }
 
     @Override
