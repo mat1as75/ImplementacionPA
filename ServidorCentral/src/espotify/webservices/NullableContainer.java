@@ -1,6 +1,8 @@
 package espotify.webservices;
 
 import espotify.DataTypes.DTAlbum;
+import espotify.DataTypes.DTArtista;
+import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
@@ -17,6 +19,8 @@ public class NullableContainer {
     private DTDatosCliente dtDatosCliente;
     private DTUsuario dtUsuario;
     private DTDatosListaReproduccion dtDatosListaReproduccion;
+    private DTArtista dtArtista;
+    private DTCliente dtCliente;
     
     public NullableContainer() {
         this.longObj = null;
@@ -27,6 +31,8 @@ public class NullableContainer {
         this.dtDatosCliente = null;
         this.dtUsuario = null;
         this.dtDatosListaReproduccion = null;
+        this.dtArtista = null;
+        this.dtCliente = null;
     };
 
     public Long getLongObj() {
@@ -92,7 +98,21 @@ public class NullableContainer {
     public void setDtDatosListaReproduccion(DTDatosListaReproduccion dtDatosListaReproduccion) {
         this.dtDatosListaReproduccion = dtDatosListaReproduccion;
     }
+
+    public DTArtista getDtArtista() {
+        return dtArtista;
+    }
+
+    public void setDtArtista(DTArtista dtArtista) {
+        this.dtArtista = dtArtista;
+    }
+
+    public DTCliente getDtCliente() {
+        return dtCliente;
+    }
+
+    public void setDtCliente(DTCliente dtCliente) {
+        this.dtCliente = dtCliente;
+    }
     
-    
-   
 }
