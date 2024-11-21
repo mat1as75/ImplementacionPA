@@ -41,7 +41,7 @@
                             type="text" id="usuario" 
                             name="usuario" placeholder="Email o Nickname de usuario" 
                             pattern="^[a-zA-Z0-9_-]{3,16}$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
-                            />
+                        />
                         <div id="errorUsuario" class="error-usuario">
                             <i class="fa-solid fa-circle-exclamation"></i>
                             <!-- SUGERENCIA DE ERROR -->

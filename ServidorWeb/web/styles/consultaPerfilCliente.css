@@ -3,28 +3,30 @@
 
 body {
     margin: 0;
+    background-color: var(--black);
 }
 
 .container {
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: var(--dark-gray);
     margin: auto;
     margin-top: 1.5%;
     border-radius: 10px;
     height: 700px;
     width: 800px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
 }
 
 .container .top-info {
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--black);
     margin: auto;
     margin-top: 15px;
     width: 90%;
     height: 100px;
     text-align: center;
     border-radius: 10px;
+    border: 1px solid var(--other-gray);
     box-shadow:-1px 1px 1px rgba(0,0,0,0.20);
 }
 
@@ -33,7 +35,7 @@ body {
     height: 100px;        /* Ajusta la altura de la imagen */
     border-radius: 50%;   /* Convierte la imagen en circular */
     object-fit: cover;    /* Asegura que la imagen se ajuste bien dentro del contenedor circular */
-    border: 1px solid #000;
+    border: 2px solid var(--other-gray);
     margin-left: -600px;
 }
 
@@ -52,6 +54,7 @@ body {
     margin-top: -5px;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+    color: var(--white);
 /*    margin-top: -100px;
     margin-left: -150px;*/
 }
@@ -63,6 +66,7 @@ body {
     padding: 0;
     font-family: 'Montserrat',monospace;
     font-size: 24px;
+    color: var(--white);
 /*    margin-top: -10px;
     margin-left: -36px;*/
 }
@@ -74,14 +78,15 @@ body {
     padding: 5px 10px;
     font-family: 'Montserrat',monospace;
     font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    background-color: #fff;
+    color: var(--white);
+    border: 1px solid var(--dark-gray);
+    border-radius: 10px;
+    background-color: var(--dark-gray);
 }
 
 .boton-seguimiento:hover {
-    background-color: #f8f9fa;
-    border: 2px solid #ccc;
+    cursor: pointer;
+    background-color: var(--other-gray);
 }
 
 .tabs {
@@ -92,6 +97,7 @@ h3{
     font-family: 'Montserrat', monospace;
     font-style: italic;
     font-size: 16px;
+    color: var(--white);
     padding: 0;
     margin-left: 20px;
 }
@@ -99,7 +105,7 @@ h3{
 p {
     font-family: 'Montserrat', monospace;
     font-size: 14px;
-    color: #202020;
+    color: var(--white);
     padding: 10px;
     margin-top: -20px;
     margin-left: 70px;
@@ -123,17 +129,19 @@ p {
 }
 
 .followers-list th, .followers-list td {
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
     text-align: left;
     font-family: 'Montserrat', monospace;
     font-size: 14px;
+    color: var(--white);
 }
 
 .followers-list th {
-    background-color: #f4f4f4;
+    background-color: var(--medium-gray);
+    color: var(--black);
 }
 
 /*-----Followed List-----*/
@@ -154,25 +162,32 @@ p {
 }
 
 .followed-list th, .followed-list td {
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
     padding: 5px;
     text-align: left;
     font-family: 'Montserrat', monospace;
     font-size: 14px;
+    color: var(--white);
 }
 
 .followed-list th {
-    background-color: #f4f4f4;
+    background-color: var(--medium-gray);
+    color: var(--black);
 }
 
 /*-----ListasParticular Creadas-----*/
 .lista-listasRCreados {
     width: 100%;
+    color: var(--white);
     border-collapse: collapse;
 }
 
+.lista-listasRCreados th {
+    background-color: var(--medium-gray);
+}
+
 .lista-listasRCreados a {
-    color: #000;
+    color: var(--white);
     text-decoration: none;
 }
 
@@ -196,15 +211,16 @@ p {
 }
 
 .lista-listasRCreados th, .lista-listasRCreados td {
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
     padding: 5px;
     text-align: left;
     font-family: 'Montserrat', monospace;
     font-size: 14px;
+    color: var(--black);
 }
 
 .tab .divisor {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--other-gray);
     width: 100%;
     margin: 40px 0;
 }
@@ -223,16 +239,15 @@ p {
     padding: 10px;
     margin: 0 auto;
     text-align: center;
-    background-color: #F8F9FA;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    background-color: var(--dark-gray);
+    border-radius: 10px;
     font-family: 'Montserrat', monospace;
-    color: #000;
+    color: var(--white);
     text-decoration: none;
 }
 
 .publicar-lista form a:hover {
-    text-decoration: underline;
+    background-color: var(--other-gray);
     cursor: pointer;
 }
 
@@ -247,12 +262,8 @@ p {
     margin: auto;
 }
 
-.tabla-preferencias td {
-    
-}
-
 .tabla-preferencias a {
-    color: #000;
+    color: var(--white);
     text-decoration: none;
 }
 
@@ -262,15 +273,17 @@ p {
 }
 
 .tabla-preferencias th, .tabla-preferencias td {
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
     padding: 5px;
     text-align: left;
     font-family: 'Montserrat', monospace;
     font-size: 14px;
+    color: var(--white);
 }
 
 .tabla-preferencias th {
-    background-color: #f4f4f4;
+    background-color: var(--medium-gray);
+    color: var(--black);
 }
 
 .sin-suscripcion {
@@ -279,4 +292,5 @@ p {
     text-align: center;
     font-family: 'Montserrat', monospace;
     font-size: 14px;
+    color: var(--white);
 }

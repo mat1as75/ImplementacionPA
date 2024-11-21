@@ -1,18 +1,20 @@
+@import "variablesColores.css";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
 
 body {
     margin: 0;
+    background-color: var(--dark-gray);
 }
 
 .contenido-banner {
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: var(--black);
     margin: auto;
     margin-top: 5%;
-    border-radius: 40px;
+    border-radius: 25px;
     height: 550px;
     width: 525px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--dark-gray);
 }
 
 .mensaje_request {
@@ -20,21 +22,24 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-    background-color: #d9534f;
+    background-color: var(--red);
 }
 
 .mensaje_request i {
     border-radius: 8px;
     margin-left: -40%;
     margin-right: 3%;
-    color: #000;
-    background-color: #d9534f;
+    color: var(--red);
+    background-color: var(--white);
+    border: 2px solid var(--white);
+    border-radius: 50px;
     font-size: 20px;
 }
 
 .mensaje-texto {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+    color: var(--white);
 }
 
 .logo {
@@ -45,13 +50,14 @@ body {
 }
 
 .logo .i {
-    color: #000; /* Color del icono de Spotify */
+    color: var(--white); /* Color del icono de Spotify */
 }
 
 #logoBanner {
     cursor: pointer;
     font-size: 2.5rem;
     padding: 0;
+    color: var(--white);
 }
 
 #tituloPrincipal {
@@ -60,7 +66,7 @@ body {
     align-items: center;
     font-size: 2rem;
     font-family: 'Montserrat', sans-serif;
-    color: #000; /* Color del texto */
+    color: var(--white); /* Color del texto */
     font-weight: bold; /* Negrita */
     letter-spacing: -2px;
     margin-top: 10px;
@@ -72,7 +78,7 @@ body {
 .barra-divisora {
     display: flex;
     width: 440px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--dark-gray);
     margin-top: 8%;
 }
 
@@ -101,7 +107,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
     font-weight: bold;
-    color: #333;
+    color: var(--white);
 }
 
 #usuario {
@@ -111,7 +117,9 @@ body {
     justify-content: center;
     margin-top: 1%;
     margin-left: 40px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--medium-gray);
+    background-color: var(--black);
+    color: var(--white);
     box-sizing: border-box;
     border-radius: 5px;
 }
@@ -129,7 +137,7 @@ body {
     border-radius: 8px;
     margin-left: 41px;
     margin-right: -2px;
-    color: #fff;
+    color: var(--black);
     background-color: red;
     font-size: 12px;
 }
@@ -137,7 +145,7 @@ body {
 .errorU-sugerencia {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
-    color: #d9534f;
+    color: var(--red);
     z-index: 1;
 }
 
@@ -162,7 +170,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
     font-weight: bold;
-    color: #333;
+    color: var(--white);
 }
 
 #contrasena {
@@ -170,10 +178,17 @@ body {
     height: 42px;
     padding: 10px 35px 10px 10px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 1px solid var(--medium-gray);
+    background-color: var(--black);
+    color: var(--white);
     border-radius: 5px;
     margin-top: 1%;
     margin-left: 40px;
+}
+
+input::placeholder {
+    color: var(--medium-gray);
+    opacity: 1;
 }
 
 /* Boton altarnar Visibilidad */
@@ -185,7 +200,7 @@ body {
     margin-top: -30px;
     border: none;
     background-color: transparent;
-    color: #ccc;
+    color: var(--medium-gray);
     font-size: 16px;
     cursor: pointer;
     outline: none;
@@ -196,12 +211,12 @@ body {
 .alternar-visible #btnVisibilidadP {
     position: relative;
     background-color: transparent;
-    color: #888;
+    color: var(--medium-gray);
     z-index: 0;
 }
 
 .alternar-visible #btnVisibilidadP:hover {
-    color: #333;
+    color: var(--light-gray);
 }
 
 .error-contrasena {
@@ -215,7 +230,7 @@ body {
     border-radius: 8px;
     margin-left: 41px;
     margin-right: -2px;
-    color: #fff;
+    color: var(--black);
     background-color: red;
     font-size: 12px;
     padding: 0;
@@ -225,7 +240,7 @@ body {
 .errorP-sugerencia {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
-    color: #d9534f;
+    color: var(--red);
     z-index: 1;
 }
 
@@ -245,10 +260,11 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px 110px;
-    border: 1px solid #000;
+    border: 1px solid var(--spotify-green);
     border-radius: 20px;
-    background-color: #000;
-    color: #fff;
+    background-color: var(--spotify-green);
+    color: var(--black);
+    font-weight: bold;
     cursor: pointer;
     font-size: 16px;
     width: 80%;
@@ -271,14 +287,6 @@ body {
     color: red;
     font-size: 12px;
     margin-top: 18px;
-}
-
-.input.error {
-    border: 1px solid red;
-}
-
-input:focus {
-    border-color: #007bff;
 }
 
 #mensaje { 
