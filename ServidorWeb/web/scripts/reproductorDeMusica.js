@@ -6,6 +6,7 @@ const nombreTemaFileP = document.querySelector("#nombreTemaFile");
 const nombreTemaLinkP = document.querySelector("#nombreTemaLink");
 const filePlayerImg = document.querySelector("#filePlayerImg");
 const linkTema = document.querySelector("#linkTema");
+const downloadAnchor = document.querySelector("#downloadAnchor");
 const errorAudioFilePlayer = document.querySelector("#errorAudioFilePlayer");
 const errorAudioLinkPlayer = document.querySelector("#errorAudioLinkPlayer");
 const logo = {src: "imagenes/spotifyLogo.png", alt: "Logo de spotify"};
@@ -24,7 +25,7 @@ const logo = {src: "imagenes/spotifyLogo.png", alt: "Logo de spotify"};
 async function play(idTema, nombreTema, srcPortada) {
     const url = `/ServidorWeb/Tema?idTema=${idTema || ""}`;
     const responseInfo = await verifyGetRequest(url);
-                
+        
     if (responseInfo.ok) {
         if (responseInfo.contentType === "audio/mpeg") {
             showFilePlayer(idTema, nombreTema, url, srcPortada);
@@ -34,6 +35,7 @@ async function play(idTema, nombreTema, srcPortada) {
     } else {
         showErrorFilePlayer(responseInfo);
     }
+    incrementarReproducciones(idTema);
 }
 
 /*
@@ -72,7 +74,6 @@ async function verifyGetRequest(url) {
 
 //Muestra el reproductor de archivos de musica
 function showFilePlayer(idTema, nombreTema, url, srcPortada) {
-    const downloadAnchor = document.querySelector("#downloadAnchor");
     //oculto el iframe y remuevo el atributo src y data-idtema
     audioLinkPlayer.setAttribute("src", "");
     audioLinkPlayerContainer.classList.add("hidden");
@@ -102,8 +103,7 @@ function showFilePlayer(idTema, nombreTema, url, srcPortada) {
     //muestro el reproductor de archivos y seteo el url
     audioFilePlayerContainer.classList.remove("hidden");
     audioFilePlayerContainer.setAttribute("data-idtema", idTema);
-    audioFilePlayer.setAttribute("src", url);
-    
+    audioFilePlayer.setAttribute("src", url);  
 }
 
 //Muestra el mensaje de error recibido en el request
@@ -156,7 +156,6 @@ async function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
     audioLinkPlayer.setAttribute("src", embeddableUrl);
     audioLinkPlayerContainer.setAttribute("data-idtema", idTema);
 }
-
 
 /*
  * Las direcciones de youtube deben ser de la forma youtube.com/embed/videoId
@@ -255,33 +254,33 @@ async function toggleDropdown(idDropdownContent) {
 //Event listener para el toggle del menu y para agregar o quitar un tema de la lista seleccionada
 document.querySelector("body").addEventListener("click", async (evt) => {
    
-   //si el elemento clickeado es el icono que muestra las listas
-   //a las cuales se puede agregar o desde las que se puede quitar el tema
-   if (evt.target.getAttribute("data-function") === "toggleDropDown") {
+    //si el elemento clickeado es el icono que muestra las listas
+    //a las cuales se puede agregar o desde las que se puede quitar el tema
+    if (evt.target.getAttribute("data-function") === "toggleDropDown") {
        const idDropdownContent = evt.target.getAttribute("data-dropdown-content");
        await toggleDropdown(idDropdownContent);
        return;
-   } 
+    } 
    
-   //si el elemento es un <a> de la lista de reproduccion con la funcion de agregarTemaALista
-   if (evt.target.getAttribute("data-function") === "agregarTemaALista") {
+    //si el elemento es un <a> de la lista de reproduccion con la funcion de agregarTemaALista
+    if (evt.target.getAttribute("data-function") === "agregarTemaALista") {
         const idTema = evt.target.getAttribute("data-idtema");
         const nombreLista = evt.target.getAttribute("data-nombreLista");
         evt.target.classList.add("hidden");
         await requestAgregarTema(idTema, nombreLista, evt.target);
         evt.target.classList.remove("hidden");
         return;
-   }
+    }
    
-   //si el elemento es un <a> de la lista de reproduccion con la funcion de quitarTemaDeLista
-   if (evt.target.getAttribute("data-function") === "quitarTemaDeLista") {
+    //si el elemento es un <a> de la lista de reproduccion con la funcion de quitarTemaDeLista
+    if (evt.target.getAttribute("data-function") === "quitarTemaDeLista") {
         const idTema = evt.target.getAttribute("data-idtema");
         const nombreLista = evt.target.getAttribute("data-nombreLista");
         evt.target.classList.add("hidden");
         await requestQuitarTema(idTema, nombreLista, evt.target);
         evt.target.classList.remove("hidden");
         return;
-   }
+    }
 });
 
 //Recibo el id del tema, el nombre de la lista y el elemento clickeado
@@ -448,3 +447,50 @@ async function fetchListasReproduccion(idDropdownContent) {
         loadDropdownContent(contentTypes[2], "Error al cargar las listas.", idDropdownContent);
     }  
 }
+
+
+async function incrementarReproducciones(id) {
+    const url = `/ServidorWeb/SVIncrementarReproducciones`;
+    const data = { idTema: id };
+    const jsonData = JSON.stringify(data);
+    
+    const request = new Request(url, {
+       method: "POST",
+       body: jsonData,
+       headers: {'Content-Type': "application/json;charset=UTF-8"}
+    });
+    
+    try {
+        const response = await fetch(request);
+    } catch (e) {
+        console.error(e);
+    } 
+}
+
+async function incrementarDescargasOVisitas(id) {
+    const url = `/ServidorWeb/SVIncrementarDescargasOVisitas`;
+    const data = { idTema: id };
+    const jsonData = JSON.stringify(data);
+    
+    const request = new Request(url, {
+       method: "POST",
+       body: jsonData,
+       headers: {'Content-Type': "application/json;charset=UTF-8"}
+    });
+    
+    try {
+        const response = await fetch(request);
+    } catch (e) {
+        console.error(e);
+    } 
+}
+
+linkTema.addEventListener("click", (evt) => {
+    const idTema = evt.target.closest(".audioPlayerContainer").getAttribute("data-idtema");
+    incrementarDescargasOVisitas(idTema);
+});
+
+downloadAnchor.addEventListener("click", (evt) => {
+    const idTema = evt.target.closest(".audioPlayerContainer").getAttribute("data-idtema");
+    incrementarDescargasOVisitas(idTema);
+});

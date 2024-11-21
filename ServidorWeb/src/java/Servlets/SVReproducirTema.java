@@ -1,8 +1,5 @@
 package Servlets;
 
-import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webservices.ContenidoService;
+import webservices.ContenidoServiceService;
+import webservices.DataTypes.DtTemaGenericoConRutaOUrl;
 
 @WebServlet(name = "SVReproducirTema", urlPatterns = {"/Tema"})
 public class SVReproducirTema extends HttpServlet {
@@ -40,10 +40,11 @@ public class SVReproducirTema extends HttpServlet {
             return;
         }
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
+        ContenidoServiceService contenidoWS = new ContenidoServiceService();
+        ContenidoService contenidoPort = contenidoWS.getContenidoServicePort();
+        
         Long idTema = Long.parseLong(idTemaStr);
-        DTTemaGenericoConRutaOUrl dataTema = ictrl.getDTTemaGenericoConRutaOUrl(idTema);
+        DtTemaGenericoConRutaOUrl dataTema = contenidoPort.getDTTemaGenericoConRutaOUrl(idTema);
         
         if (dataTema == null) {
             setResponseToText(response, response.SC_NOT_FOUND);

@@ -101,7 +101,7 @@
     </iframe> 
     
     <p id="nombreTemaLink" class="pNombreTema">Tema</p>
-    <p class="pLink"><a id="linkTema" href="">Enlace</a></p>
+    <p class="pLink"><a id="linkTema" href="" target="_blank">Enlace</a></p>
     <p id="errorAudioLinkPlayer" class="pError"></p>
     <div class="btnsPlaylistContainer">
         <span class="btnsPlaylist dropdownMenu" type="button">
