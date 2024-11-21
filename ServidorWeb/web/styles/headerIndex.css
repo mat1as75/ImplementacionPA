@@ -1,3 +1,4 @@
+@import "variablesColores.css";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
 @import "headerConSesion.css";
 @import "headerSinSesion.css";
@@ -8,7 +9,7 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background-color: #f8f9fa;
+    background-color: var(--black);
 }
 
 .logo {
@@ -19,16 +20,17 @@ header {
 
 .logo i {
     font-size: 2.8em; /* Tamaño del icono */
-    color: #000; /* Color del icono de Spotify */
+    color: var(--white); /* Color del icono de Spotify */
     margin-right: 10px; /* Espacio entre el icono y el resto del logo */
 }
 
 .logo-text {
     font-size: 2em; /* Tamaño del texto */
     font-family: 'Montserrat', sans-serif;
-    color: #000; /* Color del texto */
+    color: var(--white); /* Color del texto */
     font-weight: bold; /* Negrita */
     margin-right: 12px;
+    margin-left: 10px;
 }
 
 .barra-busqueda {
@@ -50,10 +52,10 @@ header {
     min-width: 150px;         /* No permite que el input de busqueda se achique a menos de 150px */
     width: 100%;              /* Ocupa todo el ancho del contenedor */
     padding: 10px 40px;      /* Espaciado interno */
-    border: 1px solid #000;   /* Borde */
+    border: 1px solid var(--light-gray);   /* Borde */
     border-radius: 20px 0 0 20px;      /* Esquinas redondeadas */
-    background-color: #fff; /* Fondo oscuro */
-    color: #000;             /* Color del texto */
+    background-color: var(--dark-gray); /* Fondo oscuro */
+    color: var(--white);             /* Color del texto */
     font-size: 16px;          /* Tamaño de la fuente */
     box-sizing: border-box;
 }
@@ -63,7 +65,7 @@ header {
     left: 15px;               /* Espacio desde la izquierda */
     top: 20px;                 /* Centra verticalmente */
     transform: translateY(-50%); /* Ajusta para centrar */
-    color: #000;              /* Color del icono */
+    color: var(--light-gray);              /* Color del icono */
 }
 
 /* SELECT FILTRO */
@@ -73,8 +75,9 @@ header {
     left: 350px;
     text-align: center;
     font-size: 10px;
-    background-color: #fff;
-    border: 1px solid #000;
+    color: var(--light-gray);
+    background-color: var(--dark-gray);
+    border: 1px solid var(--light-gray);
     border-radius: 0 20px 20px 0;
     appearance: none;
     border-left: none;
@@ -82,25 +85,27 @@ header {
 }
 
 #filtro:hover {
+    background-color: var(--other-gray);
     cursor: pointer;
 }
 
 option {
     font-family: 'Monospace';
     font-size: 10px;
-    color: #000;
+    color: var(--black);
 }
 
 option:hover {
-    background-color: #F8F9FA;
+    background-color: var(--light-gray);
 }
 
 .boton-buscar {
     padding: 10px 15px;     /* Espaciado interno */
-    border: 1px solid #000;           /* Sin borde */
+    border: 1px solid var(--light-gray);           /* Sin borde */
     border-radius: 20px; /* Esquinas redondeadas (derecha) */
-    background-color: #fff; /* Color verde de Spotify */
-    color: #000;           /* Color del texto */
+    background-color: var(--dark-gray); /* Color verde de Spotify */
+    color: var(--white);           /* Color del texto */
+    font-weight: bold; /* Negrita */
     cursor: pointer;        /* Cambia el cursor al pasar */
     font-size: 16px;        /* Tamaño de la fuente */
     margin-left: 8px;
@@ -109,8 +114,7 @@ option:hover {
 }
 
 .boton-buscar:hover {
-    background-color: #f8faf9; /* Color al pasar el ratón */
-    border: 1px solid #000;
+    background-color: var(--other-gray); /* Color al pasar el ratón */
 }
 
 /*.mi-boton:active {

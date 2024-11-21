@@ -1,41 +1,46 @@
+@import "variablesColores.css";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
 
 .container-botones {
     display: flex;
     gap: 10px;
-    background-color: #f8faf9;
+    background-color: var(--black);
     padding: 0;
 }
 
 .container-botones .boton-registro {
-    background-color: #f8faf9; /* Color de fondo verde */
-    color: #000; /* Color del texto */
+    background-color: var(--black);
+    color: var(--white); /* Color del texto */
     font-family: 'Arial';
     font-size: 16px;
+    font-weight: bold; /* Negrita */
     padding: 10px 20px; /* Espaciado */
     border: none;
     cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
 }
 
 .container-botones .boton-inicioSesion {
-    background-color: #000; /* Color de fondo azul */
-    color: white; /* Color del texto */
+    background-color: var(--white); /* Color de fondo azul */
+    color: var(--black); /* Color del texto */
     font-family: 'Arial';
     font-size: 16px;
+    font-weight: bold; /* Negrita */
     padding: 10px 20px; /* Espaciado */
-    border: 1px solid #000;
+    border: 1px solid var(--white);
     border-radius: 20px;
     cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
     white-space: nowrap;
 }
 
 .boton-registro:hover {
-   background-color: #f8faf9;
+   cursor: pointer;
+   background-color: var(--dark-gray);
+   border-radius: 20px;
 }
 
 .boton-iniciarSesion:hover {
-   background-color: #fff;
-   border: 2px solid #000;
+   cursor: pointer;
+   background-color: var(--dark-gray);
 }
 
 

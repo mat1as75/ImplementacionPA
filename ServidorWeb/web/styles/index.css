@@ -1,5 +1,9 @@
+@import "variablesColores.css";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap');
 
+body {
+    background-color: var(--black);
+}
 /*----- Tabs -----*/
 .tabs {
     display: flex; /* Cambia a flexbox */
