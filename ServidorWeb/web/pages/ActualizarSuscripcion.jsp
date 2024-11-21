@@ -35,7 +35,7 @@
                 <% if (estadoSuscripcion.equals("Pendiente")) { %>
                     <p class="datosSuscripcion">Fecha de solicitud: <%=fechaSuscripcion%></p>
                 <% } else { %>
-                    <p class="datosSuscripcion">Fecha de contratación: <%=fechaSuscripcion%></p>
+                    <p class="datosSuscripcion">Fecha de actualización: <%=fechaSuscripcion%></p>
                 <% } %>
                 <div class="btnsContainer" id="btnsOpciones">
                     

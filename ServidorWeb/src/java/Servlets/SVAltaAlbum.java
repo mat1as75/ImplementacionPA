@@ -1,12 +1,5 @@
 package Servlets;
 
-import espotify.DataTypes.DTAlbum_SinDTArtista;
-import espotify.DataTypes.DTGenero;
-import espotify.DataTypes.DTTemaConTipo;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
-import espotify.persistencia.exceptions.InvalidDataException;
-import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import webservices.ContenidoService;
+import webservices.ContenidoServiceService;
+import webservices.DataTypes.DtAlbumSinDTArtista;
+import webservices.DataTypes.DtGenero;
+import webservices.DataTypes.DtTemaConTipo;
+import webservices.UsuarioService;
+import webservices.UsuarioServiceService;
 
 @WebServlet(urlPatterns = {"/AltaAlbum"})
 @MultipartConfig(
@@ -63,7 +63,7 @@ public class SVAltaAlbum extends HttpServlet {
             String nombreTema = entry.getKey();
             Part partTema = entry.getValue();
             File nuevoArchivoTema = new File(uploadDirTemas, nombreTema);
-            
+                        
             try {
                 if (partTema != null && !nuevoArchivoTema.exists()) {
                     InputStream input = partTema.getInputStream();
@@ -108,8 +108,8 @@ public class SVAltaAlbum extends HttpServlet {
         return archivoPortada.getPath();
     }
     
-    private List<DTTemaConTipo> crearListaDTTemas(Map<String, String> mapTemasConRutas, int cantidadTemas, HttpServletRequest request) {
-        List<DTTemaConTipo> dataTemas = new ArrayList();
+    private List<DtTemaConTipo> crearListaDTTemas(Map<String, String> mapTemasConRutas, int cantidadTemas, HttpServletRequest request) {
+        List<DtTemaConTipo> dataTemas = new ArrayList();
         for (int i=0; i<cantidadTemas; i++) {
             String parameterPrefix = "tema-" + i + "-";
             String nombreTema = convertToUTF8(request.getParameter(parameterPrefix + "nombre"));
@@ -127,32 +127,34 @@ public class SVAltaAlbum extends HttpServlet {
             
             if (tipoDeAcceso.equals("ruta")) {
                 String rutaTema = mapTemasConRutas.get(nombreTema);
-                dataTemas.add(
-                        new DTTemaConTipo(
-                                "ruta", 
-                                nombreTema, 
-                                duracionTotalSegundos, 
-                                posicionTema,
-                                rutaTema));
+                DtTemaConTipo dataTema = new DtTemaConTipo();
+                dataTema.setTipo("ruta");
+                dataTema.setNombreTema(nombreTema);
+                dataTema.setPosicionEnAlbum(posicionTema);
+                dataTema.setDuracionSegundos(duracionTotalSegundos);
+                dataTema.setRutaOurl(rutaTema);
+                dataTemas.add(dataTema);
             }
             if (tipoDeAcceso.equals("url")) {
-                dataTemas.add(
-                        new DTTemaConTipo(
-                                "url",
-                                nombreTema, 
-                                duracionTotalSegundos, 
-                                posicionTema, 
-                                archivoOurl));
+                DtTemaConTipo dataTema = new DtTemaConTipo();
+                dataTema.setTipo("url");
+                dataTema.setNombreTema(nombreTema);
+                dataTema.setPosicionEnAlbum(posicionTema);
+                dataTema.setDuracionSegundos(duracionTotalSegundos);
+                dataTema.setRutaOurl(archivoOurl);
+                dataTemas.add(dataTema);
             }
         }
         return dataTemas;
     }
     
-    private List<DTGenero> crearListaDTGenero(String[] generos) {
-        List<DTGenero> dataGeneros = new ArrayList();
+    private List<DtGenero> crearListaDTGenero(String[] generos) {
+        List<DtGenero> dataGeneros = new ArrayList();
         
         for (String gen : generos) {
-            dataGeneros.add(new DTGenero(convertToUTF8(gen)));
+            DtGenero dataGenero = new DtGenero();
+            dataGenero.setNombreGenero(convertToUTF8(gen));
+            dataGeneros.add(dataGenero);
         }
         
         return dataGeneros;
@@ -176,8 +178,10 @@ public class SVAltaAlbum extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
+        
+        UsuarioServiceService usuarioWS = new UsuarioServiceService();
+        UsuarioService usuarioPort = usuarioWS.getUsuarioServicePort();
+        
         //No se permite acceder a un usuario sin sesion
         HttpSession sesion = request.getSession(false);
         if (sesion == null) {
@@ -192,7 +196,7 @@ public class SVAltaAlbum extends HttpServlet {
             return;
         }
         
-        Boolean existeArtista = ictrl.ExisteArtista(nickname);
+        Boolean existeArtista = usuarioPort.existeArtista(nickname);
         //No se permite el acceso a un usuario que no sea artista
         if (!existeArtista) {
             SVError.redirectUnauthorized(request, response);
@@ -217,8 +221,8 @@ public class SVAltaAlbum extends HttpServlet {
         
         processRequest(request, response);
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
+        ContenidoServiceService contenidoWS = new ContenidoServiceService();
+        ContenidoService contenidoPort = contenidoWS.getContenidoServicePort();
         
         String artista = (String) request.getAttribute("nicknameArtista");
 
@@ -258,7 +262,7 @@ public class SVAltaAlbum extends HttpServlet {
             return;
         }
         //Creo los DTTema con los datos del request y con las rutas de los archivos subidos en los que son con ruta
-        List<DTTemaConTipo> dataTemas = crearListaDTTemas(mapTemasConRutas, cantidadTemas, request);
+        List<DtTemaConTipo> dataTemas = crearListaDTTemas(mapTemasConRutas, cantidadTemas, request);
        
         String rutaPortada = null;
         //Subo la imagen de portada
@@ -273,30 +277,30 @@ public class SVAltaAlbum extends HttpServlet {
         }
         
         //Creo la lista de DTGenero con los generos recibidos en el request
-        List<DTGenero> dataGeneros = crearListaDTGenero(generosAlbum);
+        List<DtGenero> dataGeneros = crearListaDTGenero(generosAlbum);
         
-        DTAlbum_SinDTArtista dataAlbum = new DTAlbum_SinDTArtista(
-                nombreAlbum,
-                anioAlbum, 
-                rutaPortada,
-                dataTemas,
-                dataGeneros,
-                artista
-        );
+        DtAlbumSinDTArtista dataAlbum = new DtAlbumSinDTArtista();
+        dataAlbum.setNombreAlbum(nombreAlbum);
+        dataAlbum.setAnioCreacion(anioAlbum);
+        dataAlbum.setFotoAlbum(rutaPortada);
+        dataAlbum.setMiArtista(artista);
+        dataAlbum.getMisTemas().addAll(dataTemas);
+        dataAlbum.getMisgeneros().addAll(dataGeneros);
         
         try {
-            ictrl.AltaAlbum(dataAlbum);
+            contenidoPort.altaAlbum(dataAlbum);
             response.setStatus(201);
         } catch (Exception e) {
             //Si ocurrio un error inesperado en el servidor
             response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
             //Si no se encontro uno de los recursos buscados (artista/genero)
-            if (e instanceof NonexistentEntityException) {
+            if (e.getMessage().contains("No se encontro")) {
                 response.setStatus(response.SC_NOT_FOUND);
             }
             
             //Si se recibieron datos invalidos en el request
-            if (e instanceof InvalidDataException) {
+            if (e.getMessage().contains("Este artista ya tiene un album con el nombre") 
+                    || e.getMessage().contains("Existen campos requeridos nulos")) {
                 response.setStatus(response.SC_BAD_REQUEST);
             }
             response.getWriter().write("Error al procesar la solicitud.");
