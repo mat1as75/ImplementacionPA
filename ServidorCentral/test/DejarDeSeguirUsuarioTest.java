@@ -26,7 +26,7 @@ public class DejarDeSeguirUsuarioTest {
         Boolean clienteExiste = cp.ExisteCliente(seguidor);
         Boolean usuarioExiste = cp.ExisteNickName(seguido);
         
-        Boolean usuariosExisten = (clienteExiste != null && usuarioExiste != null);
+        Boolean usuariosExisten = clienteExiste && usuarioExiste;
         Boolean existeRelacion = false;
         Boolean errorDeOperacion = false;
         
