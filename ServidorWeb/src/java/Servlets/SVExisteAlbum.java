@@ -1,8 +1,6 @@
 
 package Servlets;
 
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import webservices.ContenidoService;
+import webservices.ContenidoServiceService;
 
 
 @WebServlet(name = "SVExisteAlbum", urlPatterns = {"/ExisteAlbum"})
@@ -31,8 +31,8 @@ public class SVExisteAlbum extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
+        ContenidoServiceService contenidoWS = new ContenidoServiceService();
+        ContenidoService contenidoPort = contenidoWS.getContenidoServicePort();
         
         HttpSession sesion = request.getSession(false);
         if (sesion == null) {
@@ -60,7 +60,7 @@ public class SVExisteAlbum extends HttpServlet {
 
         album = body.toString();
         
-        Long idAlbum = ictrl.buscarAlbumPorNombreYArtista(nickname, album);
+        Long idAlbum = contenidoPort.buscarAlbumPorNombreYArtista(nickname, album);
         
         response.setStatus(response.SC_OK);
         response.setContentType("text/plain");

@@ -10,6 +10,7 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
+import espotify.DataTypes.DTDatosUsuarioSinPw;
 import espotify.DataTypes.DTGenero;
 import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
@@ -568,5 +569,11 @@ public class Controlador implements IControlador{
             throw ex;
         }
     }
+    
+    @Override
+    public ArrayList<DTDatosUsuarioSinPw> getUsuariosOrdenadosPorRanking(int cantidadEsperada) {
+        return this.contpersis.getUsuariosOrdenadosPorRanking(cantidadEsperada);
+    }
+
 }
 

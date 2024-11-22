@@ -1,5 +1,7 @@
 package espotify.logica;
 
+import espotify.DataTypes.DTDatosUsuario;
+import espotify.DataTypes.DTDatosUsuarioSinPw;
 import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -113,5 +115,39 @@ public abstract class Usuario implements Serializable{
     public String getNombreCompletoToString() {
         return (this.getNombreUsuario() + " " + this.getApellidoUsuario());
     }
-
+    
+    public DTDatosUsuario getDtDatosUsuario() {
+        ArrayList<String> nicknamesSeguidores = new ArrayList();
+        for (Usuario u : this.getMisSeguidores()) {
+            nicknamesSeguidores.add(u.getNickname());
+        }
+                
+        return new DTDatosUsuario(
+                this.getNickname(),
+                this.getNombreUsuario(),
+                this.getApellidoUsuario(),
+                this.getContrasenaUsuario(),
+                this.getEmail(),
+                this.getFecNac(),
+                this.getFotoPerfil(),
+                nicknamesSeguidores
+        );
+    }
+    
+    public DTDatosUsuarioSinPw getDtDatosUsuarioSinPw() {
+        ArrayList<String> nicknamesSeguidores = new ArrayList();
+        for (Usuario u : this.getMisSeguidores()) {
+            nicknamesSeguidores.add(u.getNickname());
+        }
+                
+        return new DTDatosUsuarioSinPw(
+                this.getNickname(),
+                this.getNombreUsuario(),
+                this.getApellidoUsuario(),
+                this.getEmail(),
+                this.getFecNac(),
+                this.getFotoPerfil(),
+                nicknamesSeguidores
+        );
+    }
 }

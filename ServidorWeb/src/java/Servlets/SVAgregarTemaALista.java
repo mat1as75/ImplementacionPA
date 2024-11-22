@@ -1,8 +1,6 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import espotify.persistencia.exceptions.DatabaseUpdateException;
 import espotify.persistencia.exceptions.InvalidDataException;
 import espotify.persistencia.exceptions.NonexistentEntityException;
@@ -14,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import webservices.ContenidoService;
+import webservices.ContenidoServiceService;
 
 @WebServlet(name = "SVAgregarTemaALista", urlPatterns = {"/AgregarTemaALista"})
 public class SVAgregarTemaALista extends HttpServlet {
@@ -56,8 +56,8 @@ public class SVAgregarTemaALista extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
+        ContenidoServiceService contenidoWS = new ContenidoServiceService();
+        ContenidoService contenidoPort = contenidoWS.getContenidoServicePort();
         
         //Extraigo el body del request en forma de string
         BufferedReader reader = request.getReader();
@@ -80,18 +80,18 @@ public class SVAgregarTemaALista extends HttpServlet {
         String nombreLista = jsonObject.getNombreListaReproduccion();
         Long idTema = jsonObject.getIdTema();
 
-        try {
-            ictrl.agregarTemaALista(idTema, nombreLista);
+        try {            
+            contenidoPort.agregarTemaALista(idTema, nombreLista);
             response.setStatus(response.SC_NO_CONTENT);
         } catch (Exception e) {
             response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
-            if (e instanceof NonexistentEntityException) {
+            if (e.getMessage().contains("No existe")) {
                 response.setStatus(response.SC_NOT_FOUND);
             }
-            if (e instanceof DatabaseUpdateException) {
+            if (e.getMessage().contains("Ocurrio un error al agregar el tema")) {
                 response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
             }
-            if (e instanceof InvalidDataException) {
+            if (e.getMessage().contains("ya pertenece a la lista")) {
                 response.setStatus(response.SC_BAD_REQUEST);
             }
             response.setContentType("text/plain");

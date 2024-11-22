@@ -1,9 +1,6 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.DataTypes.DTDatosListaReproduccion;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import webservices.DataTypes.DtDatosListaReproduccion;
+import webservices.ListaReproduccionService;
+import webservices.ListaReproduccionServiceService;
+import webservices.UsuarioService;
+import webservices.UsuarioServiceService;
 
 @WebServlet(name = "SVListasParticularesDeCliente", urlPatterns = {"/ListasParticularesDeCliente"})
 public class SVListasParticularesDeCliente extends HttpServlet {
@@ -40,29 +42,39 @@ public class SVListasParticularesDeCliente extends HttpServlet {
             return;
         }
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
-        Boolean existeCliente = ictrl.ExisteCliente(nickname);
+        ListaReproduccionServiceService listaRepWS = new ListaReproduccionServiceService();
+        ListaReproduccionService listaRepPort = listaRepWS.getListaReproduccionServicePort();
+        UsuarioServiceService usuarioWS = new UsuarioServiceService();
+        UsuarioService usuarioPort = usuarioWS.getUsuarioServicePort();
+        
+        Boolean existeCliente = usuarioPort.existeCliente(nickname);
         
         if (!existeCliente) {
             SVError.redirectUnauthorized(request, response);
         }
         
-        List<DTDatosListaReproduccion> listaDTListasRep = new ArrayList();
+        List<Object> objList = new ArrayList();
+        List<DtDatosListaReproduccion> listaDtListasRep = new ArrayList();
         try {
-            listaDTListasRep = ictrl.getListaDTDatosListaReproduccionDeCliente(nickname);
+            objList = listaRepPort.getListaDTDatosListaReproduccionDeCliente(nickname).getColeccion();
         } catch (Exception ex) {
             SVError.redirectInternalServerError(request, response, 
                     "Error al obtener las listas de reproducción del cliente.\n"
                     + ex.getMessage());
         }
                 
-        if (listaDTListasRep == null || listaDTListasRep.isEmpty()) {
+        if (objList == null || objList.isEmpty()) {
             response.setContentType("text/plain");
             response.getWriter().write("Sin listas");
         } else {
+            
+            for (Object o : objList) {
+                DtDatosListaReproduccion dtLista = (DtDatosListaReproduccion) o;
+                listaDtListasRep.add(dtLista);
+            }
+            
             Gson gson = new Gson();
-            String jsonData = gson.toJson(listaDTListasRep);
+            String jsonData = gson.toJson(listaDtListasRep);
             response.setContentType("application/json");
             response.getWriter().write(jsonData);
         }

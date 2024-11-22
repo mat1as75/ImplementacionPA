@@ -23,6 +23,8 @@ import webservices.DataAlbumsServiceService;
 import webservices.DataTypes.DtAlbumSimple;
 import webservices.DataTypes.DtAlbumSinDTArtista;
 import webservices.DataTypes.DtDatosListaReproduccion;
+import webservices.DataTypes.DtDatosUsuario;
+import webservices.DataTypes.DtDatosUsuarioSinPw;
 import webservices.DataTypes.DtGenero;
 import webservices.DataTypes.DtGeneroSimple;
 import webservices.DataTypes.DtSuscripcion;
@@ -79,6 +81,26 @@ public class ServletPrueba extends HttpServlet {
         dataGeneros.add(g2);
         
         return dataGeneros;
+    }
+    
+    private void testGetUsuariosPorRanking(RankingService rankingPort) {
+        System.out.println("10 Usuarios ordenados por cantidad de seguidores descendente...");
+        List<Object> listaObjetos = rankingPort.getUsuariosOrdenadosPorRanking(10).getColeccion();
+        for (Object o : listaObjetos) {
+            DtDatosUsuarioSinPw dtu = (DtDatosUsuarioSinPw) o;
+            System.out.println("usuario " + dtu.getNicknameUsuario());
+            System.out.println("seguidores: " + dtu.getNicknamesSeguidores());
+        }
+    }
+    
+     private void testGetUsuariosPorRanking2(RankingService rankingPort) {
+        System.out.println("todos los usuarios ordenados por ranking de seguidores...");
+        List<Object> listaObjetos = rankingPort.getUsuariosOrdenadosPorRanking(0).getColeccion();
+        for (Object o : listaObjetos) {
+            DtDatosUsuarioSinPw dtu = (DtDatosUsuarioSinPw) o;
+            System.out.println("usuario " + dtu.getNicknameUsuario());
+            System.out.println("seguidores: " + dtu.getNicknamesSeguidores());
+        }
     }
     
     private void testGetAlbumesDisponibles(ContenidoService contenidoPort) {
@@ -514,6 +536,8 @@ public class ServletPrueba extends HttpServlet {
         /*
         this.testGetTopTema(rankingPort);//OK
         this.testGetTopTemas(rankingPort);//OK
+        this.testGetUsuariosPorRanking(rankingPort);//OK
+        this.testGetUsuariosPorRanking2(rankingPort);//OK
         */
         
         //pruebas SuscripcionesService
@@ -536,6 +560,7 @@ public class ServletPrueba extends HttpServlet {
         this.testNombresListasParticularesPublicas(listaReproduccionPort);//OK
         this.testgetDTListaRepDeCliente(listaReproduccionPort);//OK
         */
+        
     }
 
     @Override

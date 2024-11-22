@@ -1,11 +1,6 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
-import espotify.persistencia.exceptions.DatabaseUpdateException;
-import espotify.persistencia.exceptions.InvalidDataException;
-import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -13,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webservices.ContenidoService;
+import webservices.ContenidoServiceService;
 
 @WebServlet(name = "SVQuitarTemaDeLista", urlPatterns = {"/QuitarTemaDeLista"})
 public class SVQuitarTemaDeLista extends HttpServlet {
@@ -51,8 +48,8 @@ public class SVQuitarTemaDeLista extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
+        ContenidoServiceService contenidoWS = new ContenidoServiceService();
+        ContenidoService contenidoPort = contenidoWS.getContenidoServicePort();
         
         //Extraigo el body del request en forma de string
         BufferedReader reader = request.getReader();
@@ -76,19 +73,14 @@ public class SVQuitarTemaDeLista extends HttpServlet {
         Long idTema = jsonObject.getIdTema();
 
         try {
-            ictrl.quitarTemaDeLista(idTema, nombreLista);
+            contenidoPort.quitarTemaDeLista(idTema, nombreLista);
             response.setStatus(response.SC_NO_CONTENT);
         } catch (Exception e) {
             response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
-            if (e instanceof NonexistentEntityException) {
+            if (e.getMessage().contains("No se pudo encontrar el tema")) {
                 response.setStatus(response.SC_NOT_FOUND);
             }
-            if (e instanceof DatabaseUpdateException) {
-                response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
-            }
-            if (e instanceof InvalidDataException) {
-                response.setStatus(response.SC_BAD_REQUEST);
-            }
+            
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("Error: " + e.getMessage());

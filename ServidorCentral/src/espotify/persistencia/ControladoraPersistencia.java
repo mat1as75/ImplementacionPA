@@ -13,6 +13,7 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
+import espotify.DataTypes.DTDatosUsuarioSinPw;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
@@ -51,9 +52,7 @@ import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class ControladoraPersistencia {
@@ -95,7 +94,6 @@ public class ControladoraPersistencia {
                 || dtArtista.getContrasenaUsuario() == null) {
             return;
         }
-        
         try {
             Artista art = new Artista(
                     dtArtista.getNickname(),
@@ -121,7 +119,6 @@ public class ControladoraPersistencia {
                 || dtCliente.getContrasenaUsuario() == null) {
             return;
         }
-        
         try {
             Cliente cli = new Cliente(
                     dtCliente.getNickname(),
@@ -470,54 +467,43 @@ public class ControladoraPersistencia {
     }
 
     public void dejarDeSeguir(String C, String U) throws Exception {
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
         Cliente cliente = this.cliJpa.findCliente(C);
         Usuario usuario = this.usuJpa.findUsuario(U);
-
-        ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
-
-        for (Usuario seg : seguidosCliente) {
-            if (seg.getNickname().equals(usuario.getNickname())) {
-                cliente.getMisSeguidos().remove(seg);
+        
+        if (cliente == null || usuario == null) {
+            throw new NonexistentEntityException("No se encontró al menos uno de los usuarios.");
+        }
+        
+        List<Usuario> seguidosDeCliente = cliente.getMisSeguidos();
+        for (Usuario seguido : seguidosDeCliente) {
+            if (seguido.getNickname().equals(usuario.getNickname())) {
+                if (seguidosDeCliente.remove(seguido)) {
+                    try {
+                        this.cliJpa.edit(cliente);
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                }
                 break;
             }
         }
 
-        ArrayList<Usuario> seguidoresUsuario = new ArrayList<>(usuario.getMisSeguidores());
-
-        for (Usuario seg : seguidoresUsuario) {
-            if (seg.getNickname().equals(cliente.getNickname())) {
-                usuario.getMisSeguidores().remove(seg);
+        List<Usuario> seguidoresDeUsuario = usuario.getMisSeguidores();
+        for (Usuario seguidor : seguidoresDeUsuario) {
+            if (seguidor.getNickname().equals(cliente.getNickname())) {
+                if (seguidoresDeUsuario.remove(seguidor)) {
+                    try {
+                        this.usuJpa.edit(usuario);
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                }
                 break;
             }
         }
-        t.commit();
-        em.close();
-        try {
-            this.cliJpa.edit(cliente);
-            this.usuJpa.edit(usuario);
-        } catch (Exception ex) {
-            throw ex;
-        }
-    }
-
-    public void DejarDeSeguirPrueba() throws Exception {
-        Cliente cliente = cliJpa.findCliente("Eleven11");
-        Usuario usuario = usuJpa.findUsuario("lachiqui");
-
-        try {
-            //usuario.getMisSeguidores().remove(cliente);
-            cliente.getMisSeguidos().remove(usuario);
-            //usuJpa.edit(usuario);
-            cliJpa.edit(cliente);
-        } catch (Exception ex) {
-            throw ex;
-        }
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf.getCache().evictAll();
     }
 
     public boolean clienteSigueAUsuario(String C, String U) {
@@ -2018,5 +2004,28 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             throw ex;
         }
+    }
+    
+    /**
+     * Si cantidadEsperada es menor a 1 se devuelven todos los usuarios, 
+     * en caso contrario se muestra como maximo la cantidad esperada
+    */
+    public ArrayList<DTDatosUsuarioSinPw> getUsuariosOrdenadosPorRanking(int cantidadEsperada) {
+        ArrayList<DTDatosUsuarioSinPw> listaDeUsuarios = new ArrayList();
+        
+        List<Usuario> usuarios = this.usuJpa.findUsuarioEntities();
+        
+        usuarios.sort( (u1, u2) -> (u2.getMisSeguidores().size() - u1.getMisSeguidores().size()) );
+        
+        int contadorUsuariosAgregados = 0;
+        
+        for (Usuario u : usuarios) {
+            listaDeUsuarios.add(u.getDtDatosUsuarioSinPw());
+            contadorUsuariosAgregados++;
+            if (contadorUsuariosAgregados == cantidadEsperada) break;
+        }
+        
+         
+        return listaDeUsuarios;
     }
 }

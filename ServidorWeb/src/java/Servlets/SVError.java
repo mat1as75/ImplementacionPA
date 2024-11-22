@@ -24,10 +24,11 @@ public class SVError extends HttpServlet {
         request.getRequestDispatcher("/Error").forward(request, response);
     }
     
-    public static void redirectNotFound(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public static void redirectNotFound(HttpServletRequest request, HttpServletResponse response, String optionalMsg) throws ServletException, IOException {
         request.setAttribute("errorCode", "404");
         request.setAttribute("errorName", "Not Found");
-        request.setAttribute("errorMsg", "Recurso no encontrado.");
+        String errMsg = (optionalMsg == null ? "Recurso no encontrado" : optionalMsg);
+        request.setAttribute("errorMsg", errMsg);
         request.getRequestDispatcher("/Error").forward(request, response);        
     }
     
