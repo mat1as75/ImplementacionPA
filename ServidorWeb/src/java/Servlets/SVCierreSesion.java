@@ -40,12 +40,13 @@ public class SVCierreSesion extends HttpServlet {
         response.addCookie(cookie);
         
         // Mensaje para Cuenda Desactivada
-        String mensaje = request.getParameter("mensaje");
+        String mensaje = (String) request.getAttribute("mensaje");
         
-        if (mensaje != null && mensaje.equals("inactiva"))
+        if (mensaje != null && mensaje.equals("inactiva")) {
             response.sendRedirect("index.jsp?mensaje=inactiva");
-        else
+        } else {
             response.sendRedirect("index.jsp?mensaje=cerrada");
+        }
 //        if (sesion != null) {
 //            // Restablecer atributos de sesion
 //            sesion.setAttribute("usuario", null);

@@ -65,11 +65,8 @@ public class SVBajaArtista extends HttpServlet {
             Logger.getLogger(SVBajaArtista.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        /* Establezco el mensaje */
-        String mensaje = "inactiva";
-        
         /* Paso el mensaje al JSP como atributo de solicitud */
-        request.setAttribute("mensaje", mensaje);
+        request.setAttribute("mensaje", "inactiva");
         
         /* Redirigo a SVCierreSesion */
         response.sendRedirect("SVCierreSesion");

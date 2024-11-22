@@ -65,7 +65,7 @@
                     mensajeCartel = "Sesion Cerrada Exitosamente!";
                     break;
                 case "inactiva":
-                    mensajeCartel = "Sesion Cerrada Exitosamente!";
+                    mensajeCartel = "Cuenta Desactivada & Sesion Cerrada Exitosamente!";
                     break;
                 } %>
             
