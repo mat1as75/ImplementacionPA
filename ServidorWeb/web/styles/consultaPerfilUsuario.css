@@ -59,6 +59,23 @@ li.active a, li.active a:hover {
     overflow-y: auto;
 }
 
+.tab-content::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra de desplazamiento */
+}
+
+.tab-content::-webkit-scrollbar-track {
+    background-color: transparent; /* Color del track (fondo de la barra) */
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+    background-color: var(--medium-gray); /* Color del "thumb" (la parte que se mueve) */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.tab-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--light-gray); /* Color del "thumb" cuando el cursor está sobre él */
+}
+
 .tab {
     display:none;
 }

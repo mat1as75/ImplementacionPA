@@ -123,44 +123,12 @@ public class UsuarioService {
     }
     
     @WebMethod
-    public NullableContainer getDTSuscripcion(Long id) {
-        NullableContainer contenedor = new NullableContainer();
-        DTSuscripcion dtSuscripcion = this.control.getDTSuscripcion(id);
-        contenedor.setDtSuscripcion(dtSuscripcion);
-        
-        return contenedor;
-    }
-    
-    @WebMethod
-    public NullableContainer getDTSuscripcionDeCliente(String nickname) throws Exception{
-        NullableContainer contenedor = new NullableContainer();
-        DTSuscripcion dtSuscripcion = this.control.getDTSuscripcionDeCliente(nickname);
-        contenedor.setDtSuscripcion(dtSuscripcion);
-        
+    public void darDeBajaArtista(String nicknameArtista) throws Exception {
         try {
-            return contenedor;
-        } catch (Exception e) {
-            throw e;
+            this.control.darDeBajaArtista(nicknameArtista);
+        } catch (Exception ex) {
+            throw ex;
         }
-    }
-    
-    @WebMethod
-    public void ingresarNuevaSuscirpcion(String nickname, TipoSuscripcion tipoSuscripcion) throws Exception {
-        try {
-            this.control.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    @WebMethod
-    public boolean actualizarSuscirpcionVencida(Long idSuscripcion) {
-        return this.control.actualizarSuscripcionVencida(idSuscripcion);
-    }
-    
-    @WebMethod
-    public void ActualizarEstadoSuscripcion(Long idSuscripcion, EstadoSuscripcion estadoSuscripcion, Date fechaSuscripcion) {
-        this.control.ActualizarEstadoSuscripcion(idSuscripcion, estadoSuscripcion, fechaSuscripcion);
     }
     
 }

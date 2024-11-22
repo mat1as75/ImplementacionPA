@@ -110,6 +110,42 @@ System.out.println("SIZE ALBUMES PUBLICADOS: " + albumesPublicadosConsultados.si
                             <% } %>
                         <% } %>
                 <%  } %>
+                
+                <script>
+                    function mostrarCartelConfirmacion() {
+                        document.getElementById('cartel-confirmacion').style.display = 'block';
+                    }
+                    function cerrarCartelConfirmacion() {
+                        document.getElementById('cartel-confirmacion').style.display = 'none';
+                    }
+                    
+                    function aceptarConfirmacion() {
+                        document.getElementById('form-BajaArtista').submit();
+                    }
+                    function cancelarConfirmacion() {
+                        cerrarCartelConfirmacion();
+                    }
+                </script>
+                
+                <% 
+                %>
+                
+                <%  // ArtistaSesion == ArtistaConsultado
+                    if (nicknameSesion.equals(nicknameConsultado)) { %>
+                        <form id="form-BajaArtista" action="SVBajaArtista" method="POST">
+                            <input type="hidden" name="nicknameSesion" value="<%= nicknameSesion %>"/>
+                            <button type="button" class="boton-BajaArtista" onclick="mostrarCartelConfirmacion()">Descativar Cuenta</button>
+                        </form>
+                            
+                        <div id="cartel-confirmacion" class="overlay">
+                            <div class="cartel-confirmacion">
+                                <h2>¡CONFIRMACIÓN!</h2>
+                                <p>Confirmar desactivación de cuenta?</p>
+                                <button class="boton" onclick="aceptarConfirmacion()">Sí, desactivar mi cuenta</button>
+                                <button class="boton cancelar-btn" onclick="cancelarConfirmacion()">Cancelar</button>
+                            </div>
+                        </div>
+                <%  }  %>
             </div>
         </div>
 

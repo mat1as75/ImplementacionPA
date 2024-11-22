@@ -9,7 +9,7 @@
 }
 
 .container-info .perfil-img {
-    width: 50px; /* Tamaño de la imagen de perfil */
+    width: 35px; /* Tamaño de la imagen de perfil */
     height: 35px; /* Debe ser igual al ancho para que sea circular */
     border: 1px solid var(--light-gray);
     border-radius: 50%; /* Hace la imagen circular */
@@ -21,7 +21,7 @@
 .container-info .divisor {
     width: 0;
     padding: 0;
-    border-right: 1px solid var(--light-gray);
+    border-right: 1px solid var(--medium-gray);
     height: calc(4.375rem - 2rem);
     margin: auto 1rem;
 }

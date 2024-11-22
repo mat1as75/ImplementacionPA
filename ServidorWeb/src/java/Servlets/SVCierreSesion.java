@@ -20,18 +20,6 @@ public class SVCierreSesion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SVCierreSesion</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SVCierreSesion at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     @Override
@@ -51,9 +39,14 @@ public class SVCierreSesion extends HttpServlet {
         cookie.setMaxAge(0); // Invalido la cookie
         response.addCookie(cookie);
         
-        // Redirigo
-        response.sendRedirect("index.jsp?mensaje=cerrada");
+        // Mensaje para Cuenda Desactivada
+        String mensaje = (String) request.getAttribute("mensaje");
         
+        if (mensaje != null && mensaje.equals("inactiva")) {
+            response.sendRedirect("index.jsp?mensaje=inactiva");
+        } else {
+            response.sendRedirect("index.jsp?mensaje=cerrada");
+        }
 //        if (sesion != null) {
 //            // Restablecer atributos de sesion
 //            sesion.setAttribute("usuario", null);

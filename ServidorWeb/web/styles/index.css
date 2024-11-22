@@ -4,6 +4,55 @@
 body {
     background-color: var(--black);
 }
+
+.overlay {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Fijo en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+    z-index: 1000; /* Asegura que esté encima de todo el contenido */
+}
+
+.cartel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el cartel */
+    background-color: var(--light-gray);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+    z-index: 1001; /* Un nivel más alto que el overlay */
+}
+
+.cartel h2 {
+    font-family: 'Montserrat', monospace;
+}
+
+.cartel p {
+    font-family: 'Montserrat', monospace;
+}
+
+.cartel button {
+    padding: 5px 10px;
+    font-family: 'Montserrat', monospace;
+    font-weight: bold;
+    border: 1px solid var(--other-gray);
+    border-radius: 15px;
+    background-color: var(--other-gray);
+}
+
+.cartel button:hover {
+    cursor: pointer;
+    background-color: var(--medium-gray);
+    border: 1px solid var(--medium-gray);
+}
+
 /*----- Tabs -----*/
 .tabs {
     display: flex; /* Cambia a flexbox */

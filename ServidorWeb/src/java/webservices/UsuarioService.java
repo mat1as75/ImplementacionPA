@@ -7,7 +7,6 @@ import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.datatype.XMLGregorianCalendar;
 import jakarta.xml.ws.Action;
 import jakarta.xml.ws.FaultAction;
 import webservices.DataTypes.DtArtista;
@@ -60,16 +59,13 @@ public interface UsuarioService {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns espotify.webservices.NullableContainer
      * @throws Exception_Exception
      */
     @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices.espotify/UsuarioService/getDTSuscripcionDeClienteRequest", output = "http://webservices.espotify/UsuarioService/getDTSuscripcionDeClienteResponse", fault = {
-        @FaultAction(className = Exception_Exception.class, value = "http://webservices.espotify/UsuarioService/getDTSuscripcionDeCliente/Fault/Exception")
+    @Action(input = "http://webservices.espotify/UsuarioService/darDeBajaArtistaRequest", output = "http://webservices.espotify/UsuarioService/darDeBajaArtistaResponse", fault = {
+        @FaultAction(className = Exception_Exception.class, value = "http://webservices.espotify/UsuarioService/darDeBajaArtista/Fault/Exception")
     })
-    public NullableContainer getDTSuscripcionDeCliente(
+    public void darDeBajaArtista(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0)
         throws Exception_Exception
@@ -100,37 +96,6 @@ public interface UsuarioService {
     public boolean existeNickname(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
-
-    /**
-     * 
-     * @param arg1
-     * @param arg0
-     * @throws Exception_Exception
-     */
-    @WebMethod
-    @Action(input = "http://webservices.espotify/UsuarioService/ingresarNuevaSuscirpcionRequest", output = "http://webservices.espotify/UsuarioService/ingresarNuevaSuscirpcionResponse", fault = {
-        @FaultAction(className = Exception_Exception.class, value = "http://webservices.espotify/UsuarioService/ingresarNuevaSuscirpcion/Fault/Exception")
-    })
-    public void ingresarNuevaSuscirpcion(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        TipoSuscripcion arg1)
-        throws Exception_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices.espotify/UsuarioService/actualizarSuscirpcionVencidaRequest", output = "http://webservices.espotify/UsuarioService/actualizarSuscirpcionVencidaResponse")
-    public boolean actualizarSuscirpcionVencida(
-        @WebParam(name = "arg0", partName = "arg0")
-        long arg0);
 
     /**
      * 
@@ -223,34 +188,5 @@ public interface UsuarioService {
     public boolean existeCliente(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns espotify.webservices.NullableContainer
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices.espotify/UsuarioService/getDTSuscripcionRequest", output = "http://webservices.espotify/UsuarioService/getDTSuscripcionResponse")
-    public NullableContainer getDTSuscripcion(
-        @WebParam(name = "arg0", partName = "arg0")
-        long arg0);
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     */
-    @WebMethod(operationName = "ActualizarEstadoSuscripcion")
-    @Action(input = "http://webservices.espotify/UsuarioService/ActualizarEstadoSuscripcionRequest", output = "http://webservices.espotify/UsuarioService/ActualizarEstadoSuscripcionResponse")
-    public void actualizarEstadoSuscripcion(
-        @WebParam(name = "arg0", partName = "arg0")
-        long arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        EstadoSuscripcion arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        XMLGregorianCalendar arg2);
 
 }

@@ -1489,7 +1489,6 @@ public class ControladoraPersistencia {
                     user.getContrasenaUsuario(),
                     ((Artista)user).getActivo()
             );
-            System.out.println("PERSISTENCIA_ACTIVO: " + ((DTArtista)dtUser).getActivo());
         }
 
         /* Verifica la contrasena */
