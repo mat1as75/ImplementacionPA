@@ -1,14 +1,19 @@
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="espotify.logica.Fabrica" %>
-<%@ page import="espotify.logica.IControlador" %>
-<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="webservices.ContenidoService"%>
+<%@page import="webservices.ContenidoServiceService"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.ListaReproduccionService"%>
+<%@page import="webservices.ListaReproduccionServiceService"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Espotify</title>
         <link rel="stylesheet" href="styles/index.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="styles/nav.css"/>
@@ -24,7 +29,7 @@
                 margin-bottom: 20px;
             }
             #volver,#volver2{
-                font-size: 40 px;
+                font-size: 1.5em;
             }
         </style>
     </head>
@@ -33,9 +38,13 @@
         <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
 
         <%  
-            Fabrica fabrica = Fabrica.getInstance();
-            IControlador controlador = fabrica.getControlador();  
-
+            ContenidoServiceService contenidoWS = new ContenidoServiceService();
+            ContenidoService contenidoPort = contenidoWS.getContenidoServicePort();
+            UsuarioServiceService usuarioWS = new UsuarioServiceService();
+            UsuarioService usuarioPort = usuarioWS.getUsuarioServicePort();
+            ListaReproduccionServiceService listaRepWS = new ListaReproduccionServiceService();
+            ListaReproduccionService listaRepPort = listaRepWS.getListaReproduccionServicePort();
+            
             HttpSession sesionIndex = request.getSession(false);
             String rolSesionIndex = null;
 
@@ -62,7 +71,13 @@
                         <div class="mosaico-container">
                             <div class="mosaico" id="mosaicoGeneros">
                                 <%
-                                    ArrayList<String> generos = controlador.getNombresGenerosPadre();
+                                    ArrayList<String> generos = new ArrayList();
+                                    List<Object> listaObjGeneros = contenidoPort.getNombresGenerosPadre().getColeccion();
+                                    for (Object o : listaObjGeneros) {
+                                        String generoObj = (String) o;
+                                        generos.add(generoObj);
+                                    }
+                                    
                                     if (generos != null && !generos.isEmpty()) {
                                         for (String gen : generos) {
                                 %>
@@ -112,9 +127,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
 
                 <div id="tab2" class="tab">
@@ -124,7 +136,13 @@
                         <div class="mosaico-container">
                             <div class="mosaico" id="mosaicoArtista">
                                 <%
-                                    List<String> artistas = controlador.getNicknamesArtistas();
+                                    List<String> artistas = new ArrayList();
+                                    List<Object> listObjArtistas = usuarioPort.getNicknamesArtistas().getColeccion();
+                                    for (Object o : listObjArtistas) {
+                                        String nicknameArtistaObj = (String) o;
+                                        artistas.add(nicknameArtistaObj);
+                                    }
+                                    
                                     if (artistas != null && !artistas.isEmpty()) {
                                         for (String art : artistas) {
                                 %>
@@ -158,19 +176,22 @@
                             </div>
                         </div>
                     </div> 
-
-
                 </div>
-
-
-                
 
                 <div id="tab3" class="tab">
                     <h1>Consulta Lista Particular</h1>
                     <div class="mosaico-container"> 
                         <div class="mosaico" id="mosaicoListasParticulares">
                             <%
-                                List<String> listasPublicas = controlador.getNombresListasParticularesPublicas();
+                                
+                                
+                                List<String> listasPublicas = new ArrayList();
+                                List<Object> listasPublicasObj = listaRepPort.getNombresListasParticularesPublicas().getColeccion();
+                                for (Object o : listasPublicasObj) {
+                                    String listaRepObj = (String) o;
+                                    listasPublicas.add(listaRepObj);
+                                }
+                                
                                 if (listasPublicas != null && !listasPublicas.isEmpty()) {
                                     for (String lista : listasPublicas) {
                             %>
