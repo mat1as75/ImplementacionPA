@@ -2029,4 +2029,20 @@ public class ControladoraPersistencia {
          
         return listaDeUsuarios;
     }
+    
+    /**
+     * Retorna una lista vacia si no encuentra el artista 
+     * o si el artista no tiene albums publicados
+     */
+    public ArrayList<DTAlbum> getDTAlbumsConTemasDeArtista(String nicknameArtista) {
+        ArrayList<DTAlbum> dataAlbums = new ArrayList();
+        Artista artista = this.artJpa.findArtista(nicknameArtista);
+        if (artista == null) return dataAlbums;
+        
+        for (Album album : artista.getMisAlbumesPublicados()) {
+            dataAlbums.add(album.getDTAlbumConTemasYGeneros());
+        }
+        
+        return dataAlbums;
+    }
 }
