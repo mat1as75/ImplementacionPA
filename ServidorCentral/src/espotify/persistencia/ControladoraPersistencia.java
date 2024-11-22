@@ -13,6 +13,7 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
+import espotify.DataTypes.DTDatosUsuarioSinPw;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTRegistroAcceso;
 import espotify.DataTypes.DTSuscripcion;
@@ -51,9 +52,7 @@ import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class ControladoraPersistencia {
@@ -2006,5 +2005,28 @@ public class ControladoraPersistencia {
         } catch (Exception ex) {
             throw ex;
         }
+    }
+    
+    /**
+     * Si cantidadEsperada es menor a 1 se devuelven todos los usuarios, 
+     * en caso contrario se muestra como maximo la cantidad esperada
+    */
+    public ArrayList<DTDatosUsuarioSinPw> getUsuariosOrdenadosPorRanking(int cantidadEsperada) {
+        ArrayList<DTDatosUsuarioSinPw> listaDeUsuarios = new ArrayList();
+        
+        List<Usuario> usuarios = this.usuJpa.findUsuarioEntities();
+        
+        usuarios.sort( (u1, u2) -> (u2.getMisSeguidores().size() - u1.getMisSeguidores().size()) );
+        
+        int contadorUsuariosAgregados = 0;
+        
+        for (Usuario u : usuarios) {
+            listaDeUsuarios.add(u.getDtDatosUsuarioSinPw());
+            contadorUsuariosAgregados++;
+            if (contadorUsuariosAgregados == cantidadEsperada) break;
+        }
+        
+         
+        return listaDeUsuarios;
     }
 }
