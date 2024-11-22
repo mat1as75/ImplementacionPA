@@ -1,18 +1,13 @@
 package Servlets;
 
-import espotify.DataTypes.DTArtista;
-import espotify.DataTypes.DTCliente;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -22,35 +17,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import com.google.gson.JsonObject;
-import com.google.gson.Gson;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import webservices.DataTypes.DtArtista;
+import webservices.DataTypes.DtCliente;
+import webservices.UsuarioService;
+import webservices.UsuarioServiceService;
 
 @WebServlet("/SVAltaPerfil")
 @MultipartConfig
 public class SVAltaPerfil extends HttpServlet {
     
- protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-    }
-      private String extractFileName(Part part) {
+    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
+    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
+   
+    private String extractFileName(Part part) {
         String contentDisposition = part.getHeader("content-disposition");
         for (String token : contentDisposition.split(";")) {
             if (token.trim().startsWith("filename")) {
@@ -59,9 +41,31 @@ public class SVAltaPerfil extends HttpServlet {
         }
         return null;
     }
-    private static final String UPLOAD_DIR = "../../web/Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes  
-    private static final String DIRECCION_BASE = "./Resource/ImagenesPerfil"; // Directorio donde guardar las imágenes
+    
+    private XMLGregorianCalendar getXMLGregorianCalendarFromDate(Date date) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(date);
+        XMLGregorianCalendar xmlDate;
+        try {
+            xmlDate = DatatypeFactory
+                    .newInstance()
+                    .newXMLGregorianCalendar(gc);
+        } catch (DatatypeConfigurationException ex) {
+            xmlDate = null;
+        }
+        return xmlDate;
+    }
+    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+    }
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -115,11 +119,6 @@ public class SVAltaPerfil extends HttpServlet {
             fotoPerfil=null;
         }
         
-        
-        
-        
-        
-        
         String fechaNacimientoStr = request.getParameter("fechaNacimiento");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaNacimiento = null;
@@ -142,27 +141,48 @@ public class SVAltaPerfil extends HttpServlet {
             sitioWeb = request.getParameter("sitioWeb");
         }
         
-        Fabrica f=Fabrica.getInstance();
-        IControlador i=f.getControlador();
+        UsuarioServiceService usuarioWS = new UsuarioServiceService();
+        UsuarioService usuarioPort = usuarioWS.getUsuarioServicePort();
+        
         if ("artista".equals(userType)) {
-            DTArtista dtart=new DTArtista(nickname, nombre,apellido,password,email,fechaNacimiento,fotoPerfil,null, biografia,sitioWeb,null,null,null);
-            i.AltaArtista(dtart);
+            DtArtista dtart = new DtArtista();
+            dtart.setNickname(nickname);
+            dtart.setNombreUsuario(nombre);
+            dtart.setApellidoUsuario(apellido);
+            dtart.setContrasenaUsuario(password);
+            dtart.setEmail(email);
+            dtart.setFecNac(getXMLGregorianCalendarFromDate(fechaNacimiento));
+            dtart.setBiografia(biografia);
+            dtart.setFotoPerfil(fotoPerfil);
+            dtart.setDirSitioWeb(sitioWeb);
+            usuarioPort.altaArtista(dtart);
         }
         if("cliente".equals(userType)){
-            DTCliente dtcli=new DTCliente(nickname,nombre,apellido,password,email,fechaNacimiento,fotoPerfil);                
-            i.AltaCliente(dtcli);
+            DtCliente dtcli = new DtCliente();
+            dtcli.setNickname(nickname);
+            dtcli.setNombreUsuario(nombre);
+            dtcli.setApellidoUsuario(apellido);
+            dtcli.setContrasenaUsuario(password);
+            dtcli.setEmail(email);
+            dtcli.setFecNac(getXMLGregorianCalendarFromDate(fechaNacimiento));
+            dtcli.setFotoPerfil(fotoPerfil);             
+            usuarioPort.altaCliente(dtcli);
+        }
+        
+        //verifico que se haya creado el usuario
+        Boolean fueCreado = usuarioPort.existeNickname(nickname);
+        String mensaje = null;
+        
+        if (!fueCreado) {
+            mensaje = "Ocurrió un error al crear el usuario.";
+        } else {
+            mensaje = "Su registro se ha completado de forma exitosa!";
         }
         // Establecer un mensaje
-        String mensaje = "Su registro se ha completado de forma exitosa!";
         request.setAttribute("mensaje", mensaje);
         
         // Redirigir al JSP
         request.getRequestDispatcher("AltaPerfil.jsp").forward(request, response);
         
     } 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

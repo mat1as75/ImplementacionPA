@@ -1,12 +1,6 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.DataTypes.DTDatosUsuario;
-import espotify.DataTypes.DTSuscripcion;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
-import espotify.logica.Suscripcion;
-import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
@@ -16,6 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import webservices.DataTypes.DtSuscripcion;
+import webservices.SuscripcionesService;
+import webservices.SuscripcionesServiceService;
+import webservices.TipoSuscripcion;
 
 @WebServlet(name = "SVIngresarSuscripcion", urlPatterns = {"/IngresarSuscripcion"})
 public class SVIngresarSuscripcion extends HttpServlet {
@@ -107,17 +105,17 @@ public class SVIngresarSuscripcion extends HttpServlet {
             return;
         }
         
-        DTSuscripcion dtSuscripcion = null;
+        DtSuscripcion dtSuscripcion = null;
+        SuscripcionesServiceService suscripcionesWS = new SuscripcionesServiceService();
+        SuscripcionesService suscripcionesPort = suscripcionesWS.getSuscripcionesServicePort();
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
         //Verifico si el cliente existe y ya tiene una suscripcion
         try {
             //Obtengo la suscripcion si la tiene
-            dtSuscripcion = ictrl.getDTSuscripcionDeCliente(nickname);
+            dtSuscripcion = suscripcionesPort.getDTSuscripcionDeCliente(nickname).getDtSuscripcion();
         } catch (Exception e) {
             //El request recibio un usuario inexistente
-            if (e instanceof NonexistentEntityException) {
+            if (e.getMessage().contains("No se encontró el cliente")) {
                 setResponseToText(response, response.SC_NOT_FOUND);
                 response.getWriter().write("El usuario no existe o no es un cliente");
                 return;
@@ -153,12 +151,12 @@ public class SVIngresarSuscripcion extends HttpServlet {
 
         //Extraigo el tipo de suscripcion
         String tipoSusc = jsonObject.getTipoSuscripcion();
-        Suscripcion.TipoSuscripcion tipoSuscripcion = null;
+        TipoSuscripcion tipoSuscripcion = null;
         //Asigno el valor del tipo de suscripcion segun lo recibido en el request
         switch (tipoSusc) {
-            case "Anual" -> tipoSuscripcion = Suscripcion.TipoSuscripcion.Anual;
-            case "Mensual" -> tipoSuscripcion = Suscripcion.TipoSuscripcion.Mensual;
-            case "Semanal" -> tipoSuscripcion = Suscripcion.TipoSuscripcion.Semanal;
+            case "Anual" -> tipoSuscripcion = TipoSuscripcion.ANUAL;
+            case "Mensual" -> tipoSuscripcion = TipoSuscripcion.MENSUAL;
+            case "Semanal" -> tipoSuscripcion = TipoSuscripcion.SEMANAL;
         }
         
         //El request recibio un tipo de suscripcion invalido
@@ -176,7 +174,7 @@ public class SVIngresarSuscripcion extends HttpServlet {
 
         //Ingreso la nueva suscripcion        
         try {
-            ictrl.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
+            suscripcionesPort.ingresarNuevaSuscripcion(nickname, tipoSuscripcion);
             response.setStatus(response.SC_NO_CONTENT);
         } catch (Exception e) {
             //Ocurrio un error inesperado en el servidor

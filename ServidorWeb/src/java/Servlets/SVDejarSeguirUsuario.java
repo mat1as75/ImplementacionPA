@@ -1,7 +1,5 @@
 package Servlets;
 
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -9,17 +7,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webservices.PreferenciasService;
+import webservices.PreferenciasServiceService;
 
 @WebServlet(name = "SVDejarSeguirUsuario", urlPatterns = {"/SVDejarSeguirUsuario"})
 public class SVDejarSeguirUsuario extends HttpServlet {
-
-   
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-          
-        }
     }
     
     @Override
@@ -29,11 +25,11 @@ public class SVDejarSeguirUsuario extends HttpServlet {
         String nicknameSeguidor = request.getParameter("nicknameSeguidor");
         String nicknameSeguido = request.getParameter("nicknameSeguido");
 
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
+        PreferenciasServiceService preferenciasWS = new PreferenciasServiceService();
+        PreferenciasService preferenciasPort = preferenciasWS.getPreferenciasServicePort();
         
         try {
-            control.dejarDeSeguir(nicknameSeguidor, nicknameSeguido);
+            preferenciasPort.dejarDeSeguir(nicknameSeguidor, nicknameSeguido);
         } catch (Exception ex) {
             throw ex;
         }

@@ -1,23 +1,25 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.DataTypes.DTSuscripcion;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
-import espotify.logica.Suscripcion;
-import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import webservices.DataTypes.DtSuscripcion;
+import webservices.EstadoSuscripcion;
+import webservices.SuscripcionesService;
+import webservices.SuscripcionesServiceService;
 
 @WebServlet(name = "SVActualizarSuscripcion", urlPatterns = {"/ActualizarSuscripcion"})
 public class SVActualizarSuscripcion extends HttpServlet {
@@ -73,6 +75,20 @@ public class SVActualizarSuscripcion extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
     }
     
+    private XMLGregorianCalendar getTodayAsXMLGregorianCalendar() {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date());
+        XMLGregorianCalendar xmlToday;
+        try {
+            xmlToday = DatatypeFactory
+                    .newInstance()
+                    .newXMLGregorianCalendar(gc);
+        } catch (DatatypeConfigurationException ex) {
+            xmlToday = null;
+        }
+        return xmlToday;
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
@@ -95,36 +111,33 @@ public class SVActualizarSuscripcion extends HttpServlet {
             return;
         }
 
-        DTSuscripcion dtSuscripcion = null;
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
+        DtSuscripcion dtSuscripcion = null;
+        SuscripcionesServiceService suscripcionesWS = new SuscripcionesServiceService();
+        SuscripcionesService suscripcionesPort = suscripcionesWS.getSuscripcionesServicePort();
         //Obtengo la suscripcion del cliente logueado
         try {
-            dtSuscripcion = ictrl.getDTSuscripcionDeCliente(nickname);
+            dtSuscripcion = suscripcionesPort.getDTSuscripcionDeCliente(nickname).getDtSuscripcion();
             //El cliente esta intentando acceder a una suscripcion inexistente
             if (dtSuscripcion == null) {
-                SVError.redirectNotFound(request, response);
+                SVError.redirectNotFound(
+                        request, response, 
+                        "Suscripción no encontrada. "
+                        +"Si fue ingresada recientemente por favor espere unos segundos e intente nuevamente.");
                 return;
             }
             
-            if  (ictrl.actualizarSuscripcionVencida(dtSuscripcion.getIdSuscripcion())) {
-                DTSuscripcion suscripcionVencida = ictrl.getDTSuscripcion(dtSuscripcion.getIdSuscripcion());
-                request.setAttribute("estadoSuscripcion", suscripcionVencida.getEstadoSuscripcion());
-            } else {
-                request.setAttribute("estadoSuscripcion", dtSuscripcion.getEstadoSuscripcion());
-            }
-            
-            LocalDate fechaLocalDate = LocalDate.ofInstant(
-                    dtSuscripcion.getFechaSuscripcion().toInstant(), 
-                    ZoneId.systemDefault());            
+            request.setAttribute("estadoSuscripcion", dtSuscripcion.getEstadoSuscripcion());
+            XMLGregorianCalendar xmlDate = dtSuscripcion.getFechaSuscripcion();
+            LocalDate fechaLocalDate = xmlDate.toGregorianCalendar().toZonedDateTime().toLocalDate();
+                       
             request.setAttribute("tipoSuscripcion", dtSuscripcion.getTipoSuscripcion());
             request.setAttribute("fechaSuscripcion", fechaLocalDate.format(DateTimeFormatter.ISO_DATE));
             
             //Paso el estado de la suscripcion al request para manejar este valor en el JSP
         } catch (Exception e) {
             //El request recibio un cliente inexistente
-            if (e instanceof NonexistentEntityException) {
-                SVError.redirectNotFound(request, response);
+            if (e.getMessage().contains("No se encontró el cliente")) {
+                SVError.redirectNotFound(request, response, "No se encontró el cliente.");
             } else {
                 //Ocurrio un error inesperado en el servidor
                 SVError.redirectInternalServerError(request, response, e.getMessage());
@@ -168,16 +181,16 @@ public class SVActualizarSuscripcion extends HttpServlet {
             return;
         }
         //Obtengo el usuario logueado
-        DTSuscripcion dtSuscripcion = null;
+        DtSuscripcion dtSuscripcion = null;
+        SuscripcionesServiceService suscripcionesWS = new SuscripcionesServiceService();
+        SuscripcionesService suscripcionesPort = suscripcionesWS.getSuscripcionesServicePort();
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador ictrl = fb.getControlador();
         //Obtengo el estado de la suscripcion del usuario logueado
         try {
-            dtSuscripcion = ictrl.getDTSuscripcionDeCliente(nickname);
+            dtSuscripcion = suscripcionesPort.getDTSuscripcionDeCliente(nickname).getDtSuscripcion();
         } catch (Exception e) {
             //El request recibio un cliente inexistente
-            if (e instanceof NonexistentEntityException) {
+            if (e.getMessage().contains("No se encontró el cliente")) {
                 setResponseToText(response, response.SC_NOT_FOUND);
                 response.getWriter().write("El usuario no existe");
                 return;
@@ -228,15 +241,14 @@ public class SVActualizarSuscripcion extends HttpServlet {
                 setResponseToText(response, response.SC_BAD_REQUEST);
                 response.getWriter().write("Tarjeta rechazada, verifique los datos ingresados.");
                 return;
-            } else {
-                //Actualizo la suscripcion hacia el estado vigente al corroborar los datos de pago
-                //Asigno la fecha de hoy
+            } else {                
                 try {
-                    ictrl.ActualizarEstadoSuscripcion(
-                            dtSuscripcion.getIdSuscripcion(), 
-                            Suscripcion.EstadoSuscripcion.Vigente, 
-                            new Date()
+                    suscripcionesPort.actualizarEstadoSuscripcion(
+                            dtSuscripcion.getIdSuscripcion(),
+                            EstadoSuscripcion.PENDIENTE,
+                            getTodayAsXMLGregorianCalendar()
                     );
+                    
                     response.setStatus(response.SC_NO_CONTENT);
                     return;
                 } catch (Exception e) {
@@ -253,11 +265,12 @@ public class SVActualizarSuscripcion extends HttpServlet {
                 && jsonObject.getNuevoEstadoSuscripcion().equals("Cancelada")) {
             //Si el cliente quiere cancelar la suscripcion
             try {
-                ictrl.ActualizarEstadoSuscripcion(
-                        dtSuscripcion.getIdSuscripcion(), 
-                        Suscripcion.EstadoSuscripcion.Cancelada, 
-                        new Date()
+                suscripcionesPort.actualizarEstadoSuscripcion(
+                        dtSuscripcion.getIdSuscripcion(),
+                        EstadoSuscripcion.CANCELADA, 
+                        getTodayAsXMLGregorianCalendar()
                 );
+                
                 response.setStatus(response.SC_NO_CONTENT);
             } catch (Exception e) {
                 //Ocurrio un error inesperado en el servidor

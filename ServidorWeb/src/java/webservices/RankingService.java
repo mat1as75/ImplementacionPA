@@ -9,6 +9,7 @@ import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.ws.Action;
+import webservices.DataTypes.DtDatosUsuarioSinPw;
 
 @WebService(name = "RankingService", targetNamespace = "http://webservices.espotify/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
@@ -17,13 +18,6 @@ import jakarta.xml.ws.Action;
 })
 public interface RankingService {
 
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns espotify.webservices.ArrayListContainer
-     */
     @WebMethod
     @WebResult(partName = "return")
     @Action(input = "http://webservices.espotify/RankingService/getTopTemasRequest", output = "http://webservices.espotify/RankingService/getTopTemasResponse")
@@ -31,14 +25,22 @@ public interface RankingService {
         @WebParam(name = "arg0", partName = "arg0")
         int arg0);
 
-    /**
-     * 
-     * @return
-     *     returns espotify.webservices.DtTemaConPuntaje
-     */
     @WebMethod
     @WebResult(partName = "return")
     @Action(input = "http://webservices.espotify/RankingService/getTopTemaRequest", output = "http://webservices.espotify/RankingService/getTopTemaResponse")
     public DtTemaConPuntaje getTopTema();
+
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/RankingService/getUsuariosOrdenadosPorRankingRequest", output = "http://webservices.espotify/RankingService/getUsuariosOrdenadosPorRankingResponse")
+    public ArrayListContainer getUsuariosOrdenadosPorRanking(
+        @WebParam(name = "arg0", partName = "arg0")
+        int arg0);
+    
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/RankingService/getTopUsuarioRequest", output = "http://webservices.espotify/RankingService/getTopUsuarioResponse")
+    public DtDatosUsuarioSinPw getTopUsuario();
+
 
 }

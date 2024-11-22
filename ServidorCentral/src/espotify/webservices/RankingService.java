@@ -1,5 +1,6 @@
 package espotify.webservices;
 
+import espotify.DataTypes.DTDatosUsuarioSinPw;
 import espotify.DataTypes.DTTemaConPuntaje;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
@@ -43,5 +44,20 @@ public class RankingService {
         List<DTTemaConPuntaje> listDataTemas = this.ictrl.getTopTemas(1);
         
         return listDataTemas.getFirst();
+    }
+    
+    @WebMethod
+    public ArrayListContainer getUsuariosOrdenadosPorRanking(int cantidadEsperada) {
+        ArrayList<DTDatosUsuarioSinPw> listaUsuarios = this.ictrl.getUsuariosOrdenadosPorRanking(cantidadEsperada);
+        ArrayListContainer contenedor = new ArrayListContainer(listaUsuarios);
+                
+        return contenedor;
+    }
+    
+    @WebMethod
+    public DTDatosUsuarioSinPw getTopUsuario() {
+        List<DTDatosUsuarioSinPw> listaUsuarios = this.ictrl.getUsuariosOrdenadosPorRanking(1);
+        
+        return listaUsuarios.getFirst();
     }
 }
