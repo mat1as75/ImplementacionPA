@@ -109,7 +109,7 @@ public interface IControlador {
     public abstract void incrementarReproduccionesDeTema(Long idTema) throws Exception;
     public abstract void incrementarDescargasOVisitasDeTema(Long idTema) throws Exception;
     
-    public abstract void darDeBajaArtista(String nicknameArtista) throws Exception;
+    
     public abstract ArrayList<DTRegistroAcceso> getDTRegistrosAccesoDisponibles();
 
     public abstract void guardarRegistroAcceso(String direccionIP, String url, String navegador, String sistemaOperativo, Date fechaAcceso);
@@ -133,6 +133,8 @@ public interface IControlador {
     
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteEmail(String email);
+    
+    public abstract void darDeBajaArtista(String nicknameArtista) throws Exception;
     
     /* ver si poner estas operaciones en RegistroService */
     public abstract DTSuscripcion getDTSuscripcion(Long id);

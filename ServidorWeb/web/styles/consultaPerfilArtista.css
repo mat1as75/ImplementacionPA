@@ -105,6 +105,83 @@ body {
     background-color: var(--other-gray);
 }
 
+.boton-BajaArtista {
+    margin: 0;
+    margin-top: 5px;
+    position: relative;
+    padding: 5px 10px;
+    font-family: 'Montserrat', monospace;
+    font-size: 14px;
+    color: var(--white);
+    border: 1px solid var(--dark-gray);
+    border-radius: 10px;
+    background-color: var(--dark-gray);
+}
+
+.boton-BajaArtista:hover {
+    cursor: pointer;
+    background-color: var(--other-gray);
+}
+
+.overlay {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Fijo en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+    z-index: 1000; /* Asegura que esté encima de todo el contenido */
+}
+
+.cartel-confirmacion {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el cartel */
+    background-color: var(--light-gray);
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Montserrat', monospace;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+    z-index: 1001; /* Un nivel más alto que el overlay */
+}
+
+.cartel-confirmacion p {
+    margin: 0;
+    text-align: center;
+    color: var(--black);
+    font-family: 'Montserrat', monospace;
+    font-weight: bold;
+}
+
+.boton {
+    background-color: var(--spotify-green);
+    color: var(--black);
+    border: none;
+    padding: 10px;
+    margin-top: 15px;
+    font-family: 'Montserrat', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.boton:hover {
+    background-color: var(--hover-green);
+}
+
+.cancelar-btn {
+    background-color: var(--red);
+}
+
+.cancelar-btn:hover {
+    background-color: var(--hover-red);
+}
+
 .tabs {
    margin-top: 15px;
 }

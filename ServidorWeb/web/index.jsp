@@ -44,6 +44,44 @@
             }
         %>
 
+        <script>
+            function mostrarCartelAviso() {
+                document.getElementById('cartel').style.display = 'block';
+            }
+
+            function cerrarCartelAviso() {
+                document.getElementById('cartel').style.display = 'none';
+            }
+        </script>
+        
+        <%  String mensajeRequest = request.getParameter("mensaje");
+            String mensajeCartel = null;
+            if (mensajeRequest != null) { 
+                switch(mensajeRequest) {
+                case "abierta":
+                    mensajeCartel = "Sesion Iniciada Exitosamente!";
+                    break;
+                case "cerrada": 
+                    mensajeCartel = "Sesion Cerrada Exitosamente!";
+                    break;
+                case "inactiva":
+                    mensajeCartel = "Sesion Cerrada Exitosamente!";
+                    break;
+                } %>
+            
+            <!-- CARTEL DE CUENTA DESACTIVADA -->
+            <div id="cartel" class="overlay">
+                <div class="cartel">
+                    <h2>¡AVISO!</h2>
+                    <p><%= mensajeCartel %></p>
+                    <button class="cerrar-btn" onclick="cerrarCartelAviso()">Cerrar</button>
+                </div>
+            </div>
+            <script>
+                mostrarCartelAviso();
+            </script>
+        <%  }  %>
+        
         <% if (!"Artista".equals(rolSesionIndex)) { %>
         <!-- TABS-CONTENT -->
         <div class="tabs">
