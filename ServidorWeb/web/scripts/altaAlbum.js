@@ -447,6 +447,13 @@ function addLiTema() {
     mapTemasAgregados.set(nombre, tema);
     ol.appendChild(li);
     updateTemasAgregadosContent();
+    clearFieldsTema();
+}
+
+function clearFieldsTema() {
+    document.querySelector("#nombreTema").value = "";
+    document.querySelector("#duracionTema").value = "";
+    document.querySelector("#tipoDeAcceso").value = "";
 }
 
 //Remueve el <li> del tema seleccionado y lo borra del map
