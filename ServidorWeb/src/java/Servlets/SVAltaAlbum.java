@@ -28,7 +28,7 @@ import webservices.UsuarioServiceService;
 
 @WebServlet(urlPatterns = {"/AltaAlbum"})
 @MultipartConfig(
-        maxFileSize = 1024 * 1024 * 20
+        maxFileSize = 1024 * 1024 * 50
 )
 public class SVAltaAlbum extends HttpServlet {
     

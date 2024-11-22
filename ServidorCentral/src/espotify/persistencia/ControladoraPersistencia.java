@@ -95,7 +95,6 @@ public class ControladoraPersistencia {
                 || dtArtista.getContrasenaUsuario() == null) {
             return;
         }
-        
         try {
             Artista art = new Artista(
                     dtArtista.getNickname(),
@@ -121,7 +120,6 @@ public class ControladoraPersistencia {
                 || dtCliente.getContrasenaUsuario() == null) {
             return;
         }
-        
         try {
             Cliente cli = new Cliente(
                     dtCliente.getNickname(),
@@ -470,54 +468,43 @@ public class ControladoraPersistencia {
     }
 
     public void dejarDeSeguir(String C, String U) throws Exception {
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction t = em.getTransaction();
-
-        t.begin();
         Cliente cliente = this.cliJpa.findCliente(C);
         Usuario usuario = this.usuJpa.findUsuario(U);
-
-        ArrayList<Usuario> seguidosCliente = new ArrayList<>(cliente.getMisSeguidos());
-
-        for (Usuario seg : seguidosCliente) {
-            if (seg.getNickname().equals(usuario.getNickname())) {
-                cliente.getMisSeguidos().remove(seg);
+        
+        if (cliente == null || usuario == null) {
+            throw new NonexistentEntityException("No se encontró al menos uno de los usuarios.");
+        }
+        
+        List<Usuario> seguidosDeCliente = cliente.getMisSeguidos();
+        for (Usuario seguido : seguidosDeCliente) {
+            if (seguido.getNickname().equals(usuario.getNickname())) {
+                if (seguidosDeCliente.remove(seguido)) {
+                    try {
+                        this.cliJpa.edit(cliente);
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                }
                 break;
             }
         }
 
-        ArrayList<Usuario> seguidoresUsuario = new ArrayList<>(usuario.getMisSeguidores());
-
-        for (Usuario seg : seguidoresUsuario) {
-            if (seg.getNickname().equals(cliente.getNickname())) {
-                usuario.getMisSeguidores().remove(seg);
+        List<Usuario> seguidoresDeUsuario = usuario.getMisSeguidores();
+        for (Usuario seguidor : seguidoresDeUsuario) {
+            if (seguidor.getNickname().equals(cliente.getNickname())) {
+                if (seguidoresDeUsuario.remove(seguidor)) {
+                    try {
+                        this.usuJpa.edit(usuario);
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                }
                 break;
             }
         }
-        t.commit();
-        em.close();
-        try {
-            this.cliJpa.edit(cliente);
-            this.usuJpa.edit(usuario);
-        } catch (Exception ex) {
-            throw ex;
-        }
-    }
-
-    public void DejarDeSeguirPrueba() throws Exception {
-        Cliente cliente = cliJpa.findCliente("Eleven11");
-        Usuario usuario = usuJpa.findUsuario("lachiqui");
-
-        try {
-            //usuario.getMisSeguidores().remove(cliente);
-            cliente.getMisSeguidos().remove(usuario);
-            //usuJpa.edit(usuario);
-            cliJpa.edit(cliente);
-        } catch (Exception ex) {
-            throw ex;
-        }
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EspotifyPU");
+        emf.getCache().evictAll();
     }
 
     public boolean clienteSigueAUsuario(String C, String U) {

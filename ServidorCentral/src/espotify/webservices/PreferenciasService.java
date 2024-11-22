@@ -30,7 +30,7 @@ public class PreferenciasService {
     
     @WebMethod
     public void dejarDeSeguir(String nickCliente, String nickUsuario) {
-        ictrl.dejarDeSeguir(nickUsuario, nickUsuario);
+        ictrl.dejarDeSeguir(nickCliente, nickUsuario);
     }
     
     @WebMethod

@@ -18,9 +18,9 @@ public class Espotify extends javax.swing.JFrame {
     
     public Espotify() {
         initComponents();
-        //hace un system.out de la peticion del cliente asi se puede ver el contenido del body
-        System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "true");
-        System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
+        //hace un system.out de la peticion del cliente asi se puede ver el contenido del body cuando se setea en true
+        //System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dump", "false");
+        //System.setProperty("com.sun.xml.ws.transport.http.HttpAdapter.dumpTreshold", "999999");
         
         //Publicacion de Web Services
         UsuarioService UsuarioWS = new UsuarioService();
