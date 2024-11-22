@@ -575,5 +575,10 @@ public class Controlador implements IControlador{
         return this.contpersis.getUsuariosOrdenadosPorRanking(cantidadEsperada);
     }
 
+    @Override
+    public ArrayList<DTAlbum> getDTAlbumsConTemasDeArtista(String nicknameArtista) {
+        return this.contpersis.getDTAlbumsConTemasDeArtista(nicknameArtista);
+    }
+
 }
 

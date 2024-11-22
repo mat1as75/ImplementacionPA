@@ -186,4 +186,29 @@ public class Album implements Serializable {
                 this.estaDisponible()
         );
     }
+    
+    public DTAlbum getDTAlbumConTemasYGeneros() {
+        DTAlbum dtAlbum = new DTAlbum(
+                this.getIdAlbum(),
+                this.getNombreAlbum(),
+                this.getAnioCreacion(),
+                this.getFotoAlbum(),
+                this.miArtista.getDTArtista(),
+                this.estaDisponible());
+        
+        ArrayList<DTTemaSimple> dtTemas = new ArrayList();
+        for (Tema t : this.misTemas) {
+            dtTemas.add(t.getDTTemaSimple());
+        }
+        
+        ArrayList<DTGenero> dtGeneros = new ArrayList();
+        for (Genero g : this.misGeneros) {
+            dtGeneros.add(new DTGenero(g.getNombreGenero()));
+        }
+        
+        dtAlbum.setMisTemasSimples(dtTemas);
+        dtAlbum.setMisgeneros(dtGeneros);
+        
+        return dtAlbum;
+    }
 }

@@ -49,6 +49,7 @@ public class Espotify extends javax.swing.JFrame {
       
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
+        
     }
 
     @SuppressWarnings("unchecked")
