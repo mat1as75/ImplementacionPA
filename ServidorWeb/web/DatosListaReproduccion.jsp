@@ -1,24 +1,29 @@
-<%@page import="espotify.DataTypes.DTDatosCliente"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <%@page import="java.util.List" %>
-<%@page import="espotify.DataTypes.DTDatosListaReproduccion" %>
+<%@page import="webservices.DataTypes.DtDatosCliente"%>
+<%@page import="webservices.DataTypes.DtDatosUsuario"%>
 <%@page import="espotify.DataTypes.DTTemaSimple"%>
 <%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
-<%@ page import="espotify.logica.Fabrica" %>
-<%@ page import="espotify.logica.IControlador" %>
+<%@page import="webservices.DataTypes.DtDatosListaReproduccion" %>
+<%@page import="webservices.DataTypes.DtDatosUsuario" %>
+<%@page import="webservices.ListaReproduccionService"%>
+<%@page import="webservices.ListaReproduccionServiceService"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.NullableContainer"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     String nombreLista = request.getParameter("nombreLista");
-    Fabrica f = Fabrica.getInstance();
-    IControlador iControlador = f.getControlador();
-    DTDatosListaReproduccion datosLista = null;
+    ListaReproduccionServiceService lservice = new ListaReproduccionServiceService();
+    ListaReproduccionService listaService = lservice.getListaReproduccionServicePort();
+    NullableContainer datosListaContainer = null;
+    DtDatosListaReproduccion datosLista = null;
     String tipoLista = null;
     String errorMsg = null;
 
     try {
-        List<String> nombresListasParticulares = iControlador.getNombresListasParticulares();
-        List<String> nombresListasPorDefecto = iControlador.getNombresListasPorDefecto();
+        List<String> nombresListasParticulares = (List<String>) listaService.getNombresListasParticulares();
+        List<String> nombresListasPorDefecto = (List<String>) listaService.getNombresListasPorDefecto();
 
         if (nombresListasParticulares.contains(nombreLista)) {
             tipoLista = "Particular";
@@ -26,7 +31,8 @@
             tipoLista = "Por Defecto";
         }
         if (tipoLista != null) {
-            datosLista = iControlador.ConsultarListaReproduccion(tipoLista, nombreLista);
+            datosListaContainer = listaService.consultarListaReproduccion(tipoLista, nombreLista);
+            datosLista = datosListaContainer.getDtDatosListaReproduccion();
         }
         String fotoLista = datosLista != null ? datosLista.getFotoLista() : null;
         if (fotoLista != null) {
@@ -40,14 +46,20 @@
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
         
-    DTDatosUsuario datosU = null;
-    DTDatosCliente datosC = null;
+    UsuarioServiceService uservice = new UsuarioServiceService();
+    UsuarioService usuarioService = uservice.getUsuarioServicePort();
+    NullableContainer datosUContainer = null;
+    NullableContainer datosCContainer = null;
+    
+    DtDatosUsuario datosU = null;
+    DtDatosCliente datosC = null;
     String estadoSuscripcionSesion = null;
 
     if ("Cliente".equals(rolSesion) && nicknameSesion != null) {
         try {
-            datosU = iControlador.getDatosUsuario(nicknameSesion);
-            datosC = (DTDatosCliente) datosU;
+            datosUContainer = usuarioService.getDatosUsuario(nicknameSesion);
+            datosU = datosUContainer.getDtDatosUsuario();
+            datosC = (DtDatosCliente) datosU;
             if (datosC.getSuscripcion() != null) {
                 estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
             }

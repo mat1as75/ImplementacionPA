@@ -155,4 +155,14 @@ public class ContenidoService {
         
         return contenedor;
     }
+    
+    @WebMethod
+    public String getGeneroDeListaPorDefecto(String nombreLista) throws Exception {
+        try {
+            return this.ictrl.getGeneroDeListaPorDefecto(nombreLista);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
 }
