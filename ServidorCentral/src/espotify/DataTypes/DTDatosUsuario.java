@@ -7,7 +7,7 @@ package espotify.DataTypes;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DTDatosUsuario {
+public abstract class DTDatosUsuario {
     // Atributos
     protected String nicknameUsuario;
     protected String nombreUsuario;
