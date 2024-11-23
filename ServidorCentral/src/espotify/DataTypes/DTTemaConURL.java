@@ -5,8 +5,9 @@ public class DTTemaConURL extends DTTemaGenerico {
     private String urlTema;
     //constructor
 
-    public DTTemaConURL(String nombreTema, int duracionSegundos, int posicionEnAlbum, String urlTema) {
-        super(nombreTema, duracionSegundos, posicionEnAlbum);
+    public DTTemaConURL(String nombreTema, int duracionSegundos, int posicionEnAlbum, 
+            Long cantidadDescargas, Long cantidadFavoritos, Long cantidadReproducciones, String urlTema) {
+        super(nombreTema, duracionSegundos, posicionEnAlbum, cantidadDescargas, cantidadFavoritos, cantidadReproducciones);
         this.urlTema=urlTema;
     }  
 

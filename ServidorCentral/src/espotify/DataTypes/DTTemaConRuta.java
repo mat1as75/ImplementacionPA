@@ -6,8 +6,9 @@ public class DTTemaConRuta extends DTTemaGenerico {
     
     //constructor
 
-    public DTTemaConRuta(String rutaTema, String nombreTema, int duracionSegundos, int posicionEnAlbum) {
-        super(nombreTema, duracionSegundos, posicionEnAlbum);
+    public DTTemaConRuta(String rutaTema, String nombreTema, int duracionSegundos, int posicionEnAlbum,
+            Long cantidadDescargas, Long cantidadFavoritos, Long cantidadReproducciones) {
+        super(nombreTema, duracionSegundos, posicionEnAlbum, cantidadDescargas, cantidadFavoritos, cantidadReproducciones);
         this.rutaTema = rutaTema;
     }
     

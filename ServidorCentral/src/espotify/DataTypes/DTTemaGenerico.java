@@ -9,13 +9,20 @@ public class DTTemaGenerico {
     protected int posicionEnAlbum;
     protected List<DTListaReproduccion> mislistasReproducc;
     protected DTAlbum miAlbum;
+    protected Long cantidadDescargas;
+    protected Long cantidadFavoritos;
+    protected Long cantidadReproducciones;
     
     public DTTemaGenerico(){};
     
-    public DTTemaGenerico(String nombreTema, int duracionSegundos, int posicionEnAlbum) {
+    public DTTemaGenerico(String nombreTema, int duracionSegundos, int posicionEnAlbum,
+            Long cantidadDescargas, Long cantidadFavoritos, Long cantidadReproducciones) {
         this.nombreTema = nombreTema;
         this.duracionSegundos = duracionSegundos;
         this.posicionEnAlbum = posicionEnAlbum;
+        this.cantidadDescargas = cantidadDescargas;
+        this.cantidadFavoritos = cantidadFavoritos;
+        this.cantidadReproducciones = cantidadReproducciones;
     }
 
     public String getNombreTema() {
@@ -65,5 +72,30 @@ public class DTTemaGenerico {
     public void setMiAlbum(DTAlbum miAlbum) {
         this.miAlbum = miAlbum;
     }
+
+    public Long getCantidadDescargas() {
+        return cantidadDescargas;
+    }
+
+    public void setCantidadDescargas(Long cantidadDescargas) {
+        this.cantidadDescargas = cantidadDescargas;
+    }
+
+    public Long getCantidadFavoritos() {
+        return cantidadFavoritos;
+    }
+
+    public void setCantidadFavoritos(Long cantidadFavoritos) {
+        this.cantidadFavoritos = cantidadFavoritos;
+    }
+
+    public Long getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+
+    public void setCantidadReproducciones(Long cantidadReproducciones) {
+        this.cantidadReproducciones = cantidadReproducciones;
+    }
+    
     
 }

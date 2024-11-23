@@ -158,10 +158,10 @@ public class Album implements Serializable {
             dtts = t.getDTTemaSimple();
             auxDTTS.add(dtts);
             if(t.getClass().equals(TemaConURL.class)){
-                 dttcu = new DTTemaConURL(t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum(),((TemaConURL)t).getUrlTema());
+                 dttcu = new DTTemaConURL(t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum(),t.getCantidadDescargasOVisitas(),t.getCantidadFavoritos(),t.getCantidadReproducciones(),((TemaConURL)t).getUrlTema());
                 auxDTTG.add(dttcu);
             }else{
-                dttcr = new DTTemaConRuta(((TemaConRuta)t).getRutaTema(),t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum());
+                dttcr = new DTTemaConRuta(((TemaConRuta)t).getRutaTema(),t.getNombreTema(),t.getDuracionSegundos(),t.getPosicionEnAlbum(),t.getCantidadDescargasOVisitas(),t.getCantidadFavoritos(),t.getCantidadReproducciones());
                 auxDTTG.add(dttcr);
             }
            

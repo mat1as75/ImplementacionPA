@@ -1,0 +1,41 @@
+.tableContainer {
+    overflow-y:auto;
+}
+
+.tableRankings {
+    background-color: var(--bg-color-dark-4);
+    border-radius: var(--border-radius-containers);
+    border: 1px solid var(--color-grey-accent);
+    padding: 1rem 2rem;
+    margin: 0 auto 2rem auto;
+    max-width: 800px;
+    font-family:  var(--l-font-family);
+    text-align: center;
+    border-spacing: 1.2rem .5rem;
+}
+
+.tableRowData td {
+    background-color: var(--bg-color-dark-3);
+    border: 1px solid var(--color-green-primary);
+    border-radius: var(--border-radius-containers);
+}
+
+.tableRowData a {
+    color: var(--color-white);
+    text-decoration: none;
+    padding: .4rem .8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tableRowData a::visited {
+    color: inherit;
+}
+
+.tableRowData a i {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--color-green-primary);
+}
+

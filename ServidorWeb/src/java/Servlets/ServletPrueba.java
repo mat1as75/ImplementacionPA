@@ -99,6 +99,7 @@ public class ServletPrueba extends HttpServlet {
         for (Object o : listaObjetos) {
             DtDatosUsuarioSinPw dtu = (DtDatosUsuarioSinPw) o;
             System.out.println("usuario " + dtu.getNicknameUsuario());
+            System.out.println("tipo de usuario " + dtu.getTipoDeUsuario());
             System.out.println("seguidores: " + dtu.getNicknamesSeguidores());
         }
     }

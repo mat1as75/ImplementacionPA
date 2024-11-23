@@ -94,7 +94,7 @@ System.out.println("SIZE ALBUMES PUBLICADOS: " + albumesPublicadosConsultados.si
                     // Sesion.rol == Cliente (Clientes unicamente pueden Seguir)
                     // NicknameSesion != NicknameConsultado (No se permite auto-Seguimientos)
                     if (rolSesion != null && rolSesion.equals("Cliente") && !nicknameConsultado.equals(nicknameSesion)) {
-                        if (usuarioSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
+                        if (usuarioSesion != null && "Vigente".equals(estadoSuscripcionSesion)) {
                             if (!nicknamesSeguidoresConsultados.contains(nicknameSesion)) { %>
                                 <form action="SVSeguirUsuario" method="POST">
                                     <input type="hidden" name="nicknameSeguidor" value="<%= nicknameSesion %>"/>

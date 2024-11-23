@@ -2,44 +2,39 @@
 .audioPlayerContainer {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--l-color-grey-accent);
-    border-radius: var(--l-border-radius-containers);
-    background-color: var(--l-bg-color-2);
-    color: #000;
+    border: 1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-4);
+    color: var(--color-white);
     padding: 1.5rem 1rem;
     margin: 1rem;
     max-height: 470px;
     max-width: var(--audio-player-max-width);
-    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
     font-family:  var(--l-font-family);
 }
 
 .audioPlayerContainer audio {
     margin: 0 auto;
     max-width: var(--audio-player-max-width);
-    border: 1px solid #000;
-    border-radius: var(--l-border-radius-containers);
-    background-color: #cfcfcf;
-    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
-
+    border: 1px solid var(--color-green-primary);
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-3);
 }
 
 .audioPlayerContainer iframe {
     max-width: var(--audio-player-max-width);
-    border: 1px solid var(--l-color-grey-accent);
-    border-radius: var(--l-border-radius-containers);
-    background-color: var(--l-bg-color-2);
+    border: 1px solid var(--color-green-primary);
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-3);
 }
 
 .audioPlayerContainer .portada {
     display: inline-block;
     width: 100%;
     max-height: 250px;
-    border: 1px solid #000;
-    border-radius: var(--l-border-radius-containers);
+    border: 1px solid var(--color-green-primary);
+    border-radius: var(--border-radius-containers);
     margin: 0 auto;
-    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
-
 }
 
 .audioPlayerContainer p {
@@ -52,28 +47,27 @@
 
 .audioPlayerContainer a {
     border: 1px solid var(--color-grey-accent);
-    border-radius: var(--l-border-radius-containers);
-    background-color: #cfcfcf;
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-3);
     padding: 0 .5rem;
     display: block;
-    color: #000;
+    color: var(--color-white);
     text-decoration: none;
     text-wrap: pretty;
     text-align: center;
 }
 
 .audioPlayerContainer a:visited {
-    color: #000;
+    color: var(--color-white);
 }
 
 .btnsPlaylistContainer {
     display:flex;
     flex-direction: row;
     justify-content: space-evenly;
-    border: 1px solid #000;
-    border-radius: var(--l-border-radius-containers);
-    background-color: var(--l-bg-color-3);
-    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    border: 1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-3);
 }
 
 .btnsPlaylist i {
@@ -81,7 +75,7 @@
     font-size: 1.4em;
     margin: 0 20px;
     font-weight: bold;
-    color: #000;
+    color: var(--color-white);
 }
 
 .btnsPlaylist #downloadAnchor {
@@ -95,33 +89,35 @@
 .dropdownMenu {
     position: relative;
     display: inline-block;
+    cursor: default;
 }
 
 .dropdownContent {
     position: absolute;
     left: -200px;
     top: -100px;
-    background-color: var(--l-bg-color-2);
-    border: 1px solid var(--l-color-grey-accent);
-    border-radius: var(--l-border-radius-containers);
-    color: #000;
+    background-color: var(--bg-color-dark-4);
+    border: 1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    color: var(--color-white);
     z-index: 999;
     padding: .5rem 1rem;
     min-width: 200px;
     max-width: 300px;
     overflow: auto;
-    box-shadow: -3px 3px 3px rgba(0,0,0,0.20);
+    cursor: default;
 }
 
 .dropdownContent a {
     margin: .3rem auto;
     font-size: .8em;
     box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    cursor: pointer;
 }
 
 
 .temaPerteneceALista {
-    color: green;
+    color: var(--color-green-primary);
 }
 
 .temaPerteneceALista::after {
@@ -135,7 +131,7 @@
 
 .temaNoPerteneceALista::after {
     font-family:'Bootstrap-icons';
-    color: green;
+    color: var(--color-green-primary);
     font-size: 1.5em;
     font-weight: bold;
     margin-left: 1em;
