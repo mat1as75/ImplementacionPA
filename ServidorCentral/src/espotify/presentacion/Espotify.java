@@ -65,6 +65,7 @@ public class Espotify extends javax.swing.JFrame {
         jMenuItemConsultaPerfilCliente = new javax.swing.JMenuItem();
         jMenuItemConsultaPerfilArtista = new javax.swing.JMenuItem();
         jMenuItemActualizarEstadoSuscripcion = new javax.swing.JMenuItem();
+        jMenuItemVerArtistasEliminados = new javax.swing.JMenuItem();
         jMenuMultimedia = new javax.swing.JMenu();
         jMenuItemAltaGenero = new javax.swing.JMenuItem();
         jMenuItemAltaAlbum = new javax.swing.JMenuItem();
@@ -84,7 +85,6 @@ public class Espotify extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImages(null);
-        setPreferredSize(new java.awt.Dimension(1400, 960));
 
         escritorio.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -155,6 +155,14 @@ public class Espotify extends javax.swing.JFrame {
             }
         });
         jMenuActualizarEstadoSuscripcion.add(jMenuItemActualizarEstadoSuscripcion);
+
+        jMenuItemVerArtistasEliminados.setText("Ver Artistas Eliminados");
+        jMenuItemVerArtistasEliminados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVerArtistasEliminadosActionPerformed(evt);
+            }
+        });
+        jMenuActualizarEstadoSuscripcion.add(jMenuItemVerArtistasEliminados);
 
         jMenuBar1.add(jMenuActualizarEstadoSuscripcion);
 
@@ -363,6 +371,12 @@ public class Espotify extends javax.swing.JFrame {
         escritorio.add(cra);
         cra.show();
     }//GEN-LAST:event_jMenuConsultaRegistroAccesoActionPerformed
+
+    private void jMenuItemVerArtistasEliminadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVerArtistasEliminadosActionPerformed
+        VerArtistasEliminados vae = new VerArtistasEliminados();
+        escritorio.add(vae);
+        vae.show();
+    }//GEN-LAST:event_jMenuItemVerArtistasEliminadosActionPerformed
     
     
     
@@ -398,6 +412,7 @@ public class Espotify extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemQuitarTemaLista;
     private javax.swing.JMenuItem jMenuItemRegistrarUsuario;
     private javax.swing.JMenuItem jMenuItemSeguirUsuario;
+    private javax.swing.JMenuItem jMenuItemVerArtistasEliminados;
     private javax.swing.JMenuItem jMenuItemlDejarSeguirUsuario;
     private javax.swing.JMenu jMenuMonitoreo;
     private javax.swing.JMenu jMenuMultimedia;

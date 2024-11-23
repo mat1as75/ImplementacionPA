@@ -87,6 +87,7 @@ public interface IControlador {
     public abstract void AltaArtista(DTArtista dtArtista);
     public abstract void AltaCliente(DTCliente dtCliente);
     public abstract List<String>getNicknamesArtistas();
+    public abstract List<String>getNicknamesArtistasEliminados();
     public abstract List<String>getNicknamesClientes();
     public abstract DTDatosUsuario getDatosUsuario(String identificadorUsuario);
     public abstract DTUsuario getUsuarioAutentificado(String identificador, String contrasenaUsuario);

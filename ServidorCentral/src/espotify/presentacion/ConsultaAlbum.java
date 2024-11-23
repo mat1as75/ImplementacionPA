@@ -73,9 +73,9 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         listaAoG = new javax.swing.JList<>();
         etiquetaAlbumes = new javax.swing.JLabel();
+        mostrarInfoAlbumBoton = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         listaAlbumes = new javax.swing.JList<>();
-        mostrarInfoAlbumBoton = new javax.swing.JButton();
         cargarAlbumesBoton = new javax.swing.JButton();
         panelInfoAlbum = new javax.swing.JPanel();
         imageLabel = new javax.swing.JLabel();
@@ -118,19 +118,19 @@ public class ConsultaAlbum extends javax.swing.JInternalFrame {
 
         etiquetaAlbumes.setText("Albumes:");
 
-        listaAlbumes.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane4.setViewportView(listaAlbumes);
-
         mostrarInfoAlbumBoton.setText("Mostrar Informacion");
         mostrarInfoAlbumBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mostrarInfoAlbumBotonActionPerformed(evt);
             }
         });
+
+        listaAlbumes.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane4.setViewportView(listaAlbumes);
 
         cargarAlbumesBoton.setText("Cargar Albumes");
         cargarAlbumesBoton.addActionListener(new java.awt.event.ActionListener() {

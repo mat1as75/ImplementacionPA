@@ -189,6 +189,14 @@
             <Property name="text" type="java.lang.String" value="Albumes:"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="mostrarInfoAlbumBoton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Mostrar Informacion"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mostrarInfoAlbumBotonActionPerformed"/>
+          </Events>
+        </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane4">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -214,14 +222,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="mostrarInfoAlbumBoton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Mostrar Informacion"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mostrarInfoAlbumBotonActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JButton" name="cargarAlbumesBoton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cargar Albumes"/>
