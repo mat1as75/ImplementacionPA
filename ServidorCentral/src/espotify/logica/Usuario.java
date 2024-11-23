@@ -139,7 +139,9 @@ public abstract class Usuario implements Serializable{
         for (Usuario u : this.getMisSeguidores()) {
             nicknamesSeguidores.add(u.getNickname());
         }
-                
+        
+        String tipoDeUsuario = (this instanceof Cliente) ? "Cliente" : "Artista";
+        
         return new DTDatosUsuarioSinPw(
                 this.getNickname(),
                 this.getNombreUsuario(),
@@ -147,6 +149,7 @@ public abstract class Usuario implements Serializable{
                 this.getEmail(),
                 this.getFecNac(),
                 this.getFotoPerfil(),
+                tipoDeUsuario,
                 nicknamesSeguidores
         );
     }

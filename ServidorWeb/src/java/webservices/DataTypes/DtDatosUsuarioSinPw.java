@@ -18,7 +18,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "fotoPerfil",
     "nicknameUsuario",
     "nicknamesSeguidores",
-    "nombreUsuario"
+    "nombreUsuario",
+    "tipoDeUsuario"
 })
 public class DtDatosUsuarioSinPw {
 
@@ -31,6 +32,7 @@ public class DtDatosUsuarioSinPw {
     @XmlElement(nillable = true)
     protected List<String> nicknamesSeguidores;
     protected String nombreUsuario;
+    protected String tipoDeUsuario;
 
     public String getApellidoUsuario() {
         return apellidoUsuario;
@@ -87,4 +89,13 @@ public class DtDatosUsuarioSinPw {
         this.nombreUsuario = value;
     }
 
+    public String getTipoDeUsuario() {
+        return tipoDeUsuario;
+    }
+
+    public void setTipoDeUsuario(String value) {
+        this.tipoDeUsuario = value;
+    }
+
+    
 }

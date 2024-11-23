@@ -182,7 +182,7 @@
                     <span class="spanError" id="errorTemasVacios"></span>
                 </div>            
 
-                <div class="btnValidarContainer roundedContainer">
+                <div class="btnValidarContainer">
                     <button type="button" class="btncustom btnPrimary" id="btnValidar">Validar Datos</button>
                 </div>
             </section>

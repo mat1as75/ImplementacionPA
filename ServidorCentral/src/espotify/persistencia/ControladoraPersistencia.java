@@ -2039,7 +2039,6 @@ public class ControladoraPersistencia {
             if (contadorUsuariosAgregados == cantidadEsperada) break;
         }
         
-         
         return listaDeUsuarios;
     }
     

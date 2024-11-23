@@ -10,6 +10,7 @@ public class DTDatosUsuarioSinPw {
     private String email;
     private Date fecNac;
     private String fotoPerfil;
+    private String tipoDeUsuario;
     private ArrayList<String> nicknamesSeguidores;
 
     public DTDatosUsuarioSinPw() {};
@@ -20,7 +21,8 @@ public class DTDatosUsuarioSinPw {
             String apellidoUsuario, 
             String email, 
             Date fecNac, 
-            String fotoPerfil, 
+            String fotoPerfil,
+            String tipoDeUsuario,
             ArrayList<String> nicknamesSeguidores) {
         this.nicknameUsuario = nicknameUsuario;
         this.nombreUsuario = nombreUsuario;
@@ -28,6 +30,7 @@ public class DTDatosUsuarioSinPw {
         this.email = email;
         this.fecNac = fecNac;
         this.fotoPerfil = fotoPerfil;
+        this.tipoDeUsuario = tipoDeUsuario;
         this.nicknamesSeguidores = nicknamesSeguidores;
     }
 
@@ -86,6 +89,12 @@ public class DTDatosUsuarioSinPw {
     public void setNicknamesSeguidores(ArrayList<String> nicknamesSeguidores) {
         this.nicknamesSeguidores = nicknamesSeguidores;
     }
-    
-    
+
+    public String getTipoDeUsuario() {
+        return tipoDeUsuario;
+    }
+
+    public void setTipoDeUsuario(String tipoDeUsuario) {
+        this.tipoDeUsuario = tipoDeUsuario;
+    }
 }
