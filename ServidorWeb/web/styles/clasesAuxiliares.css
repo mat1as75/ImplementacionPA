@@ -12,14 +12,14 @@
 }
 
 .bodyContainer {
-    background-color: var(--l-bg-color-1);
-    color: #000;
+    background-color: var(--bg-color-dark-5);
+    color: var(--color-white);
     margin: 0;
 }
 
 .roundedContainer {
-    border:1px solid var(--l-color-grey-accent);
-    border-radius: var(--l-border-radius-containers);
+    border:1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
     padding: .2rem .4rem;
 }
 
@@ -35,7 +35,7 @@
     font-size: 1em;
     font-weight: 400;
     padding: .5rem .8rem;
-    border: 1px solid #000;
+    border: 1px solid var(--color-grey-accent);
     border-radius: var(--border-radius-btns);
 }
 
@@ -45,22 +45,26 @@
 }
 
 .btnPrimary {
-    color: #000;
+    color: black;
     font-weight: 600;
-    background-color: #fff;
-    border: 1px solid #000;
+    background-color: var(--color-white);
+    border: 1px solid var(--bg-color-dark-5);
 }
 
 .btnPrimary:hover {
-    color: #fff;
-    background-color: #000;
-    border: 1px solid var(--l-color-grey-accent);
+    color: var(--color-white);
+    background-color: var(--bg-color-dark-5);
+    border: 1px solid var(--color-grey-accent);
 }
 
 .btnSecondary {
-    color: #000;
-    background-color: var(--l-bg-color-3);
-    border: 1px solid #000;
+    color: var(--color-white);
+    background-color: var(--bg-color-dark-4);
+    border: 1px solid var(--color-grey-accent);
+}
+
+.btnSecondary:hover {
+    background-color: var(--bg-color-dark-3);
 }
 
 .customModal {
@@ -80,19 +84,18 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    color: #000;
+    color: var(--color-white);
     justify-content: space-evenly;
     text-align: center;
-    background-color: var(--l-bg-color-2);
+    background-color: var(--bg-color-dark-3);
     margin: 15% auto;
     padding: 1rem;
     border: 2px solid var(--color-grey-accent);
     width: 80%;
     max-width: 900px;
-    border-radius: var(--l-border-radius-containers);
+    border-radius: var(--border-radius-containers);
     box-shadow: 2px 2px 10px var(--color-grey-accent);
     font-family:  var(--l-font-family);
-
 }
 
 .modalContainer p {

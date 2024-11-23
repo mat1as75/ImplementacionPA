@@ -1,11 +1,18 @@
+/* Reset de estilos por defecto del navegador */
+body {
+    margin: 0;
+}
+
 :root {
     /* Estilo claro */
+    /*    
     --l-bg-color-3: #cfcfcf;
     --l-bg-color-2: #f8f9fa; 
     --l-bg-color-1: #fff;
     --l-color-grey-accent: #ccc;
     --l-font-color-grey: #202020;
     --l-border-radius-containers: 10px;
+    */
     --l-font-family: 'Montserrat', monospace;
     
     /* general */

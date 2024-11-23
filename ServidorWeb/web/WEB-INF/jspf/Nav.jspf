@@ -33,6 +33,7 @@
             <li><a href="IngresarSuscripcion">Planes</a></li>
             <li><a href="ActualizarSuscripcion">Mi suscripción</a></li>
             <li><a href="CrearListaReproduccion.jsp">Crear lista de reproducción</a></li>
+            <li><a href="/ServidorWeb/RankingUsuarios">Ranking de usuarios</a></li>
         <% } %>
         
         <% if (rolNav.equals("Artista")) { %>
