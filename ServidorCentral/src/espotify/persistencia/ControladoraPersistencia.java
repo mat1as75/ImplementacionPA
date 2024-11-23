@@ -1083,6 +1083,9 @@ public class ControladoraPersistencia {
                                 temaConURL.getNombreTema(),
                                 temaConURL.getDuracionSegundos(),
                                 temaConURL.getPosicionEnAlbum(),
+                                temaConURL.getCantidadDescargasOVisitas(),
+                                temaConURL.getCantidadFavoritos(),
+                                temaConURL.getCantidadReproducciones(),
                                 temaConURL.getUrlTema()
                         );
                     } else if (t instanceof TemaConRuta temaConRuta) {
@@ -1090,7 +1093,10 @@ public class ControladoraPersistencia {
                                 temaConRuta.getRutaTema(),
                                 temaConRuta.getNombreTema(),
                                 temaConRuta.getDuracionSegundos(),
-                                temaConRuta.getPosicionEnAlbum()
+                                temaConRuta.getPosicionEnAlbum(),
+                                temaConRuta.getCantidadDescargasOVisitas(),
+                                temaConRuta.getCantidadFavoritos(),
+                                temaConRuta.getCantidadReproducciones()
                         );
                     }
                 }
@@ -1105,6 +1111,9 @@ public class ControladoraPersistencia {
                                 temaConURL.getNombreTema(),
                                 temaConURL.getDuracionSegundos(),
                                 temaConURL.getPosicionEnAlbum(),
+                                temaConURL.getCantidadDescargasOVisitas(),
+                                temaConURL.getCantidadFavoritos(),
+                                temaConURL.getCantidadReproducciones(),
                                 temaConURL.getUrlTema()
                         );
                     } else if (t instanceof TemaConRuta) {
@@ -1113,7 +1122,10 @@ public class ControladoraPersistencia {
                                 temaConRuta.getRutaTema(),
                                 temaConRuta.getNombreTema(),
                                 temaConRuta.getDuracionSegundos(),
-                                temaConRuta.getPosicionEnAlbum()
+                                temaConRuta.getPosicionEnAlbum(),
+                                temaConRuta.getCantidadDescargasOVisitas(),
+                                temaConRuta.getCantidadFavoritos(),
+                                temaConRuta.getCantidadReproducciones()
                         );
                     }
                 }
@@ -2009,6 +2021,8 @@ public class ControladoraPersistencia {
     /**
      * Si cantidadEsperada es menor a 1 se devuelven todos los usuarios, 
      * en caso contrario se muestra como maximo la cantidad esperada
+     * @param cantidadEsperada
+     * @return 
     */
     public ArrayList<DTDatosUsuarioSinPw> getUsuariosOrdenadosPorRanking(int cantidadEsperada) {
         ArrayList<DTDatosUsuarioSinPw> listaDeUsuarios = new ArrayList();
@@ -2032,6 +2046,8 @@ public class ControladoraPersistencia {
     /**
      * Retorna una lista vacia si no encuentra el artista 
      * o si el artista no tiene albums publicados
+     * @param nicknameArtista
+     * @return 
      */
     public ArrayList<DTAlbum> getDTAlbumsConTemasDeArtista(String nicknameArtista) {
         ArrayList<DTAlbum> dataAlbums = new ArrayList();

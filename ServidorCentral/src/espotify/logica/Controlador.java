@@ -77,6 +77,19 @@ public class Controlador implements IControlador{
     };
     
     @Override
+    public List<String>getNicknamesArtistasEliminados() {
+        ArrayList<Artista> artistas = contpersis.getArtistas();
+        ArrayList<String> nicknames = new ArrayList<>();
+        for (Artista a : artistas) {
+            if (!a.getActivo()) {
+                nicknames.add(a.getNickname());
+            }
+        }
+        
+        return nicknames;
+    }
+    
+    @Override
     public List<DTGenero> getGenerosjTree(){
         return this.contpersis.getGenerosjTree();
     }

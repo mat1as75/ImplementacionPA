@@ -13,7 +13,10 @@ import jakarta.xml.bind.annotation.XmlType;
     "miAlbum",
     "mislistasReproducc",
     "nombreTema",
-    "posicionEnAlbum"
+    "posicionEnAlbum",
+    "cantidadDescargas",
+    "cantidadFavoritos",
+    "cantidadReproducciones"
 })
 public class DtTemaGenerico {
 
@@ -23,6 +26,9 @@ public class DtTemaGenerico {
     protected List<DtListaReproduccion> mislistasReproducc;
     protected String nombreTema;
     protected int posicionEnAlbum;
+    protected Long cantidadDescargas;
+    protected Long cantidadFavoritos;
+    protected Long cantidadReproducciones;
 
     public int getDuracionSegundos() {
         return duracionSegundos;
@@ -84,4 +90,30 @@ public class DtTemaGenerico {
     public void setPosicionEnAlbum(int value) {
         this.posicionEnAlbum = value;
     }
+
+    public Long getCantidadDescargas() {
+        return cantidadDescargas;
+    }
+
+    public void setCantidadDescargas(Long cantidadDescargas) {
+        this.cantidadDescargas = cantidadDescargas;
+    }
+
+    public Long getCantidadFavoritos() {
+        return cantidadFavoritos;
+    }
+
+    public void setCantidadFavoritos(Long cantidadFavoritos) {
+        this.cantidadFavoritos = cantidadFavoritos;
+    }
+
+    public Long getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+
+    public void setCantidadReproducciones(Long cantidadReproducciones) {
+        this.cantidadReproducciones = cantidadReproducciones;
+    }
+    
+    
 }
