@@ -1,14 +1,18 @@
 <%@page import="java.util.List" %>
 <%@page import="webservices.DataTypes.DtDatosCliente"%>
 <%@page import="webservices.DataTypes.DtDatosUsuario"%>
-<%@page import="espotify.DataTypes.DTTemaSimple"%>
-<%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
+<%@page import="webservices.DataTypes.DtTemaSimple"%>
+<%@page import="webservices.DataTypes.DtTemaGenericoConRutaOUrl"%>
 <%@page import="webservices.DataTypes.DtDatosListaReproduccion" %>
 <%@page import="webservices.DataTypes.DtDatosUsuario" %>
 <%@page import="webservices.ListaReproduccionService"%>
 <%@page import="webservices.ListaReproduccionServiceService"%>
 <%@page import="webservices.UsuarioService"%>
 <%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.ContenidoService"%>
+<%@page import="webservices.ContenidoServiceService"%>
+<%@page import="webservices.ArrayListContainer"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="webservices.NullableContainer"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,8 +26,15 @@
     String errorMsg = null;
 
     try {
-        List<String> nombresListasParticulares = (List<String>) listaService.getNombresListasParticulares();
-        List<String> nombresListasPorDefecto = (List<String>) listaService.getNombresListasPorDefecto();
+        ArrayListContainer nombresListasParticularesConteiner = listaService.getNombresListasParticulares();
+        List<String> nombresListasParticulares = nombresListasParticularesConteiner.getColeccion().stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+                    
+        ArrayListContainer nombresListasPorDefectoConteiner = listaService.getNombresListasPorDefecto();
+        List<String> nombresListasPorDefecto = nombresListasPorDefectoConteiner.getColeccion().stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
 
         if (nombresListasParticulares.contains(nombreLista)) {
             tipoLista = "Particular";
@@ -147,18 +158,20 @@
                             <th>Agregar</th>
                             <th>Tema</th>
                             <th>Duración</th>
-                            <th>Ruta/Link</th> 
                         </tr>
                     </thead>
                     <tbody>
                         <% int nroTema = 1; %>
                         <% if (datosLista != null) {
-                                for (DTTemaSimple tema : datosLista.getTemas()) {
+                                for (DtTemaSimple tema : datosLista.getTemas()) {
                                     int duracionSegundos = tema.getDuracionSegundos();
                                     int minutos = duracionSegundos / 60;
                                     int segundos = duracionSegundos % 60;
-
-                                    DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
+                                    
+                                    ContenidoServiceService cservice = new ContenidoServiceService();
+                                    ContenidoService contenidoService = cservice.getContenidoServicePort();
+                                    
+                                    DtTemaGenericoConRutaOUrl temaRutaOUrl = contenidoService.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
                                     String srcPortada = fotoLista;
                         %>
                         <!-- Escuchar tema por fila -->
@@ -181,39 +194,6 @@
                             </td>
                             <td><%= tema.getNombreTema()%></td>
                             <td><%= String.format("%d:%02d", minutos, segundos)%></td>
-                            <td class="ruta-link">  
-                                <%
-                                    String url = (temaRutaOUrl != null) ? temaRutaOUrl.getUrlTema() : null;
-                                    String ruta = (temaRutaOUrl != null) ? temaRutaOUrl.getRutaTema() : null;
-                                    // "Ver enlace"
-                                    if (url != null && !url.isEmpty()) {
-                                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                                            url = "http://" + url;
-                                        }
-                                %>
-                                <a href="<%= url%>" target="_blank">Ver enlace</a>
-                                <%
-                                    }
-                                    // "Descargar"
-                                    if (ruta != null && !ruta.isEmpty()) {
-                                        ruta = ruta.substring(ruta.lastIndexOf("Resource/"));
-
-                                        if (puedeDescargar) {
-                                %>
-                                <a href="<%= request.getContextPath() + "/" + ruta%>" download="<%= tema.getNombreTema()%>.mp3">Descargar</a>
-                                <%
-                                } else { %>
-                                <a href="#" onclick="alert('Debe tener una suscripción vigente para descargar el tema.'); return false;">Descargar</a>
-                                <%
-                                        }
-                                    }
-                                    // Si no hay URL ni archivo disponible
-                                    if ((ruta == null || ruta.isEmpty()) && (url == null || url.isEmpty())) { %>
-                                <span>-</span>
-                                <%
-                                    }
-                                %>
-                            </td>
                         </tr>
                         <%
                                 }

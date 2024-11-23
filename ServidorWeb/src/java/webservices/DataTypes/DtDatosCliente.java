@@ -10,7 +10,7 @@ import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtDatosCliente", propOrder = {
-    "nicknameSeguidos",
+    "nicknamesSeguidos",
     "nombresListasRCreadas",
     "nombresListasRCreadasPublicas",
     "nombresListasRFavoritas",

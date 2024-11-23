@@ -1,15 +1,17 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.DataTypes.DTGenero_Simple;
+import webservices.DataTypes.DtGeneroSimple;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webservices.ArrayListContainer;
 import webservices.ContenidoService;
 import webservices.ContenidoServiceService;
 import webservices.ListaReproduccionService;
@@ -35,15 +37,22 @@ public class SVConsultaListaReproduccion extends HttpServlet {
         ContenidoService serviceContenido = serviceC.getContenidoServicePort();
         
         if ("PorListaParticular".equals(tipoDeLista)) {
-            List<String> listasPublicas = (List<String>) serviceLista.getNombresListasParticularesPublicas();
+            ArrayListContainer listaPublicasConteiner = serviceLista.getNombresListasParticularesPublicas();
+            List<String> listasPublicas =  listaPublicasConteiner.getColeccion().stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
             String json = new Gson().toJson(listasPublicas);
             response.getWriter().write(json);
         } else if ("PorGenero".equals(tipoDeLista)) {
             // Obtener todos los generos
-            List<DTGenero_Simple> todosLosGeneros = (List<DTGenero_Simple>) serviceContenido.getListaDTGeneroSimple();
-            List<DTGenero_Simple> generosPrincipales = new ArrayList<>();
+            ArrayListContainer todosLosGenerosConteiner = serviceContenido.getListaDTGeneroSimple();
+            List<DtGeneroSimple> todosLosGeneros = todosLosGenerosConteiner.getColeccion().stream()
+                    .filter(DtGeneroSimple.class::isInstance)
+                    .map(DtGeneroSimple.class::cast)
+                    .collect(Collectors.toList());
+            List<DtGeneroSimple> generosPrincipales = new ArrayList<>();
             // Filtrar solo los generos principales (Con padre = "Genero")
-            for (DTGenero_Simple genero : todosLosGeneros) {
+            for (DtGeneroSimple genero : todosLosGeneros) {
                 if ("Genero".equals(genero.getNombreGeneroPadre())) {
                     generosPrincipales.add(genero);
                 }
@@ -52,16 +61,24 @@ public class SVConsultaListaReproduccion extends HttpServlet {
             response.getWriter().write(json);
         } else if ("PorListaPorDefecto".equals(tipoDeLista) && nombreG != null) {
             // Obtener todas las listas por defecto
-            List<String> listasPorDefecto = (List<String>) serviceLista.getNombresListasPorDefecto();
+            ArrayListContainer listasPorDefectoConteiner = serviceLista.getNombresListasPorDefecto();
+            List<String> listasPorDefecto = listasPorDefectoConteiner.getColeccion().stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());;
             List<String> listasFiltradas = new ArrayList<>();
             List<String> generosAsociados = new ArrayList<>();
             generosAsociados.add(nombreG); // Incluir el genero seleccionado 
 
             // Obtener todos los generos
-            List<DTGenero_Simple> todosLosGeneros = (List<DTGenero_Simple>) serviceContenido.getListaDTGeneroSimple();
+            // Obtener todos los generos
+            ArrayListContainer todosLosGenerosConteiner = serviceContenido.getListaDTGeneroSimple();
+            List<DtGeneroSimple> todosLosGeneros = todosLosGenerosConteiner.getColeccion().stream()
+                    .filter(DtGeneroSimple.class::isInstance)
+                    .map(DtGeneroSimple.class::cast)
+                    .collect(Collectors.toList());
 
             // Filtrar subgeneros y agregar a generosAsociados
-            for (DTGenero_Simple genero : todosLosGeneros) {
+            for (DtGeneroSimple genero : todosLosGeneros) {
                 if (nombreG.equals(genero.getNombreGeneroPadre())) {
                     generosAsociados.add(genero.getNombreGenero());
                 }
