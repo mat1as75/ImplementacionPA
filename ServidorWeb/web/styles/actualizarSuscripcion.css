@@ -1,35 +1,30 @@
 #bodyActualizarSuscripcion {
-    background-color: #fff;
-    color: #000;
+    background-color: var(--bg-color-dark-5);
+    color: var(--color-white);
     margin: 0;
 }
 
 .suscripcionOk {
-    border-bottom: 2px solid green;
-    box-shadow: 0 4px 4px rgba(0,0,0,0.20);
-
+    border-bottom: 2px solid var(--color-green-primary);
 }
 
 .suscripcionNotOk {
     border-bottom: 2px solid var(--color-red-error);
-    box-shadow: 0 4px 4px rgba(0,0,0,0.20);
 }
 
 .formContainer {
-    border:1px solid var(--l-color-grey-accent);
-    border-radius: var(--l-border-radius-containers);
-    background-color: var(--l-bg-color-2); 
-    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
+    border:1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-4); 
     padding: 1rem 2rem;
     margin: 1rem 0;
 }
 
 .opcionesContainer {
     padding: 2rem .5rem;
-    border:1px solid var(--l-color-grey-accent);
-    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
-    border-radius: var(--l-border-radius-containers);
-    background-color: var(--l-bg-color-2); 
+    border:1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-4); 
     margin: 1rem 0;
 }
 
@@ -50,10 +45,9 @@
     justify-content: space-between;
     margin: .7rem 0;
     padding: .5rem 1rem;
-    background-color: var(--l-bg-color-3);
-    border:1px solid var(--l-color-grey-accent);
-    box-shadow: -1px 1px 1px rgba(0,0,0,0.20);
-    border-radius: var(--l-border-radius-containers);
+    background-color: var(--bg-color-dark-3);
+    border:1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
 }
 
 .inputsContainer input {

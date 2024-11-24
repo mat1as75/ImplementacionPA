@@ -148,7 +148,9 @@ async function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
     
     //modifico el link del tema y lo muestro
     linkTema.innerText = "Visitar enlace";
-    linkTema.setAttribute("href", "https://" + receivedUrl);
+    
+    const newUrl = receivedUrl.includes("https://") ? receivedUrl : ("https://" + receivedUrl);
+    linkTema.setAttribute("href", newUrl);
     linkTema.classList.remove("hidden");
     
     //muestro el reproductor de archivos y seteo el url
@@ -390,6 +392,9 @@ function loadDropdownContent(contentType, data, idDropdownContent) {
     //el atributo es seteado cuando se reproduce un tema
     const idTema = dropdownContent.closest(".audioPlayerContainer").getAttribute("data-idtema");
     if (contentType === "json") {
+        const title = document.createElement("p");
+        title.innerText = "Mis Listas";
+        dropdownContent.append(title);
         data.forEach( lista => {
             //determino si el tema ya pertenece a la lista o no para definir la apariencia y funcion del <a>
             const perteneceALista = lista.temas.find( tema => tema.idTema.toString() === idTema);
