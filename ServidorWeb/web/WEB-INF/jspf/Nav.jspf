@@ -6,7 +6,9 @@
     <    %@ include file="../WEB-INF/jspf/Nav.jspf" %>
     
     2) Agregar el siguiente estilo de css despues del resto de los estilos
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/nav.css"/>
+
 
     Si el jsp desde el cual se realiza el import esta en otra carpeta incluir el css de la siguiente forma:
     <link rel="stylesheet" href="../${pageContext.request.contextPath}/styles/nav.css"/>
@@ -22,24 +24,38 @@
         rolNav = (String) sesionNav.getAttribute("rol");
     }
     
+    String nicknameSesion_nav = (String) request.getAttribute("nickname");
+
 %>
 
 <% if (rolNav != null) { %>
 
-<nav class="navCustom">
-    <ul class="navCustomUl">
-       
-        <% if (rolNav.equals("Cliente")) { %>
-            <li><a href="IngresarSuscripcion">Planes</a></li>
-            <li><a href="ActualizarSuscripcion">Mi suscripción</a></li>
-            <li><a href="CrearListaReproduccion.jsp">Crear lista de reproducción</a></li>
-            <li><a href="/ServidorWeb/RankingUsuarios">Ranking de usuarios</a></li>
+<nav class="navbar navbar-expand-md navbar-dark navCustom" style="background-color: #000;">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/ServidorWeb">Inicio</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="ConsultaPerfilUsuario.jsp" id="linkNav_perfil">Perfil</a>
+        </li>
+         <% if (rolNav.equals("Cliente")) { %>
+            <li class="nav-item"><a class="nav-link" href="IngresarSuscripcion" id="linkNav_planes">Planes</a></li>
+            <li class="nav-item"><a class="nav-link" href="ActualizarSuscripcion" id="linkNav_miSuscripcion">Mi suscripción</a></li>
+            <li class="nav-item"><a class="nav-link" href="CrearListaReproduccion.jsp" id="linkNav_crearLista">Crear lista</a></li>
+            <li class="nav-item"><a class="nav-link" href="RankingUsuarios" id="linkNav_rankingUsuarios">Ranking de usuarios</a></li>
         <% } %>
         
         <% if (rolNav.equals("Artista")) { %>
-            <li><a href="AltaAlbum">Subir nuevo álbum</a></li>
+            <li class="nav-item"><a class="nav-link" href="AltaAlbum" id="linkNav_subirAlbum">Subir nuevo álbum</a></li>
         <% } %>
-    </ul>
+      </ul>
+    </div>
+  </div>
 </nav>
-
+        
 <% } %>
