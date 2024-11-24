@@ -5,6 +5,9 @@
 <%@page import="webservices.DataTypes.DtTemaGenericoConRutaOUrl"%>
 <%@page import="webservices.DataTypes.DtDatosListaReproduccion" %>
 <%@page import="webservices.DataTypes.DtDatosUsuario" %>
+<%@page import="webservices.DataTypes.DtSuscripcion"%>
+<%@page import="webservices.SuscripcionesService"%>
+<%@page import="webservices.SuscripcionesServiceService"%>
 <%@page import="webservices.ListaReproduccionService"%>
 <%@page import="webservices.ListaReproduccionServiceService"%>
 <%@page import="webservices.UsuarioService"%>
@@ -71,9 +74,16 @@
             datosUContainer = usuarioService.getDatosUsuario(nicknameSesion);
             datosU = datosUContainer.getDtDatosUsuario();
             datosC = (DtDatosCliente) datosU;
-            if (datosC.getSuscripcion() != null) {
-                estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
-            }
+            
+            SuscripcionesServiceService sservice = new SuscripcionesServiceService();
+            SuscripcionesService suscrService = sservice.getSuscripcionesServicePort();
+            
+            NullableContainer suscripcionContainer = suscrService.getDTSuscripcionDeCliente(nicknameSesion);
+            
+             if (suscripcionContainer != null && suscripcionContainer.getDtSuscripcion() != null) {
+                DtSuscripcion suscripcion = suscripcionContainer.getDtSuscripcion();
+                estadoSuscripcionSesion = suscripcion.getEstadoSuscripcion();
+            } 
         } catch (Exception e) {
             errorMsg = "Error al obtener datos del usuario: " + e.getMessage();
         }
