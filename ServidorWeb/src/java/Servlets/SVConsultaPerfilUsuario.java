@@ -1,10 +1,5 @@
 package Servlets;
 
-import espotify.DataTypes.DTDatosArtista;
-import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTDatosUsuario;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import webservices.DataTypes.DtDatosArtista;
+import webservices.DataTypes.DtDatosCliente;
+import webservices.DataTypes.DtDatosUsuario;
+import webservices.UsuarioService;
+import webservices.UsuarioServiceService;
 
 /**
  *
@@ -29,18 +29,20 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
+        /* Instanciar UsuarioService */
+        UsuarioServiceService serviceU = new UsuarioServiceService();
+        UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
         
         /* DATOS DE LA SESION */
         HttpSession sesion = request.getSession(false);
         String nicknameUsuarioSesion = null;
         nicknameUsuarioSesion = (String) sesion.getAttribute("nickname");
         
-        DTDatosUsuario datosUsuario = null;
+        DtDatosUsuario datosUsuario = null;
 
         // Recupero el parametro enviado desde el formulario en resultados.jsp
         String usuarioConsultado = request.getParameter("usuario-Consultar");
+        System.out.println("ACA3: " + usuarioConsultado);
         
         String rolSesion = (String) sesion.getAttribute("rol");
         if (rolSesion != null && rolSesion.equals("Artista")) {
@@ -51,20 +53,22 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         }
         
         if (usuarioConsultado == null) {
+            System.out.println("ACA4");
             // ConsultaPerfilUsuario propio de la Sesion
-            datosUsuario = control.getDatosUsuario(nicknameUsuarioSesion);
+            datosUsuario = serviceUsuario.getDatosUsuario(nicknameUsuarioSesion).getDtDatosUsuario();
         } else {
+            System.out.println("ACA5");
             // ConsultaPerfilUsuario desde SearchBar
-            datosUsuario = control.getDatosUsuario(usuarioConsultado);
+            datosUsuario = serviceUsuario.getDatosUsuario(usuarioConsultado).getDtDatosUsuario();
         }
         
-        if (datosUsuario instanceof espotify.DataTypes.DTDatosCliente) {
+        if (datosUsuario instanceof webservices.DataTypes.DtDatosCliente) {
             System.out.println("SVCONSULTA " + datosUsuario.getClass());
             // Envio un DataType con los datos del Usuario consultado
-            sesion.setAttribute("DTusuarioConsultado", (DTDatosCliente) datosUsuario);
+            sesion.setAttribute("DTusuarioConsultado", (DtDatosCliente) datosUsuario);
         } else {
             // Envio un DataType con los datos del Usuario consultado
-            sesion.setAttribute("DTusuarioConsultado", (DTDatosArtista) datosUsuario);
+            sesion.setAttribute("DTusuarioConsultado", (DtDatosArtista) datosUsuario);
         }
 
         response.sendRedirect("ConsultaPerfilUsuario.jsp");

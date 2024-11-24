@@ -1,9 +1,8 @@
-<%@page import="espotify.logica.Fabrica"%>
-<%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="espotify.DataTypes.DTDatosArtista"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
+<%@page import="webservices.DataTypes.DtDatosUsuario"%>
+<%@page import="webservices.DataTypes.DtDatosCliente"%>
+<%@page import="webservices.DataTypes.DtDatosArtista"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,10 +21,9 @@
 
          
     <%
-        Fabrica fb = Fabrica.getInstance();
         HttpSession sesion = request.getSession(false);
         String rolSesion = (String) sesion.getAttribute("rol");
-        DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+        DtDatosUsuario DTusuarioConsultado = (DtDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
     %>
     <%
         boolean autoConsulta = false;
@@ -37,10 +35,12 @@
             if (rolSesion.equals("Cliente")) {
                 esCliente = true;
             }
+            System.out.println("ACA");
         } else { /* Sesion consulto perfil de un tercero */
-            if (DTusuarioConsultado.getClass() == DTDatosCliente.class) {
+            if (DTusuarioConsultado.getClass() == DtDatosCliente.class) {
                 esCliente = true;
             }
+            System.out.println("ACA2");
         }
     %>
     

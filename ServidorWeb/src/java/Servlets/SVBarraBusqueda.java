@@ -1,14 +1,10 @@
 package Servlets;
 
-import espotify.DataTypes.DTTemaSimple;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.IOException;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -20,6 +16,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import webservices.ContenidoService;
+import webservices.ContenidoServiceService;
+import webservices.DataTypes.DtTemaSimple;
+import webservices.MapContainer;
+import webservices.UsuarioService;
+import webservices.UsuarioServiceService;
 
 /**
  *
@@ -29,6 +31,13 @@ import javax.servlet.http.HttpSession;
 public class SVBarraBusqueda extends HttpServlet {
 
     private EntityManagerFactory emf;
+    private EntityManager em;
+    
+    private UsuarioServiceService serviceU = new UsuarioServiceService();
+    private UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
+    
+    private ContenidoServiceService serviceC = new ContenidoServiceService();
+    private ContenidoService serviceContenido = serviceC.getContenidoServicePort();
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,15 +57,6 @@ public class SVBarraBusqueda extends HttpServlet {
         }
     }
     
-    /*
-            ~ COSAS QUE MODIFICAR ~
-        
-        - Agregar boton a la barra de busqueda para filtrar por Tema, Album, Lista o Usuario. 
-        - Dividir en 4 operaciones los Buscar y llamarlos en el doGet dependiendo del parametro
-            que me llegue desde el filtro creado en el punto anterior. (HECHO)
-        - Trabajar los Arrays con JSON unicos dependiendo del filtro.
-        - Implementar funciones JavaScript de ordenamiento por alfabeto y por anio.
-    */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -64,8 +64,6 @@ public class SVBarraBusqueda extends HttpServlet {
 
         // Opcion del ComboBox Filtro
         String opcionFiltro = request.getParameter("combo");
-        
-
         HttpSession sesion = request.getSession(false);
         
         if (sesion != null) {
@@ -76,7 +74,6 @@ public class SVBarraBusqueda extends HttpServlet {
             }
         }
       
-
         // Consulta
         String consulta = request.getParameter("consulta");
         
@@ -87,20 +84,20 @@ public class SVBarraBusqueda extends HttpServlet {
             response.sendRedirect("BarraBusqueda.jsp");
         } else {
 
-        switch (opcionFiltro) {
-            case "tema" -> resultados.putAll(buscarTemas(consulta));
-            case "lista" -> resultados.putAll(buscarListasReproduccion(consulta));
-            case "album" -> resultados.putAll(buscarAlbumes(consulta));
-            case "usuario" -> resultados.putAll(buscarUsuarios(consulta));
-        }
-        
-        // Guardo resultados en el request
-        request.setAttribute("resultados", resultados);
-        request.setAttribute("n_Resultados", resultados.size());
-        
-        // Redirigir a la pagina de resultados
-        RequestDispatcher dispatcher = request.getRequestDispatcher("resultadosBusqueda.jsp");
-        dispatcher.forward(request, response); 
+            switch (opcionFiltro) {
+                case "tema" -> resultados.putAll(buscarTemas(consulta));
+                case "lista" -> resultados.putAll(buscarListasReproduccion(consulta));
+                case "album" -> resultados.putAll(buscarAlbumes(consulta));
+                case "usuario" -> resultados.putAll(buscarUsuarios(consulta));
+            }
+
+            // Guardo resultados en el request
+            request.setAttribute("resultados", resultados);
+            request.setAttribute("n_Resultados", resultados.size());
+
+            // Redirigir a la pagina de resultados
+            RequestDispatcher dispatcher = request.getRequestDispatcher("resultadosBusqueda.jsp");
+            dispatcher.forward(request, response); 
         }
     }
 
@@ -112,16 +109,17 @@ public class SVBarraBusqueda extends HttpServlet {
     
     // Buscar Usuarios
     private Map<String, String> buscarUsuarios(String query) {
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
-        EntityManager em = emf.createEntityManager();
+        
+        em = emf.createEntityManager();
         Map<String, String> results = new HashMap<>();
         
         try {
-            String jpqlUsuarios = "SELECT u.nickname FROM Usuario u WHERE u.nickname LIKE :query AND LENGTH(u.nickname) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            String jpqlUsuarios = "SELECT u.nickname FROM Usuario u WHERE u.nickname LIKE :query";
             TypedQuery<String> consultaUsuarios = em.createQuery(jpqlUsuarios, String.class);
             consultaUsuarios.setParameter("query", "%" + query + "%");
-            ArrayList<String> nicknamesClientes = (ArrayList<String>) control.getNicknamesClientes();
+            ArrayList<String> nicknamesClientes = (ArrayList<String>) serviceUsuario.getNicknamesClientes().getColeccion().stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
             for (String nickname : consultaUsuarios.getResultList()) {
                 if (nicknamesClientes.contains(nickname))
                     results.put(nickname, "Cliente");
@@ -141,20 +139,19 @@ public class SVBarraBusqueda extends HttpServlet {
     
     // Buscar Temas
     private Map<String, String> buscarTemas(String query) {
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
-        EntityManager em = emf.createEntityManager();
+        
+        em = emf.createEntityManager();
         Map<String, String> results = new HashMap<>();
         try { 
             // Buscar Temas
-            String jpqlTemas = "SELECT t.idTema FROM Tema t WHERE t.nombreTema LIKE :query AND LENGTH(t.nombreTema) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            String jpqlTemas = "SELECT t.idTema FROM Tema t WHERE t.nombreTema LIKE :query";
             TypedQuery<Long> consultaTemas = em.createQuery(jpqlTemas, Long.class);
             consultaTemas.setParameter("query", "%" + query + "%");
             
             for (Long result : consultaTemas.getResultList()) {
-                Map<Long, DTTemaSimple> mapDtTemas = control.getDTTemasDisponiblesConAlbum();
-                
-                for (Map.Entry<Long, DTTemaSimple> entrada : mapDtTemas.entrySet()) {
+                // Obtengo el MapContainer y lo convierto a Map<Long, DtTemaSimple> con una operacion
+                Map<Long, DtTemaSimple> mapDtTemas = convertirAMap(serviceContenido.getDTTemasDisponiblesConAlbum());
+                for (Map.Entry<Long, DtTemaSimple> entrada : mapDtTemas.entrySet()) {
                     // idTema del Map (mapDtTemas) == idTema del Objeto (results)
                     if ((entrada.getValue().getIdTema()).equals(result)) {
                         String value = String.valueOf(entrada.getValue().getIdAlbum()) + ", " + entrada.getValue().getNombreTema();
@@ -175,11 +172,11 @@ public class SVBarraBusqueda extends HttpServlet {
     
     // Buscar Albumes
     private Map<String, String> buscarAlbumes(String query) {
-        EntityManager em = emf.createEntityManager();
+        em = emf.createEntityManager();
         Map<String, String> results = new HashMap<>();
         
         try {
-            String jpqlAlbumes = "SELECT a.idAlbum, a.nombreAlbum FROM Album a WHERE a.nombreAlbum LIKE :query AND LENGTH(a.nombreAlbum) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            String jpqlAlbumes = "SELECT a.idAlbum, a.nombreAlbum FROM Album a WHERE a.nombreAlbum LIKE :query";
             TypedQuery<Object[]> consultaAlbumes = em.createQuery(jpqlAlbumes, Object[].class);
             consultaAlbumes.setParameter("query", "%" + query + "%");
             
@@ -208,7 +205,7 @@ public class SVBarraBusqueda extends HttpServlet {
         Map<String, String> results = new HashMap<>();
         
         try {
-            String jpqlListasR = "SELECT l.nombreLista FROM ListaReproduccion l WHERE l.nombreLista LIKE :query AND LENGTH(l.nombreLista) BETWEEN LENGTH(:query) - 4 AND LENGTH(:query) + 4";
+            String jpqlListasR = "SELECT l.nombreLista FROM ListaReproduccion l WHERE l.nombreLista LIKE :query";
             TypedQuery<String> consultaListasR = em.createQuery(jpqlListasR, String.class);
             consultaListasR.setParameter("query", "%" + query + "%");
             for (String nombreListaR : consultaListasR.getResultList()) {
@@ -225,59 +222,18 @@ public class SVBarraBusqueda extends HttpServlet {
         return results;
     }
     
-    private String normalizar(String input) {
-        // Normalizo la cadena y elimino diacriticos
-        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
-        // Elimino caracteres diacriticos
-        normalized = normalized.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-        // Convierto a minusculas
-        return normalized.toLowerCase();
-    }
-    
-    private boolean comparar(String a, String b) {
-        // Normalizo y elimino tildes
-        String normalizedA = normalizar(a);
-        String normalizedB = normalizar(b);
+    // Convertir MapContainer en Map<Long, DtTemaSimple>
+    private Map<Long, DtTemaSimple> convertirAMap(MapContainer mapContainer) {
+        Map<Long, DtTemaSimple> resultMap = new HashMap<>();
         
-        return normalizedA.equals(normalizedB);
-    }
-    
-    private Map<String, String> buscarResultados(String consulta) {
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
-        Map<String, String> resultados = new HashMap<>();
-        
-        // Busco en Temas
-        Map<Long, String> mapTemas = control.getTemasDisponibles();
-        for (Map.Entry<Long, String> entrada : mapTemas.entrySet()) {
-            if (comparar(entrada.getValue(), consulta))
-                resultados.put("Tema", entrada.getValue());
+        // Obtener la lista de entradas del mapLongDatatype
+        if (mapContainer.getMapLongDatatype() != null) {
+            for (MapContainer.MapLongDatatype.Entry entry : mapContainer.getMapLongDatatype().getEntry()) {
+                resultMap.put(entry.getKey(), entry.getValue());
+            }
         }
         
-        // Busco en Albumes
-        Map<Long, String> mapAlbumes = control.getAlbumesDisponibles();
-        for (Map.Entry<Long, String> entrada : mapAlbumes.entrySet()) {
-            if (comparar(entrada.getValue(), consulta))
-                resultados.put("Album", entrada.getValue());
-        }
-        
-        // Busco en ListasReproduccion
-        ArrayList<String> listasR = control.getListasReproduccionDisponibles();
-        for (String nombreListaR : listasR) {
-            if (comparar(nombreListaR, consulta))
-                resultados.put("Lista", nombreListaR);
-        }
-        
-        // Busco en Usuarios
-        List<String> usuarios = control.getNicknamesClientes();
-        List<String> artistas = control.getNicknamesArtistas();
-        usuarios.addAll(artistas);
-        for (String nickname : usuarios) {
-            if (comparar(nickname, consulta))
-                resultados.put("Usuario", nickname);
-        }
-        
-        return resultados;
+        return resultMap;
     }
     
     @Override

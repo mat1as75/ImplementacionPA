@@ -454,7 +454,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nicknames a la JList */
             DefaultListModel<String> listaSeguidores = new DefaultListModel<>();
-            ArrayList<String> nicknamesSeguidores = datosCliente.getNicknamesSeguidores();
+            List<String> nicknamesSeguidores = datosCliente.getNicknamesSeguidores();
             
             for (String nickname: nicknamesSeguidores) {
                 listaSeguidores.addElement(nickname);
@@ -464,7 +464,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nicknames a la JList */
             DefaultListModel<String> listaSeguidos = new DefaultListModel<>();
-            ArrayList<String> nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
+            List<String> nicknamesSeguidos = datosCliente.getNicknamesSeguidos();
             
             for (String nickname: nicknamesSeguidos) {
                 listaSeguidos.addElement(nickname);
@@ -474,7 +474,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
             DefaultListModel<String> listaListasRCreadas = new DefaultListModel<>();
-            ArrayList<String> nombresListasRCreadas = datosCliente.getNombresListasRCreadas();
+            List<String> nombresListasRCreadas = datosCliente.getNombresListasRCreadas();
             
             for (String nombreListaC: nombresListasRCreadas) {
                 listaListasRCreadas.addElement(nombreListaC);
@@ -484,7 +484,7 @@ public class ConsultaPerfilCliente extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nombres a la JList */
             DefaultListModel<String> listaListasRFavoritas = new DefaultListModel<>();
-            ArrayList<String> nombresListasRFavoritas = datosCliente.getNombresListasRFavoritas();
+            List<String> nombresListasRFavoritas = datosCliente.getNombresListasRFavoritas();
             
             for (String nombreListaF: nombresListasRFavoritas) {
                 listaListasRFavoritas.addElement(nombreListaF);

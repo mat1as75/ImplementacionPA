@@ -1,46 +1,65 @@
+<%@page import="webservices.SuscripcionesServiceService"%>
+<%@page import="webservices.SuscripcionesService"%>
+<%@page import="webservices.ArrayListContainer"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.DataTypes.DtDatosCliente"%>
+<%@page import="webservices.DataTypes.DtDatosUsuario"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
-<%@page import="espotify.logica.IControlador"%>
-<%@page import="espotify.logica.Fabrica"%>
-<%@page import="espotify.DataTypes.DTDatosArtista"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="espotify.DataTypes.DTDatosCliente"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    Fabrica fb = Fabrica.getInstance();
-    IControlador control = fb.getControlador();
     
     HttpSession sesion = request.getSession(false);
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
     String estadoSuscripcionSesion = null;
-    DTDatosUsuario usuarioSesion = null;
+    DtDatosUsuario usuarioSesion = null;
     
-    DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
-    DTDatosUsuario usuarioConsultado = null;
-    DTDatosCliente clienteConsultado = null;
+    DtDatosUsuario DTusuarioConsultado = (DtDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+    DtDatosUsuario usuarioConsultado = null;
+    DtDatosCliente clienteConsultado = null;
+    
+    UsuarioServiceService serviceU = new UsuarioServiceService();
+    UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
     
     /* Si el atributo DTusuarioConsultado de la sesion de distinto de null, 
         es porq se consulto a otro Usuario. En caso contrario, es porq se 
             consulto su propio perfil */
-    usuarioConsultado = (DTusuarioConsultado != null) ? 
-                        control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario()) : 
-                        control.getDatosUsuario(nicknameSesion);
     
+    if (DTusuarioConsultado != null) // Se consulto el Perfil de otro Usuario
+        usuarioConsultado = serviceUsuario.getDatosCliente((DTusuarioConsultado.getNicknameUsuario()));
+    else // Se consulto el Perfil del Usuario Sesion
+        usuarioConsultado = serviceUsuario.getDatosCliente(nicknameSesion);
+
+    /* MUESTRO TODOS LOS DATOS DEL USUARIO CONSULTADO */
+    System.out.println("tipo: " + serviceUsuario.getTipoUsuario(nicknameSesion));
+    System.out.println("nickname: " + usuarioConsultado.getNicknameUsuario());
+    System.out.println("nombre completo: " + usuarioConsultado.getNombreUsuario() + " " + usuarioConsultado.getApellidoUsuario());
+    System.out.println("email: " + usuarioConsultado.getEmail());
+    System.out.println("fecnac: " + usuarioConsultado.getFecNac());
+    System.out.println("misSeguidores: " + usuarioConsultado.getNicknamesSeguidores());
+    System.out.println("misSeguidos: " + ((DtDatosCliente) usuarioConsultado).getNicknamesSeguidos());
+    System.out.println("misListasCreadas: " + ((DtDatosCliente) usuarioConsultado).getNombresListasRCreadas());
+    System.out.println("misListasCreadasPublicas " + ((DtDatosCliente) usuarioConsultado).getNombresListasRCreadasPublicas());
+    System.out.println("misListasFav: " + ((DtDatosCliente) usuarioConsultado).getNombresListasRFavoritas());
+    System.out.println("misAlbumesFav: " + ((DtDatosCliente) usuarioConsultado).getNombresAlbumesFavoritos());
+    System.out.println("misTemasFav: " + ((DtDatosCliente) usuarioConsultado).getNombresTemasFavoritos());
+    System.out.println("miSuscripcion: " + ((DtDatosCliente) usuarioConsultado).getSuscripcion());
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
-    ArrayList<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
+    List<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
             nombresListasRFavConsultadas = null, nombresListasRConsultadas = null, nombresListasPublicasConsultadas = null;
     
     Map<Long, String> temasFavConsultados = new HashMap<>(), albumesFavConsultados = new HashMap<>();
     
     /*-----DATOS USUARIO CONSULTADO------*/
-    clienteConsultado = (DTDatosCliente) usuarioConsultado;
+    clienteConsultado = (DtDatosCliente) usuarioConsultado;
     
     nicknameConsultado = usuarioConsultado.getNicknameUsuario();
     emailConsultado = usuarioConsultado.getEmail();
@@ -48,21 +67,26 @@
     fotoPerfilConsultado = usuarioConsultado.getFotoPerfil();
     fotoPerfilConsultado = (fotoPerfilConsultado != null) ? fotoPerfilConsultado.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac());
+    fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac().toGregorianCalendar().getTime());
     nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
+    
     if (rolSesion != null) { /* Si existe Sesion (Cliente o Artista) */
         
-        usuarioSesion = control.getDatosUsuario(nicknameSesion);
-        if (rolSesion.equals("Cliente") && ((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
-            //((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
-            estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
-            System.out.println("### " + estadoSuscripcionSesion);
+        usuarioSesion = serviceUsuario.getDatosUsuario(nicknameSesion).getDtDatosUsuario();
+        
+        if (rolSesion.equals("Cliente")) {
+            DtDatosCliente clienteSesion = (DtDatosCliente) usuarioSesion;
+            if (clienteSesion.getSuscripcion() != null) {
+                //((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
+                estadoSuscripcionSesion = ((DtDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+                System.out.println("### " + estadoSuscripcionSesion);
+            }
         }
         
         /* UsuarioSesion == UsuarioConsultado */
         if (nicknameSesion.equals(usuarioConsultado.getNicknameUsuario())) { 
             /* UsuarioSesion.Suscripcion != null */
-            if (((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
+            if (((DtDatosCliente) usuarioSesion).getSuscripcion() != null) {
                 /* UsuarioSesion EstadoSuscripcion.Vigente */
                 if (estadoSuscripcionSesion.equals("Vigente")) {
 
@@ -186,6 +210,7 @@
                         <p><%= fechaNacConsultado %></p>
 
                         <div id="followers" class="followers-list">
+                            <% if (nicknamesSeguidoresConsultados != null) { %>
                             <h3 class="followers-info"><%= nicknamesSeguidoresConsultados.size() + " " %><% if (nicknamesSeguidoresConsultados.size() == 1) { %>
                                                                                 seguidor</h3>
                                                                        <% } else { %>
@@ -205,6 +230,7 @@
                                     <% } %>
                                 </tbody>
                             </table>
+                        <% } %>
                         </div>
                     <% } %>
                     <% if ((rolSesion != null && rolSesion.equals("Artista")) || (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente"))) { %>        

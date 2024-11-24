@@ -192,6 +192,7 @@ public class MapContainer {
          * {@link MapContainer.MapLongDatatype.Entry }
          * 
          * 
+         * @return 
          */
         public List<MapContainer.MapLongDatatype.Entry> getEntry() {
             if (entry == null) {
@@ -343,6 +344,7 @@ public class MapContainer {
          * {@link MapContainer.MapLongString.Entry }
          * 
          * 
+         * @return 
          */
         public List<MapContainer.MapLongString.Entry> getEntry() {
             if (entry == null) {
