@@ -1,12 +1,30 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="webservices.ContenidoService"%>
 <%@page import="webservices.ContenidoServiceService"%>
 <%@page import="webservices.UsuarioService"%>
 <%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.RankingService"%>
+<%@page import="webservices.RankingServiceService"%>
 <%@page import="webservices.ListaReproduccionService"%>
 <%@page import="webservices.ListaReproduccionServiceService"%>
+<%@page import="webservices.DataTypes.DtTemaConPuntaje"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+
+<%
+    
+    RankingServiceService serviceR = new RankingServiceService();
+    RankingService serviceRanking = serviceR.getRankingServicePort();
+    
+    List<DtTemaConPuntaje> topTemas = serviceRanking.getTopTemas(10).getColeccion()
+                .stream()
+                .filter(DtTemaConPuntaje.class::isInstance)
+                .map(DtTemaConPuntaje.class::cast)
+                .collect(Collectors.toList());
+
+
+%>
 
 <!DOCTYPE html>
 <html>
@@ -14,12 +32,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Espotify</title>
-        <link rel="stylesheet" href="styles/index.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="styles/nav.css"/>
+        <link rel="stylesheet" href="styles/index.css"/>
         <link rel="stylesheet" href="styles/variablesGlobales.css"/>
         <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
         <link rel="stylesheet" href="styles/ConsultaListaReproduccion.css">
+        <link rel="stylesheet" href="styles/nav.css"/>
         <style>
             /* Ocultar elementos al inicio */
             
@@ -97,14 +115,46 @@
         <!-- TABS-CONTENT -->
         <div class="tabs">
             <ul class="tab-links">
-                <li class="active"><a href="#tab1">Géneros</a></li>
-                <li><a href="#tab2">Artistas</a></li>
-               
-                <li><a href="#tab3">Listas Particulares</a></li>
+                <li class="active"><a href="#tab1">Sugerencias</a></li>
+                <li><a href="#tab2">Géneros</a></li>
+                <li><a href="#tab3">Artistas</a></li>
+                <li><a href="#tab4">Listas Particulares</a></li>
             </ul>
 
             <div class="tab-content">
+                
                 <div id="tab1" class="tab active">
+                    <h1 id="sugerencias-titulo" >Sugerencias para ti</h1>  
+                    <div class="divisor d-none d-sm-block"></div>
+                    
+                    <div class="tabla">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tema</th>
+                                    <th>Reproducciones</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <% int nroTopTema = 1; %>
+                                <tr>
+                                    <td>Cell1</td>
+                                    <td>Cell2</td>
+                                </tr>
+                                <tr>
+                                    <td>Cell3</td>
+                                    <td>Cell4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    
+                </div>
+                
+                <div id="tab2" class="tab">
                     <button type="button" id="volver" onclick="VolverAGeneros()">Volver</button>
                     <div id="pre-seleccion">
                         <h1>Géneros</h1>
@@ -169,7 +219,7 @@
                     </div>
                 </div>
 
-                <div id="tab2" class="tab">
+                <div id="tab3" class="tab">
                     <button type="button" id="volver2" onclick="VolverAArtistas()">Volver</button>
                     <div id="pre-seleccion2">
                         <h1>Artistas</h1>
@@ -218,7 +268,7 @@
                     </div> 
                 </div>
 
-                <div id="tab3" class="tab">
+                <div id="tab4" class="tab">
                     <h1>Consulta Lista Particular</h1>
                     <div class="mosaico-container"> 
                         <div class="mosaico" id="mosaicoListasParticulares">

@@ -36,6 +36,7 @@ public class DtTemaConPuntaje {
     /**
      * Gets the value of the duracionSegundos property.
      * 
+     * @return 
      */
     public int getDuracionSegundos() {
         return duracionSegundos;
@@ -44,6 +45,7 @@ public class DtTemaConPuntaje {
     /**
      * Sets the value of the duracionSegundos property.
      * 
+     * @param value
      */
     public void setDuracionSegundos(int value) {
         this.duracionSegundos = value;
@@ -70,6 +72,7 @@ public class DtTemaConPuntaje {
      * {@link String }
      * 
      * 
+     * @return 
      */
     public List<String> getGenerosDeTema() {
         if (generosDeTema == null) {
@@ -201,6 +204,7 @@ public class DtTemaConPuntaje {
     /**
      * Gets the value of the posicionEnAlbum property.
      * 
+     * @return 
      */
     public int getPosicionEnAlbum() {
         return posicionEnAlbum;
@@ -209,6 +213,7 @@ public class DtTemaConPuntaje {
     /**
      * Sets the value of the posicionEnAlbum property.
      * 
+     * @param value
      */
     public void setPosicionEnAlbum(int value) {
         this.posicionEnAlbum = value;
