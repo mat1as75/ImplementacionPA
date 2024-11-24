@@ -131,22 +131,33 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th></th>
                                     <th>Tema</th>
                                     <th>Reproducciones</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             
                             <tbody>
                                 <% int nroTopTema = 1; %>
-                                <tr>
-                                    <td>Cell1</td>
-                                    <td>Cell2</td>
+                                <%  if (topTemas != null) { 
+                                        for (DtTemaConPuntaje tema : topTemas) {
+                                            String nombreArtista = tema.getNombreCompletoArtista();
+                                            String nombreTema = tema.getNombreTema();
+                                            Long cantidadReproducciones = tema.getCantidadReproducciones();
+                                            Long cantidadDescargasOVisitas = tema.getCantidadDescargasOVisitas();
+                                            Long cantidadFavoritos = tema.getCantidadFavoritos();
+                                            Long cantidadListas = tema.getCantidadListas();
+
+                                %>
+                                
+                                <tr class="row-hover">
+                                    <td><%= nroTopTema++ %></td>
+                                    <td><%= nombreArtista + " - " + nombreTema %></td>
+                                    <td><%= cantidadReproducciones %></td>
                                 </tr>
-                                <tr>
-                                    <td>Cell3</td>
-                                    <td>Cell4</td>
-                                </tr>
+                                    <%  }  %>
+                                <%  }  %>
                             </tbody>
                         </table>
                         

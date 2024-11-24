@@ -13,6 +13,10 @@ public class DTTemaConPuntaje {
     private String nombreCompletoArtista;
     private List<String> generosDeTema;
     private Float puntajeTema;
+    private Long cantidadReproducciones;
+    private Long cantidadDescargasOVisitas;
+    private Long cantidadFavoritos;
+    private Long cantidadListas;
     
     public DTTemaConPuntaje() {};
     
@@ -25,7 +29,11 @@ public class DTTemaConPuntaje {
             String nombreAlbum, 
             String nombreCompletoArtista,
             List<String> generosDeTema,
-            Float puntajeTema
+            Float puntajeTema,
+            Long cantidadReproducciones,
+            Long cantidadDescargasOVisitas,
+            Long cantidadFavoritos,
+            Long cantidadListas
             ) {
         this.idTema = idTema;
         this.nombreTema = nombreTema;
@@ -36,6 +44,10 @@ public class DTTemaConPuntaje {
         this.nombreCompletoArtista = nombreCompletoArtista;
         this.generosDeTema = generosDeTema;
         this.puntajeTema = puntajeTema;
+        this.cantidadReproducciones = cantidadReproducciones;
+        this.cantidadDescargasOVisitas = cantidadDescargasOVisitas;
+        this.cantidadFavoritos = cantidadFavoritos;
+        this.cantidadListas = cantidadListas;
     }
     
     public Long getIdTema() {
@@ -120,4 +132,38 @@ public class DTTemaConPuntaje {
     public Float getPuntajeTema() {
         return puntajeTema;
     }
+
+    public Long getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+
+    public void setCantidadReproducciones(Long cantidadReproducciones) {
+        this.cantidadReproducciones = cantidadReproducciones;
+    }
+
+    public Long getCantidadDescargasOVisitas() {
+        return cantidadDescargasOVisitas;
+    }
+
+    public void setCantidadDescargasOVisitas(Long cantidadDescargasOVisitas) {
+        this.cantidadDescargasOVisitas = cantidadDescargasOVisitas;
+    }
+
+    public Long getCantidadFavoritos() {
+        return cantidadFavoritos;
+    }
+
+    public void setCantidadFavoritos(Long cantidadFavoritos) {
+        this.cantidadFavoritos = cantidadFavoritos;
+    }
+
+    public Long getCantidadListas() {
+        return cantidadListas;
+    }
+
+    public void setCantidadListas(Long cantidadListas) {
+        this.cantidadListas = cantidadListas;
+    }
+    
+    
 }

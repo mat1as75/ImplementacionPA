@@ -216,7 +216,11 @@ public abstract class Tema implements Serializable {
                 this.getMiAlbum().getNombreAlbum(),
                 this.getMiAlbum().getMiArtista().getNombreCompletoToString(),
                 this.getMiAlbum().getMisGenerosString(),
-                this.getPuntajeTema()
+                this.getPuntajeTema(),
+                this.getCantidadReproducciones(),
+                this.getCantidadDescargasOVisitas(),
+                this.getCantidadFavoritos(),
+                Long.valueOf(this.getMisReproducciones().size())
         );
     }
     

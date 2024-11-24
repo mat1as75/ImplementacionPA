@@ -18,7 +18,11 @@ import jakarta.xml.bind.annotation.XmlType;
     "nombreCompletoArtista",
     "nombreTema",
     "posicionEnAlbum",
-    "puntajeTema"
+    "puntajeTema",
+    "cantidadReproducciones",
+    "cantidadDescargasOVisitas",
+    "cantidadFavoritos",
+    "cantidadListas"
 })
 public class DtTemaConPuntaje {
 
@@ -32,6 +36,10 @@ public class DtTemaConPuntaje {
     protected String nombreTema;
     protected int posicionEnAlbum;
     protected Float puntajeTema;
+    protected Long cantidadReproducciones;
+    protected Long cantidadDescargasOVisitas;
+    protected Long cantidadFavoritos;
+    protected Long cantidadListas;
 
     /**
      * Gets the value of the duracionSegundos property.
@@ -243,4 +251,89 @@ public class DtTemaConPuntaje {
         this.puntajeTema = value;
     }
 
+    /**
+     * Gets the value of the cantidadReproducciones property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+
+    /**
+     * Sets the value of the cantidadReproducciones property.
+     * 
+     * @param cantidadReproducciones
+     */
+    public void setCantidadReproducciones(Long cantidadReproducciones) {
+        this.cantidadReproducciones = cantidadReproducciones;
+    }
+
+    /**
+     * Gets the value of the cantidadDescargasOVisitas property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadDescargasOVisitas() {
+        return cantidadDescargasOVisitas;
+    }
+
+    /**
+     * Sets the value of the cantidadReproducciones property.
+     * 
+     * @param cantidadDescargasOVisitas
+     */
+    public void setCantidadDescargasOVisitas(Long cantidadDescargasOVisitas) {
+        this.cantidadDescargasOVisitas = cantidadDescargasOVisitas;
+    }
+
+    /**
+     * Gets the value of the cantidadFavoritos property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadFavoritos() {
+        return cantidadFavoritos;
+    }
+
+    /**
+     * Sets the value of the cantidadReproducciones property.
+     * 
+     * @param cantidadFavoritos
+     */
+    public void setCantidadFavoritos(Long cantidadFavoritos) {
+        this.cantidadFavoritos = cantidadFavoritos;
+    }
+
+    /**
+     * Gets the value of the cantidadListas property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadListas() {
+        return cantidadListas;
+    }
+
+    /**
+     * Sets the value of the cantidadReproducciones property.
+     * 
+     * @param cantidadListas
+     */
+    public void setCantidadListas(Long cantidadListas) {
+        this.cantidadListas = cantidadListas;
+    }
+
+    
 }
