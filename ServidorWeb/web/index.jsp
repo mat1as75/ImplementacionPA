@@ -1,12 +1,30 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="webservices.DataTypes.DtTemaConPuntaje"%>
 <%@page import="webservices.ContenidoService"%>
 <%@page import="webservices.ContenidoServiceService"%>
 <%@page import="webservices.UsuarioService"%>
 <%@page import="webservices.UsuarioServiceService"%>
 <%@page import="webservices.ListaReproduccionService"%>
 <%@page import="webservices.ListaReproduccionServiceService"%>
+<%@page import="webservices.RankingService"%>
+<%@page import="webservices.RankingServiceService"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+
+<%
+    
+    RankingServiceService serviceR = new RankingServiceService();
+    RankingService serviceRanking = serviceR.getRankingServicePort();
+    
+    List<DtTemaConPuntaje> topTemas = serviceRanking.getTopTemas(10).getColeccion()
+                .stream()
+                .filter(DtTemaConPuntaje.class::isInstance)
+                .map(DtTemaConPuntaje.class::cast)
+                .collect(Collectors.toList());
+
+
+%>
 
 <!DOCTYPE html>
 <html>
@@ -98,14 +116,56 @@
         <!-- TABS-CONTENT -->
         <div class="tabs">
             <ul class="tab-links">
-                <li class="active"><a href="#tab1">Géneros</a></li>
-                <li><a href="#tab2">Artistas</a></li>
-               
-                <li><a href="#tab3">Listas Particulares</a></li>
+                <li class="active" href="#tab1">Sugerencias</li>
+                <li><a href="#tab2">Géneros</a></li>
+                <li><a href="#tab3">Artistas</a></li>
+                <li><a href="#tab4">Listas Particulares</a></li>
             </ul>
 
             <div class="tab-content">
+                
                 <div id="tab1" class="tab active">
+                    <h1 id="sugerencias-titulo" >Sugerencias para ti</h1>  
+                    <div class="divisor d-none d-sm-block"></div>
+                    
+                    <div class="tabla">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tema</th>
+                                    <th>Reproducciones</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <% int nroTopTema = 1; %>
+                                <%  if (topTemas != null) { 
+                                        for (DtTemaConPuntaje tema : topTemas) {
+                                            String nombreArtista = tema.getNombreCompletoArtista();
+                                            String nombreTema = tema.getNombreTema();
+                                            Long cantidadReproducciones = tema.getCantidadReproducciones();
+                                            Long cantidadDescargasOVisitas = tema.getCantidadDescargasOVisitas();
+                                            Long cantidadFavoritos = tema.getCantidadFavoritos();
+                                            Long cantidadListas = tema.getCantidadListas();
+
+                                %>
+                                
+                                <tr class="row-hover">
+                                    <td><%= nroTopTema++ %></td>
+                                    <td><%= nombreArtista + " - " + nombreTema %></td>
+                                    <td><%= cantidadReproducciones %></td>
+                                </tr>
+                                    <%  }  %>
+                                <%  }  %>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    
+                </div>
+                <div id="tab2" class="tab">
                     <button type="button" id="volver" onclick="VolverAGeneros()">Volver</button>
                     <div id="pre-seleccion">
                         <h1>Géneros</h1>
@@ -170,7 +230,7 @@
                     </div>
                 </div>
 
-                <div id="tab2" class="tab">
+                <div id="tab3" class="tab">
                     <button type="button" id="volver2" onclick="VolverAArtistas()">Volver</button>
                     <div id="pre-seleccion2">
                         <h1>Artistas</h1>
@@ -219,7 +279,7 @@
                     </div> 
                 </div>
 
-                <div id="tab3" class="tab">
+                <div id="tab4" class="tab">
                     <h1>Consulta Lista Particular</h1>
                     <div class="mosaico-container"> 
                         <div class="mosaico" id="mosaicoListasParticulares">
