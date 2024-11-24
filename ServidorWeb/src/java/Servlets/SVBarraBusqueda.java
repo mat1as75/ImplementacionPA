@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import webservices.ContenidoService;
 import webservices.ContenidoServiceService;
 import webservices.DataTypes.DtTemaSimple;
+import webservices.DataTypes.DtUsuarioGenerico;
 import webservices.MapContainer;
 import webservices.UsuarioService;
 import webservices.UsuarioServiceService;
@@ -120,11 +121,19 @@ public class SVBarraBusqueda extends HttpServlet {
             ArrayList<String> nicknamesClientes = (ArrayList<String>) serviceUsuario.getNicknamesClientes().getColeccion().stream()
                     .map(String::valueOf)
                     .collect(Collectors.toList());
+            
             for (String nickname : consultaUsuarios.getResultList()) {
-                if (nicknamesClientes.contains(nickname))
-                    results.put(nickname, "Cliente");
-                else
-                    results.put(nickname, "Artista");
+                DtUsuarioGenerico datosU = serviceUsuario.getDatosUsuario(nickname).getDtUsuarioGenerico();
+                String tipoUsuario = serviceUsuario.getTipoUsuario(nickname);
+                
+                /* Si es Cliente || es Artista y esActivo */
+                if (tipoUsuario.equals("Cliente") || 
+                        tipoUsuario.equals("Artista") && datosU.isActivo()) {
+                    if (nicknamesClientes.contains(nickname))
+                        results.put(nickname, "Cliente");
+                    else
+                        results.put(nickname, "Artista");
+                }
             }
         } catch(Exception ex) {
             throw ex;

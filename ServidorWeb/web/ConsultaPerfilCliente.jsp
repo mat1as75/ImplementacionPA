@@ -33,21 +33,6 @@
         usuarioConsultado = serviceUsuario.getDatosUsuario((DTusuarioConsultado.getNicknameUsuario())).getDtUsuarioGenerico();
     else // Se consulto el Perfil del Usuario Sesion
         usuarioConsultado = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
-
-    /* MUESTRO TODOS LOS DATOS DEL USUARIO CONSULTADO */
-    System.out.println("tipo: " + serviceUsuario.getTipoUsuario(nicknameSesion));
-    System.out.println("nickname: " + usuarioConsultado.getNicknameUsuario());
-    System.out.println("nombre completo: " + usuarioConsultado.getNombreUsuario() + " " + usuarioConsultado.getApellidoUsuario());
-    System.out.println("email: " + usuarioConsultado.getEmail());
-    System.out.println("fecnac: " + usuarioConsultado.getFecNac());
-    System.out.println("misSeguidores: " + usuarioConsultado.getNicknamesSeguidores());
-    System.out.println("misSeguidos: " + usuarioConsultado.getNicknamesSeguidos());
-    System.out.println("misListasCreadas: " + usuarioConsultado.getNombresListasRCreadas());
-    System.out.println("misListasCreadasPublicas " + usuarioConsultado.getNombresListasRCreadasPublicas());
-    System.out.println("misListasFav: " + usuarioConsultado.getNombresListasRFavoritas());
-    System.out.println("misAlbumesFav: " + usuarioConsultado.getNombresAlbumesFavoritos());
-    System.out.println("misTemasFav: " + usuarioConsultado.getNombresTemasFavoritos());
-    System.out.println("miSuscripcion: " + usuarioConsultado.getSuscripcion());
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
     List<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
