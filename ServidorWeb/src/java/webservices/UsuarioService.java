@@ -11,8 +11,6 @@ import jakarta.xml.ws.Action;
 import jakarta.xml.ws.FaultAction;
 import webservices.DataTypes.DtArtista;
 import webservices.DataTypes.DtCliente;
-import webservices.DataTypes.DtDatosArtista;
-import webservices.DataTypes.DtDatosCliente;
 import webservices.DataTypes.DtDatosUsuario;
 
 
@@ -29,32 +27,6 @@ import webservices.DataTypes.DtDatosUsuario;
 })
 public interface UsuarioService {
 
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns espotify.webservices.DtDatosArtista
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices.espotify/UsuarioService/getDatosArtistaRequest", output = "http://webservices.espotify/UsuarioService/getDatosArtistaResponse")
-    public DtDatosArtista getDatosArtista(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns espotify.webservices.DtDatosCliente
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices.espotify/UsuarioService/getDatosClienteRequest", output = "http://webservices.espotify/UsuarioService/getDatosClienteResponse")
-    public DtDatosCliente getDatosCliente(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
 
     /**
      * 

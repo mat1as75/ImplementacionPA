@@ -1,5 +1,5 @@
+<%@page import="webservices.DataTypes.DtUsuarioGenerico"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="webservices.DataTypes.DtDatosUsuario"%>
 <%@page import="webservices.UsuarioService"%>
 <%@page import="webservices.UsuarioServiceService"%>
 <%@page import="javax.servlet.http.Cookie"%>
@@ -30,7 +30,7 @@
         String nicknameSesion = (String) sesion.getAttribute("nickname");
         String rolSesion = (String) sesion.getAttribute("rol");
 
-        DtDatosUsuario datosUsuario = serviceUsuario.getDatosUsuario(nicknameSesion).getDtDatosUsuario();
+        DtUsuarioGenerico datosUsuario = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
         String nombreSesion = null;
         String apellidoSesion = null;
         String fotoPerfilSesion = null;

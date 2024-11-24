@@ -9,6 +9,7 @@ import espotify.DataTypes.DTDatosListaReproduccion;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTUsuario;
+import espotify.DataTypes.DTUsuarioGenerico;
 
 public class NullableContainer {
     private Long longObj;
@@ -21,6 +22,7 @@ public class NullableContainer {
     private DTDatosListaReproduccion dtDatosListaReproduccion;
     private DTArtista dtArtista;
     private DTCliente dtCliente;
+    private DTUsuarioGenerico dtUsuarioGenerico;
     
     public NullableContainer() {
         this.longObj = null;
@@ -33,6 +35,7 @@ public class NullableContainer {
         this.dtDatosListaReproduccion = null;
         this.dtArtista = null;
         this.dtCliente = null;
+        this.dtUsuarioGenerico = null;
     };
 
     public Long getLongObj() {
@@ -114,5 +117,14 @@ public class NullableContainer {
     public void setDtCliente(DTCliente dtCliente) {
         this.dtCliente = dtCliente;
     }
+
+    public DTUsuarioGenerico getDtUsuarioGenerico() {
+        return dtUsuarioGenerico;
+    }
+
+    public void setDtUsuarioGenerico(DTUsuarioGenerico dtUsuarioGenerico) {
+        this.dtUsuarioGenerico = dtUsuarioGenerico;
+    }
+    
     
 }
