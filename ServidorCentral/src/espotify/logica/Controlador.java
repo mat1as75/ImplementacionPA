@@ -592,6 +592,11 @@ public class Controlador implements IControlador{
     public ArrayList<DTAlbum> getDTAlbumsConTemasDeArtista(String nicknameArtista) {
         return this.contpersis.getDTAlbumsConTemasDeArtista(nicknameArtista);
     }
+    
+    @Override
+    public String getTipoUsuario(String identificador) {
+        return this.contpersis.getTipoUsuario(identificador);
+    }
 
 }
 

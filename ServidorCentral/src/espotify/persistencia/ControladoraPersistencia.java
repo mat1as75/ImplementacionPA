@@ -1538,7 +1538,7 @@ public class ControladoraPersistencia {
 
             // Nicknames de Seguidos del Cliente
             List<Usuario> listaSeguidos = ((Cliente) u).getMisSeguidos();
-            ArrayList<String> nicknamesSeguidos = new ArrayList<>();
+            List<String> nicknamesSeguidos = new ArrayList<>();
             for (Usuario lSeg : listaSeguidos) {
                 String nickname;
 
@@ -1554,7 +1554,7 @@ public class ControladoraPersistencia {
 
             // Nicknames de Seguidores del Cliente
             List<Usuario> listaSeguidores = ((Cliente) u).getMisSeguidores();
-            ArrayList<String> nicknamesSeguidores = new ArrayList<>();
+            List<String> nicknamesSeguidores = new ArrayList<>();
             for (Usuario lSeg : listaSeguidores) {
                 String nickname;
                 nickname = lSeg.getNickname();
@@ -1569,7 +1569,7 @@ public class ControladoraPersistencia {
             }
 
             // Nombres de ListasR Creadas Publicas del Cliente
-            ArrayList<String> nombresListasRCreadasPublicas = new ArrayList<>();
+            List<String> nombresListasRCreadasPublicas = new ArrayList<>();
             for (ListaParticular lPCreada : listaListasRCreadas) {
                 if (!lPCreada.soyPrivada()) {
                     nombresListasRCreadasPublicas.add(lPCreada.getNombreLista());
@@ -1578,7 +1578,7 @@ public class ControladoraPersistencia {
 
             // Nombres de ListasR Favoritas del Cliente
             List<ListaReproduccion> listaListasRFavoritas = ((Cliente) u).getMisListasReproduccionFav();
-            ArrayList<String> nombresListasRFavoritas = new ArrayList<>();
+            List<String> nombresListasRFavoritas = new ArrayList<>();
             for (ListaReproduccion lRFavoritas : listaListasRFavoritas) {
                 nombresListasRFavoritas.add(lRFavoritas.getNombreLista());
             }
@@ -1619,7 +1619,7 @@ public class ControladoraPersistencia {
 
             // Nicknames de Seguidores del Artista
             List<Usuario> listaSeguidores = ((Artista) u).getMisSeguidores();
-            ArrayList<String> nicknamesSeguidores = new ArrayList<>();
+            List<String> nicknamesSeguidores = new ArrayList<>();
             for (Usuario lSeg : listaSeguidores) {
                 nicknamesSeguidores.add(lSeg.getNickname());
             }
@@ -2059,5 +2059,17 @@ public class ControladoraPersistencia {
         }
         
         return dataAlbums;
+    }
+    
+    public String getTipoUsuario(String identificadorUsuario) {
+        Usuario usuario = this.usuJpa.findUsuarioByIdentifier(identificadorUsuario);
+        if (usuario != null) {
+            if (usuario instanceof Cliente)
+                return "Cliente";
+            else
+                return "Artista";
+        } else {
+            return null;
+        }
     }
 }

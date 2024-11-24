@@ -98,6 +98,7 @@ public interface IControlador {
     public abstract boolean ExisteNickName(String nickname);
     public abstract boolean ExisteEmail(String email);
     public abstract void darDeBajaArtista(String nicknameArtista) throws Exception;
+    public abstract String getTipoUsuario(String identificador);
    
     /* ----- OPERACIONES DE SUSCRIPCIONES WEB SERVICE ----- */
     public abstract DTSuscripcion getDTSuscripcion(Long id);

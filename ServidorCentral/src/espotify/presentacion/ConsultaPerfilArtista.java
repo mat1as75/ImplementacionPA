@@ -373,7 +373,7 @@ public class ConsultaPerfilArtista extends javax.swing.JInternalFrame {
             mientras que lo agrego como elemento al modelo. Luego 
             setteo el modelo con todos los Nicknames a la JList*/
             DefaultListModel<String> listaSeguidores = new DefaultListModel<>();
-            ArrayList<String> nicknamesSeguidores = datosArtista.getNicknamesSeguidores();
+            List<String> nicknamesSeguidores = datosArtista.getNicknamesSeguidores();
             
             for (String nickname: nicknamesSeguidores) {
                 listaSeguidores.addElement(nickname);

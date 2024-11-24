@@ -4,8 +4,8 @@
  */
 package espotify.DataTypes;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public abstract class DTDatosUsuario {
     // Atributos
@@ -17,14 +17,14 @@ public abstract class DTDatosUsuario {
     protected Date fecNac;
     protected String fotoPerfil;
     // Referencia
-    protected ArrayList<String> nicknamesSeguidores;
+    protected List<String> nicknamesSeguidores;
 
     public DTDatosUsuario() {
     }
 
     public DTDatosUsuario(String nicknameUsuario, String nombreUsuario, 
             String apellidoUsuario, String contrasenaUsuario, String email, 
-            Date fecNac, String fotoPerfil, ArrayList<String> nicknamesSeguidores) {
+            Date fecNac, String fotoPerfil, List<String> nicknamesSeguidores) {
         this.nicknameUsuario = nicknameUsuario;
         this.nombreUsuario = nombreUsuario;
         this.apellidoUsuario = apellidoUsuario;
@@ -91,11 +91,11 @@ public abstract class DTDatosUsuario {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public ArrayList<String> getNicknamesSeguidores() {
+    public List<String> getNicknamesSeguidores() {
         return nicknamesSeguidores;
     }
 
-    public void setSeguidores(ArrayList<String> nicknamesSeguidores) {
+    public void setSeguidores(List<String> nicknamesSeguidores) {
         this.nicknamesSeguidores = nicknamesSeguidores;
     }
     

@@ -5,12 +5,12 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtDatosCliente", propOrder = {
-    "nicknameSeguidos",
+    "nicknamesSeguidos",
     "nombresListasRCreadas",
     "nombresListasRCreadasPublicas",
     "nombresListasRFavoritas",
@@ -22,47 +22,46 @@ public class DtDatosCliente
     extends DtDatosUsuario
 {
     @XmlElement(nillable = true)
-    protected ArrayList<String> nicknamesSeguidos;
+    protected List<String> nicknamesSeguidos;
     @XmlElement(nillable = true)
-    protected ArrayList<String> nombresListasRCreadas;
+    protected List<String> nombresListasRCreadas;
     @XmlElement(nillable = true)
-    protected ArrayList<String> nombresListasRCreadasPublicas;
+    protected List<String> nombresListasRCreadasPublicas;
     @XmlElement(nillable = true)
-    protected ArrayList<String> nombresListasRFavoritas;
+    protected List<String> nombresListasRFavoritas;
     protected Map<Long, String> nombresAlbumesFavoritos;
     protected Map<Long, String> nombresTemasFavoritos;
-    @XmlElement(nillable = true)
     protected DtSuscripcion suscripcion;
 
-    public ArrayList<String> getNicknamesSeguidos() {
+    public List<String> getNicknamesSeguidos() {
         return nicknamesSeguidos;
     }
 
-    public void setNicknamesSeguidos(ArrayList<String> nicknamesSeguidos) {
+    public void setNicknamesSeguidos(List<String> nicknamesSeguidos) {
         this.nicknamesSeguidos = nicknamesSeguidos;
     }
 
-    public ArrayList<String> getNombresListasRCreadas() {
+    public List<String> getNombresListasRCreadas() {
         return nombresListasRCreadas;
     }
 
-    public void setNombresListasRCreadas(ArrayList<String> nombresListasRCreadas) {
+    public void setNombresListasRCreadas(List<String> nombresListasRCreadas) {
         this.nombresListasRCreadas = nombresListasRCreadas;
     }
 
-    public ArrayList<String> getNombresListasRCreadasPublicas() {
+    public List<String> getNombresListasRCreadasPublicas() {
         return nombresListasRCreadasPublicas;
     }
 
-    public void setNombresListasRCreadasPublicas(ArrayList<String> nombresListasRCreadasPublicas) {
+    public void setNombresListasRCreadasPublicas(List<String> nombresListasRCreadasPublicas) {
         this.nombresListasRCreadasPublicas = nombresListasRCreadasPublicas;
     }
 
-    public ArrayList<String> getNombresListasRFavoritas() {
+    public List<String> getNombresListasRFavoritas() {
         return nombresListasRFavoritas;
     }
 
-    public void setNombresListasRFavoritas(ArrayList<String> nombresListasRFavoritas) {
+    public void setNombresListasRFavoritas(List<String> nombresListasRFavoritas) {
         this.nombresListasRFavoritas = nombresListasRFavoritas;
     }
 

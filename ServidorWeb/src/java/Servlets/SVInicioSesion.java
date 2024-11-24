@@ -1,11 +1,5 @@
 package Servlets;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,8 +17,6 @@ import webservices.UsuarioServiceService;
 
 @WebServlet(urlPatterns = {"/SVInicioSesion"})
 public class SVInicioSesion extends HttpServlet {
-
-    private IControlador control = null;
 
     public enum Rol {
         Visitante,
@@ -51,10 +43,7 @@ public class SVInicioSesion extends HttpServlet {
         String indentificadorUsuario = (String) request.getParameter("usuario");
         String contrasenaUsuario = (String) request.getParameter("contrasena");
 
-        /* Instanciar un Controlador */
-        Fabrica fb = Fabrica.getInstance();
-        control = fb.getControlador();
-        
+        /* Instanciar UsuarioService */
         UsuarioServiceService serviceU = new UsuarioServiceService();
         UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
 
