@@ -94,9 +94,9 @@ body {
 }
 
 li.active a, li.active a:hover {
-    background: #fff;
+    background: var(--dark-gray);
     color: #000;
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
 }
 
 /*----- Content of Tabs -----*/
@@ -104,10 +104,10 @@ li.active a, li.active a:hover {
     padding: 0;
     height: 500px;
     width: 50%;
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
     border-radius: 3px;
     box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
-    background: #fff;
+    background: var(--dark-gray);
     overflow-y: auto;
 }
 
@@ -134,4 +134,22 @@ li.active a, li.active a:hover {
 h1, h2, h3 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+#sugerencias-titulo {
+    display: flex;
+    margin-top: 20px;
+    margin-left: 60px;
+    padding: 0;
+    text-align: left;
+    letter-spacing: 2px;
+    font-family: 'Arial', sans sherif;
+    font-size: 26px;
+}
+
+.tab .divisor {
+    display: flex;
+    border-top: 1px solid var(--other-gray);
+    width: 95%;
+    margin: 20px 15px;
 }
