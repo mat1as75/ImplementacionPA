@@ -3,9 +3,11 @@ package webservices.DataTypes;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlType;
+import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -42,7 +44,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "fecNac",
     "fotoPerfil",
     "nicknameUsuario",
-    "nombreUsuario"
+    "nombreUsuario",
+    "nicknamesSeguidores"
 })
 @XmlSeeAlso({
     DtDatosArtista.class,
@@ -58,6 +61,8 @@ public class DtDatosUsuario {
     protected String fotoPerfil;
     protected String nicknameUsuario;
     protected String nombreUsuario;
+    @XmlElement(nillable = true)
+    protected List<String> nicknamesSeguidores;
 
     public String getApellidoUsuario() {
         return apellidoUsuario;
@@ -115,4 +120,13 @@ public class DtDatosUsuario {
         this.nombreUsuario = value;
     }
 
+    public List<String> getNicknamesSeguidores() {
+        return nicknamesSeguidores;
+    }
+
+    public void setNicknamesSeguidores(List<String> nicknamesSeguidores) {
+        this.nicknamesSeguidores = nicknamesSeguidores;
+    }
+
+    
 }

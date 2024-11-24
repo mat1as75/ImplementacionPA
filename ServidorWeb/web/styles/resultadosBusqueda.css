@@ -108,13 +108,17 @@ body {
 }
 
 .resultados a {
+    padding: 10px;
     padding-left: 10px;
+    padding-bottom: 20px;
     width: 200px;
     font-family: 'Monospace';
+    font-size: 14px;
     text-decoration: none;
     color: #000;
     background-color: transparent;
     border: none;
+    white-space: nowrap;
 }
 
 .resultados a:hover {

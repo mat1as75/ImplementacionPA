@@ -6,14 +6,15 @@ package espotify.DataTypes;
 
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class DTDatosCliente extends DTDatosUsuario {
     
-    private ArrayList<String> nicknamesSeguidos;
-    private ArrayList<String> nombresListasRCreadas;
-    private ArrayList<String> nombresListasRCreadasPublicas;
-    private ArrayList<String> nombresListasRFavoritas;
+    private List<String> nicknamesSeguidos;
+    private List<String> nombresListasRCreadas;
+    private List<String> nombresListasRCreadasPublicas;
+    private List<String> nombresListasRFavoritas;
     private Map<Long, String> nombresAlbumesFavoritos;
     private Map<Long, String> nombresTemasFavoritos;
     private DTSuscripcion suscripcion;
@@ -24,9 +25,9 @@ public class DTDatosCliente extends DTDatosUsuario {
     
     public DTDatosCliente(String nicknameUsuario, String nombreUsuario, String apellidoUsuario, 
             String contrasenaUsuario, String email, Date fecNac, String fotoPerfil, 
-            ArrayList<String> nicknamesSeguidos, ArrayList<String> nicknamesSeguidores, 
-            ArrayList<String> nombresListasRCreadas, ArrayList<String> nombresListasRCreadasPublicas, 
-            ArrayList<String> nombresListasRFavoritas, Map<Long, String> nombresAlbumesFavoritos, 
+            List<String> nicknamesSeguidos, List<String> nicknamesSeguidores, 
+            List<String> nombresListasRCreadas, List<String> nombresListasRCreadasPublicas, 
+            List<String> nombresListasRFavoritas, Map<Long, String> nombresAlbumesFavoritos, 
             Map<Long, String> nombresTemasFavoritos, 
             DTSuscripcion suscripcion) {
         super( nicknameUsuario, nombreUsuario, apellidoUsuario, contrasenaUsuario, email, fecNac, fotoPerfil, nicknamesSeguidores );
@@ -40,13 +41,13 @@ public class DTDatosCliente extends DTDatosUsuario {
         this.suscripcion = suscripcion;
     }
     
-    public ArrayList<String> getNicknamesSeguidos() { return nicknamesSeguidos; }
+    public List<String> getNicknamesSeguidos() { return nicknamesSeguidos; }
     
-    public ArrayList<String> getNombresListasRCreadas() { return nombresListasRCreadas; }
+    public List<String> getNombresListasRCreadas() { return nombresListasRCreadas; }
     
-    public ArrayList<String> getNombresListasRCreadasPublicas() { return nombresListasRCreadasPublicas; }
+    public List<String> getNombresListasRCreadasPublicas() { return nombresListasRCreadasPublicas; }
     
-    public ArrayList<String> getNombresListasRFavoritas() { return nombresListasRFavoritas; }
+    public List<String> getNombresListasRFavoritas() { return nombresListasRFavoritas; }
     
     public Map<Long, String> getNombresAlbumesFavoritos() { return nombresAlbumesFavoritos; }
     

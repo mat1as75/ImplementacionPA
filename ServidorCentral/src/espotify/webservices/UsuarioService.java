@@ -5,12 +5,9 @@ import espotify.DataTypes.DTCliente;
 import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosUsuario;
-import espotify.DataTypes.DTSuscripcion;
 import espotify.DataTypes.DTUsuario;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
-import espotify.logica.Suscripcion.EstadoSuscripcion;
-import espotify.logica.Suscripcion.TipoSuscripcion;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
@@ -18,7 +15,7 @@ import jakarta.jws.soap.SOAPBinding.ParameterStyle;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 @WebService
 @SOAPBinding(style = Style.RPC, parameterStyle = ParameterStyle.WRAPPED)
@@ -76,6 +73,24 @@ public class UsuarioService {
     }
     
     @WebMethod
+    public DTDatosCliente getDatosCliente(String identificador) {
+        DTDatosCliente dtDatosCliente = this.control.ConsultarPerfilCliente(identificador);
+        return dtDatosCliente;
+    }
+    
+    @WebMethod
+    public DTDatosArtista getDatosArtista(String identificador) {
+        DTDatosArtista dtDatosArtista = this.control.ConsultarPerfilArtista(identificador);
+        return dtDatosArtista;
+    }
+    
+    @WebMethod
+    public DTDatosUsuario getDataDatosUsuarios(String identificadorUsuario) {
+        DTDatosUsuario dtDatosUsuario = this.control.getDatosUsuario(identificadorUsuario);
+        return dtDatosUsuario;
+    }
+    
+    @WebMethod
     public NullableContainer getUsuarioAutentificado(String identificador, String contrasenaUsuario) {
         NullableContainer contenedor = new NullableContainer();
         DTUsuario dtUsuario = this.control.getUsuarioAutentificado(identificador, contrasenaUsuario);
@@ -129,6 +144,11 @@ public class UsuarioService {
         } catch (Exception ex) {
             throw ex;
         }
+    }
+    
+    @WebMethod
+    public String getTipoUsuario(String identificador) {
+        return this.control.getTipoUsuario(identificador);
     }
     
 }

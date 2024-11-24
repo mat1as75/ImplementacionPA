@@ -29,8 +29,8 @@ function mostrarResultados(resultados) {
                 const[idAlbum, nombreAlbum] = album.split(', ');
        
                 resultadoDiv.innerHTML += `
-                        <input type="hidden" name="album-Consultar" value="${encodeURIComponent(value)}">
-                        <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum}">${nombreAlbum} - ${value}</button>
+                
+                        <a href="ConsultaAlbum.jsp?albumId=${idAlbum}">${nombreAlbum} - ${value}</a>
                 `;
                 break;
             default: // ConsultaTema
@@ -38,9 +38,9 @@ function mostrarResultados(resultados) {
                 const tema = `${key}`;
                 const[idAlbum_Tema, nombreTema] = tema.split(', ');
                 
-                resultadoDiv.innerHTML += `            
-                        <input type="hidden" name="tema-Consultar" value="${encodeURIComponent(key)}">
-                        <button type="submit"><a href="ConsultaAlbum.jsp?albumId=${idAlbum_Tema}">${nombreTema} - ${value}</button>
+                resultadoDiv.innerHTML += `  
+                        
+                        <a href="ConsultaAlbum.jsp?albumId=${idAlbum_Tema}">${nombreTema} - ${value}</a>
                 `;
                 break;
             }

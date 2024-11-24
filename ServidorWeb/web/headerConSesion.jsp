@@ -1,17 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="espotify.logica.IControlador"%>
-<%@page import="espotify.logica.Fabrica"%>
+<%@page import="webservices.DataTypes.DtDatosUsuario"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
 <%@page import="javax.servlet.http.Cookie"%>
 <%@page import="javax.servlet.http.HttpServletRequest"%>
 <%@page import="javax.servlet.http.HttpSession"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <!-- HEADER CON SESION -->
 <!DOCTYPE html>
 
     <%
-        /* Obtener la sesion actual */
-        Fabrica fb = Fabrica.getInstance();
-        IControlador control = fb.getControlador();
+        /* Instanciar UsuarioService */
+        UsuarioServiceService serviceU = new UsuarioServiceService();
+        UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
 
         /* Verificar las cookies */
         Cookie[] cookies = request.getCookies();
@@ -30,10 +30,9 @@
         String nicknameSesion = (String) sesion.getAttribute("nickname");
         String rolSesion = (String) sesion.getAttribute("rol");
 
-        DTDatosUsuario datosUsuario = control.getDatosUsuario(nicknameSesion);
+        DtDatosUsuario datosUsuario = serviceUsuario.getDatosUsuario(nicknameSesion).getDtDatosUsuario();
         String nombreSesion = null;
         String apellidoSesion = null;
-        String emailSesion = null;
         String fotoPerfilSesion = null;
 
         if (sesionId != null) {
@@ -41,7 +40,6 @@
             apellidoSesion = datosUsuario.getApellidoUsuario();
             fotoPerfilSesion = datosUsuario.getFotoPerfil();
             fotoPerfilSesion = (fotoPerfilSesion != null) ? fotoPerfilSesion.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
-            emailSesion = datosUsuario.getEmail();
 
             System.out.println("-----------");
             System.out.println("NICKNAME SESION: " + nicknameSesion);

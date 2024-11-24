@@ -2,7 +2,6 @@
 <%@page import="javax.servlet.http.Cookie"%>
 <%@page import="javax.servlet.http.HttpServletRequest"%>
 <%@page import="javax.servlet.http.HttpSession"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <!DOCTYPE html>
     
 <header>
