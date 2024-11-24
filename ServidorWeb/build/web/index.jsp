@@ -32,7 +32,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Espotify</title>
-<<<<<<
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="styles/index.css"/>
         <link rel="stylesheet" href="styles/variablesGlobales.css"/>
@@ -128,7 +127,7 @@
                     <h1 id="sugerencias-titulo" >Sugerencias para ti</h1>  
                     <div class="divisor d-none d-sm-block"></div>
                     
-                    <div class="tabla">
+                    <div class="tabla-topTemas">
                         <table>
                             <thead>
                                 <tr>
@@ -151,14 +150,36 @@
                                             Long cantidadListas = tema.getCantidadListas();
 
                                 %>
-                                
                                 <tr class="row-hover">
                                     <td><%= nroTopTema++ %></td>
                                     <td><%= nombreArtista + " - " + nombreTema %></td>
                                     <td><%= cantidadReproducciones %></td>
+                                    <td class="otrosDatos" >
+                                        <buttom class="info-buttom" onmouseover="mostrarInfo(event, <%= cantidadReproducciones %>, <%= cantidadDescargasOVisitas %>, <%= cantidadFavoritos %>, <%= cantidadListas %>)" onmouseout="ocultarInfo()">...</buttom>
+                                        <div class="info-container" id="infoContainer"></div>
+                                    </td>
                                 </tr>
                                     <%  }  %>
                                 <%  }  %>
+                                <script>
+                                    function mostrarInfo(event, cantidadReproducciones, cantidadDescargasOVisitas, cantidadFavoritos, cantidadListas) {
+                                        const infoContainer = document.getElementById("infoContainer");
+                                        infoContainer.innerHTML = `
+                                            Reproducciones<br>
+                                            ${cantidadReproducciones}<br>
+                                            Descargas O Visitas<br>
+                                            ${cantidadDescargasOVisitas}<br>
+                                            Favoritos<br>
+                                            ${cantidadFavoritos}<br>  
+                                            +Listas<br>
+                                            ${cantidadListas}<br>    
+                                        `;
+                                    }
+
+                                    function ocultarInfo() {
+                                        document.getElementById("infoContainer").style.display = "none"; // Oculta el contenedor
+                                    }
+                                </script>
                             </tbody>
                         </table>
                         
