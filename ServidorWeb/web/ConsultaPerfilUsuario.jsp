@@ -1,8 +1,8 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="webservices.DataTypes.DtDatosUsuario"%>
-<%@page import="webservices.DataTypes.DtDatosCliente"%>
-<%@page import="webservices.DataTypes.DtDatosArtista"%>
+<%@page import="webservices.DataTypes.DtUsuarioGenerico"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,7 +23,10 @@
     <%
         HttpSession sesion = request.getSession(false);
         String rolSesion = (String) sesion.getAttribute("rol");
-        DtDatosUsuario DTusuarioConsultado = (DtDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+        DtUsuarioGenerico DTusuarioConsultado = (DtUsuarioGenerico) sesion.getAttribute("DTusuarioConsultado");
+        
+        UsuarioServiceService serviceU = new UsuarioServiceService();
+        UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
     %>
     <%
         boolean autoConsulta = false;
@@ -37,7 +40,8 @@
             }
             System.out.println("ACA");
         } else { /* Sesion consulto perfil de un tercero */
-            if (DTusuarioConsultado.getClass() == DtDatosCliente.class) {
+            String tipoUsuario = serviceUsuario.getTipoUsuario(DTusuarioConsultado.getNicknameUsuario());
+            if (tipoUsuario.equals("Cliente")) {
                 esCliente = true;
             }
             System.out.println("ACA2");

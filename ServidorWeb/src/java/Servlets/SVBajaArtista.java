@@ -13,9 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import webservices.DataTypes.DtDatosUsuario;
+import webservices.DataTypes.DtUsuarioGenerico;
 import webservices.Exception_Exception;
-import webservices.NullableContainer;
 import webservices.UsuarioService;
 import webservices.UsuarioServiceService;
 
@@ -44,8 +43,7 @@ public class SVBajaArtista extends HttpServlet {
         String nicknameSesion = request.getParameter("nicknameSesion");
         
         /* Buscar Artista */
-        NullableContainer dtDatosArtistaContainer = serviceUsuario.getDatosUsuario(nicknameSesion);
-        DtDatosUsuario dtDatosArtista = dtDatosArtistaContainer.getDtDatosUsuario();
+        DtUsuarioGenerico dtDatosArtista = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
         
         /* Foto Perfil a eliminar */
         File fotoPerfilArchivo = null;

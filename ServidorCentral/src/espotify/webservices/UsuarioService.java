@@ -6,6 +6,7 @@ import espotify.DataTypes.DTDatosArtista;
 import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTUsuario;
+import espotify.DataTypes.DTUsuarioGenerico;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import jakarta.jws.WebMethod;
@@ -66,22 +67,49 @@ public class UsuarioService {
     @WebMethod
     public NullableContainer getDatosUsuario(String identificadorUsuario) {
         NullableContainer contenedor = new NullableContainer();
-        DTDatosUsuario dtDatosUsuario = this.control.getDatosUsuario(identificadorUsuario);
-        contenedor.setDtDatosUsuario(dtDatosUsuario);
+        DTDatosUsuario datosU = this.control.getDatosUsuario(identificadorUsuario);
+        DTUsuarioGenerico dtDatosUsuario = null;
+        String tipoUsuario = this.control.getTipoUsuario(datosU.getNicknameUsuario());
+ 
+        if (tipoUsuario.equals("Cliente")) {
+            dtDatosUsuario = new DTUsuarioGenerico(
+            datosU.getNicknameUsuario(),
+            datosU.getNombreUsuario(),
+            datosU.getApellidoUsuario(),
+            datosU.getContrasenaUsuario(),
+            datosU.getEmail(),
+            datosU.getFecNac(),
+            datosU.getFotoPerfil(),
+            datosU.getNicknamesSeguidores(),
+            ((DTDatosCliente) datosU).getNicknamesSeguidos(),
+            ((DTDatosCliente) datosU).getNombresListasRCreadas(),
+            ((DTDatosCliente) datosU).getNombresListasRCreadasPublicas(),
+            ((DTDatosCliente) datosU).getNombresListasRFavoritas(),
+            ((DTDatosCliente) datosU).getNombresAlbumesFavoritos(),
+            ((DTDatosCliente) datosU).getNombresTemasFavoritos(),
+            ((DTDatosCliente) datosU).getSuscripcion()
+            );
+        } else {
+            dtDatosUsuario = new DTUsuarioGenerico(
+            datosU.getNicknameUsuario(),
+            datosU.getNombreUsuario(),
+            datosU.getApellidoUsuario(),
+            datosU.getContrasenaUsuario(),
+            datosU.getEmail(),
+            datosU.getFecNac(),
+            datosU.getFotoPerfil(),
+            datosU.getNicknamesSeguidores(),
+            ((DTDatosArtista) datosU).getBiografia(),
+            ((DTDatosArtista) datosU).getDirSitioWeb(),
+            ((DTDatosArtista) datosU).getActivo(),
+            ((DTDatosArtista) datosU).getFechaBaja(),
+            ((DTDatosArtista) datosU).getCantidadSeguidores(),
+            ((DTDatosArtista) datosU).getNombresAlbumesPublicados()
+            );
+        }
         
+        contenedor.setDtUsuarioGenerico(dtDatosUsuario);
         return contenedor;
-    }
-    
-    @WebMethod
-    public DTDatosCliente getDatosCliente(String identificador) {
-        DTDatosCliente dtDatosCliente = this.control.ConsultarPerfilCliente(identificador);
-        return dtDatosCliente;
-    }
-    
-    @WebMethod
-    public DTDatosArtista getDatosArtista(String identificador) {
-        DTDatosArtista dtDatosArtista = this.control.ConsultarPerfilArtista(identificador);
-        return dtDatosArtista;
     }
     
     @WebMethod

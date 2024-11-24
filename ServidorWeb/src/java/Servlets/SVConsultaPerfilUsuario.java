@@ -7,9 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import webservices.DataTypes.DtDatosArtista;
-import webservices.DataTypes.DtDatosCliente;
-import webservices.DataTypes.DtDatosUsuario;
+import webservices.DataTypes.DtUsuarioGenerico;
 import webservices.UsuarioService;
 import webservices.UsuarioServiceService;
 
@@ -35,16 +33,13 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         
         /* DATOS DE LA SESION */
         HttpSession sesion = request.getSession(false);
-        String nicknameUsuarioSesion = null;
-        nicknameUsuarioSesion = (String) sesion.getAttribute("nickname");
-        
-        DtDatosUsuario datosUsuario = null;
+        String nicknameUsuarioSesion = (String) sesion.getAttribute("nickname");
+        String rolSesion = (String) sesion.getAttribute("rol");
+        DtUsuarioGenerico datosUsuario = null;
 
         // Recupero el parametro enviado desde el formulario en resultados.jsp
         String usuarioConsultado = request.getParameter("usuario-Consultar");
-        System.out.println("ACA3: " + usuarioConsultado);
         
-        String rolSesion = (String) sesion.getAttribute("rol");
         if (rolSesion != null && rolSesion.equals("Artista")) {
             if (usuarioConsultado != null && !usuarioConsultado.equals(nicknameUsuarioSesion)) {
                 SVError.redirectForbidden(request, response);
@@ -53,24 +48,17 @@ public class SVConsultaPerfilUsuario extends HttpServlet {
         }
         
         if (usuarioConsultado == null) {
-            System.out.println("ACA4");
+            System.out.println("PERFIL PROPIO");
             // ConsultaPerfilUsuario propio de la Sesion
-            datosUsuario = serviceUsuario.getDatosUsuario(nicknameUsuarioSesion).getDtDatosUsuario();
+            datosUsuario = serviceUsuario.getDatosUsuario(nicknameUsuarioSesion).getDtUsuarioGenerico();
         } else {
-            System.out.println("ACA5");
+            System.out.println("PERFIL DE OTRO");
             // ConsultaPerfilUsuario desde SearchBar
-            datosUsuario = serviceUsuario.getDatosUsuario(usuarioConsultado).getDtDatosUsuario();
+            datosUsuario = serviceUsuario.getDatosUsuario(usuarioConsultado).getDtUsuarioGenerico();
         }
         
-        if (datosUsuario instanceof webservices.DataTypes.DtDatosCliente) {
-            System.out.println("SVCONSULTA " + datosUsuario.getClass());
-            // Envio un DataType con los datos del Usuario consultado
-            sesion.setAttribute("DTusuarioConsultado", (DtDatosCliente) datosUsuario);
-        } else {
-            // Envio un DataType con los datos del Usuario consultado
-            sesion.setAttribute("DTusuarioConsultado", (DtDatosArtista) datosUsuario);
-        }
-
+        // Envio un DataType con los datos del Usuario consultado
+        sesion.setAttribute("DTusuarioConsultado", datosUsuario);
         response.sendRedirect("ConsultaPerfilUsuario.jsp");
 
     }
