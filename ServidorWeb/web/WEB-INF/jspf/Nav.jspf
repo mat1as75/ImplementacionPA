@@ -40,9 +40,6 @@
         <li class="nav-item">
           <a class="nav-link" href="/ServidorWeb">Inicio</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="ConsultaPerfilUsuario.jsp" id="linkNav_perfil">Perfil</a>
-        </li>
          <% if (rolNav.equals("Cliente")) { %>
             <li class="nav-item"><a class="nav-link" href="IngresarSuscripcion" id="linkNav_planes">Planes</a></li>
             <li class="nav-item"><a class="nav-link" href="ActualizarSuscripcion" id="linkNav_miSuscripcion">Mi suscripción</a></li>
