@@ -4,8 +4,6 @@
     Author     : brisa
 --%>
 <%@page import="espotify.DataTypes.DTGenero"%>
-<%@page import="espotify.DataTypes.DTDatosCliente"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <%@page import="java.util.List" %>
 <%@page import="espotify.DataTypes.DTAlbum" %>
 <%@page import="espotify.DataTypes.DTTemaSimple"%>

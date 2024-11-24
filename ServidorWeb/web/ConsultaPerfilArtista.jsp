@@ -1,3 +1,6 @@
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.DataTypes.DtUsuarioGenerico"%>
 <%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
@@ -7,63 +10,66 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
-<%@page import="espotify.DataTypes.DTDatosArtista"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    Fabrica fb = Fabrica.getInstance();
-    IControlador control = fb.getControlador();
-    
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
     String estadoSuscripcionSesion = null;
-    DTDatosUsuario usuarioSesion = null;
+    DtUsuarioGenerico usuarioSesion = null;
     
-    DTDatosUsuario DTusuarioConsultado = (DTDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
-    DTDatosUsuario usuarioConsultado = null;
-    DTDatosArtista artistaConsultado = null;
+    DtUsuarioGenerico DTusuarioConsultado = (DtUsuarioGenerico) sesion.getAttribute("DTusuarioConsultado");
+    DtUsuarioGenerico usuarioConsultado = null;
+    
+    UsuarioServiceService serviceU = new UsuarioServiceService();
+    UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
     
     /* Si el atributo DTusuarioConsultado de la sesion de distinto de null, 
         es porq se consulto a otro Usuario. En caso contrario, es porq se 
             consulto su propio perfil */
-    usuarioConsultado = (DTusuarioConsultado != null) ? 
-            control.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario()) :
-            control.getDatosUsuario(nicknameSesion);
+    if (DTusuarioConsultado != null)
+        usuarioConsultado = serviceUsuario.getDatosUsuario(DTusuarioConsultado.getNicknameUsuario()).getDtUsuarioGenerico();
+    else 
+        usuarioConsultado = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, 
             fechaNacConsultado = null, fotoPerfilConsultado = null, biografiaConsultado = null,
             dirSitioWebConsultado = null;
     
-    ArrayList<String> nicknamesSeguidoresConsultados = null;
+    List<String> nicknamesSeguidoresConsultados = null;
     Map<Long, String> albumesPublicadosConsultados = new HashMap<>();
     
-    /*-----DATOS USUARIO CONSULTADO------*/
-    artistaConsultado = (DTDatosArtista) usuarioConsultado;
-    
+    /*-----DATOS USUARIO CONSULTADO------*/    
     nicknameConsultado = usuarioConsultado.getNicknameUsuario();
     nombreCompletoConsultado = usuarioConsultado.getNombreUsuario() + " " + usuarioConsultado.getApellidoUsuario();
     fotoPerfilConsultado = usuarioConsultado.getFotoPerfil();
     fotoPerfilConsultado = (fotoPerfilConsultado != null) ? fotoPerfilConsultado.substring(2) : "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
     emailConsultado = usuarioConsultado.getEmail();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac());
-    biografiaConsultado = artistaConsultado.getBiografia();
-    dirSitioWebConsultado = artistaConsultado.getDirSitioWeb();
+    fechaNacConsultado = dateFormat.format(usuarioConsultado.getFecNac().toGregorianCalendar().getTime());
+    biografiaConsultado = usuarioConsultado.getBiografia();
+    dirSitioWebConsultado = usuarioConsultado.getDirSitioWeb();
   
     nicknamesSeguidoresConsultados = usuarioConsultado.getNicknamesSeguidores();
-    albumesPublicadosConsultados = artistaConsultado.getNombresAlbumesPublicados();
+    List<DtUsuarioGenerico.NombresAlbumesPublicados.Entry> entradasAlbumes = usuarioConsultado.getNombresAlbumesPublicados().getEntry();
+    for (DtUsuarioGenerico.NombresAlbumesPublicados.Entry entradaA : entradasAlbumes) {
+        Long key = entradaA.getKey();
+        String value = entradaA.getValue();
+        if (key != null && value != null) {
+            albumesPublicadosConsultados.put(key, value);
+        }
+    }
     
     // Si existe una sesion consigo sus datos
     if (rolSesion != null) {
-        usuarioSesion = control.getDatosUsuario(nicknameSesion);
+        usuarioSesion = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
         
         // Sesion es Cliente
         if (rolSesion.equals("Cliente")) {
             // Tiene Suscripcion
-            if (((DTDatosCliente) usuarioSesion).getSuscripcion() != null) {
-                estadoSuscripcionSesion = ((DTDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+            if (usuarioSesion.getSuscripcion() != null) {
+                estadoSuscripcionSesion = usuarioSesion.getSuscripcion().getEstadoSuscripcion();
             }
         }
     }

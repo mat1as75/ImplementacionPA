@@ -1,8 +1,8 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="webservices.DataTypes.DtDatosUsuario"%>
-<%@page import="webservices.DataTypes.DtDatosCliente"%>
-<%@page import="webservices.DataTypes.DtDatosArtista"%>
+<%@page import="webservices.DataTypes.DtUsuarioGenerico"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -10,8 +10,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="scripts/consultaPerfilUsuario.js" defer></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="icon" href="Resource/ImagenesPerfil/espotify-icon.png" type="image/png" sizes="16x16">
+        <link rel="stylesheet" href="styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="styles/nav.css"/>
         <title>Consulta Perfil Usuario</title>
     </head>
@@ -23,7 +25,10 @@
     <%
         HttpSession sesion = request.getSession(false);
         String rolSesion = (String) sesion.getAttribute("rol");
-        DtDatosUsuario DTusuarioConsultado = (DtDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
+        DtUsuarioGenerico DTusuarioConsultado = (DtUsuarioGenerico) sesion.getAttribute("DTusuarioConsultado");
+        
+        UsuarioServiceService serviceU = new UsuarioServiceService();
+        UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
     %>
     <%
         boolean autoConsulta = false;
@@ -37,7 +42,8 @@
             }
             System.out.println("ACA");
         } else { /* Sesion consulto perfil de un tercero */
-            if (DTusuarioConsultado.getClass() == DtDatosCliente.class) {
+            String tipoUsuario = serviceUsuario.getTipoUsuario(DTusuarioConsultado.getNicknameUsuario());
+            if (tipoUsuario.equals("Cliente")) {
                 esCliente = true;
             }
             System.out.println("ACA2");

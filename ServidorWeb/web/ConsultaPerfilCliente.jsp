@@ -1,10 +1,9 @@
+<%@page import="webservices.DataTypes.DtUsuarioGenerico"%>
 <%@page import="webservices.SuscripcionesServiceService"%>
 <%@page import="webservices.SuscripcionesService"%>
 <%@page import="webservices.ArrayListContainer"%>
 <%@page import="webservices.UsuarioService"%>
 <%@page import="webservices.UsuarioServiceService"%>
-<%@page import="webservices.DataTypes.DtDatosCliente"%>
-<%@page import="webservices.DataTypes.DtDatosUsuario"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -19,11 +18,10 @@
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
     String estadoSuscripcionSesion = null;
-    DtDatosUsuario usuarioSesion = null;
+    DtUsuarioGenerico usuarioSesion = null;
     
-    DtDatosUsuario DTusuarioConsultado = (DtDatosUsuario) sesion.getAttribute("DTusuarioConsultado");
-    DtDatosUsuario usuarioConsultado = null;
-    DtDatosCliente clienteConsultado = null;
+    DtUsuarioGenerico DTusuarioConsultado = (DtUsuarioGenerico) sesion.getAttribute("DTusuarioConsultado");
+    DtUsuarioGenerico usuarioConsultado = null;
     
     UsuarioServiceService serviceU = new UsuarioServiceService();
     UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
@@ -31,11 +29,10 @@
     /* Si el atributo DTusuarioConsultado de la sesion de distinto de null, 
         es porq se consulto a otro Usuario. En caso contrario, es porq se 
             consulto su propio perfil */
-    
     if (DTusuarioConsultado != null) // Se consulto el Perfil de otro Usuario
-        usuarioConsultado = serviceUsuario.getDatosCliente((DTusuarioConsultado.getNicknameUsuario()));
+        usuarioConsultado = serviceUsuario.getDatosUsuario((DTusuarioConsultado.getNicknameUsuario())).getDtUsuarioGenerico();
     else // Se consulto el Perfil del Usuario Sesion
-        usuarioConsultado = serviceUsuario.getDatosCliente(nicknameSesion);
+        usuarioConsultado = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
 
     /* MUESTRO TODOS LOS DATOS DEL USUARIO CONSULTADO */
     System.out.println("tipo: " + serviceUsuario.getTipoUsuario(nicknameSesion));
@@ -44,13 +41,13 @@
     System.out.println("email: " + usuarioConsultado.getEmail());
     System.out.println("fecnac: " + usuarioConsultado.getFecNac());
     System.out.println("misSeguidores: " + usuarioConsultado.getNicknamesSeguidores());
-    System.out.println("misSeguidos: " + ((DtDatosCliente) usuarioConsultado).getNicknamesSeguidos());
-    System.out.println("misListasCreadas: " + ((DtDatosCliente) usuarioConsultado).getNombresListasRCreadas());
-    System.out.println("misListasCreadasPublicas " + ((DtDatosCliente) usuarioConsultado).getNombresListasRCreadasPublicas());
-    System.out.println("misListasFav: " + ((DtDatosCliente) usuarioConsultado).getNombresListasRFavoritas());
-    System.out.println("misAlbumesFav: " + ((DtDatosCliente) usuarioConsultado).getNombresAlbumesFavoritos());
-    System.out.println("misTemasFav: " + ((DtDatosCliente) usuarioConsultado).getNombresTemasFavoritos());
-    System.out.println("miSuscripcion: " + ((DtDatosCliente) usuarioConsultado).getSuscripcion());
+    System.out.println("misSeguidos: " + usuarioConsultado.getNicknamesSeguidos());
+    System.out.println("misListasCreadas: " + usuarioConsultado.getNombresListasRCreadas());
+    System.out.println("misListasCreadasPublicas " + usuarioConsultado.getNombresListasRCreadasPublicas());
+    System.out.println("misListasFav: " + usuarioConsultado.getNombresListasRFavoritas());
+    System.out.println("misAlbumesFav: " + usuarioConsultado.getNombresAlbumesFavoritos());
+    System.out.println("misTemasFav: " + usuarioConsultado.getNombresTemasFavoritos());
+    System.out.println("miSuscripcion: " + usuarioConsultado.getSuscripcion());
     
     String nicknameConsultado = null, emailConsultado = null, nombreCompletoConsultado = null, fechaNacConsultado = null, fotoPerfilConsultado = null;
     List<String> nicknamesSeguidoresConsultados = null, nicknamesSeguidosConsultados = null, nicknamesS = null, rolesS = null, 
@@ -59,8 +56,6 @@
     Map<Long, String> temasFavConsultados = new HashMap<>(), albumesFavConsultados = new HashMap<>();
     
     /*-----DATOS USUARIO CONSULTADO------*/
-    clienteConsultado = (DtDatosCliente) usuarioConsultado;
-    
     nicknameConsultado = usuarioConsultado.getNicknameUsuario();
     emailConsultado = usuarioConsultado.getEmail();
     nombreCompletoConsultado = usuarioConsultado.getNombreUsuario() + " " + usuarioConsultado.getApellidoUsuario();
@@ -72,13 +67,12 @@
     
     if (rolSesion != null) { /* Si existe Sesion (Cliente o Artista) */
         
-        usuarioSesion = serviceUsuario.getDatosUsuario(nicknameSesion).getDtDatosUsuario();
+        usuarioSesion = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
         
         if (rolSesion.equals("Cliente")) {
-            DtDatosCliente clienteSesion = (DtDatosCliente) usuarioSesion;
-            if (clienteSesion.getSuscripcion() != null) {
+            if (usuarioSesion.getSuscripcion() != null) {
                 //((DTDatosCliente) usuarioSesion).getSuscripcion().setEstadoSuscripcion("Vigente");
-                estadoSuscripcionSesion = ((DtDatosCliente) usuarioSesion).getSuscripcion().getEstadoSuscripcion();
+                estadoSuscripcionSesion = usuarioSesion.getSuscripcion().getEstadoSuscripcion();
                 System.out.println("### " + estadoSuscripcionSesion);
             }
         }
@@ -86,12 +80,12 @@
         /* UsuarioSesion == UsuarioConsultado */
         if (nicknameSesion.equals(usuarioConsultado.getNicknameUsuario())) { 
             /* UsuarioSesion.Suscripcion != null */
-            if (((DtDatosCliente) usuarioSesion).getSuscripcion() != null) {
+            if (usuarioSesion.getSuscripcion() != null) {
                 /* UsuarioSesion EstadoSuscripcion.Vigente */
                 if (estadoSuscripcionSesion.equals("Vigente")) {
 
                     // Usuarios a los que sigue (identificando si son clientes o artistas)
-                    nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
+                    nicknamesSeguidosConsultados = usuarioConsultado.getNicknamesSeguidos();
                     nicknamesS = new ArrayList<>();
                     rolesS = new ArrayList<>();
                     for (String n : nicknamesSeguidosConsultados) {
@@ -104,12 +98,26 @@
                     }
 
                     // Listas de Reproduccion que creo (Publicas Y Privadas)
-                    nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadas();
+                    nombresListasRConsultadas = usuarioConsultado.getNombresListasRCreadas();
 
                     // Preferencias que tiene guardadas
-                    temasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
-                    albumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
-                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
+                    List<DtUsuarioGenerico.NombresTemasFavoritos.Entry> entradasTemas = usuarioConsultado.getNombresTemasFavoritos().getEntry();
+                    for (DtUsuarioGenerico.NombresTemasFavoritos.Entry entradaT : entradasTemas) {
+                        Long key = entradaT.getKey();
+                        String value = entradaT.getValue();
+                        if (key != null && value != null) {
+                            temasFavConsultados.put(key, value);
+                        }
+                    }
+                    List<DtUsuarioGenerico.NombresAlbumesFavoritos.Entry> entradasAlbumes = usuarioConsultado.getNombresAlbumesFavoritos().getEntry();
+                    for (DtUsuarioGenerico.NombresAlbumesFavoritos.Entry entradaA : entradasAlbumes) {
+                        Long key = entradaA.getKey();
+                        String value = entradaA.getValue();
+                        if (key != null && value != null) {
+                            albumesFavConsultados.put(key, value);
+                        }
+                    }
+                    nombresListasRFavConsultadas = usuarioConsultado.getNombresListasRFavoritas();
                 }  
             }
         } else { /* UsuarioSesion != UsuarioConsultado */
@@ -118,7 +126,7 @@
             if (rolSesion.equals("Artista") || ((rolSesion.equals("Cliente") && estadoSuscripcionSesion != null 
                                                 && estadoSuscripcionSesion.equals("Vigente")))) {
                 // Usuarios a los que sigue (identificando si son clientes o artistas)
-                    nicknamesSeguidosConsultados = clienteConsultado.getNicknamesSeguidos();
+                    nicknamesSeguidosConsultados = usuarioConsultado.getNicknamesSeguidos();
                     nicknamesS = new ArrayList<>();
                     rolesS = new ArrayList<>();
                     for (String n : nicknamesSeguidosConsultados) {
@@ -135,19 +143,34 @@
                     if (rolSesion.equals("Artista") || nicknamesSeguidoresConsultados.contains(nicknameSesion)) {
 
                         // Listas de Reproduccion que creo (Publicas)
-                        nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
+                        nombresListasRConsultadas = usuarioConsultado.getNombresListasRCreadasPublicas();
                     }
 
                     // Preferencias que tiene guardadas
-                    temasFavConsultados = clienteConsultado.getNombresTemasFavoritos();
-                    albumesFavConsultados = clienteConsultado.getNombresAlbumesFavoritos();
-                    nombresListasRFavConsultadas = clienteConsultado.getNombresListasRFavoritas();
+                    // Preferencias que tiene guardadas
+                    List<DtUsuarioGenerico.NombresTemasFavoritos.Entry> entradasTemas = usuarioConsultado.getNombresTemasFavoritos().getEntry();
+                    for (DtUsuarioGenerico.NombresTemasFavoritos.Entry entradaT : entradasTemas) {
+                        Long key = entradaT.getKey();
+                        String value = entradaT.getValue();
+                        if (key != null && value != null) {
+                            temasFavConsultados.put(key, value);
+                        }
+                    }
+                    List<DtUsuarioGenerico.NombresAlbumesFavoritos.Entry> entradasAlbumes = usuarioConsultado.getNombresAlbumesFavoritos().getEntry();
+                    for (DtUsuarioGenerico.NombresAlbumesFavoritos.Entry entradaA : entradasAlbumes) {
+                        Long key = entradaA.getKey();
+                        String value = entradaA.getValue();
+                        if (key != null && value != null) {
+                            albumesFavConsultados.put(key, value);
+                        }
+                    }
+                    nombresListasRFavConsultadas = usuarioConsultado.getNombresListasRFavoritas();
                     
             }
         }
     } else { /* No existe Sesion (Visitante) */
         
-        nombresListasRConsultadas = clienteConsultado.getNombresListasRCreadasPublicas();
+        nombresListasRConsultadas = usuarioConsultado.getNombresListasRCreadasPublicas();
     }
 
 %>

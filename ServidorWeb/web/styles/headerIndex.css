@@ -25,7 +25,7 @@ header {
 }
 
 .logo-text {
-    font-size: 2em; /* Tamaño del texto */
+    font-size: 2.5vw; /* Tamaño del texto */
     font-family: 'Montserrat', sans-serif;
     color: var(--white); /* Color del texto */
     font-weight: bold; /* Negrita */
@@ -91,7 +91,7 @@ header {
 
 option {
     font-family: 'Monospace';
-    font-size: 10px;
+    font-size: 1rem;
     color: var(--black);
 }
 
