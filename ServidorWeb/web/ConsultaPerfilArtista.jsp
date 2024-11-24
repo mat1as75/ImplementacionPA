@@ -137,7 +137,7 @@ System.out.println("SIZE ALBUMES PUBLICADOS: " + albumesPublicadosConsultados.si
                 %>
                 
                 <%  // ArtistaSesion == ArtistaConsultado
-                    if (nicknameSesion.equals(nicknameConsultado)) { %>
+                    if (rolSesion != null && nicknameSesion.equals(nicknameConsultado)) { %>
                         <form id="form-BajaArtista" action="SVBajaArtista" method="POST">
                             <input type="hidden" name="nicknameSesion" value="<%= nicknameSesion %>"/>
                             <button type="button" class="boton-BajaArtista" onclick="mostrarCartelConfirmacion()">Descativar Cuenta</button>
