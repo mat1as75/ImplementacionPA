@@ -168,3 +168,22 @@ function VolverAArtistas() {
     limpiarMosaicos();
 }
 
+const infoButton = document.querySelectorAll('.more-info');
+
+infoButton.forEach(div => {
+    div.addEventListener('mouseenter', function() {
+        // Obtener el recuadro de informacion dentro del div
+        const infoText = this.querySelector('.extra-info');
+        
+        // Mostrar el recuadro de informacion (poner display: block)
+        infoText.style.display = 'block';
+    });
+    
+    div.addEventListener('mouseleave', function() {
+        // Obtener el recuadro de informacion dentro del div
+        const infoText = this.querySelector('.extra-info');
+        
+        // Ocultar el recuadro de informacion (poner display: none)
+        infoText.style.display = 'none';
+    });
+});

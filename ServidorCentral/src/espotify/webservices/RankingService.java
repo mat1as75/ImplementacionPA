@@ -35,7 +35,7 @@ public class RankingService {
         List<DTTemaConPuntaje> listDataTemas = this.ictrl.getTopTemas(cantidadEsperada);
         ArrayList<DTTemaConPuntaje> arrayListDataTemas = new ArrayList(listDataTemas);
         ArrayListContainer contenedor = new ArrayListContainer(arrayListDataTemas);
-        
+
         return contenedor;
     }
     

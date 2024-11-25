@@ -1,13 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color-dark-5);
+    color: var(--color-white);
+}
+
+#miFormulario {
+    padding: 1.5rem;
+    border: 1px solid var(--color-grey-accent);
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-4);
+    max-width: 600px; /* Ancho máximo del formulario */
+    margin: 20px auto; /* Centra el formulario horizontalmente */
+}
+
 .contenedor-listas {
     display: flex; /* Usar flexbox para alinear los elementos horizontalmente */
+    margin-bottom: 1rem;
     gap: 20px; /* Espacio entre los contenedores */
 }
 
 .lista-contenedor {
     padding: 15px; /* Espaciado interno */
-    border: 1px solid #ccc; /* Borde del rectángulo */
-    border-radius: 5px; /* Esquinas redondeadas */
-    background-color: #f9f9f9; /* Color de fondo */
+    border: 1px solid var(--color-grey-accent); /* Borde del rectángulo */
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-3);
 }
 
 .nickname {
@@ -18,40 +35,10 @@
     flex: 1; /* Permite que el contenedor de listas privadas tome espacio */
 }
 
- #listasPrivadas {
-        list-style-type: none; /* Elimina los puntos de la lista */
-        padding: 0; /* Elimina el padding por defecto */
-        margin: 0; /* Elimina el margin por defecto */
-    }
-
-button {
-    background-color: #5a5a5a;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 15px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #4a4a4a;
-}
-
-body {
-    background-color: #fff; /* Color azul claro para el fondo del body */
-    margin: 0; /* Elimina el margen por defecto */
-    font-family: Arial, sans-serif; /* Fuente básica */
-}
-
-#miFormulario {
-    padding: 20px;
-    border-radius: 8px; /* Esquinas redondeadas */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    background-color: #F8F9FA; /* Fondo blanco para el formulario */
-    max-width: 600px; /* Ancho máximo del formulario */
-    margin: 20px auto; /* Centra el formulario horizontalmente */
+#listasPrivadas {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    padding: 0; /* Elimina el padding por defecto */
+    margin: 0; /* Elimina el margin por defecto */
 }
 
 .contenedor-listas {
@@ -61,9 +48,9 @@ body {
 
 .lista-contenedor {
     padding: 15px; /* Espaciado interno */
-    border: 1px solid #ccc; /* Borde del rectángulo */
-    border-radius: 5px; /* Esquinas redondeadas */
-    background-color: #f9f9f9; /* Color de fondo de las listas */
+    border: 1px solid var(--color-grey-accent); /* Borde del rectángulo */
+    border-radius: var(--border-radius-containers);
+    background-color: var(--bg-color-dark-3); /* Color de fondo de las listas */
 }
 
 .nickname, .listas-privadas {

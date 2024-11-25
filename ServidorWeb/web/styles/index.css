@@ -110,9 +110,9 @@ body {
 }
 
 li.active a, li.active a:hover {
-    background: #fff;
+    background: var(--dark-gray);
     color: #000;
-    border: 1px solid #ccc;
+    border: 1px solid var(--other-gray);
 }
 
 /*----- Content of Tabs -----*/
@@ -154,7 +154,6 @@ h1, h2, h3 {
     font-weight: bold;
 }
 
-
 @media screen and (max-width:720px) {
     .tabs {
         display:flex;
@@ -185,3 +184,90 @@ h1, h2, h3 {
     }
     
 }
+
+#sugerencias-titulo {
+    display: flex;
+    margin-top: 20px;
+    margin-left: 60px;
+    padding: 0;
+    text-align: left;
+    letter-spacing: 2px;
+    font-family: 'Arial', sans sherif;
+    font-size: 26px;
+}
+
+.tab .divisor {
+    display: flex;
+    border-top: 1px solid var(--other-gray);
+    width: 95%;
+    margin: 20px 15px;
+}
+
+.tabla-topTemas {
+    margin: 0;
+    margin-left: 30px;
+    margin-right: 30px;
+    border-collapse: collapse;
+}
+
+.tabla-topTemas th {
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    vertical-align: middle;
+}
+
+.tabla-topTemas td {
+    padding: 5px;
+    text-align: left;
+    font-family: 'Montserrat', monospace;
+    border-top: 1px solid var(--other-gray);
+    border-bottom: 1px solid var(--other-gray);
+    vertical-align: middle;
+}
+
+.more-info {
+    padding: 5px;
+    font-size: 22px;
+    color: var(--black);
+    border: none;
+    border-radius: 5px;
+    letter-spacing: -1px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Estilo para la información extra */
+.extra-info {
+    display: none;
+    position: absolute;
+    left: -120px;
+    top: 50%;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: var(--medium-gray);
+    border: 2px solid var(--spotify-green);
+    border-radius: 2px;
+    color: var(--black);
+    z-index: 10000;
+}
+
+.more-info i {
+    color: var(--white);
+}
+
+.extra-info ul li {
+    padding: 5px;
+    padding-right: 10px;
+    margin: 0;
+    margin-left: -30px;
+    list-style-type: none;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.extra-info .div #divisor {
+    padding: 0;
+    margin: 0;
+}
+
+
