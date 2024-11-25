@@ -17,8 +17,6 @@
 <%@page import="webservices.ContenidoService"%>
 <%@page import="webservices.PreferenciasServiceService"%>
 <%@page import="webservices.PreferenciasService"%>
-<%@ page import="espotify.logica.Fabrica" %>
-<%@ page import="espotify.logica.IControlador" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
