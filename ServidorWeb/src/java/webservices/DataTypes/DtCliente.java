@@ -47,6 +47,10 @@ public class DtCliente
 {
 
     protected DtSuscripcion miSuscripcion;
+
+    /**
+     *
+     */
     @XmlElement(nillable = true)
     protected List<DtAlbum> misAlbumesFav;
     @XmlElement(nillable = true)

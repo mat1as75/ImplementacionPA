@@ -4,6 +4,7 @@ import java.util.List;
 
 public class DTTemaGenerico {
 
+    protected Long idTema;
     protected String nombreTema;
     protected int duracionSegundos;
     protected int posicionEnAlbum;
@@ -25,6 +26,16 @@ public class DTTemaGenerico {
         this.cantidadReproducciones = cantidadReproducciones;
     }
 
+    public Long getIdTema() {
+        return idTema;
+    }
+
+    public void setIdTema(Long idTema) {
+        this.idTema = idTema;
+    }
+
+    
+    
     public String getNombreTema() {
         return nombreTema;
     }

@@ -53,7 +53,8 @@ public class SVGuardarListaFavorito extends HttpServlet {
         IControlador control = fb.getControlador();
         
         
-        String nombreLista = request.getParameter("lista");
+        String nombreLista = request.getParameter("nombreLista");
+        System.out.println("ACA " + nombreLista);
         
         DTDatosCliente user = control.ConsultarPerfilCliente(request.getParameter("nickname"));
          // Obtener la sesión del usuario//
