@@ -245,10 +245,14 @@ h1, h2, h3 {
     margin-top: 10px;
     font-size: 14px;
     background-color: var(--medium-gray);
-    border: 2px solid var(--black);
+    border: 2px solid var(--spotify-green);
     border-radius: 2px;
     color: var(--black);
     z-index: 10000;
+}
+
+.more-info i {
+    color: var(--white);
 }
 
 .extra-info ul li {
