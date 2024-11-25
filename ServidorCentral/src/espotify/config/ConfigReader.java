@@ -8,6 +8,10 @@ import java.util.Properties;
 public class ConfigReader {
     private Properties properties;
     
+    /**
+     * Requiere que la ubicacion del archivo .jar del proyecto sea /home/{usuario}/Espotify,
+     * y la ubicacion del archivo config.properties sea /home/{usuario}/Espotify/config.properties
+     */
     public ConfigReader() {
         File configFile =  new File(ConfigReader.getConfigPath());
         
