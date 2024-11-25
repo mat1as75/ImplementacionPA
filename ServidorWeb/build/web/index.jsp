@@ -31,9 +31,7 @@
                 text-align: center;
                 margin-bottom: 20px;
             }
-            #volver,#volver2{
-                font-size: 1.5em;
-            }
+            
         </style>
     </head>
     <body>
@@ -106,7 +104,7 @@
 
             <div class="tab-content">
                 <div id="tab1" class="tab active">
-                    <button type="button" id="volver" onclick="VolverAGeneros()">Volver</button>
+                    <button class="btnVolver" type="button" id="volver" onclick="VolverAGeneros()">Volver</button>
                     <div id="pre-seleccion">
                         <h1>Géneros</h1>
                         <div class="mosaico-container">
@@ -171,7 +169,7 @@
                 </div>
 
                 <div id="tab2" class="tab">
-                    <button type="button" id="volver2" onclick="VolverAArtistas()">Volver</button>
+                    <button class="btnVolver" type="button" id="volver2" onclick="VolverAArtistas()">Volver</button>
                     <div id="pre-seleccion2">
                         <h1>Artistas</h1>
                         <div class="mosaico-container">

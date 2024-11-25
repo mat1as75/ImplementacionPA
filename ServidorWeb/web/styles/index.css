@@ -5,6 +5,20 @@ body {
     background-color: var(--black);
 }
 
+.btnVolver {
+    font-size: 1.2em;
+    margin: 1rem .5rem;
+    padding: .5rem 1rem;
+    border-radius: var(--border-radius-btns);
+    background-color: var(--bg-color-dark-2);
+    color: var(--color-white);
+}
+
+.btnVolver:hover {
+    color: #000;
+    background-color: var(--color-white);
+}
+
 .overlay {
     display: none; /* Inicialmente oculto */
     position: fixed; /* Fijo en la pantalla */
@@ -56,6 +70,7 @@ body {
 /*----- Tabs -----*/
 .tabs {
     display: flex; /* Cambia a flexbox */
+    justify-content: center;
     margin-top: 50px;
 }
 
@@ -102,14 +117,14 @@ li.active a, li.active a:hover {
 
 /*----- Content of Tabs -----*/
 .tab-content {
-    color: black;
-    padding: 0;
+    color: var(--color-white);
+    padding: 0 1rem;
     max-height: 700px;
     border: 1px solid #ccc;
-    width: 50%;
+    width: 70%;
     border-radius: var(--border-radius-containers);
     box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
-    background: white;
+    background: var(--bg-color-dark-4);
     overflow-y: auto;
 }
 
@@ -149,7 +164,7 @@ h1, h2, h3 {
     }
     .tab-content {
         width: 100%;
-        margin: 0 auto;
+        margin: 1rem auto;
     }
     .tab-links {
         display: flex;

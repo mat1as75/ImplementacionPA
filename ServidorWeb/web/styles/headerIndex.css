@@ -121,3 +121,10 @@ option:hover {
     background-color: #004085; // Color de fondo al hacer clic
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Sombra más sutil
 }*/
+
+
+@media screen and (max-width: 720px) {
+    header {
+        display: none;
+    }
+}
