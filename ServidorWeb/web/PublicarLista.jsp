@@ -1,8 +1,7 @@
+<%@page import="webservices.ListaReproduccionService"%>
+<%@page import="webservices.ListaReproduccionServiceService"%>
 <%@page import="java.util.List"%>
-<%@page import="espotify.DataTypes.DTDatosCliente"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="espotify.logica.IControlador"%>
-<%@page import="espotify.logica.Fabrica"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,6 +10,10 @@
     <title>Publicar Lista</title>
     <link rel="stylesheet" href="styles/PublicarLista.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/nav.css"/>
+    <link rel="stylesheet" href="styles/variablesGlobales.css"/>
+
     <script>
         function validarSeleccion() {
             const selectedValue = document.querySelector('input[name="listaSeleccionada"]:checked');
@@ -28,13 +31,17 @@
 <%
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
-    // Solo para pruebas, elimina esto en producción
-    Fabrica f = Fabrica.getInstance();
-    IControlador i = f.getControlador();
+    ListaReproduccionServiceService listaRepWS = new ListaReproduccionServiceService();
+    ListaReproduccionService listaRepPort = listaRepWS.getListaReproduccionServicePort();
+    List<Object> listasPrivadasObjs = listaRepPort.getNombresDeListasPrivadasDeCliente(nicknameSesion).getColeccion();
+    List<String> listasPrivadas = new ArrayList();
+    for (Object o : listasPrivadasObjs) {
+        listasPrivadas.add((String) o);
+    }
 %>           
 
 <jsp:include page="headerIndex.jsp"/>
-
+<%@ include file="../WEB-INF/jspf/Nav.jspf" %>
 <% String mensaje = (String) request.getAttribute("mensaje");
 if (mensaje != null) {%>
 <div id="felisidades" class="error" style="color: red;"><%=mensaje%></div>
@@ -51,8 +58,6 @@ if (mensaje != null) {%>
 
         <div class="lista-contenedor listas-privadas">
             <h3>Listas Privadas</h3>
-            <% 
-                List<String> listasPrivadas = i.listasCreadasEstadoPrivadoTrue(nicknameSesion); %>
             <ul id="listasPrivadas">
                 <%
                     for (String lista : listasPrivadas) {
