@@ -8,8 +8,44 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
+
+/**
+ * <p>Clase Java para dtTemaConPuntaje complex type.
+ * 
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * 
+ * <pre>
+ * &lt;complexType name="dtTemaConPuntaje"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="cantidadDescargasOVisitas" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="cantidadFavoritos" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="cantidadListas" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="cantidadReproducciones" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="duracionSegundos" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="generosDeTema" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="idAlbum" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="idTema" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
+ *         &lt;element name="nombreAlbum" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="nombreCompletoArtista" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="nombreTema" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="posicionEnAlbum" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="puntajeTema" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtTemaConPuntaje", propOrder = {
+    "cantidadDescargasOVisitas",
+    "cantidadFavoritos",
+    "cantidadListas",
+    "cantidadReproducciones",
     "duracionSegundos",
     "generosDeTema",
     "idAlbum",
@@ -18,14 +54,14 @@ import jakarta.xml.bind.annotation.XmlType;
     "nombreCompletoArtista",
     "nombreTema",
     "posicionEnAlbum",
-    "puntajeTema",
-    "cantidadReproducciones",
-    "cantidadDescargasOVisitas",
-    "cantidadFavoritos",
-    "cantidadListas"
+    "puntajeTema"
 })
 public class DtTemaConPuntaje {
 
+    protected Long cantidadDescargasOVisitas;
+    protected Long cantidadFavoritos;
+    protected Long cantidadListas;
+    protected Long cantidadReproducciones;
     protected int duracionSegundos;
     @XmlElement(nillable = true)
     protected List<String> generosDeTema;
@@ -36,24 +72,114 @@ public class DtTemaConPuntaje {
     protected String nombreTema;
     protected int posicionEnAlbum;
     protected Float puntajeTema;
-    protected Long cantidadReproducciones;
-    protected Long cantidadDescargasOVisitas;
-    protected Long cantidadFavoritos;
-    protected Long cantidadListas;
 
     /**
-     * Gets the value of the duracionSegundos property.
+     * Obtiene el valor de la propiedad cantidadDescargasOVisitas.
      * 
-     * @return 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadDescargasOVisitas() {
+        return cantidadDescargasOVisitas;
+    }
+
+    /**
+     * Define el valor de la propiedad cantidadDescargasOVisitas.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setCantidadDescargasOVisitas(Long value) {
+        this.cantidadDescargasOVisitas = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad cantidadFavoritos.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadFavoritos() {
+        return cantidadFavoritos;
+    }
+
+    /**
+     * Define el valor de la propiedad cantidadFavoritos.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setCantidadFavoritos(Long value) {
+        this.cantidadFavoritos = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad cantidadListas.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadListas() {
+        return cantidadListas;
+    }
+
+    /**
+     * Define el valor de la propiedad cantidadListas.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setCantidadListas(Long value) {
+        this.cantidadListas = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad cantidadReproducciones.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getCantidadReproducciones() {
+        return cantidadReproducciones;
+    }
+
+    /**
+     * Define el valor de la propiedad cantidadReproducciones.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setCantidadReproducciones(Long value) {
+        this.cantidadReproducciones = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad duracionSegundos.
+     * 
      */
     public int getDuracionSegundos() {
         return duracionSegundos;
     }
 
     /**
-     * Sets the value of the duracionSegundos property.
+     * Define el valor de la propiedad duracionSegundos.
      * 
-     * @param value
      */
     public void setDuracionSegundos(int value) {
         this.duracionSegundos = value;
@@ -80,7 +206,6 @@ public class DtTemaConPuntaje {
      * {@link String }
      * 
      * 
-     * @return 
      */
     public List<String> getGenerosDeTema() {
         if (generosDeTema == null) {
@@ -90,7 +215,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Gets the value of the idAlbum property.
+     * Obtiene el valor de la propiedad idAlbum.
      * 
      * @return
      *     possible object is
@@ -102,7 +227,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Sets the value of the idAlbum property.
+     * Define el valor de la propiedad idAlbum.
      * 
      * @param value
      *     allowed object is
@@ -114,7 +239,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Gets the value of the idTema property.
+     * Obtiene el valor de la propiedad idTema.
      * 
      * @return
      *     possible object is
@@ -126,7 +251,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Sets the value of the idTema property.
+     * Define el valor de la propiedad idTema.
      * 
      * @param value
      *     allowed object is
@@ -138,7 +263,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Gets the value of the nombreAlbum property.
+     * Obtiene el valor de la propiedad nombreAlbum.
      * 
      * @return
      *     possible object is
@@ -150,7 +275,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Sets the value of the nombreAlbum property.
+     * Define el valor de la propiedad nombreAlbum.
      * 
      * @param value
      *     allowed object is
@@ -162,7 +287,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Gets the value of the nombreCompletoArtista property.
+     * Obtiene el valor de la propiedad nombreCompletoArtista.
      * 
      * @return
      *     possible object is
@@ -174,7 +299,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Sets the value of the nombreCompletoArtista property.
+     * Define el valor de la propiedad nombreCompletoArtista.
      * 
      * @param value
      *     allowed object is
@@ -186,7 +311,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Gets the value of the nombreTema property.
+     * Obtiene el valor de la propiedad nombreTema.
      * 
      * @return
      *     possible object is
@@ -198,7 +323,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Sets the value of the nombreTema property.
+     * Define el valor de la propiedad nombreTema.
      * 
      * @param value
      *     allowed object is
@@ -210,25 +335,23 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Gets the value of the posicionEnAlbum property.
+     * Obtiene el valor de la propiedad posicionEnAlbum.
      * 
-     * @return 
      */
     public int getPosicionEnAlbum() {
         return posicionEnAlbum;
     }
 
     /**
-     * Sets the value of the posicionEnAlbum property.
+     * Define el valor de la propiedad posicionEnAlbum.
      * 
-     * @param value
      */
     public void setPosicionEnAlbum(int value) {
         this.posicionEnAlbum = value;
     }
 
     /**
-     * Gets the value of the puntajeTema property.
+     * Obtiene el valor de la propiedad puntajeTema.
      * 
      * @return
      *     possible object is
@@ -240,7 +363,7 @@ public class DtTemaConPuntaje {
     }
 
     /**
-     * Sets the value of the puntajeTema property.
+     * Define el valor de la propiedad puntajeTema.
      * 
      * @param value
      *     allowed object is
@@ -251,89 +374,4 @@ public class DtTemaConPuntaje {
         this.puntajeTema = value;
     }
 
-    /**
-     * Gets the value of the cantidadReproducciones property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public Long getCantidadReproducciones() {
-        return cantidadReproducciones;
-    }
-
-    /**
-     * Sets the value of the cantidadReproducciones property.
-     * 
-     * @param cantidadReproducciones
-     */
-    public void setCantidadReproducciones(Long cantidadReproducciones) {
-        this.cantidadReproducciones = cantidadReproducciones;
-    }
-
-    /**
-     * Gets the value of the cantidadDescargasOVisitas property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public Long getCantidadDescargasOVisitas() {
-        return cantidadDescargasOVisitas;
-    }
-
-    /**
-     * Sets the value of the cantidadReproducciones property.
-     * 
-     * @param cantidadDescargasOVisitas
-     */
-    public void setCantidadDescargasOVisitas(Long cantidadDescargasOVisitas) {
-        this.cantidadDescargasOVisitas = cantidadDescargasOVisitas;
-    }
-
-    /**
-     * Gets the value of the cantidadFavoritos property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public Long getCantidadFavoritos() {
-        return cantidadFavoritos;
-    }
-
-    /**
-     * Sets the value of the cantidadReproducciones property.
-     * 
-     * @param cantidadFavoritos
-     */
-    public void setCantidadFavoritos(Long cantidadFavoritos) {
-        this.cantidadFavoritos = cantidadFavoritos;
-    }
-
-    /**
-     * Gets the value of the cantidadListas property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
-     */
-    public Long getCantidadListas() {
-        return cantidadListas;
-    }
-
-    /**
-     * Sets the value of the cantidadReproducciones property.
-     * 
-     * @param cantidadListas
-     */
-    public void setCantidadListas(Long cantidadListas) {
-        this.cantidadListas = cantidadListas;
-    }
-
-    
 }
