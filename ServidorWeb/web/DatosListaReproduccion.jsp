@@ -90,6 +90,30 @@
     }
     // Comprobar si puede descargar
     boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
+    
+    // Comprobar favortios
+    boolean listaEsFavorita = false;
+    boolean temaEsFavorito = false;
+    
+    ContenidoServiceService cservice = new ContenidoServiceService();
+    ContenidoService contenidoService = cservice.getUsuarioServicePort();
+    try {
+        listaEsFavorita = listaService.esListaFavorita(nicknameSesion, nombreLista);
+    } catch (Exception e) {
+        errorMsg = "Error al verificar si la lista es favorita: " + e.getMessage();
+    }
+    
+    Map<String, Boolean> temasFavoritos = new HashMap<>();
+    if (datosLista != null) {
+        for (DtTemaSimple tema : datosLista.getTemas()) {
+            try {
+                boolean esFavorito = contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema());
+                temasFavoritos.put(tema.getIdTema(), esFavorito);
+            } catch (Exception e) {
+                errorMsg = "Error al verificar si el tema es favorito: " + e.getMessage();
+            }
+        }
+    }
 %>
 
 <head>
@@ -140,7 +164,7 @@
                     <p><span>Cliente:</span> <%= datosLista != null ? datosLista.getCliente() : "N/A"%></p>
                     <% }%>
                        <%
-                       if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                       if(!listaEsFavorita && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                        %>
                     <!-- Agregar lista a favoritos -->
                    
@@ -188,7 +212,7 @@
                             <td><%= nroTema++%></td>
                             <td>
                                  <%
-                                    if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                    if(!temasFavoritos.getOrDefault(tema.getIdTema(), false) && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
