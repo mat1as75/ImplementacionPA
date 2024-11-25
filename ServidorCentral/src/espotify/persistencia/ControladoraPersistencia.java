@@ -545,7 +545,7 @@ public class ControladoraPersistencia {
 
         // Buscar cliente por su nickname
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
-
+        
         // Crear la nueva lista particular
         ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, esPrivada);
         try {
@@ -562,7 +562,11 @@ public class ControladoraPersistencia {
     
         // Buscar cliente por su nickname
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
-
+        
+        if(fotoLista.equals("")){
+            fotoLista = null;
+        }
+        
         // Crear la nueva lista particular
         ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion,null, esPrivada);
         try {

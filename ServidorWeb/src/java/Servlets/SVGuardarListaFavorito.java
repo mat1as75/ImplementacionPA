@@ -74,7 +74,7 @@ public class SVGuardarListaFavorito extends HttpServlet {
           //  response.sendRedirect("error.jsp?message=Información incompleta");
             //return;
         //}
-        
+       
         try {
             control.GuardarListaFavorito(user.getNicknameUsuario(), nombreLista);
         } catch (Exception ex) {
@@ -83,5 +83,4 @@ public class SVGuardarListaFavorito extends HttpServlet {
         response.sendRedirect("DatosListaReproduccion.jsp?nombreLista="+ nombreLista);
        
     }
-
 }
