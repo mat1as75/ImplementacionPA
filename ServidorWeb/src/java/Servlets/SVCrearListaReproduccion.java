@@ -1,16 +1,16 @@
 package Servlets;
 
 import com.google.gson.JsonObject;
-import espotify.DataTypes.DTDatosCliente;
-import espotify.DataTypes.DTDatosUsuario;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import webservices.DataTypes.DtUsuarioGenerico;
+import webservices.ListaReproduccionService;
+import webservices.ListaReproduccionServiceService;
+import webservices.UsuarioService;
+import webservices.UsuarioServiceService;
 
 @MultipartConfig
 @WebServlet(name = "SVCrearListaReproduccion", urlPatterns = {"/SVCrearListaReproduccion"})
@@ -51,14 +59,16 @@ public class SVCrearListaReproduccion extends HttpServlet {
 
         // Comprobar si es un cliente
         if ("Cliente".equals(rolSesion)) {
-            Fabrica fb = Fabrica.getInstance();
-            IControlador control = fb.getControlador();
+            UsuarioServiceService usuarioWS = new UsuarioServiceService();
+            UsuarioService usuarioPort = usuarioWS.getUsuarioServicePort();
+            ListaReproduccionServiceService listaRepWS = new ListaReproduccionServiceService();
+            ListaReproduccionService listaRepPort = listaRepWS.getListaReproduccionServicePort();
 
-            DTDatosUsuario datosU = control.getDatosUsuario(nicknameSesion);
-            DTDatosCliente datosC = (DTDatosCliente) datosU;
+            DtUsuarioGenerico datosU = usuarioPort.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
+            
             String estadoSuscripcionSesion = null;
-            if (datosC.getSuscripcion() != null) {
-                estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
+            if (datosU.getSuscripcion() != null) {
+                estadoSuscripcionSesion = datosU.getSuscripcion().getEstadoSuscripcion();
             }
 
             // Comprobar suscripcion vigente
@@ -107,13 +117,25 @@ public class SVCrearListaReproduccion extends HttpServlet {
                     rutaImagen = DIRECCION_BASE + "/" + fileName; // Asignar la ruta de la imagen
                 }
 
-                ArrayList<String> listasParticulares = control.getNombresListasParticulares();
+                List<Object> listasParticularesObjs = listaRepPort.getNombresListasParticulares().getColeccion();
+                List<String> listasParticulares = new ArrayList();
+                for (Object o : listasParticularesObjs) {
+                    listasParticulares.add((String) o);
+                }
                 // Comprobar si la lista ya existe
                 if (!listasParticulares.contains(nombreLista)) {
                     Date fechaCreacion = new Date();
+                    XMLGregorianCalendar xmlDate = null;
+                    GregorianCalendar gc = new GregorianCalendar();
+                    gc.setTime(new Date());
+                    try {
+                        xmlDate =  DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
+                    } catch (DatatypeConfigurationException ex) {
+                        Logger.getLogger(ServletPrueba.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     boolean privada = true;
 
-                    control.CrearListaParticular(nombreLista, rutaImagen, nicknameSesion, fechaCreacion, privada);
+                    listaRepPort.crearListaParticular(nombreLista, rutaImagen, nicknameSesion, xmlDate, privada);
                     jsonResponse.addProperty("Exito", "Lista de reproducción creada exitosamente");
                 } else {
                     jsonResponse.addProperty("Error", "La lista de reproducción con el nombre " + nombreLista + " ya existe.");

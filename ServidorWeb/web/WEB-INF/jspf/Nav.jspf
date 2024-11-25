@@ -44,6 +44,7 @@
                 <li id="liNav_planes" class="nav-item"><a class="nav-link" href="IngresarSuscripcion">Planes</a></li>
                 <li id="liNav_miSuscripcion" class="nav-item"><a class="nav-link" href="ActualizarSuscripcion">Mi suscripción</a></li>
                 <li id="liNav_crearLista" class="nav-item"><a class="nav-link" href="CrearListaReproduccion.jsp">Crear lista</a></li>
+                <li id="liNav_publicarLista" class="nav-item"><a class="nav-link" href="PublicarLista.jsp">Publicar lista</a></li>
                 <li id="liNav_rankingUsuarios" class="nav-item"><a class="nav-link" href="RankingUsuarios">Ranking de usuarios</a></li>
             <% } %>
 
