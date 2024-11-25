@@ -250,7 +250,7 @@
                 </div>
 
                 <div id="tab3" class="tab">
-                <button class="btnVolver" type="button" id="volver2" onclick="VolverAArtistas()">Volver</button>
+                    <button class="btnVolver" type="button" id="volver2" onclick="VolverAArtistas()">Volver</button>
                     <div id="pre-seleccion2">
                         <h1>Artistas</h1>
                         <div class="mosaico-container">
