@@ -1,6 +1,6 @@
 
 package webservices;
-
+import webservices.DataTypes.DtUsuarioGenerico;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -26,6 +26,7 @@ import webservices.DataTypes.DtUsuario;
     "dtUsuario",
     "dtArtista",
     "dtCliente",
+    "dtUsuarioGenerico",
     "longObj"
 })
 public class NullableContainer {
@@ -48,6 +49,8 @@ public class NullableContainer {
     protected DtArtista dtArtista;
     @XmlElement(nillable = true) 
     protected DtCliente dtCliente;
+    @XmlElement(nillable = true) 
+    protected DtUsuarioGenerico dtUsuarioGenerico;
     @XmlElement(nillable = true) 
     protected Long longObj;
 
@@ -122,8 +125,14 @@ public class NullableContainer {
     public void setDtCliente(DtCliente dtCliente) {
         this.dtCliente = dtCliente;
     }
-    
-    
+
+    public DtUsuarioGenerico getDtUsuarioGenerico() {
+        return dtUsuarioGenerico;
+    }
+
+    public void setDtUsuarioGenerico(DtUsuarioGenerico dtUsuarioGenerico) {
+        this.dtUsuarioGenerico = dtUsuarioGenerico;
+    }
 
     public Long getLongObj() {
         return longObj;

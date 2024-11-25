@@ -25,7 +25,7 @@ header {
 }
 
 .logo-text {
-    font-size: 2em; /* Tamaño del texto */
+    font-size: 2.5vw; /* Tamaño del texto */
     font-family: 'Montserrat', sans-serif;
     color: var(--white); /* Color del texto */
     font-weight: bold; /* Negrita */
@@ -91,7 +91,7 @@ header {
 
 option {
     font-family: 'Monospace';
-    font-size: 10px;
+    font-size: 1rem;
     color: var(--black);
 }
 
@@ -121,3 +121,10 @@ option:hover {
     background-color: #004085; // Color de fondo al hacer clic
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Sombra más sutil
 }*/
+
+
+@media screen and (max-width: 720px) {
+    header {
+        display: none;
+    }
+}

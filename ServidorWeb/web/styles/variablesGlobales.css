@@ -23,8 +23,8 @@ body {
     --bg-color-dark-5: #000;
     --bg-color-dark-4: #121212;
     --bg-color-dark-3: #1f1f1f;
-    --bg-color-dark-2: hsla(0,0%,100%,.05);
-    --bg-color-dark-1: hsla(0,0%,100%,.14);
+    --bg-color-dark-2: #2b2b2b;
+    --bg-color-dark-1: #3c3c3c;
     --color-green-primary: #1ed760;
     --color-red-error: #ed2c3f;
     --color-grey-accent: #7c7c7c;

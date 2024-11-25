@@ -3,17 +3,19 @@
 
 body {
     margin: 0;
+    padding: 0;
     background-color: var(--dark-gray);
 }
 
 .contenido-banner {
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
     background-color: var(--black);
-    margin: auto;
-    margin-top: 5%;
+    margin: 2rem auto;
+    max-width: 500px;
     border-radius: 25px;
-    height: 550px;
-    width: 525px;
+    max-height: 550px;
     border: 1px solid var(--dark-gray);
 }
 
@@ -26,9 +28,6 @@ body {
 }
 
 .mensaje_request i {
-    border-radius: 8px;
-    margin-left: -40%;
-    margin-right: 3%;
     color: var(--red);
     background-color: var(--white);
     border: 2px solid var(--white);
@@ -46,7 +45,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 45px;
 }
 
 .logo .i {
@@ -61,49 +59,41 @@ body {
 }
 
 #tituloPrincipal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
     font-size: 2rem;
     font-family: 'Montserrat', sans-serif;
     color: var(--white); /* Color del texto */
     font-weight: bold; /* Negrita */
     letter-spacing: -2px;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    white-space: nowrap;
 }
 
 .barra-divisora {
-    display: flex;
-    width: 440px;
+    width: 80%;
+    margin: 0 auto;
     border-top: 1px solid var(--dark-gray);
-    margin-top: 8%;
+    margin-top: 5%;
 }
 
 .usuario-login {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    margin-top: 3%;
-    padding: 20px;
+    margin: 1.5rem 0; 
 }
 
 .grupo-inputs {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
 }
 
 .grupo-form {
     position: relative;
+    display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 5px;
 }
 
 .label-usuario {
-    margin-left: 40px;
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
     font-weight: bold;
@@ -116,7 +106,6 @@ body {
     padding: 10px;
     justify-content: center;
     margin-top: 1%;
-    margin-left: 40px;
     border: 1px solid var(--medium-gray);
     background-color: var(--black);
     color: var(--white);
@@ -135,8 +124,6 @@ body {
 .error-usuario i {
     border: 1px solid red;
     border-radius: 8px;
-    margin-left: 41px;
-    margin-right: -2px;
     color: var(--black);
     background-color: red;
     font-size: 12px;
@@ -166,7 +153,6 @@ body {
 }
 
 .grupo-form .label-contrasena {
-    margin-left: 40px;
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
     font-weight: bold;
@@ -183,7 +169,6 @@ body {
     color: var(--white);
     border-radius: 5px;
     margin-top: 1%;
-    margin-left: 40px;
 }
 
 input::placeholder {
@@ -196,20 +181,23 @@ input::placeholder {
     display: flex;
     align-items: center;
     padding: 0;
-    margin-left: 330px;
-    margin-top: -30px;
     border: none;
     background-color: transparent;
     color: var(--medium-gray);
-    font-size: 16px;
+    font-size: 1em;
     cursor: pointer;
     outline: none;
     z-index: 1;
 }
 
+#alternarVisibilidadPass {
+    position: absolute;
+    top: 35px;
+    left: 80%;
+}
+
 /* Icono alternar Visibilidad */
 .alternar-visible #btnVisibilidadP {
-    position: relative;
     background-color: transparent;
     color: var(--medium-gray);
     z-index: 0;
@@ -270,7 +258,6 @@ input::placeholder {
     width: 80%;
     height: 42px;
     margin-top: 30px;
-    margin-left: 42px;
     display: flex;
     white-space: nowrap;
 }
@@ -294,3 +281,17 @@ input::placeholder {
     font-weight: bold;
     margin-top: 20px;
 }
+
+
+@media screen and (max-width: 600px) {
+    body {
+        display: flex;
+        place-content: center;
+        padding: 0 1rem;
+    }
+    
+    .contenido-banner {
+        width: 90%;
+    }
+}
+

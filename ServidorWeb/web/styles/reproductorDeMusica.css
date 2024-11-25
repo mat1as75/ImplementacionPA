@@ -7,7 +7,7 @@
     background-color: var(--bg-color-dark-4);
     color: var(--color-white);
     padding: 1.5rem 1rem;
-    margin: 1rem;
+    margin: 1rem .5rem;
     max-height: 470px;
     max-width: var(--audio-player-max-width);
     font-family:  var(--l-font-family);
@@ -15,7 +15,7 @@
 
 .audioPlayerContainer audio {
     margin: 0 auto;
-    max-width: var(--audio-player-max-width);
+    max-width: calc(var(--audio-player-max-width) - 1rem);
     border: 1px solid var(--color-green-primary);
     border-radius: var(--border-radius-containers);
     background-color: var(--bg-color-dark-3);
@@ -136,4 +136,11 @@
     font-weight: bold;
     margin-left: 1em;
     content: '\F4FD';
+}
+
+@media screen and (max-width: 768px) {
+    .dropdownContent {
+        left: -120px;
+        top: -160px;
+    }
 }

@@ -1,6 +1,5 @@
 package espotify.logica;
 
-import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTDatosUsuarioSinPw;
 import java.util.List;
 import java.io.Serializable;

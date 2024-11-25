@@ -54,6 +54,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import mail.MailHandler;
 
 public class ControladoraPersistencia {
 
@@ -1746,29 +1747,53 @@ public class ControladoraPersistencia {
 
     public void ActualizarEstadoSuscripcion(
             Long idSuscripcion, 
-            EstadoSuscripcion estadoSuscripcion, 
+            EstadoSuscripcion estadoSuscripcionNuevo, 
             Date fechaSuscripcion) throws Exception {
         
         Suscripcion s = suscripcionJpa.findSuscripcion(idSuscripcion);
+        String nombreUsuario = s.getMiCliente().getNombreCompletoToString();
+        String correoUsuario = s.getMiCliente().getEmail();
+        Suscripcion.EstadoSuscripcion estadoPrevio = s.getEstadoSuscripcion();
         
         if (s == null) {
             throw new NonexistentEntityException("No se encontró la suscripcion.");
         }
         
-        if (s.getEstadoSuscripcion().equals(Suscripcion.EstadoSuscripcion.Cancelada)) {
+        if (estadoPrevio.equals(Suscripcion.EstadoSuscripcion.Cancelada)) {
             throw new Exception("No se puede modificar una suscripción cancelada.");
         }
         
-        if (estadoSuscripcion == null || fechaSuscripcion == null) {
+        if (estadoSuscripcionNuevo == null || fechaSuscripcion == null) {
             throw new InvalidDataException("No se aceptan valores nulos.");
         }
         
-        try {            
-            s.setEstadoSuscripcion(estadoSuscripcion);
+        try {
+            s.setEstadoSuscripcion(estadoSuscripcionNuevo);
             s.setFechaSuscripcion(fechaSuscripcion);
             suscripcionJpa.edit(s);
         } catch (Exception ex) {
             throw ex;
+        }
+        
+        //intento enviar el correo solo si no ocurrio un error al editar la suscripcion
+        try {
+            //si se esta aprobando o renovando una suscripcion, envio un correo
+            if (
+                    estadoSuscripcionNuevo.equals(Suscripcion.EstadoSuscripcion.Vigente)
+                    &&
+                    (estadoPrevio.equals(Suscripcion.EstadoSuscripcion.Pendiente)
+                    || estadoPrevio.equals(Suscripcion.EstadoSuscripcion.Vencida))
+                ) {
+                
+                String asunto = MailHandler.buildMsgSubject();
+                String cuerpo = MailHandler.buildMsgBody(
+                        nombreUsuario, 
+                        s.getTipoSuscripcion().toString(), 
+                        s.getFechaSuscripcion().toString());
+                MailHandler.sendEmail(correoUsuario, asunto, cuerpo);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     

@@ -1,34 +1,66 @@
 .navCustom {
-    color: var(--color-white);
-    background-color: var(--bg-color-dark-5);
-    border-bottom: 1px solid var(--color-grey-accent);
-    font-size: .8em;
+    font-size: 1em;
     font-weight: 600;
+    border-bottom: 2px solid var(--color-grey-accent);
 }
 
-.navCustomUl {
-    list-style: none;
-    display: flex;
-    flex-direction: row;
+#navbarNav {
     justify-content: end;
-    margin: 0;
 }
 
-.navCustomUl li {
-    margin: 0 .5rem;
-    padding: .5rem 0;
+.navTitle {
+    font-size: 1.2rem;
+    padding: 0 .5rem;
+    color: var(--color-white) !important;
+    font-weight: bold;
+    text-decoration: none !important; 
+    margin-right: 1rem;
 }
 
-.navCustomUl li a {
+.navbar-toggler {
+    border: 2px solid;
+    border-color: var(--color-green-primary) !important;
+}
+
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: 0 0 0 .15rem var(--color-green-primary);
+}
+
+.navCustom li a {
+    font-size: .9em;
     text-decoration: none;
-    padding: 0 1rem;
-    color: var(--color-white);
+    padding: .25rem .5rem !important; 
+    max-width: 300px;
 }
 
-.navCustomUl li a:hover {
-    text-decoration: underline;
+.navCustom li a:hover {
+    border: 2px solid var(--color-green-primary);
+    border-radius: var(--border-radius-containers);
 }
 
-.navCustomUl li a:visited {
+.navCustom li a:visited {
     color: inherit;
+}
+
+@media screen and (max-width: 768px) {
+    .navCustom li {
+        padding: .5rem .25rem;
+    }
+    
+    .navCustom li:first-of-type {
+        margin-top: .75rem;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    #liNav_crearLista {
+        display: none;
+    }
+    #liNav_cerrarSesion {
+        display: none;
+    }
+    #liNav_iniciarSesion {
+        display: none;
+    }
 }
