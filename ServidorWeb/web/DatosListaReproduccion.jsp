@@ -210,8 +210,10 @@
                 </table>
             </div>
         </div>
+        <div class="contenedor-reproductor">
+            <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
+        </div>
     </div>
-    <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
 
     <% } %>
 </body>

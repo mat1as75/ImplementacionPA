@@ -68,7 +68,7 @@ h1 {
 }
 
 .mosaico-item:hover {
-    border-color: gray;
+    border-color: var(--color-green-primary);
 }
 
 @media screen and (max-width: 480px) {

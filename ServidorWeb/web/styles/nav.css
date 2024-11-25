@@ -1,6 +1,7 @@
 .navCustom {
     font-size: 1em;
     font-weight: 600;
+    border-bottom: 2px solid var(--color-grey-accent);
 }
 
 #navbarNav {
@@ -42,12 +43,6 @@
     color: inherit;
 }
 
-@media screen and (max-width: 500px) {
-    #liNav_crearLista {
-        display: none;
-    }
-}
-
 @media screen and (max-width: 768px) {
     .navCustom li {
         padding: .5rem .25rem;
@@ -59,6 +54,9 @@
 }
 
 @media screen and (min-width: 720px) {
+    #liNav_crearLista {
+        display: none;
+    }
     #liNav_cerrarSesion {
         display: none;
     }
