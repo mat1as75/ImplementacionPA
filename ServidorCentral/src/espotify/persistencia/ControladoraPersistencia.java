@@ -2100,4 +2100,33 @@ public class ControladoraPersistencia {
             return null;
         }
     }
+    
+    public boolean esListaFavorita(String nicknameCliente, String nombreLista) {
+
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+
+        List<ListaReproduccion> listaListasRFavoritas = c.getMisListasReproduccionFav();
+        for (ListaReproduccion lRFavoritas : listaListasRFavoritas) {
+            if (lRFavoritas.getNombreLista().equals(nombreLista)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean esTemaFavorito(String nicknameCliente, Long idTema) {
+        
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        
+        List<Tema> listaTemasFavoritos = c.getMisTemasFav();
+        for (Tema tema : listaTemasFavoritos) {
+            if (tema.getIdTema().equals(idTema)) {
+                return true;
+            }
+        }
+
+        return false; 
+    }
+
 }

@@ -36,7 +36,6 @@ public class SVGuardarTemaFavorito extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            // Obtener el controlador
         
         String tipo = request.getParameter("tipo");
         String identificador = request.getParameter("identificador");
