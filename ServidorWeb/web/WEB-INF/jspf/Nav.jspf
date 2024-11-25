@@ -50,7 +50,13 @@
             <% if (rolNav.equals("Artista")) { %>
                 <li id="linNav_subirAlbum" class="nav-item"><a class="nav-link" href="AltaAlbum">Subir nuevo álbum</a></li>
             <% } %>
+                
+                <li id="liNav_cerrarSesion" class="nav-item"><a class="nav-link" href="SVCierreSesion">Cerrar sesión</a></li>
 
+        <% } else { %>
+                
+        <li id="liNav_iniciarSesion" class="nav-item"><a class="nav-link" href="InicioSesion.jsp">Iniciar sesión</a></li>
+        
         <% } %>
       </ul>
     </div>
