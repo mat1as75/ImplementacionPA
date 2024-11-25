@@ -24,14 +24,12 @@
         rolNav = (String) sesionNav.getAttribute("rol");
     }
     
-    String nicknameSesion_nav = (String) request.getAttribute("nickname");
-
+    String nicknameSesion_nav = (String) sesionNav.getAttribute("nickname");
 %>
-
-<% if (rolNav != null) { %>
 
 <nav class="navbar navbar-expand-md navbar-dark navCustom" style="background-color: #000;">
   <div class="container-fluid">
+    <a class="navTitle">Bienvenido <%=(nicknameSesion_nav == null) ? "" : nicknameSesion_nav%></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -40,22 +38,29 @@
         <li class="nav-item">
           <a class="nav-link" href="/ServidorWeb">Inicio</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="ConsultaPerfilUsuario.jsp" id="linkNav_perfil">Perfil</a>
-        </li>
-         <% if (rolNav.equals("Cliente")) { %>
-            <li class="nav-item"><a class="nav-link" href="IngresarSuscripcion" id="linkNav_planes">Planes</a></li>
-            <li class="nav-item"><a class="nav-link" href="ActualizarSuscripcion" id="linkNav_miSuscripcion">Mi suscripción</a></li>
-            <li class="nav-item"><a class="nav-link" href="CrearListaReproduccion.jsp" id="linkNav_crearLista">Crear lista</a></li>
-            <li class="nav-item"><a class="nav-link" href="RankingUsuarios" id="linkNav_rankingUsuarios">Ranking de usuarios</a></li>
-        <% } %>
+        <% if (rolNav != null) { %>
         
-        <% if (rolNav.equals("Artista")) { %>
-            <li class="nav-item"><a class="nav-link" href="AltaAlbum" id="linkNav_subirAlbum">Subir nuevo álbum</a></li>
+            <% if (rolNav.equals("Cliente")) { %>
+                <li id="liNav_planes" class="nav-item"><a class="nav-link" href="IngresarSuscripcion">Planes</a></li>
+                <li id="liNav_miSuscripcion" class="nav-item"><a class="nav-link" href="ActualizarSuscripcion">Mi suscripción</a></li>
+                <li id="liNav_crearLista" class="nav-item"><a class="nav-link" href="CrearListaReproduccion.jsp">Crear lista</a></li>
+                <li id="liNav_publicarLista" class="nav-item"><a class="nav-link" href="PublicarLista.jsp">Publicar lista</a></li>
+                <li id="liNav_rankingUsuarios" class="nav-item"><a class="nav-link" href="RankingUsuarios">Ranking de usuarios</a></li>
+            <% } %>
+
+            <% if (rolNav.equals("Artista")) { %>
+                <li id="linNav_subirAlbum" class="nav-item"><a class="nav-link" href="AltaAlbum">Subir nuevo álbum</a></li>
+            <% } %>
+                
+                <li id="liNav_cerrarSesion" class="nav-item"><a class="nav-link" href="SVCierreSesion">Cerrar sesión</a></li>
+
+        <% } else { %>
+                
+        <li id="liNav_iniciarSesion" class="nav-item"><a class="nav-link" href="InicioSesion.jsp">Iniciar sesión</a></li>
+        
         <% } %>
       </ul>
     </div>
   </div>
 </nav>
         
-<% } %>

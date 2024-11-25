@@ -1,6 +1,5 @@
 package espotify.DataTypes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DTAlbum {
@@ -10,11 +9,9 @@ private String nombreAlbum;
 private int anioCreacion;
 private String fotoAlbum;
 private Boolean estaDisponible;
-private ArrayList<DTTemaGenerico> misTemas = new ArrayList<>();
-
-private ArrayList<DTTemaSimple> misTemasSimples = new ArrayList<>();
-
-private ArrayList<DTGenero>misgeneros = new ArrayList<>();
+private List<DTTemaGenerico> misTemas;
+private List<DTTemaSimple> misTemasSimples;
+private List<DTGenero>misgeneros;
 private DTArtista miArtista;
 
     public DTAlbum() {
@@ -43,6 +40,20 @@ private DTArtista miArtista;
         this.estaDisponible = disponibilidad;
     }
 
+    public DTAlbum(Long idAlbum, String nombreAlbum, int anioCreacion, String fotoAlbum, Boolean estaDisponible, List<DTTemaGenerico> misTemas, List<DTTemaSimple> misTemasSimples, List<DTGenero> misgeneros, DTArtista miArtista) {
+        this.idAlbum = idAlbum;
+        this.nombreAlbum = nombreAlbum;
+        this.anioCreacion = anioCreacion;
+        this.fotoAlbum = fotoAlbum;
+        this.estaDisponible = estaDisponible;
+        this.misTemas = misTemas;
+        this.misTemasSimples = misTemasSimples;
+        this.misgeneros = misgeneros;
+        this.miArtista = miArtista;
+    }
+    
+    
+
     public Long getIdAlbum() {
         return this.idAlbum;
     }
@@ -59,12 +70,12 @@ private DTArtista miArtista;
         return fotoAlbum;
     }
 
-    public ArrayList<DTTemaGenerico> getMisTemas() {
+    public List<DTTemaGenerico> getMisTemas() {
         return misTemas;
     }
 
     
-    public ArrayList<DTTemaSimple> getMisTemasSimple() {
+    public List<DTTemaSimple> getMisTemasSimple() {
         return misTemasSimples;
 
     }
@@ -93,12 +104,12 @@ private DTArtista miArtista;
         this.fotoAlbum = fotoAlbum;
     }
 
-    public void setMisTemas(ArrayList<DTTemaGenerico> misTemas) {
+    public void setMisTemas(List<DTTemaGenerico> misTemas) {
         this.misTemas = misTemas;
     }
 
     
-    public void setMisTemasSimples(ArrayList<DTTemaSimple> misTemas) {
+    public void setMisTemasSimples(List<DTTemaSimple> misTemas) {
         this.misTemasSimples = misTemas;
     }
 
@@ -106,7 +117,7 @@ private DTArtista miArtista;
         this.misTemas.addFirst(misTemas);
     }
 
-    public void setMisgeneros(ArrayList<DTGenero> misgeneros) {
+    public void setMisgeneros(List<DTGenero> misgeneros) {
         this.misgeneros = misgeneros;
     }
     public void setMigenero(DTGenero misgeneros) {
@@ -122,6 +133,10 @@ private DTArtista miArtista;
 
     public void setEstaDisponible(Boolean estaDisponible) {
         this.estaDisponible = estaDisponible;
+    }
+
+    public List<DTTemaSimple> getMisTemasSimples() {
+        return misTemasSimples;
     }
     
     

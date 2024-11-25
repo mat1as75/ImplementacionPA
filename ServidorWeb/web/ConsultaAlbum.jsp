@@ -5,15 +5,28 @@
 --%>
 <%@page import="espotify.DataTypes.DTGenero"%>
 <%@page import="java.util.List" %>
-<%@page import="espotify.DataTypes.DTAlbum" %>
-<%@page import="espotify.DataTypes.DTTemaSimple"%>
-<%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
-<%@ page import="espotify.logica.Fabrica" %>
-<%@ page import="espotify.logica.IControlador" %>
+<%@page import="webservices.DataTypes.DtAlbum"%>
+<%@page import="webservices.DataTypes.DtUsuarioGenerico"%>
+<%@page import="webservices.DataTypes.DtGenero"%>
+<%@page import="webservices.DataTypes.DtTemaSimple"%>
+<%@page import="webservices.DataTypes.DtTemaGenericoConRutaOUrl"%>
+<%@page import="webservices.NullableContainer"%>
+<%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.ContenidoServiceService"%>
+<%@page import="webservices.ContenidoService"%>
+<%@page import="webservices.PreferenciasServiceService"%>
+<%@page import="webservices.PreferenciasService"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <%
+    UsuarioServiceService serviceU = new UsuarioServiceService();
+    UsuarioService serviceUsuario = serviceU.getUsuarioServicePort();
+    
+    ContenidoServiceService serviceC = new ContenidoServiceService();
+    ContenidoService serviceContenido = serviceC.getContenidoServicePort();
+    
 String albumIdStr = request.getParameter("albumId");
  Long albumId = null;
 
@@ -24,15 +37,13 @@ if(albumIdStr != null && !albumIdStr.isEmpty()){
 
 String errorMsg = null;
 
-Fabrica f = Fabrica.getInstance();
-IControlador iControlador = f.getControlador();
-DTAlbum album = null;
+DtAlbum album = null;
 String artista = null;
 
 
 try {
-    album = iControlador.ConsultaAlbum(albumId);
-    
+    album = serviceContenido.consultaAlbum(albumId).getDtAlbum();
+    artista = album.getMiArtista().getNickname();
     
     if (album != null) {
         String fotoAlbum = album.getFotoAlbum();
@@ -50,16 +61,14 @@ try {
     HttpSession sesion = request.getSession();
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
-    DTDatosUsuario datosU = null;
-    DTDatosCliente datosC = null;
+    DtUsuarioGenerico datosU = null;
     String estadoSuscripcionSesion = null;
 
     if ("Cliente".equals(rolSesion) && nicknameSesion != null) {
         try {
-            datosU = iControlador.getDatosUsuario(nicknameSesion);
-            datosC = (DTDatosCliente) datosU;
-            if (datosC.getSuscripcion() != null) {
-                estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
+            datosU = serviceUsuario.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
+            if (datosU.getSuscripcion() != null) {
+                estadoSuscripcionSesion = datosU.getSuscripcion().getEstadoSuscripcion();
             }
         } catch (Exception e) {
             errorMsg = "Error al obtener datos del usuario: " + e.getMessage();
@@ -78,15 +87,18 @@ try {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="scripts/reproductorDeMusica.js" defer></script>
         <script src="scripts/ConsultaAlbum.js" defer></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles/nav.css"/>
         <link rel="stylesheet" href="styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
         <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="styles/DatosAlbum.css"/>
     </head>
 
-    <jsp:include page="headerIndex.jsp"/>
-
     <body>
+        <jsp:include page="headerIndex.jsp"/>
+        <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
+
         <div class="containerMain">
         <div class="album-detalles">
             <div class="info-container">
@@ -111,8 +123,7 @@ try {
                     <% 
                         StringBuilder generosConcat = new StringBuilder();
                         if(album != null){
-                            List<DTGenero> generos = album.getMisgeneros(); 
-                        
+                            List<DtGenero> generos = album.getMisgeneros();
                             for (int i = 0; i < generos.size(); i++) {
                                 generosConcat.append(generos.get(i).getNombreGenero());
                                 if (i < generos.size() - 1) {
@@ -131,16 +142,13 @@ try {
                        %>
                        
                     <!-- Agregar album a favoritos -->
-                    <form action="SVGuardarAlbumFavorito" method="post">
-                        <%
-                            System.out.println("Aca"+albumId);
-                            %>
-                        <input type="hidden" name="albumId" value="<%= albumId %>"/>
-                        <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
+                    <form action="SVGuardarAlbumFavorito" method="post" onclick="GuardarAlbumFavorito()">
+                        <input type="hidden" id="albumId" name="albumId" value="<%= albumId %>"/>
+                        <input type="hidden" id="nickname" name="nickname" value="<%= nicknameSesion %>"/>
                         <button type="submit" class="boton-agregar">Guardar</button>
                     </form>
                     <%
-                    }
+                        }
                     %>
 
                 </div>
@@ -164,16 +172,14 @@ try {
                     
                         <% int nroTema = 1; %>
                         <% if (album != null) { %>
-                                 <% for (DTTemaSimple tema : album.getMisTemasSimple()) { %>
+                                 <% for (DtTemaSimple tema : album.getMisTemasSimples()) { %>
                                      <%
-                                         
-                                         System.out.println(album.getMisTemasSimple().size());
-                                    int duracionSegundos = tema.getDuracionSegundos();
-                                    int minutos = duracionSegundos / 60;
-                                    int segundos = duracionSegundos % 60;
+                                        int duracionSegundos = tema.getDuracionSegundos();
+                                        int minutos = duracionSegundos / 60;
+                                        int segundos = duracionSegundos % 60;
 
-                                    DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
-                                    String srcPortada = fotoAlbum;
+                                        DtTemaGenericoConRutaOUrl temaRutaOUrl = serviceContenido.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
+                                        String srcPortada = fotoAlbum;
                                     %>
                         <!-- Escuchar tema por fila -->
 
@@ -184,9 +190,9 @@ try {
                                 <%
                                     if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                                 %>
-                                <form action="SVGuardarTemaFavorito" method="post">
-                                    <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
-                                    <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
+                                <form action="SVGuardarTemaFavorito" method="post" onclick="GuardarTemaFavorito()">
+                                    <input type="hidden" id="idTema" name="idTema" value="<%= tema.getIdTema()%>"/> 
+                                    <input type="hidden" id="nicknameSesion" name="nickname" value="<%= nicknameSesion %>"/>
                                     <input type="hidden" name="tipo" value="Album"/>
                                     <input type="hidden" name="identificador" value="<%= albumId %>"/>
                                     <button type="submit" class="agregar">+</button> 
@@ -238,10 +244,12 @@ try {
                         %>
                     
                 </table>
-            </div>
+            </div>   
         </div>
         
-        <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
+        <div class="contenedor-reproductor">
+            <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
+        </div>
     </div>
     </body>
 

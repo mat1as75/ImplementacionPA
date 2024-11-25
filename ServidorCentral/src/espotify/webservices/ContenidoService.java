@@ -65,8 +65,10 @@ public class ContenidoService {
     public NullableContainer ConsultaAlbum(Long idAlbum) {
         NullableContainer contenedor = new NullableContainer();
         DTAlbum dtAlbum = this.ictrl.ConsultaAlbum(idAlbum);
-        contenedor.setDtAlbum(dtAlbum);
         
+        
+        
+        contenedor.setDtAlbum(dtAlbum);
         return contenedor;
     }
     

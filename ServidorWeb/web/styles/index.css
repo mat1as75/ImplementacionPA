@@ -5,6 +5,20 @@ body {
     background-color: var(--black);
 }
 
+.btnVolver {
+    font-size: 1.2em;
+    margin: 1rem .5rem;
+    padding: .5rem 1rem;
+    border-radius: var(--border-radius-btns);
+    background-color: var(--bg-color-dark-2);
+    color: var(--color-white);
+}
+
+.btnVolver:hover {
+    color: #000;
+    background-color: var(--color-white);
+}
+
 .overlay {
     display: none; /* Inicialmente oculto */
     position: fixed; /* Fijo en la pantalla */
@@ -56,6 +70,7 @@ body {
 /*----- Tabs -----*/
 .tabs {
     display: flex; /* Cambia a flexbox */
+    justify-content: center;
     margin-top: 50px;
 }
 
@@ -78,18 +93,19 @@ body {
     padding: 9px 15px;
     display: block; /* Cambia a block para que el ancho se aplique */
     border-radius: 15px 0px 0px 15px;
-    background: #aeaeae;
+    background: var(--bg-color-dark-3);
     font-size: 16px;
     font-weight: 600;
     font-family: bold;
-    color: #202020;
+    color: var(--color-white);
     text-decoration: none;
     transition: all linear 0.15s;
     text-align: center; /* Centra el texto */
 }
 
 .tab-links a:hover {
-    background: #cfcfcf;
+    background: var(--color-grey-accent);
+    color: #000;
     text-decoration: none;
 }
 
@@ -101,13 +117,14 @@ li.active a, li.active a:hover {
 
 /*----- Content of Tabs -----*/
 .tab-content {
-    padding: 0;
-    height: 500px;
-    width: 50%;
-    border: 1px solid var(--other-gray);
-    border-radius: 3px;
+    color: var(--color-white);
+    padding: 0 1rem;
+    max-height: 700px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-radius: var(--border-radius-containers);
     box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
-    background: var(--dark-gray);
+    background: var(--bg-color-dark-4);
     overflow-y: auto;
 }
 
@@ -133,7 +150,39 @@ li.active a, li.active a:hover {
 
 h1, h2, h3 {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 1rem 0;
+    font-weight: bold;
+}
+
+@media screen and (max-width:720px) {
+    .tabs {
+        display:flex;
+        flex-direction: column;
+        padding: 0 1rem;
+        margin: 1rem 0;
+    }
+    .tab-content {
+        width: 100%;
+        margin: 1rem auto;
+    }
+    .tab-links {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+    .tab-links li {
+        width: 100%;
+    }
+    .tab-links li.active a {
+        color: var(--color-white);
+        background-color: var(--bg-color-dark-1);
+        border: 2px solid var(--color-green-primary);
+    }
+    .tab-links li a {
+        border-radius: 0px;
+    }
+    
 }
 
 #sugerencias-titulo {
@@ -216,3 +265,5 @@ h1, h2, h3 {
     padding: 0;
     margin: 0;
 }
+
+

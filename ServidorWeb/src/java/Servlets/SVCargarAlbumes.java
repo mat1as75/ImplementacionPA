@@ -5,20 +5,20 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.DataTypes.DTAlbum_Simple;
-import espotify.logica.Fabrica;
-import espotify.logica.IControlador;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webservices.DataAlbumsService;
+import webservices.DataAlbumsServiceService;
+import webservices.DataTypes.DtAlbumSimple;
 
 /**
  *
@@ -26,6 +26,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "SVCargarAlbumes", urlPatterns = {"/SVCargarAlbumes"})
 public class SVCargarAlbumes extends HttpServlet {
+    
+    DataAlbumsServiceService serviceDA = new DataAlbumsServiceService();
+    DataAlbumsService serviceDataAlbum = serviceDA.getDataAlbumsServicePort();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,24 +37,30 @@ public class SVCargarAlbumes extends HttpServlet {
         String tipo = request.getParameter("tipo");
         String nombre = request.getParameter("nombre");
 
-        Fabrica f = Fabrica.getInstance();
-        IControlador iControlador = f.getControlador();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         ArrayList<Map<String, String>> albumesJson = new ArrayList<>();
 
         if ("Genero".equals(tipo) && nombre != null && !nombre.isEmpty()) {
-            ArrayList<DTAlbum_Simple> albumesGenero = iControlador.getDTAlbumesSimplePorGenero(nombre);
-            for (DTAlbum_Simple album : albumesGenero) {
+            ArrayList<DtAlbumSimple> albumesGenero = serviceDataAlbum.getDTAlbumesSimplePorGenero(nombre).getColeccion()
+                    .stream()
+                    .filter(DtAlbumSimple.class::isInstance)
+                    .map(DtAlbumSimple.class::cast)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            for (DtAlbumSimple album : albumesGenero) {
                 Map<String, String> albumInfo = new HashMap<>();
                 albumInfo.put("id", album.getIdAlbum().toString());  
                 albumInfo.put("nombre", album.getNombreAlbum());
                 albumesJson.add(albumInfo);
             }
         } else if ("Artista".equals(tipo) && nombre != null && !nombre.isEmpty()) {
-            ArrayList<DTAlbum_Simple> albumesArtista = iControlador.getDTAlbumesSimplePorArtista(nombre);
-            for (DTAlbum_Simple album : albumesArtista) {
+            ArrayList<DtAlbumSimple> albumesArtista = serviceDataAlbum.getDTAlbumesSimplePorArtista(nombre).getColeccion()
+                    .stream()
+                    .filter(DtAlbumSimple.class::isInstance)
+                    .map(DtAlbumSimple.class::cast)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            for (DtAlbumSimple album : albumesArtista) {
                 Map<String, String> albumInfo = new HashMap<>();
                 albumInfo.put("id", album.getIdAlbum().toString());  
                 albumInfo.put("nombre", album.getNombreAlbum());

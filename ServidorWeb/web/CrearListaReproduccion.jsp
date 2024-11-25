@@ -4,12 +4,17 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Crear Lista de Reproducción</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/variablesGlobales.css"/>     
+    <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
     <link rel="stylesheet" href="styles/CrearListaReproduccion.css">
+    <link rel="stylesheet" href="styles/nav.css"/>
 </head>
-<jsp:include page="headerIndex.jsp"/>
 <body>
+    <jsp:include page="headerIndex.jsp"/>
+    <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
 
-    <h1 style="text-align: center;">Crear Lista de Reproducción</h1>
+    <h1>Crear Lista de Reproducción</h1>
     
     <div class="crearListaForm">
         <form id="crearListaForm" enctype="multipart/form-data" onsubmit="return false;">
@@ -31,7 +36,7 @@
                 </div>
             </div>
 
-            <button type="submit">Crear Lista</button>
+            <button class="btncustom btnPrimary" type="submit">Crear Lista</button>
         </form>
 
         <canvas id="imagenCanvas" width="200" height="200"></canvas>

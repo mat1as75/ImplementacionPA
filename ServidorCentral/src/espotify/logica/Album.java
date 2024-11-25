@@ -134,9 +134,9 @@ public class Album implements Serializable {
     }
 
     public DTAlbum getDataAlbum() {
-        ArrayList<DTGenero> auxDTG = new ArrayList<>();
-        ArrayList<DTTemaGenerico> auxDTTG = new ArrayList<>();
-        ArrayList<DTTemaSimple> auxDTTS = new ArrayList<>();
+        List<DTGenero> auxDTG = new ArrayList<>();
+        List<DTTemaGenerico> auxDTTG = new ArrayList<>();
+        List<DTTemaSimple> auxDTTS = new ArrayList<>();
         DTTemaConRuta dttcr;
         DTTemaSimple dtts;
         DTTemaConURL dttcu;
