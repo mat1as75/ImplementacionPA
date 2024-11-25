@@ -146,7 +146,6 @@
                                             Long cantidadDescargasOVisitas = tema.getCantidadDescargasOVisitas();
                                             Long cantidadFavoritos = tema.getCantidadFavoritos();
                                             Long cantidadListas = tema.getCantidadListas();
-
                                 %>
                                 <tr class="row-hover">
                                     <td><%= nroTopTema++ %></td>
