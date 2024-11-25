@@ -1,4 +1,5 @@
 <%@page import="java.util.List"%>
+<%@page import="java.util.Long"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="webservices.ContenidoService"%>
@@ -145,41 +146,36 @@
                                             String nombreArtista = tema.getNombreCompletoArtista();
                                             String nombreTema = tema.getNombreTema();
                                             Long cantidadReproducciones = tema.getCantidadReproducciones();
-                                            Long cantidadDescargasOVisitas = tema.getCantidadDescargasOVisitas();
-                                            Long cantidadFavoritos = tema.getCantidadFavoritos();
-                                            Long cantidadListas = tema.getCantidadListas();
+                                            //Long cantidadDescargasOVisitas = tema.getCantidadDescargasOVisitas();
+                                            //Long cantidadFavoritos = tema.getCantidadFavoritos();
+                                            //Long cantidadListas = tema.getCantidadListas();
 
                                 %>
                                 <tr class="row-hover">
                                     <td><%= nroTopTema++ %></td>
                                     <td><%= nombreArtista + " - " + nombreTema %></td>
                                     <td><%= cantidadReproducciones %></td>
-                                    <td class="otrosDatos" >
-                                        <buttom class="info-buttom" onmouseover="mostrarInfo(event, <%= cantidadReproducciones %>, <%= cantidadDescargasOVisitas %>, <%= cantidadFavoritos %>, <%= cantidadListas %>)" onmouseout="ocultarInfo()">...</buttom>
-                                        <div class="info-container" id="infoContainer"></div>
+                                    <td>
+                                        <div class="more-info">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                            
+                                            <div class="extra-info">
+                                            <ul>
+                                                <li>Reproducciones</li>
+                                                <li>Descargas / Visitas</li>
+                                                <li>Favoritos</li>
+                                                <li>+ Listas</li>
+                                            </ul>
+                                        </div>
+                                        </div>
+                                        
+                                        
+
                                     </td>
                                 </tr>
                                     <%  }  %>
                                 <%  }  %>
-                                <script>
-                                    function mostrarInfo(event, cantidadReproducciones, cantidadDescargasOVisitas, cantidadFavoritos, cantidadListas) {
-                                        const infoContainer = document.getElementById("infoContainer");
-                                        infoContainer.innerHTML = `
-                                            Reproducciones<br>
-                                            ${cantidadReproducciones}<br>
-                                            Descargas O Visitas<br>
-                                            ${cantidadDescargasOVisitas}<br>
-                                            Favoritos<br>
-                                            ${cantidadFavoritos}<br>  
-                                            +Listas<br>
-                                            ${cantidadListas}<br>    
-                                        `;
-                                    }
-
-                                    function ocultarInfo() {
-                                        document.getElementById("infoContainer").style.display = "none"; // Oculta el contenedor
-                                    }
-                                </script>
+                                
                             </tbody>
                         </table>
                         
