@@ -149,7 +149,11 @@ async function showLinkPlayer(idTema, nombreTema, srcPortada, responseInfo) {
     //modifico el link del tema y lo muestro
     linkTema.innerText = "Visitar enlace";
     
-    const newUrl = receivedUrl.includes("https://") ? receivedUrl : ("https://" + receivedUrl);
+    let newUrl;
+    if (receivedUrl) {
+        newUrl = receivedUrl.includes("https://") ? receivedUrl : ("https://" + receivedUrl);
+    }
+    
     linkTema.setAttribute("href", newUrl);
     linkTema.classList.remove("hidden");
     

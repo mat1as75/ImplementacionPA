@@ -87,15 +87,18 @@ try {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="scripts/reproductorDeMusica.js" defer></script>
         <script src="scripts/ConsultaAlbum.js" defer></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles/nav.css"/>
         <link rel="stylesheet" href="styles/variablesGlobales.css"/>
         <link rel="stylesheet" href="styles/reproductorDeMusica.css"/>
         <link rel="stylesheet" href="styles/clasesAuxiliares.css"/>
         <link rel="stylesheet" href="styles/DatosAlbum.css"/>
     </head>
 
-    <jsp:include page="headerIndex.jsp"/>
-
     <body>
+        <jsp:include page="headerIndex.jsp"/>
+        <%@ include file="../WEB-INF/jspf/Nav.jspf" %>
+
         <div class="containerMain">
         <div class="album-detalles">
             <div class="info-container">
@@ -241,10 +244,12 @@ try {
                         %>
                     
                 </table>
-            </div>
+            </div>   
         </div>
         
-        <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
+        <div class="contenedor-reproductor">
+            <%@ include file="../WEB-INF/jspf/ReproductorDeMusica.jspf" %>
+        </div>
     </div>
     </body>
 
