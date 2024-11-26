@@ -33,7 +33,9 @@ import webservices.UsuarioServiceService;
 public class SVAltaAlbum extends HttpServlet {
     
     private static final String UPLOAD_DIR = "../../web/Resource/Albums/";
-    
+    private static final String UPLOAD_DIR_FOTO = "../../web/Resource/ImagenesPerfil";
+    private static final String RESOURCE_PATH = "./Resource/ImagenesPerfil/";
+
     //Funcion para borrar el directorio si falla la copia de los archivos
     boolean deleteDir(File directorioABorrar) {
         File[] contenido = directorioABorrar.listFiles();
@@ -80,19 +82,19 @@ public class SVAltaAlbum extends HttpServlet {
         return mapTemasConRutas;
     }
     
-    private String uploadPortada(Part partPortada, String artista, String nombreAlbum) {
+    private String uploadPortada(Part partPortada, String artista, String nombreAlbum, String extensionPortada) {
         
         //Directorio de la portada del album: ../Resource/Albums/Portadas
-        String uploadPathPortadas = this.getServletContext().getRealPath("") + UPLOAD_DIR + artista + "/" + nombreAlbum;
+        String uploadPathPortadas = this.getServletContext().getRealPath("") + UPLOAD_DIR_FOTO;
         File uploadDirPortadas = new File(uploadPathPortadas);
-
+        
         //Creo el directorio de las portadas si no existe
         if (!uploadDirPortadas.exists()) {
             uploadDirPortadas.mkdirs();
         }
         
         //Declaro archivo de imagen
-        String nombreArchivoPortada = artista + "-" + nombreAlbum;
+        String nombreArchivoPortada = artista + "-" + nombreAlbum + "." + extensionPortada;
         File archivoPortada = new File(uploadDirPortadas, nombreArchivoPortada);
         
         //Copio la portada del album 
@@ -105,7 +107,7 @@ public class SVAltaAlbum extends HttpServlet {
             Boolean borrarDirectorio = deleteDir(uploadDirPortadas);
             return null;
         }
-        return archivoPortada.getPath();
+        return RESOURCE_PATH + nombreArchivoPortada;
     }
     
     private List<DtTemaConTipo> crearListaDTTemas(Map<String, String> mapTemasConRutas, int cantidadTemas, HttpServletRequest request) {
@@ -229,6 +231,7 @@ public class SVAltaAlbum extends HttpServlet {
         //Obtengo los datos generales del album
         String nombreAlbum = convertToUTF8(request.getParameter("nombreAlbum"));
         String anioAlbumString = convertToUTF8(request.getParameter("anioAlbum"));
+        String extensionPortada = convertToUTF8(request.getParameter("extensionPortada"));
         int anioAlbum = Integer.valueOf(anioAlbumString);
         String[] generosAlbum = request.getParameterMap().get("generos");
         String cantidadTemasString = convertToUTF8(request.getParameter("cantidadTemas"));
@@ -267,7 +270,7 @@ public class SVAltaAlbum extends HttpServlet {
         String rutaPortada = null;
         //Subo la imagen de portada
         if (partPortada != null) {
-            rutaPortada = uploadPortada(partPortada, artista, nombreAlbum);
+            rutaPortada = uploadPortada(partPortada, artista, nombreAlbum, extensionPortada);
             if (rutaPortada == null) {
                 response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
                 response.setContentType("text/plain");

@@ -1,6 +1,7 @@
 package espotify.webservices;
 
 import espotify.DataTypes.DTSuscripcion;
+import espotify.config.ConfigReader;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.logica.Suscripcion;
@@ -23,7 +24,7 @@ public class SuscripcionesService {
     
     @WebMethod(exclude = true)
     public void publishEndpoint() {
-        endpoint = Endpoint.publish("http://localhost:8089/SuscripcionesService", this);
+        endpoint = Endpoint.publish(ConfigReader.getWebServiceBaseURL() + "SuscripcionesService", this);
     }
     
     @WebMethod(exclude = true)

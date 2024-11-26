@@ -1,6 +1,7 @@
 package espotify.webservices;
 
 import espotify.DataTypes.DTDatosListaReproduccion;
+import espotify.config.ConfigReader;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import jakarta.jws.WebMethod;
@@ -23,7 +24,7 @@ public class ListaReproduccionService {
     
     @WebMethod(exclude = true)
     public void publishEndpoint() {
-        endpoint = Endpoint.publish("http://localhost:8089/ListaReproduccionService", this);
+        endpoint = Endpoint.publish(ConfigReader.getWebServiceBaseURL() + "ListaReproduccionService", this);
     }
     
     @WebMethod(exclude = true)

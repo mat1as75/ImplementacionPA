@@ -1,5 +1,6 @@
 package mail;
 
+import espotify.config.ConfigReader;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.PasswordAuthentication;
@@ -24,13 +25,11 @@ public class MailHandler {
          * la verificacion en dos pasos, por lo que tuve que vincular mi cuenta y numero
          * personal para activarla. La contraseña que se puso aca en senderPassword es esa 
          * contraseña.
-         * Ni el email ni la contraseña deberian estar hard-coded aca y tampoco tendria que 
-         * vincular mi numero personal pero bue, por lo menos anda
          */   
-        final String senderEmail = "espotify.g3.mail@gmail.com";
-        final String senderPassword = "zlyskoxdvptxratt";
-        String host =  "smtp.gmail.com";
-        int port = 587;
+        final String senderEmail = ConfigReader.getSenderEmail();
+        final String senderPassword = ConfigReader.getSenderEmailPassword();
+        String host =  ConfigReader.getSMTPhost();
+        int port = ConfigReader.getSMTPport();
 
         /**
          * http://www.aboutmyip.com/AboutMyXApp/DevNullSmtp.jsp

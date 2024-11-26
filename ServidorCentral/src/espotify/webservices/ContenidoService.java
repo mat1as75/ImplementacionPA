@@ -5,6 +5,7 @@ import espotify.DataTypes.DTAlbum_SinDTArtista;
 import espotify.DataTypes.DTGenero_Simple;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
+import espotify.config.ConfigReader;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import jakarta.jws.WebMethod;
@@ -27,7 +28,7 @@ public class ContenidoService {
     
     @WebMethod(exclude = true)
     public void publishEndpoint() {
-        endpoint = Endpoint.publish("http://localhost:8089/ContenidoService", this);
+        endpoint = Endpoint.publish(ConfigReader.getWebServiceBaseURL() + "ContenidoService", this);
     }
     
     @WebMethod(exclude = true)
