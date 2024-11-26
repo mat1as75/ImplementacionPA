@@ -24,35 +24,31 @@
     ContenidoServiceService serviceC = new ContenidoServiceService();
     ContenidoService serviceContenido = serviceC.getContenidoServicePort();
     
-String albumIdStr = request.getParameter("albumId");
- Long albumId = null;
+    String albumIdStr = request.getParameter("albumId");
+    Long albumId = null;
+    String errorMsg = null;
+    DtAlbum album = null;
+    String artista = null;
 
-if(albumIdStr != null && !albumIdStr.isEmpty()){
-
+    if(albumIdStr != null && !albumIdStr.isEmpty()){
         albumId = Long.valueOf(albumIdStr);
-}
-
-String errorMsg = null;
-
-DtAlbum album = null;
-String artista = null;
-
-
-try {
-    album = serviceContenido.consultaAlbum(albumId).getDtAlbum();
-    artista = album.getMiArtista().getNickname();
-    
-    if (album != null) {
-        String fotoAlbum = album.getFotoAlbum();
-        if (fotoAlbum != null && !fotoAlbum.isEmpty()) {
-            fotoAlbum = fotoAlbum.substring(2);
-        } else {
-            fotoAlbum = "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
-        }
     }
-} catch (Exception e) {
-    errorMsg = "Error al obtener los datos del album: " + e.getMessage();
-}
+
+    try {
+        album = serviceContenido.consultaAlbum(albumId).getDtAlbum();
+        artista = album.getMiArtista().getNickname();
+
+        if (album != null) {
+            String fotoAlbum = album.getFotoAlbum();
+            if (fotoAlbum != null && !fotoAlbum.isEmpty()) {
+                fotoAlbum = fotoAlbum.substring(2);
+            } else {
+                fotoAlbum = "Resource/ImagenesPerfil/Default-Photo-Profile.jpg";
+            }
+        }
+    } catch (Exception e) {
+        errorMsg = "Error al obtener los datos del album: " + e.getMessage();
+    }
 
     // Comprobar suscripcion vigente
     HttpSession sesion = request.getSession();
@@ -60,6 +56,13 @@ try {
     String rolSesion = (String) sesion.getAttribute("rol");
     DtUsuarioGenerico datosU = null;
     String estadoSuscripcionSesion = null;
+    
+    // Comprobar si puede descargar
+    boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
+    
+    // Comprobar favortios
+    boolean albumEsFavorito = false;
+    boolean temaEsFavorito = false;
 
     if ("Cliente".equals(rolSesion) && nicknameSesion != null) {
         try {
@@ -70,18 +73,9 @@ try {
         } catch (Exception e) {
             errorMsg = "Error al obtener datos del usuario: " + e.getMessage();
         }
+        
+        albumEsFavorito = serviceContenido.esAlbumFavorito(nicknameSesion, album.getIdAlbum());
     }
-    // Comprobar si puede descargar
-    boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
-    
-    // Comprobar favortios
-    boolean albumEsFavorito = false;
-    boolean temaEsFavorito = false;
-    
-    ContenidoServiceService cservice = new ContenidoServiceService();
-    ContenidoService contenidoService = cservice.getContenidoServicePort();
-    
-    albumEsFavorito = contenidoService.esAlbumFavorito(nicknameSesion, album.getIdAlbum());
 %>
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -193,7 +187,8 @@ try {
                             <td><%= nroTema++%></td>
                             <td>
                                 <%
-                                    if(!contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema()) && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                    if (rolSesion != null && rolSesion.equals("Cliente")) {
+                                        if(!serviceContenido.esTemaFavorito(nicknameSesion, tema.getIdTema()) && puedeDescargar){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post" onclick="GuardarTemaFavorito()">
                                     <input type="hidden" id="idTema" name="idTema" value="<%= tema.getIdTema()%>"/> 
@@ -203,7 +198,8 @@ try {
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
                                 <%
-                                }
+                                        }
+                                    }
                                 %>
 
                             </td>

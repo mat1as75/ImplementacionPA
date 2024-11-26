@@ -114,77 +114,15 @@
         <!-- TABS-CONTENT -->
         <div class="tabs">
             <ul class="tab-links">
-                <li class="active"><a href="#tab1">Sugerencias</a></li>
-                <li><a href="#tab2">Géneros</a></li>
-                <li><a href="#tab3">Artistas</a></li>
-                <li><a href="#tab4">Listas Particulares</a></li>
+                <li class="active"><a href="#tab1">Géneros</a></li>
+                <li><a href="#tab2">Artistas</a></li>
+                <li><a href="#tab3">Listas Particulares</a></li>
+                <li><a href="#tab4">Sugerencias</a></li>
             </ul>
 
             <div class="tab-content">
-                
+                              
                 <div id="tab1" class="tab active">
-                    <h1 id="sugerencias-titulo" >Sugerencias para ti</h1>  
-                    <div class="divisor d-none d-sm-block"></div>
-                    
-                    <div class="tabla-topTemas">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Tema</th>
-                                    <th>Reproducciones</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            
-                            <tbody>
-                                <% int nroTopTema = 1; %>
-                                <%  if (topTemas != null) { 
-                                        for (DtTemaConPuntaje tema : topTemas) {
-                                            String nombreArtista = tema.getNombreCompletoArtista();
-                                            String nombreTema = tema.getNombreTema();
-                                            Long cantidadReproducciones = tema.getCantidadReproducciones();
-                                            Long cantidadDescargasOVisitas = tema.getCantidadDescargasOVisitas();
-                                            Long cantidadFavoritos = tema.getCantidadFavoritos();
-                                            Long cantidadListas = tema.getCantidadListas();
-                                %>
-                                <tr class="row-hover">
-                                    <td><%= nroTopTema++ %></td>
-                                    <td><%= nombreArtista + " - " + nombreTema %></td>
-                                    <td><%= cantidadReproducciones %></td>
-                                    <td>
-                                        <div class="more-info">
-                                            <i class="fa-solid fa-ellipsis"></i>
-                                            
-                                            <div class="extra-info">
-                                            <ul>
-                                                <li>Reproducciones</li>
-                                                <li><%= cantidadReproducciones %></li>
-                                                <li class="div"><div id="divisor" class="divisor d-none d-sm-block"></div></li>
-                                                <li>Descargas / Visitas</li>
-                                                <li><%= cantidadDescargasOVisitas %></li>
-                                                <li class="div"><div id="divisor" class="divisor d-none d-sm-block"></div></li>
-                                                <li>Favoritos</li>
-                                                <li><%= cantidadFavoritos %></li>
-                                                <li class="div"><div id="divisor" class="divisor d-none d-sm-block"></div></li>
-                                                <li>+ Listas</li>
-                                                <li><%= cantidadListas %></li>
-                                            </ul>
-                                        </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                    <%  }  %>
-                                <%  }  %>
-                                
-                            </tbody>
-                        </table>
-                        
-                    </div>
-                    
-                </div>
-                
-                <div id="tab2" class="tab">
                     <button class="btnVolver" type="button" id="volver" onclick="VolverAGeneros()">Volver</button>
                     <div id="pre-seleccion">
                         <h1>Géneros</h1>
@@ -249,7 +187,7 @@
                     </div>
                 </div>
 
-                <div id="tab3" class="tab">
+                <div id="tab2" class="tab">
                     <button class="btnVolver" type="button" id="volver2" onclick="VolverAArtistas()">Volver</button>
                     <div id="pre-seleccion2">
                         <h1>Artistas</h1>
@@ -298,7 +236,7 @@
                     </div> 
                 </div>
 
-                <div id="tab4" class="tab">
+                <div id="tab3" class="tab">
                     <h1>Consulta Lista Particular</h1>
                     <div class="mosaico-container"> 
                         <div class="mosaico" id="mosaicoListasParticulares">
@@ -327,6 +265,66 @@
                         </div>
                     </div> 
                 </div>
+                        
+                <div id="tab4" class="tab">
+                    <h1 id="sugerencias-titulo" >Sugerencias para ti</h1>  
+                    <div class="divisor d-none d-sm-block"></div>
+                    
+                    <div class="tabla-topTemas">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tema</th>
+                                    <th>Reproducciones</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <% int nroTopTema = 1; %>
+                                <%  if (topTemas != null) { 
+                                        for (DtTemaConPuntaje tema : topTemas) {
+                                            String nombreArtista = tema.getNombreCompletoArtista();
+                                            String nombreTema = tema.getNombreTema();
+                                            Long cantidadReproducciones = tema.getCantidadReproducciones();
+                                            Long cantidadDescargasOVisitas = tema.getCantidadDescargasOVisitas();
+                                            Long cantidadFavoritos = tema.getCantidadFavoritos();
+                                            Long cantidadListas = tema.getCantidadListas();
+                                %>
+                                <tr class="row-hover">
+                                    <td><%= nroTopTema++ %></td>
+                                    <td><%= nombreArtista + " - " + nombreTema %></td>
+                                    <td><%= cantidadReproducciones %></td>
+                                    <td>
+                                        <div class="more-info">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                            
+                                            <div class="extra-info">
+                                            <ul>
+                                                <li>Reproducciones</li>
+                                                <li><%= cantidadReproducciones %></li>
+                                                <li class="div"><div id="divisor" class="divisor d-none d-sm-block"></div></li>
+                                                <li>Descargas / Visitas</li>
+                                                <li><%= cantidadDescargasOVisitas %></li>
+                                                <li class="div"><div id="divisor" class="divisor d-none d-sm-block"></div></li>
+                                                <li>Favoritos</li>
+                                                <li><%= cantidadFavoritos %></li>
+                                                <li class="div"><div id="divisor" class="divisor d-none d-sm-block"></div></li>
+                                                <li>+ Listas</li>
+                                                <li><%= cantidadListas %></li>
+                                            </ul>
+                                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                    <%  }  %>
+                                <%  }  %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
         <% } %>
