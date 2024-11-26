@@ -1,4 +1,3 @@
-<%@page import="espotify.DataTypes.DTGenero"%>
 <%@page import="java.util.List" %>
 <%@page import="webservices.DataTypes.DtAlbum"%>
 <%@page import="webservices.DataTypes.DtUsuarioGenerico"%>
