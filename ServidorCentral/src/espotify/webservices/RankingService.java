@@ -2,6 +2,7 @@ package espotify.webservices;
 
 import espotify.DataTypes.DTDatosUsuarioSinPw;
 import espotify.DataTypes.DTTemaConPuntaje;
+import espotify.config.ConfigReader;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import jakarta.jws.WebMethod;
@@ -22,7 +23,7 @@ public class RankingService {
     
     @WebMethod(exclude = true)
     public void publishEndpoint() {
-        endpoint = Endpoint.publish("http://localhost:8089/RankingService", this);
+        endpoint = Endpoint.publish(ConfigReader.getWebServiceBaseURL() + "RankingService", this);
     }
     
     @WebMethod(exclude = true)

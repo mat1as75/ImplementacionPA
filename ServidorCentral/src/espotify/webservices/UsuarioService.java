@@ -7,6 +7,7 @@ import espotify.DataTypes.DTDatosCliente;
 import espotify.DataTypes.DTDatosUsuario;
 import espotify.DataTypes.DTUsuario;
 import espotify.DataTypes.DTUsuarioGenerico;
+import espotify.config.ConfigReader;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import jakarta.jws.WebMethod;
@@ -30,7 +31,7 @@ public class UsuarioService {
     
     @WebMethod(exclude = true)
     public void publishEndpoint() {
-        endpoint = Endpoint.publish("http://localhost:8089/UsuarioService", this);
+        endpoint = Endpoint.publish(ConfigReader.getWebServiceBaseURL() + "UsuarioService", this);
     }
     
     @WebMethod(exclude = true)

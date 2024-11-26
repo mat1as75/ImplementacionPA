@@ -1,5 +1,6 @@
 package espotify.webservices;
 
+import espotify.config.ConfigReader;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import jakarta.jws.WebMethod;
@@ -20,7 +21,7 @@ public class PreferenciasService {
     
     @WebMethod(exclude = true)
     public void publishEndpoint() {
-        endpoint = Endpoint.publish("http://localhost:8089/PreferenciasService", this);
+        endpoint = Endpoint.publish(ConfigReader.getWebServiceBaseURL() + "PreferenciasService", this);
     }
     
     @WebMethod(exclude = true)

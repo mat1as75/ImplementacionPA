@@ -157,6 +157,7 @@ async function handleSubmit(evt) {
                 
     formObject.append("nombreAlbum", data.Album);
     formObject.append("anioAlbum", data.Anio);
+    formObject.append("extensionPortada", data.ExtensionPortada);
     
     for (let i=0; i<data.Generos.length; i++) {
         formObject.append("generos", data.Generos[i]);
@@ -197,7 +198,12 @@ function validateForm() {
     const nombreAlbum = $("#nombreAlbum").val();
     const anioAlbum = $("#anioAlbum").val();
     const rutaPortada = $("#inputPortadaAlbum").val() || "";
+    let extensionPortada = "";
     
+    if (rutaPortada) {
+        extensionPortada = rutaPortada.substring(rutaPortada.lastIndexOf(".")+1);
+    }
+        
     if (!validarDatosAlbum(nombreAlbum, anioAlbum)) return;
     if (!validarSeleccionGeneros(arrGeneros)) return;
     if (!validarCreacionDeTemas(mapTemasAgregados)) return;
@@ -209,7 +215,8 @@ function validateForm() {
         Album: nombreAlbum,
         Anio: anioAlbum,
         Generos: [...arrGeneros],
-        Temas: [...mapTemasAgregados]
+        Temas: [...mapTemasAgregados],
+        ExtensionPortada: extensionPortada
     };
     
     $("#modalDataVerification").removeClass("d-none");

@@ -1,9 +1,6 @@
 package Servlets;
 
 import com.google.gson.Gson;
-import espotify.persistencia.exceptions.DatabaseUpdateException;
-import espotify.persistencia.exceptions.InvalidDataException;
-import espotify.persistencia.exceptions.NonexistentEntityException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletException;

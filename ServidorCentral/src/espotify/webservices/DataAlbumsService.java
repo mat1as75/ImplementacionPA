@@ -1,6 +1,7 @@
 package espotify.webservices;
 
 import espotify.DataTypes.DTAlbum_Simple;
+import espotify.config.ConfigReader;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import jakarta.jws.WebMethod;
@@ -24,7 +25,7 @@ public class DataAlbumsService {
     
     @WebMethod(exclude = true)
     public void publishEndpoint() {
-        endpoint = Endpoint.publish("http://localhost:8089/DataAlbumsService", this);
+        endpoint = Endpoint.publish(ConfigReader.getWebServiceBaseURL() + "DataAlbumsService", this);
     }
     
     @WebMethod(exclude = true)
