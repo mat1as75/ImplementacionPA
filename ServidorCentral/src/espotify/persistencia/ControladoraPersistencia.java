@@ -2104,8 +2104,8 @@ public class ControladoraPersistencia {
     public boolean esListaFavorita(String nicknameCliente, String nombreLista) {
 
         Cliente c = cliJpa.findCliente(nicknameCliente);
-
-        List<ListaReproduccion> listaListasRFavoritas = c.getMisListasReproduccionFav();
+        List<ListaReproduccion> listaListasRFavoritas = new ArrayList<>(c.getMisListasReproduccionFav());
+        
         for (ListaReproduccion lRFavoritas : listaListasRFavoritas) {
             if (lRFavoritas.getNombreLista().equals(nombreLista)) {
                 return true;
@@ -2119,12 +2119,12 @@ public class ControladoraPersistencia {
         
         Cliente c = cliJpa.findCliente(nicknameCliente); // Obtiene el cliente desde la base de datos
 
-        List<Album> listaAlbumesFavoritos = c.getMisAlbumesFav();
+        List<Album> listaAlbumesFavoritos = new ArrayList<>(c.getMisAlbumesFav());
         for (Album album : listaAlbumesFavoritos) {
             if (album.getIdAlbum().equals(idAlbum)) {
                 return true; 
-                }
             }
+        }
         
         return false;
     }
@@ -2133,10 +2133,9 @@ public class ControladoraPersistencia {
     public boolean esTemaFavorito(String nicknameCliente, Long idTema) {
         
         Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<Tema> temasFavoritosDelCliente = new ArrayList<>(c.getMisTemasFav());
         
-        List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
         for (Tema t : temasFavoritosDelCliente) {
-            System.out.println("a: " + t.getIdTema() + " " + idTema);
             if (t.getIdTema().equals(idTema)) {
                 return true;
             }

@@ -22,6 +22,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+    ContenidoServiceService cservice = new ContenidoServiceService();
+    ContenidoService contenidoService = cservice.getContenidoServicePort();
+    
     String nombreLista = request.getParameter("nombreLista");
     ListaReproduccionServiceService lservice = new ListaReproduccionServiceService();
     ListaReproduccionService listaService = lservice.getListaReproduccionServicePort();
@@ -70,6 +73,10 @@
     DtDatosUsuario datosU = null;
     DtDatosCliente datosC = null;
     String estadoSuscripcionSesion = null;
+    
+    // Comprobar favortios
+    boolean listaEsFavorita = false;
+    boolean temaEsFavorito = false;
 
     if ("Cliente".equals(rolSesion) && nicknameSesion != null) {
         try {
@@ -89,18 +96,11 @@
         } catch (Exception e) {
             errorMsg = "Error al obtener datos del usuario: " + e.getMessage();
         }
+        
+        listaEsFavorita = contenidoService.esListaFavorita(nicknameSesion, nombreLista);
     }
     // Comprobar si puede descargar
     boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
-    
-    // Comprobar favortios
-    boolean listaEsFavorita = false;
-    boolean temaEsFavorito = false;
-    
-    ContenidoServiceService cservice = new ContenidoServiceService();
-    ContenidoService contenidoService = cservice.getContenidoServicePort();
-    
-    listaEsFavorita = contenidoService.esListaFavorita(nicknameSesion, nombreLista);
 %>
 
 <head>
@@ -195,10 +195,10 @@
                         <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
-                                 <%
-                                    boolean esFavoritoTema = contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema());
-                                    System.out.println("es: " + esFavoritoTema + tema.getIdTema());
-                                    if(!esFavoritoTema && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                <%
+                                    if (rolSesion != null && rolSesion.equals("Cliente")) {
+                                        boolean esFavoritoTema = contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema());
+                                        if(!esFavoritoTema && puedeDescargar){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
@@ -208,7 +208,8 @@
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
                                 <%
-                                }
+                                        }
+                                    }
                                 %>
                             </td>
                             <td><%= tema.getNombreTema()%></td>
