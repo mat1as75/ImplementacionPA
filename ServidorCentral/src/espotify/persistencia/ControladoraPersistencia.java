@@ -545,7 +545,7 @@ public class ControladoraPersistencia {
 
         // Buscar cliente por su nickname
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
-
+        
         // Crear la nueva lista particular
         ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, esPrivada);
         try {
@@ -562,7 +562,11 @@ public class ControladoraPersistencia {
     
         // Buscar cliente por su nickname
         Cliente cli = this.cliJpa.findCliente(nicknameCliente);
-
+        
+        if(fotoLista.equals("")){
+            fotoLista = null;
+        }
+        
         // Crear la nueva lista particular
         ListaParticular lista = new ListaParticular(nombreLista, fotoLista, cli, fechaCreacion,null, esPrivada);
         try {
@@ -2095,5 +2099,47 @@ public class ControladoraPersistencia {
         } else {
             return null;
         }
+    }
+    
+    public boolean esListaFavorita(String nicknameCliente, String nombreLista) {
+
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<ListaReproduccion> listaListasRFavoritas = new ArrayList<>(c.getMisListasReproduccionFav());
+        
+        for (ListaReproduccion lRFavoritas : listaListasRFavoritas) {
+            if (lRFavoritas.getNombreLista().equals(nombreLista)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public boolean esAlbumFavorito(String nicknameCliente, Long idAlbum) {
+        
+        Cliente c = cliJpa.findCliente(nicknameCliente); // Obtiene el cliente desde la base de datos
+
+        List<Album> listaAlbumesFavoritos = new ArrayList<>(c.getMisAlbumesFav());
+        for (Album album : listaAlbumesFavoritos) {
+            if (album.getIdAlbum().equals(idAlbum)) {
+                return true; 
+            }
+        }
+        
+        return false;
+    }
+
+
+    public boolean esTemaFavorito(String nicknameCliente, Long idTema) {
+        
+        Cliente c = cliJpa.findCliente(nicknameCliente);
+        List<Tema> temasFavoritosDelCliente = new ArrayList<>(c.getMisTemasFav());
+        
+        for (Tema t : temasFavoritosDelCliente) {
+            if (t.getIdTema().equals(idTema)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

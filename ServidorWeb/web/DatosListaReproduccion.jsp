@@ -1,24 +1,48 @@
-<%@page import="espotify.DataTypes.DTDatosCliente"%>
-<%@page import="espotify.DataTypes.DTDatosUsuario"%>
 <%@page import="java.util.List" %>
-<%@page import="espotify.DataTypes.DTDatosListaReproduccion" %>
-<%@page import="espotify.DataTypes.DTTemaSimple"%>
-<%@page import="espotify.DataTypes.DTTemaGenericoConRutaOUrl"%>
-<%@ page import="espotify.logica.Fabrica" %>
-<%@ page import="espotify.logica.IControlador" %>
+<%@page import="webservices.DataTypes.DtDatosCliente"%>
+<%@page import="webservices.DataTypes.DtDatosUsuario"%>
+<%@page import="webservices.DataTypes.DtTemaSimple"%>
+<%@page import="webservices.DataTypes.DtTemaGenericoConRutaOUrl"%>
+<%@page import="webservices.DataTypes.DtDatosListaReproduccion" %>
+<%@page import="webservices.DataTypes.DtDatosUsuario" %>
+<%@page import="webservices.DataTypes.DtSuscripcion"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="webservices.SuscripcionesService"%>
+<%@page import="webservices.SuscripcionesServiceService"%>
+<%@page import="webservices.ListaReproduccionService"%>
+<%@page import="webservices.ListaReproduccionServiceService"%>
+<%@page import="webservices.UsuarioService"%>
+<%@page import="webservices.UsuarioServiceService"%>
+<%@page import="webservices.ContenidoService"%>
+<%@page import="webservices.ContenidoServiceService"%>
+<%@page import="webservices.ArrayListContainer"%>
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="webservices.NullableContainer"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+    ContenidoServiceService cservice = new ContenidoServiceService();
+    ContenidoService contenidoService = cservice.getContenidoServicePort();
+    
     String nombreLista = request.getParameter("nombreLista");
-    Fabrica f = Fabrica.getInstance();
-    IControlador iControlador = f.getControlador();
-    DTDatosListaReproduccion datosLista = null;
+    ListaReproduccionServiceService lservice = new ListaReproduccionServiceService();
+    ListaReproduccionService listaService = lservice.getListaReproduccionServicePort();
+    NullableContainer datosListaContainer = null;
+    DtDatosListaReproduccion datosLista = null;
     String tipoLista = null;
     String errorMsg = null;
 
     try {
-        List<String> nombresListasParticulares = iControlador.getNombresListasParticulares();
-        List<String> nombresListasPorDefecto = iControlador.getNombresListasPorDefecto();
+        ArrayListContainer nombresListasParticularesConteiner = listaService.getNombresListasParticulares();
+        List<String> nombresListasParticulares = nombresListasParticularesConteiner.getColeccion().stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+                    
+        ArrayListContainer nombresListasPorDefectoConteiner = listaService.getNombresListasPorDefecto();
+        List<String> nombresListasPorDefecto = nombresListasPorDefectoConteiner.getColeccion().stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
 
         if (nombresListasParticulares.contains(nombreLista)) {
             tipoLista = "Particular";
@@ -26,7 +50,8 @@
             tipoLista = "Por Defecto";
         }
         if (tipoLista != null) {
-            datosLista = iControlador.ConsultarListaReproduccion(tipoLista, nombreLista);
+            datosListaContainer = listaService.consultarListaReproduccion(tipoLista, nombreLista);
+            datosLista = datosListaContainer.getDtDatosListaReproduccion();
         }
         String fotoLista = datosLista != null ? datosLista.getFotoLista() : null;
         if (fotoLista != null) {
@@ -40,20 +65,39 @@
     String nicknameSesion = (String) sesion.getAttribute("nickname");
     String rolSesion = (String) sesion.getAttribute("rol");
         
-    DTDatosUsuario datosU = null;
-    DTDatosCliente datosC = null;
+    UsuarioServiceService uservice = new UsuarioServiceService();
+    UsuarioService usuarioService = uservice.getUsuarioServicePort();
+    NullableContainer datosUContainer = null;
+    NullableContainer datosCContainer = null;
+    
+    DtDatosUsuario datosU = null;
+    DtDatosCliente datosC = null;
     String estadoSuscripcionSesion = null;
+    
+    // Comprobar favortios
+    boolean listaEsFavorita = false;
+    boolean temaEsFavorito = false;
 
     if ("Cliente".equals(rolSesion) && nicknameSesion != null) {
         try {
-            datosU = iControlador.getDatosUsuario(nicknameSesion);
-            datosC = (DTDatosCliente) datosU;
-            if (datosC.getSuscripcion() != null) {
-                estadoSuscripcionSesion = datosC.getSuscripcion().getEstadoSuscripcion();
-            }
+            datosUContainer = usuarioService.getDatosUsuario(nicknameSesion);
+            datosU = datosUContainer.getDtDatosUsuario();
+            datosC = (DtDatosCliente) datosU;
+            
+            SuscripcionesServiceService sservice = new SuscripcionesServiceService();
+            SuscripcionesService suscrService = sservice.getSuscripcionesServicePort();
+            
+            NullableContainer suscripcionContainer = suscrService.getDTSuscripcionDeCliente(nicknameSesion);
+            
+             if (suscripcionContainer != null && suscripcionContainer.getDtSuscripcion() != null) {
+                DtSuscripcion suscripcion = suscripcionContainer.getDtSuscripcion();
+                estadoSuscripcionSesion = suscripcion.getEstadoSuscripcion();
+            } 
         } catch (Exception e) {
             errorMsg = "Error al obtener datos del usuario: " + e.getMessage();
         }
+        
+        listaEsFavorita = contenidoService.esListaFavorita(nicknameSesion, nombreLista);
     }
     // Comprobar si puede descargar
     boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
@@ -107,11 +151,11 @@
                     <p><span>Cliente:</span> <%= datosLista != null ? datosLista.getCliente() : "N/A"%></p>
                     <% }%>
                        <%
-                       if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                       if(!listaEsFavorita && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                        %>
                     <!-- Agregar lista a favoritos -->
                    
-                    <form action="SVGuardarListaFavorito" method="post">
+                    <form action="SVGuardarListaFavorito" method="post" accept-charset="UTF-8">
                         <input type="hidden" name="nombreLista" value="<%= nombreLista%>"/>
                         <input type="hidden" name="nickname" value="<%= nicknameSesion %>"/>
                         <button type="submit" class="boton-agregar">Guardar</button>
@@ -134,26 +178,27 @@
                             <th>Agregar</th>
                             <th>Tema</th>
                             <th>Duración</th>
-                            <th>Ruta/Link</th> 
                         </tr>
                     </thead>
                     <tbody>
                         <% int nroTema = 1; %>
                         <% if (datosLista != null) {
-                                for (DTTemaSimple tema : datosLista.getTemas()) {
+                                for (DtTemaSimple tema : datosLista.getTemas()) {
                                     int duracionSegundos = tema.getDuracionSegundos();
                                     int minutos = duracionSegundos / 60;
                                     int segundos = duracionSegundos % 60;
-
-                                    DTTemaGenericoConRutaOUrl temaRutaOUrl = iControlador.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
+                                    
+                                    DtTemaGenericoConRutaOUrl temaRutaOUrl = contenidoService.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
                                     String srcPortada = fotoLista;
                         %>
                         <!-- Escuchar tema por fila -->
                         <tr class="row-hover" onclick="play('<%= tema.getIdTema()%>', '<%= tema.getNombreTema()%>', '<%= srcPortada%>')">
                             <td><%= nroTema++%></td>
                             <td>
-                                 <%
-                                    if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                <%
+                                    if (rolSesion != null && rolSesion.equals("Cliente")) {
+                                        boolean esFavoritoTema = contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema());
+                                        if(!esFavoritoTema && puedeDescargar){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 
@@ -163,44 +208,12 @@
                                     <button type="submit" class="agregar">+</button> 
                                 </form>
                                 <%
-                                }
+                                        }
+                                    }
                                 %>
                             </td>
                             <td><%= tema.getNombreTema()%></td>
                             <td><%= String.format("%d:%02d", minutos, segundos)%></td>
-                            <td class="ruta-link">  
-                                <%
-                                    String url = (temaRutaOUrl != null) ? temaRutaOUrl.getUrlTema() : null;
-                                    String ruta = (temaRutaOUrl != null) ? temaRutaOUrl.getRutaTema() : null;
-                                    // "Ver enlace"
-                                    if (url != null && !url.isEmpty()) {
-                                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                                            url = "http://" + url;
-                                        }
-                                %>
-                                <a href="<%= url%>" target="_blank">Ver enlace</a>
-                                <%
-                                    }
-                                    // "Descargar"
-                                    if (ruta != null && !ruta.isEmpty()) {
-                                        ruta = ruta.substring(ruta.lastIndexOf("Resource/"));
-
-                                        if (puedeDescargar) {
-                                %>
-                                <a href="<%= request.getContextPath() + "/" + ruta%>" download="<%= tema.getNombreTema()%>.mp3">Descargar</a>
-                                <%
-                                } else { %>
-                                <a href="#" onclick="alert('Debe tener una suscripción vigente para descargar el tema.'); return false;">Descargar</a>
-                                <%
-                                        }
-                                    }
-                                    // Si no hay URL ni archivo disponible
-                                    if ((ruta == null || ruta.isEmpty()) && (url == null || url.isEmpty())) { %>
-                                <span>-</span>
-                                <%
-                                    }
-                                %>
-                            </td>
                         </tr>
                         <%
                                 }

@@ -14,13 +14,12 @@ import webservices.PreferenciasServiceService;
 
 @WebServlet(name = "SVGuardarListaFavorito", urlPatterns = {"/SVGuardarListaFavorito"})
 public class SVGuardarListaFavorito extends HttpServlet {
-
+    
     PreferenciasServiceService serviceP = new PreferenciasServiceService();
     PreferenciasService servicePreferencias = serviceP.getPreferenciasServicePort();
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
     }
 
     @Override
@@ -32,18 +31,18 @@ public class SVGuardarListaFavorito extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                // Obtener el controlador
+        request.setCharacterEncoding("UTF-8");
         
         String nicknameSesion = request.getParameter("nickname");
         String nombreLista = request.getParameter("nombreLista");
-        
-        
+
         try {
             servicePreferencias.guardarListaFavorito(nicknameSesion, nombreLista);
         } catch (Exception_Exception ex) {
             Logger.getLogger(SVGuardarListaFavorito.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect("DatosListaReproduccion.jsp?nombreLista="+ nombreLista);
-    }
+        response.sendRedirect("DatosListaReproduccion.jsp?nombreLista=" + 
+        java.net.URLEncoder.encode(nombreLista, "UTF-8"));
 
+    }
 }

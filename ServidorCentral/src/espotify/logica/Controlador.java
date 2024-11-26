@@ -597,6 +597,20 @@ public class Controlador implements IControlador{
     public String getTipoUsuario(String identificador) {
         return this.contpersis.getTipoUsuario(identificador);
     }
-
+    
+    @Override
+    public boolean esListaFavorita(String nicknameCliente, String nombreLista) {
+        return this.contpersis.esListaFavorita(nicknameCliente, nombreLista);
+    }
+    
+    @Override
+    public boolean esTemaFavorito(String nicknameCliente, Long idTema) {
+        return this.contpersis.esTemaFavorito(nicknameCliente, idTema);
+    }
+    
+    @Override
+    public boolean esAlbumFavorito(String nicknameCliente, Long idAlbum) {
+        return this.contpersis.esAlbumFavorito(nicknameCliente, idAlbum);
+    }
 }
 

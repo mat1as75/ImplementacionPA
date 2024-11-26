@@ -28,7 +28,7 @@ public class Cliente extends Usuario{
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
             inverseJoinColumns = @JoinColumn(name = "id_Album")
     )
-    private List<Album> misAlbumesFav;
+    private List<Album> misAlbumesFav = null;
     
     @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
     @JoinTable(
@@ -36,7 +36,7 @@ public class Cliente extends Usuario{
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
             inverseJoinColumns = @JoinColumn(name = "id_Tema")
     )
-    private List<Tema> misTemasFav;
+    private List<Tema> misTemasFav = null;
     
     @ManyToMany /* Hace referencia a una relacion Unidireccional de N a N ( * --> * ) */
     @JoinTable(
@@ -44,7 +44,7 @@ public class Cliente extends Usuario{
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
             inverseJoinColumns = @JoinColumn(name = "nombre_ListaReproduccion")
     )
-    private List<ListaReproduccion> misListasReproduccionFav;
+    private List<ListaReproduccion> misListasReproduccionFav = null;
     
     @ManyToMany
     @JoinTable(
@@ -52,7 +52,7 @@ public class Cliente extends Usuario{
             joinColumns = @JoinColumn(name = "nickname_Cliente"),
             inverseJoinColumns = @JoinColumn(name = "nombre_ListaReproduccion")
     )
-    private List<ListaParticular> misListasReproduccionCreadas;
+    private List<ListaParticular> misListasReproduccionCreadas = null;
     
     @OneToOne
     @JoinColumn(name = "idSuscripcion")

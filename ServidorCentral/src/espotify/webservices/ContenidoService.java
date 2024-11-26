@@ -157,4 +157,28 @@ public class ContenidoService {
         
         return contenedor;
     }
+    
+    @WebMethod
+    public String getGeneroDeListaPorDefecto(String nombreLista) throws Exception {
+        try {
+            return this.ictrl.getGeneroDeListaPorDefecto(nombreLista);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    @WebMethod
+    public boolean esListaFavorita(String nicknameCliente, String nombreLista){ 
+        return this.ictrl.esListaFavorita(nicknameCliente, nombreLista);
+    }
+    
+    @WebMethod
+    public boolean esAlbumFavorito(String nicknameCliente, Long idAlbum){
+        return this.ictrl.esAlbumFavorito(nicknameCliente, idAlbum);
+    }
+    
+    @WebMethod
+     public boolean esTemaFavorito(String nicknameCliente, Long idTema){
+        return this.ictrl.esTemaFavorito(nicknameCliente, idTema);
+     }
 }

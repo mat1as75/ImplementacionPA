@@ -1,8 +1,3 @@
-<%-- 
-    Document   : ConsultaAlbum.jsp
-    Created on : 31 oct. 2024, 10:08:08 p. m.
-    Author     : brisa
---%>
 <%@page import="espotify.DataTypes.DTGenero"%>
 <%@page import="java.util.List" %>
 <%@page import="webservices.DataTypes.DtAlbum"%>
@@ -10,6 +5,8 @@
 <%@page import="webservices.DataTypes.DtGenero"%>
 <%@page import="webservices.DataTypes.DtTemaSimple"%>
 <%@page import="webservices.DataTypes.DtTemaGenericoConRutaOUrl"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="webservices.NullableContainer"%>
 <%@page import="webservices.UsuarioServiceService"%>
 <%@page import="webservices.UsuarioService"%>
@@ -76,6 +73,15 @@ try {
     }
     // Comprobar si puede descargar
     boolean puedeDescargar = "Vigente".equals(estadoSuscripcionSesion);
+    
+    // Comprobar favortios
+    boolean albumEsFavorito = false;
+    boolean temaEsFavorito = false;
+    
+    ContenidoServiceService cservice = new ContenidoServiceService();
+    ContenidoService contenidoService = cservice.getContenidoServicePort();
+    
+    albumEsFavorito = contenidoService.esAlbumFavorito(nicknameSesion, album.getIdAlbum());
 %>
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -138,7 +144,7 @@ try {
                     
 
                    <%
-                       if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                       if(!albumEsFavorito && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                        %>
                        
                     <!-- Agregar album a favoritos -->
@@ -166,7 +172,6 @@ try {
                             <th>Agregar</th>
                             <th>Tema</th>
                             <th>Duración</th>
-                            <th>Ruta/Link</th> 
                         </tr>
                     </thead>
                     
@@ -188,7 +193,7 @@ try {
                             <td><%= nroTema++%></td>
                             <td>
                                 <%
-                                    if(rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                    if(!contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema()) && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post" onclick="GuardarTemaFavorito()">
                                     <input type="hidden" id="idTema" name="idTema" value="<%= tema.getIdTema()%>"/> 
@@ -204,39 +209,6 @@ try {
                             </td>
                             <td><%= tema.getNombreTema()%></td>
                             <td><%= String.format("%d:%02d", minutos, segundos)%></td>
-                            <td class="ruta-link">  
-                                <%
-                                    String url = (temaRutaOUrl != null) ? temaRutaOUrl.getUrlTema() : null;
-                                    String ruta = (temaRutaOUrl != null) ? temaRutaOUrl.getRutaTema() : null;
-                                    // "Ver enlace"
-                                    if (url != null && !url.isEmpty()) {
-                                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                                            url = "http://" + url;
-                                        }
-                                %>
-                                <a href="<%= url%>" target="_blank">Ver enlace</a>
-                                <%
-                                    }
-                                    // "Descargar"
-                                    if (ruta != null && !ruta.isEmpty()) {
-                                        ruta = ruta.substring(ruta.lastIndexOf("Resource/"));
-
-                                        if (puedeDescargar) {
-                                %>
-                                <a href="<%= request.getContextPath() + "/" + ruta%>" download="<%= tema.getNombreTema()%>.mp3">Descargar</a>
-                                <%
-                                } else { %>
-                                <a href="#" onclick="alert('Debe tener una suscripción vigente para descargar el tema.'); return false;">Descargar</a>
-                                <%
-                                        }
-                                    }
-                                    // Si no hay URL ni archivo disponible
-                                    if ((ruta == null || ruta.isEmpty()) && (url == null || url.isEmpty())) { %>
-                                <span>-</span>
-                                <%
-                                    }
-                                %>
-                            </td>
                         </tr>
                         <%
                                 }

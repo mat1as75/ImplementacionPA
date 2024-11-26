@@ -8,9 +8,9 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -22,11 +22,14 @@ import javax.servlet.http.Part;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import webservices.DataTypes.DtUsuarioGenerico;
+import webservices.ArrayListContainer;
+import webservices.DataTypes.DtSuscripcion;
+import webservices.Exception_Exception;
 import webservices.ListaReproduccionService;
 import webservices.ListaReproduccionServiceService;
-import webservices.UsuarioService;
-import webservices.UsuarioServiceService;
+import webservices.NullableContainer;
+import webservices.SuscripcionesService;
+import webservices.SuscripcionesServiceService;
 
 @MultipartConfig
 @WebServlet(name = "SVCrearListaReproduccion", urlPatterns = {"/SVCrearListaReproduccion"})
@@ -59,90 +62,105 @@ public class SVCrearListaReproduccion extends HttpServlet {
 
         // Comprobar si es un cliente
         if ("Cliente".equals(rolSesion)) {
-            UsuarioServiceService usuarioWS = new UsuarioServiceService();
-            UsuarioService usuarioPort = usuarioWS.getUsuarioServicePort();
-            ListaReproduccionServiceService listaRepWS = new ListaReproduccionServiceService();
-            ListaReproduccionService listaRepPort = listaRepWS.getListaReproduccionServicePort();
+                
+            try {
+                
+                ListaReproduccionServiceService lservice = new ListaReproduccionServiceService();
+                ListaReproduccionService listaService = lservice.getListaReproduccionServicePort();
+                
+                SuscripcionesServiceService sservice = new SuscripcionesServiceService();
+                SuscripcionesService suscrService = sservice.getSuscripcionesServicePort();
+                
+                // Consultar la suscripción del cliente
+                NullableContainer suscripcionContainer = suscrService.getDTSuscripcionDeCliente(nicknameSesion);
+                String estadoSuscripcionSesion = null;
 
-            DtUsuarioGenerico datosU = usuarioPort.getDatosUsuario(nicknameSesion).getDtUsuarioGenerico();
-            
-            String estadoSuscripcionSesion = null;
-            if (datosU.getSuscripcion() != null) {
-                estadoSuscripcionSesion = datosU.getSuscripcion().getEstadoSuscripcion();
-            }
-
-            // Comprobar suscripcion vigente
-            if (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
-                String nombreLista = request.getParameter("nombreLista");
-                Part filePart = request.getPart("imagenLista");
-                String rutaImagen = null;  
-
-                // Comprobar si se ha seleccionado un archivo
-                if (filePart != null && filePart.getSize() > 0) {
-                    String fileName = extractFileName(filePart);
-                    // Construir la ruta de carga
-                    String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
-                    File uploadDir = new File(uploadPath);
-                    if (!uploadDir.exists()) {
-                        uploadDir.mkdir();
+                if (suscripcionContainer != null && suscripcionContainer.getDtSuscripcion() != null) {
+                    DtSuscripcion suscripcion = suscripcionContainer.getDtSuscripcion();
+                    estadoSuscripcionSesion = suscripcion.getEstadoSuscripcion();
+                }
+                
+                // Comprobar suscripcion vigente
+                if (estadoSuscripcionSesion != null && estadoSuscripcionSesion.equals("Vigente")) {
+                    String nombreLista = request.getParameter("nombreLista");
+                    Part filePart = request.getPart("imagenLista");
+                    String rutaImagen = null;
+                    
+                    // Comprobar si se ha seleccionado un archivo
+                    if (filePart != null && filePart.getSize() > 0) {
+                        String fileName = extractFileName(filePart);
+                        // Construir la ruta de carga
+                        String uploadPath = getServletContext().getRealPath("") + UPLOAD_DIR;
+                        File uploadDir = new File(uploadPath);
+                        if (!uploadDir.exists()) {
+                            uploadDir.mkdir();
+                        }
+                        
+                        // Comprobar si el archivo ya existe y generar un nuevo nombre si es necesario
+                        File file = new File(uploadDir, fileName);
+                        int count = 1;
+                        
+                        // Comprobar si el archivo tiene una extension
+                        int dotIndex = fileName.lastIndexOf('.');
+                        String baseName;
+                        String extension;
+                        if (dotIndex > 0) {
+                            baseName = fileName.substring(0, dotIndex);
+                            extension = fileName.substring(dotIndex);
+                        } else {
+                            baseName = fileName;
+                            extension = "";
+                        }
+                        
+                        // Cambiar el nombre si el archivo ya existe
+                        while (file.exists()) {
+                            fileName = baseName + "_" + count + extension;
+                            file = new File(uploadDir, fileName);
+                            count++;
+                        }
+                        
+                        // Guardar el archivo en el directorio
+                        try (InputStream input = filePart.getInputStream()) {
+                            Files.copy(input, file.toPath());
+                        }
+                        rutaImagen = DIRECCION_BASE + "/" + fileName; // Asignar la ruta de la imagen
                     }
-
-                    // Comprobar si el archivo ya existe y generar un nuevo nombre si es necesario
-                    File file = new File(uploadDir, fileName);
-                    int count = 1;
-
-                    // Comprobar si el archivo tiene una extension
-                    int dotIndex = fileName.lastIndexOf('.');
-                    String baseName;
-                    String extension;
-                    if (dotIndex > 0) {
-                        baseName = fileName.substring(0, dotIndex);
-                        extension = fileName.substring(dotIndex);
+                     
+                    ArrayListContainer listasParticularesContainer = listaService.getNombresListasParticulares();
+                    ArrayList<String> listasParticulares = (ArrayList<String>) listasParticularesContainer.getColeccion().stream()
+                            .filter(String.class::isInstance) 
+                            .map(String.class::cast) 
+                            .collect(Collectors.toList());   
+                    
+                    // Comprobar si la lista ya existe
+                    if (!listasParticulares.contains(nombreLista)) {
+                        GregorianCalendar gc = new GregorianCalendar();
+                        gc.setTime(new Date());
+                        XMLGregorianCalendar xmlToday;
+                        try {
+                            xmlToday = DatatypeFactory
+                                    .newInstance()
+                                    .newXMLGregorianCalendar(gc);
+                        } catch (DatatypeConfigurationException ex) {
+                            xmlToday = null;
+                        }
+                        boolean privada = true;
+                        
+                        if(rutaImagen == null){
+                            rutaImagen = "";
+                        }
+                        
+                        listaService.crearListaParticular(nombreLista, rutaImagen, nicknameSesion, xmlToday, privada);
+                        jsonResponse.addProperty("Exito", "Lista de reproducción creada exitosamente");
                     } else {
-                        baseName = fileName;
-                        extension = "";
+                        jsonResponse.addProperty("Error", "La lista de reproducción con el nombre " + nombreLista + " ya existe.");
                     }
-
-                    // Cambiar el nombre si el archivo ya existe
-                    while (file.exists()) {
-                        fileName = baseName + "_" + count + extension;
-                        file = new File(uploadDir, fileName);
-                        count++;
-                    }
-
-                    // Guardar el archivo en el directorio
-                    try (InputStream input = filePart.getInputStream()) {
-                        Files.copy(input, file.toPath());
-                    }
-                    rutaImagen = DIRECCION_BASE + "/" + fileName; // Asignar la ruta de la imagen
-                }
-
-                List<Object> listasParticularesObjs = listaRepPort.getNombresListasParticulares().getColeccion();
-                List<String> listasParticulares = new ArrayList();
-                for (Object o : listasParticularesObjs) {
-                    listasParticulares.add((String) o);
-                }
-                // Comprobar si la lista ya existe
-                if (!listasParticulares.contains(nombreLista)) {
-                    Date fechaCreacion = new Date();
-                    XMLGregorianCalendar xmlDate = null;
-                    GregorianCalendar gc = new GregorianCalendar();
-                    gc.setTime(new Date());
-                    try {
-                        xmlDate =  DatatypeFactory.newInstance().newXMLGregorianCalendar(gc);
-                    } catch (DatatypeConfigurationException ex) {
-                        Logger.getLogger(ServletPrueba.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    boolean privada = true;
-
-                    listaRepPort.crearListaParticular(nombreLista, rutaImagen, nicknameSesion, xmlDate, privada);
-                    jsonResponse.addProperty("Exito", "Lista de reproducción creada exitosamente");
                 } else {
-                    jsonResponse.addProperty("Error", "La lista de reproducción con el nombre " + nombreLista + " ya existe.");
+                    // Suscripcion no vigente
+                    jsonResponse.addProperty("Error", "No puedes crear una lista de reproducción. Tu suscripción no se encuentra vigente.");
                 }
-            } else {
-                // Suscripcion no vigente
-                jsonResponse.addProperty("Error", "No puedes crear una lista de reproducción. Tu suscripción no se encuentra vigente.");
+            } catch (Exception_Exception ex) {
+                Logger.getLogger(SVCrearListaReproduccion.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             // No es un cliente
