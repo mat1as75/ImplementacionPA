@@ -6,6 +6,8 @@
 <%@page import="webservices.DataTypes.DtDatosListaReproduccion" %>
 <%@page import="webservices.DataTypes.DtDatosUsuario" %>
 <%@page import="webservices.DataTypes.DtSuscripcion"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="webservices.SuscripcionesService"%>
 <%@page import="webservices.SuscripcionesServiceService"%>
 <%@page import="webservices.ListaReproduccionService"%>
@@ -96,24 +98,9 @@
     boolean temaEsFavorito = false;
     
     ContenidoServiceService cservice = new ContenidoServiceService();
-    ContenidoService contenidoService = cservice.getUsuarioServicePort();
-    try {
-        listaEsFavorita = listaService.esListaFavorita(nicknameSesion, nombreLista);
-    } catch (Exception e) {
-        errorMsg = "Error al verificar si la lista es favorita: " + e.getMessage();
-    }
+    ContenidoService contenidoService = cservice.getContenidoServicePort();
     
-    Map<String, Boolean> temasFavoritos = new HashMap<>();
-    if (datosLista != null) {
-        for (DtTemaSimple tema : datosLista.getTemas()) {
-            try {
-                boolean esFavorito = contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema());
-                temasFavoritos.put(tema.getIdTema(), esFavorito);
-            } catch (Exception e) {
-                errorMsg = "Error al verificar si el tema es favorito: " + e.getMessage();
-            }
-        }
-    }
+    listaEsFavorita = contenidoService.esListaFavorita(nicknameSesion, nombreLista);
 %>
 
 <head>
@@ -201,9 +188,6 @@
                                     int minutos = duracionSegundos / 60;
                                     int segundos = duracionSegundos % 60;
                                     
-                                    ContenidoServiceService cservice = new ContenidoServiceService();
-                                    ContenidoService contenidoService = cservice.getContenidoServicePort();
-                                    
                                     DtTemaGenericoConRutaOUrl temaRutaOUrl = contenidoService.getDTTemaGenericoConRutaOUrl(tema.getIdTema());
                                     String srcPortada = fotoLista;
                         %>
@@ -212,7 +196,9 @@
                             <td><%= nroTema++%></td>
                             <td>
                                  <%
-                                    if(!temasFavoritos.getOrDefault(tema.getIdTema(), false) && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
+                                    boolean esFavoritoTema = contenidoService.esTemaFavorito(nicknameSesion, tema.getIdTema());
+                                    System.out.println("es: " + esFavoritoTema + tema.getIdTema());
+                                    if(!esFavoritoTema && rolSesion != null && puedeDescargar && rolSesion != "Artista"){
                                 %>
                                 <form action="SVGuardarTemaFavorito" method="post">
                                     <input type="hidden" name="idTema" value="<%= tema.getIdTema()%>"/> 

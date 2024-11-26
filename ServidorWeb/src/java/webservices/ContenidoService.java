@@ -89,6 +89,54 @@ public interface ContenidoService {
 
     /**
      * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/esListaFavoritaRequest", output = "http://webservices.espotify/ContenidoService/esListaFavoritaResponse")
+    public boolean esListaFavorita(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/esAlbumFavoritoRequest", output = "http://webservices.espotify/ContenidoService/esAlbumFavoritoResponse")
+    public boolean esAlbumFavorito(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        long arg1);
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices.espotify/ContenidoService/esTemaFavoritoRequest", output = "http://webservices.espotify/ContenidoService/esTemaFavoritoResponse")
+    public boolean esTemaFavorito(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        long arg1);
+
+    /**
+     * 
      * @param arg0
      * @return
      *     returns espotify.webservices.DtGeneroSimple

@@ -607,5 +607,10 @@ public class Controlador implements IControlador{
     public boolean esTemaFavorito(String nicknameCliente, Long idTema) {
         return this.contpersis.esTemaFavorito(nicknameCliente, idTema);
     }
+    
+    @Override
+    public boolean esAlbumFavorito(String nicknameCliente, Long idAlbum) {
+        return this.contpersis.esAlbumFavorito(nicknameCliente, idAlbum);
+    }
 }
 

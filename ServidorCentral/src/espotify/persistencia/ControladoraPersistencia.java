@@ -2114,19 +2114,33 @@ public class ControladoraPersistencia {
 
         return false;
     }
+    
+    public boolean esAlbumFavorito(String nicknameCliente, Long idAlbum) {
+        
+        Cliente c = cliJpa.findCliente(nicknameCliente); // Obtiene el cliente desde la base de datos
+
+        List<Album> listaAlbumesFavoritos = c.getMisAlbumesFav();
+        for (Album album : listaAlbumesFavoritos) {
+            if (album.getIdAlbum().equals(idAlbum)) {
+                return true; 
+                }
+            }
+        
+        return false;
+    }
+
 
     public boolean esTemaFavorito(String nicknameCliente, Long idTema) {
         
         Cliente c = cliJpa.findCliente(nicknameCliente);
         
-        List<Tema> listaTemasFavoritos = c.getMisTemasFav();
-        for (Tema tema : listaTemasFavoritos) {
-            if (tema.getIdTema().equals(idTema)) {
+        List<Tema> temasFavoritosDelCliente = c.getMisTemasFav();
+        for (Tema t : temasFavoritosDelCliente) {
+            System.out.println("a: " + t.getIdTema() + " " + idTema);
+            if (t.getIdTema().equals(idTema)) {
                 return true;
             }
         }
-
-        return false; 
+        return false;
     }
-
 }

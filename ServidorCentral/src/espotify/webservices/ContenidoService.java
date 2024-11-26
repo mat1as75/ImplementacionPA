@@ -167,4 +167,18 @@ public class ContenidoService {
         }
     }
     
+    @WebMethod
+    public boolean esListaFavorita(String nicknameCliente, String nombreLista){ 
+        return this.ictrl.esListaFavorita(nicknameCliente, nombreLista);
+    }
+    
+    @WebMethod
+    public boolean esAlbumFavorito(String nicknameCliente, Long idAlbum){
+        return this.ictrl.esAlbumFavorito(nicknameCliente, idAlbum);
+    }
+    
+    @WebMethod
+     public boolean esTemaFavorito(String nicknameCliente, Long idTema){
+        return this.ictrl.esTemaFavorito(nicknameCliente, idTema);
+     }
 }

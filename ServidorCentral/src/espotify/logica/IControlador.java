@@ -124,6 +124,7 @@ public interface IControlador {
     public abstract ArrayList<String> getNombresGenerosPadre();
     public abstract boolean esListaFavorita(String nicknameCliente, String nombreLista);
     public abstract boolean esTemaFavorito(String nicknameCliente, Long idTema);
+    public abstract boolean esAlbumFavorito(String nicknameCliente, Long idAlbum);
 
     /* ----- OPERACIONES DE DATAALBUMS WEB SERVICE ----- */
     public abstract ArrayList<DTAlbum_Simple> getDTAlbumesSimple();
