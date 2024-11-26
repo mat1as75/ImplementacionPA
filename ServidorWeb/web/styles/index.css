@@ -182,7 +182,12 @@ h1, h2, h3 {
     .tab-links li a {
         border-radius: 0px;
     }
-    
+    a[href="#tab4"] {
+        display: none;
+    }
+    #tab4 {
+        display: none;
+    }
 }
 
 #sugerencias-titulo {
