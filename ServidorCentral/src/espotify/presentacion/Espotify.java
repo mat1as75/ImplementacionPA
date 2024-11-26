@@ -3,6 +3,7 @@ package espotify.presentacion;
 import espotify.logica.Fabrica;
 import espotify.logica.IControlador;
 import espotify.persistencia.ControladoraPersistencia;
+import espotify.webservices.BusquedasService;
 import espotify.webservices.ContenidoService;
 import espotify.webservices.DataAlbumsService;
 import espotify.webservices.ListaReproduccionService;
@@ -47,6 +48,9 @@ public class Espotify extends javax.swing.JFrame {
         ListaReproduccionService ListaReproduccionWS = new ListaReproduccionService();
         ListaReproduccionWS.publishEndpoint();
       
+        BusquedasService BusquedasWS = new BusquedasService();
+        BusquedasWS.publishEndpoint();
+        
         Fabrica fabrica = Fabrica.getInstance();
         ICtrl = fabrica.getControlador();
         

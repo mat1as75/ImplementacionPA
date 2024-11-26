@@ -22,6 +22,7 @@ import espotify.DataTypes.DTTemaConTipo;
 import espotify.DataTypes.DTTemaGenericoConRutaOUrl;
 import espotify.DataTypes.DTTemaSimple;
 import espotify.DataTypes.DTUsuario;
+import espotify.DataTypes.DTUsuarioGenerico;
 
 import espotify.logica.Album;
 import espotify.logica.Artista;
@@ -52,8 +53,11 @@ import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import mail.MailHandler;
 
 public class ControladoraPersistencia {
@@ -2141,5 +2145,112 @@ public class ControladoraPersistencia {
             }
         }
         return false;
+    }
+    
+    public ArrayList<String> getNicknamesArtistas() {
+        List<Artista> artistas = this.artJpa.findArtistaEntities();
+        ArrayList<String> nicknamesArtistas = new ArrayList();
+
+        for (Artista a : artistas) {
+            nicknamesArtistas.add(a.getNickname());
+        }
+        
+        return nicknamesArtistas;
+    }
+    
+    public ArrayList<String> getNicknamesClientes() {
+        List<Cliente> clientes = this.cliJpa.findClienteEntities();
+        ArrayList<String> nicknamesClientes = new ArrayList();
+
+        for (Cliente c : clientes) {
+            nicknamesClientes.add(c.getNickname());
+        }
+        
+        return nicknamesClientes;
+    }
+      
+    public ArrayList<String> getNicknamesUsuarios() {
+        List<Usuario> usuarios = this.usuJpa.findUsuarioEntities();
+        ArrayList<String> nicknamesUsuarios = new ArrayList();
+
+        for (Usuario u : usuarios) {
+            nicknamesUsuarios.add(u.getNickname());
+        }
+        
+        return nicknamesUsuarios;
+    }
+      
+    public ArrayList<String> getNicknamesArtistasEliminados() {
+        List<Artista> artistas = this.artJpa.findArtistaEntities();
+        ArrayList<String> nicknamesArtistasEliminados = new ArrayList();
+
+        for (Artista a : artistas) {
+            if (!a.getActivo()) {
+                nicknamesArtistasEliminados.add(a.getNickname());
+            }
+        }
+        
+        return nicknamesArtistasEliminados;
+    }
+    
+    public Map<String, String> buscarUsuariosPorQuery(String query) {
+        List<Usuario> usuarios = this.usuJpa.findUsuarioEntities();
+        Map<String, String> results = new HashMap();
+        
+        for (Usuario u : usuarios) {
+            if (u.getNickname().toLowerCase().contains(query.toLowerCase()) 
+                    || u.getNombreCompletoToString().toLowerCase().contains(query.toLowerCase())) {
+                if (u instanceof Cliente) {
+                    results.put(u.getNickname(), "Cliente");
+                } 
+                
+                if (u instanceof Artista) {
+                    Artista art = (Artista) u;
+                    if (art.getActivo()) {
+                        results.put(u.getNickname(), "Artista");
+                    }
+                }
+            }
+        }
+        return results;
+    }
+    
+    public Map<String, String> buscarTemasPorQuery(String query) {
+        List<Tema> temas = this.temaJpa.findTemaEntities();
+        Map<String, String> results = new HashMap();
+        
+        for (Tema t : temas) {
+            if (t.getNombreTema().toLowerCase().contains(query.toLowerCase())) {
+                results.put(t.getMiAlbum().getIdAlbum() + ", " + t.getNombreTema(), "Tema");
+            }
+        }
+    
+        return results;
+    }
+    
+    public Map<String, String> buscarAlbumsPorQuery(String query) {
+        List<Album> albums = this.albJpa.findAlbumEntities();
+        Map<String, String> results = new HashMap();
+        
+        for (Album a : albums) {
+            if (a.getNombreAlbum().toLowerCase().contains(query.toLowerCase())) {
+                results.put(a.getIdAlbum() + ", " + a.getNombreAlbum(), "Album");
+            }
+        }
+        
+        return results;
+    }
+    
+    public Map<String, String> buscarListasReproduccionPorQuery(String query) {
+        List<ListaReproduccion> listasRep = this.lreprodccJpa.findListaReproduccionEntities();
+        Map<String, String> results = new HashMap();
+        
+        for (ListaReproduccion lr : listasRep) {
+            if (lr.getNombreLista().toLowerCase().contains(query.toLowerCase())) {
+                results.put(lr.getNombreLista(), "Lista");
+            }
+        }
+        
+        return results;
     }
 }

@@ -151,4 +151,12 @@ public interface IControlador {
     public abstract ArrayList<String> getNombresListasParticularesDeCliente(String nicknameCliente) throws Exception;
     public abstract ArrayList<String> listasCreadasEstadoPrivadoTrue(String cliente);
 
+    
+    public abstract Map<String, String> buscarListasReproduccionPorQuery(String query);
+    public abstract Map<String, String> buscarAlbumsPorQuery(String query);
+    public abstract Map<String, String> buscarUsuariosPorQuery(String query);
+    public abstract Map<String, String> buscarTemasPorQuery(String query);
+
+
+
 }

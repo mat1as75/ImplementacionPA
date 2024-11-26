@@ -67,26 +67,12 @@ public class Controlador implements IControlador{
     
     @Override
     public List<String>getNicknamesArtistas(){
-        ArrayList<Artista> artistas = contpersis.getArtistas();
-        ArrayList<String> nicknames = new ArrayList<>();
-        for (Artista a : artistas) {
-            nicknames.add(a.getNickname());
-        }
-
-        return nicknames;
+        return this.contpersis.getNicknamesArtistas();
     };
     
     @Override
     public List<String>getNicknamesArtistasEliminados() {
-        ArrayList<Artista> artistas = contpersis.getArtistas();
-        ArrayList<String> nicknames = new ArrayList<>();
-        for (Artista a : artistas) {
-            if (!a.getActivo()) {
-                nicknames.add(a.getNickname());
-            }
-        }
-        
-        return nicknames;
+        return this.contpersis.getNicknamesArtistasEliminados();
     }
     
     @Override
@@ -96,14 +82,7 @@ public class Controlador implements IControlador{
 
     @Override
     public List<String>getNicknamesClientes() {
-        ArrayList<Cliente> clientes = contpersis.getClientes();
-        ArrayList<String> nicknames = new ArrayList<>();
-
-        for (Cliente c : clientes) {
-            nicknames.add(c.getNickname());
-        }
-
-        return nicknames;
+        return this.contpersis.getNicknamesClientes();
     }
     
     @Override
@@ -612,5 +591,26 @@ public class Controlador implements IControlador{
     public boolean esAlbumFavorito(String nicknameCliente, Long idAlbum) {
         return this.contpersis.esAlbumFavorito(nicknameCliente, idAlbum);
     }
+    
+    @Override
+    public Map<String, String> buscarListasReproduccionPorQuery(String query) {
+        return this.contpersis.buscarListasReproduccionPorQuery(query);
+    }
+    
+    @Override
+    public Map<String, String> buscarAlbumsPorQuery(String query) {
+        return this.contpersis.buscarAlbumsPorQuery(query);
+    }
+    
+    @Override
+    public Map<String, String> buscarTemasPorQuery(String query) {
+        return this.contpersis.buscarTemasPorQuery(query);
+    }
+    
+    @Override
+    public Map<String, String> buscarUsuariosPorQuery(String query) {
+        return this.contpersis.buscarUsuariosPorQuery(query);
+    }
 }
+
 
