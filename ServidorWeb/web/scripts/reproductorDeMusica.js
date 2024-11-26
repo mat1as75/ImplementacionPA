@@ -399,7 +399,7 @@ function loadDropdownContent(contentType, data, idDropdownContent) {
         const title = document.createElement("p");
         title.innerText = "Mis Listas";
         dropdownContent.append(title);
-        data.forEach( lista => {
+        data.forEach( lista => {            
             //determino si el tema ya pertenece a la lista o no para definir la apariencia y funcion del <a>
             const perteneceALista = lista.temas.find( tema => tema.idTema.toString() === idTema);
             if (perteneceALista) {

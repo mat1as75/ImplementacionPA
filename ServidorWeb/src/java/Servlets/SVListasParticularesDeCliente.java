@@ -71,6 +71,19 @@ public class SVListasParticularesDeCliente extends HttpServlet {
             for (Object o : objList) {
                 DtDatosListaReproduccion dtLista = (DtDatosListaReproduccion) o;
                 listaDtListasRep.add(dtLista);
+                /**
+                 * Si la lista no tiene temas agregados el datatype viene con el atributo
+                 * temas en null. Si esta en null en lugar de mapearse al json como un array vacio
+                 * directamente no se agrega el campo, por lo que no llega un objeto valido a la 
+                 * funcion de javascript que utiliza los datos.
+                 * 
+                 * Al hacer un get de la lista, se ejecuta la construccion del ArrayList vacio, 
+                 * lo que hace que gson si reconozca el valor del atributo como un array y agregue el
+                 * campo al json
+                 */
+                if (dtLista.getTemas() == null) {
+                    dtLista.getTemas();
+                }
             }
             
             Gson gson = new Gson();
