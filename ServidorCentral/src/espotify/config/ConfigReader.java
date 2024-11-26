@@ -56,10 +56,20 @@ public class ConfigReader {
     }
     
     public static String getWebServiceIP() {
+        
+        if (ConfigReader.getProperties() == null) {
+            return "localhost";
+        }
+        
         return ConfigReader.getProperties().getProperty("webserviceip");
     }
 
     public static String getWebServicePort() {
+        
+        if (ConfigReader.getProperties() == null) {
+            return "8089";
+        }
+        
         return ConfigReader.getProperties().getProperty("webserviceport");
     }
     
@@ -68,18 +78,38 @@ public class ConfigReader {
     }
     
     public static String getSenderEmail() {
+        
+        if (ConfigReader.getProperties() == null) {
+            return "example@mail.com";
+        }
+        
         return ConfigReader.getProperties().getProperty("emailsender");
     }
     
     public static String getSenderEmailPassword() {
+        
+        if (ConfigReader.getProperties() == null) {
+            return "";
+        }
+        
         return ConfigReader.getProperties().getProperty("emailsenderpassword");
     }
     
     public static String getSMTPhost() {
+        
+        if (ConfigReader.getProperties() == null) {
+            return "127.0.0.1";
+        }
+        
         return ConfigReader.getProperties().getProperty("smtphost");
     }
     
     public static int getSMTPport() {
+        
+        if (ConfigReader.getProperties() == null) {
+            return 25; //puerto por defecto que utiliza DevNull
+        }
+        
         return Integer.parseInt(ConfigReader.getProperties().getProperty("smtpport"));
     }
 }
