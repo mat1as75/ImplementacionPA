@@ -562,6 +562,8 @@ public class ServletPrueba extends HttpServlet {
         this.testgetDTListaRepDeCliente(listaReproduccionPort);//OK
         */
         
+        System.out.println(System.getProperty("user.home"));
+        
     }
 
     @Override
