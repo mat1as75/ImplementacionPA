@@ -1,9 +1,6 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +12,7 @@ import webservices.PreferenciasServiceService;
 
 @WebServlet("/SVPublicarLista")
 public class SVPublicarLista extends HttpServlet {
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -24,8 +22,9 @@ public class SVPublicarLista extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     
-}
-@Override
+    }
+    
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
@@ -39,7 +38,7 @@ public class SVPublicarLista extends HttpServlet {
         if ((nicknameCliente != null) &&(listaSeleccionada != null)) {
             preferenciasPort.publicarLista(nicknameCliente, listaSeleccionada);
             // Establecer un mensaje
-            String mensaje = nicknameCliente + " ahora no tiene lista privada " + listaSeleccionada;
+            String mensaje = "Lista '" + listaSeleccionada + "' publicada exitosamente";
             request.setAttribute("mensaje", mensaje);
             request.getRequestDispatcher("PublicarLista.jsp").forward(request, response);
         }

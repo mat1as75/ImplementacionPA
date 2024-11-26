@@ -5,6 +5,13 @@ body {
     color: var(--color-white);
 }
 
+#resultado {
+    margin-top: 1rem;
+    font-size: 1.2em;
+    text-align: center;
+    color: var(--color-green-primary);
+}
+
 #miFormulario {
     padding: 1.5rem;
     border: 1px solid var(--color-grey-accent);

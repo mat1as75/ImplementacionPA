@@ -50,7 +50,7 @@
             String mensaje = (String) request.getAttribute("mensaje");
             if (mensaje != null) {
         %>
-            <div id="felisidades" class="error" style="color: red;"><%=mensaje%></div>
+            <div id="resultado" ><%=mensaje%></div>
         <% } %>
 
         <form id="miFormulario" action="SVPublicarLista" method="POST" onsubmit="return validarSeleccion();">
